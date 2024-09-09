@@ -235,16 +235,6 @@ public class FtcAuto extends FtcOpMode
         //
         robot.startMode(nextMode);
 
-        if (robot.vision != null)
-        {
-            // We are done with detecting object with TensorFlow, shut it down.
-            if (robot.vision.tensorFlowVision != null)
-            {
-                robot.globalTracer.traceInfo(moduleName, "Disabling TensorFlowVision.");
-                robot.vision.setTensorFlowVisionEnabled(false);
-            }
-        }
-
         if (robot.battery != null)
         {
             robot.battery.setEnabled(true);

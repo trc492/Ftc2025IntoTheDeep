@@ -183,12 +183,6 @@ public class FtcAuto extends FtcOpMode
 //                robot.globalTracer.traceInfo(moduleName, "Enabling BlueBlobVision.");
 //                robot.vision.setBlueBlobVisionEnabled(true);
 //            }
-//
-//            if (robot.vision.tensorFlowVision != null)
-//            {
-//                robot.globalTracer.traceInfo(moduleName, "Enabling TensorFlowVision.");
-//                robot.vision.setTensorFlowVisionEnabled(true);
-//            }
         }
 
         robot.zeroCalibrate();

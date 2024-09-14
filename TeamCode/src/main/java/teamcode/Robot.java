@@ -207,16 +207,22 @@ public class Robot
                 vision.setAprilTagVisionEnabled(false);
             }
 
-            if (vision.redBlobVision != null)
+            if (vision.redSampleVision != null)
             {
-                globalTracer.traceInfo(moduleName, "Disabling RedBlobVision.");
-                vision.setRedBlobVisionEnabled(false);
+                globalTracer.traceInfo(moduleName, "Disabling RedSampleVision.");
+                vision.setRedSampleVisionEnabled(false);
             }
 
-            if (vision.blueBlobVision != null)
+            if (vision.blueSampleVision != null)
             {
-                globalTracer.traceInfo(moduleName, "Disabling BlueBlobVision.");
-                vision.setBlueBlobVisionEnabled(false);
+                globalTracer.traceInfo(moduleName, "Disabling BlueSampleVision.");
+                vision.setBlueSampleVisionEnabled(false);
+            }
+
+            if (vision.yellowSampleVision != null)
+            {
+                globalTracer.traceInfo(moduleName, "Disabling YellowSampleVision.");
+                vision.setYellowSampleVisionEnabled(false);
             }
 
             vision.close();

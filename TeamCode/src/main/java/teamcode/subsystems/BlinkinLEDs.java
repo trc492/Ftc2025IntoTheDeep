@@ -34,8 +34,9 @@ public class BlinkinLEDs extends FtcRevBlinkin
 {
     // LED pattern names.
     public static final String APRIL_TAG = "AprilTag";
-    public static final String RED_BLOB = "RedBlob";
-    public static final String BLUE_BLOB = "BlueBlob";
+    public static final String RED_SAMPLE = "RedSample";
+    public static final String BLUE_SAMPLE = "BlueSample";
+    public static final String YELLOW_SAMPLE = "YellowSample";
     public static final String DRIVE_ORIENTATION_FIELD = "FieldMode";
     public static final String DRIVE_ORIENTATION_ROBOT = "RobotMode";
     public static final String DRIVE_ORIENTATION_INVERTED = "InvertedMode";
@@ -53,8 +54,9 @@ public class BlinkinLEDs extends FtcRevBlinkin
         final TrcRevBlinkin.Pattern[] ledPatternPriorities = {
             // Highest priority.
             new TrcRevBlinkin.Pattern(APRIL_TAG, RevLedPattern.SolidAqua),
-            new TrcRevBlinkin.Pattern(RED_BLOB, RevLedPattern.SolidRed),
-            new TrcRevBlinkin.Pattern(BLUE_BLOB, RevLedPattern.SolidBlue),
+            new TrcRevBlinkin.Pattern(RED_SAMPLE, RevLedPattern.SolidRed),
+            new TrcRevBlinkin.Pattern(BLUE_SAMPLE, RevLedPattern.SolidBlue),
+            new TrcRevBlinkin.Pattern(YELLOW_SAMPLE, RevLedPattern.SolidYellow),
             new TrcRevBlinkin.Pattern(DRIVE_ORIENTATION_FIELD, RevLedPattern.SolidViolet),
             new TrcRevBlinkin.Pattern(DRIVE_ORIENTATION_ROBOT, RevLedPattern.SolidWhite),
             new TrcRevBlinkin.Pattern(DRIVE_ORIENTATION_INVERTED, RevLedPattern.SolidGray),

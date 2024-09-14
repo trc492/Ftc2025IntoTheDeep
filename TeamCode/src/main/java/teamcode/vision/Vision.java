@@ -66,9 +66,10 @@ public class Vision
     //
     // YCrCb Color Space.
     private static final int colorConversion = Imgproc.COLOR_RGB2YCrCb;
-    private static final double[] redBlobColorThresholds = {20.0, 120.0, 180.0, 240.0, 90.0, 120.0};
-    private static final double[] blueBlobColorThresholds = {20.0, 250.0, 40.0, 250.0, 160.0, 240.0};
-    private static final TrcOpenCvColorBlobPipeline.FilterContourParams colorBlobFilterContourParams =
+    private static final double[] redSampleColorThresholds = {20.0, 120.0, 180.0, 240.0, 90.0, 120.0};
+    private static final double[] blueSampleColorThresholds = {20.0, 250.0, 40.0, 250.0, 160.0, 240.0};
+    private static final double[] yellowSampleColorThresholds = {150.0, 250.0, 110.0, 160.0, 20.0, 100.0};
+    private static final TrcOpenCvColorBlobPipeline.FilterContourParams sampleFilterContourParams =
         new TrcOpenCvColorBlobPipeline.FilterContourParams()
             .setMinArea(5000.0)
             .setMinPerimeter(200.0)
@@ -76,7 +77,7 @@ public class Vision
             .setHeightRange(80.0, 1000.0)
             .setSolidityRange(0.0, 100.0)
             .setVerticesRange(0.0, 1000.0)
-            .setAspectRatioRange(0.3, 1.0);
+            .setAspectRatioRange(0.5, 2.5);
 
     private final TrcDbgTrace tracer;
     private final Robot robot;
@@ -85,10 +86,12 @@ public class Vision
     public FtcRawEocvVision rawColorBlobVision;
     public FtcVisionAprilTag aprilTagVision;
     private AprilTagProcessor aprilTagProcessor;
-    public FtcVisionEocvColorBlob redBlobVision;
-    private FtcEocvColorBlobProcessor redBlobProcessor;
-    public FtcVisionEocvColorBlob blueBlobVision;
-    private FtcEocvColorBlobProcessor blueBlobProcessor;
+    public FtcVisionEocvColorBlob redSampleVision;
+    private FtcEocvColorBlobProcessor redSampleProcessor;
+    public FtcVisionEocvColorBlob blueSampleVision;
+    private FtcEocvColorBlobProcessor blueSampleProcessor;
+    public FtcVisionEocvColorBlob yellowSampleVision;
+    private FtcEocvColorBlobProcessor yellowSampleProcessor;
     public FtcVision vision;
     public FtcLimelightVision limelightVision;
 
@@ -130,7 +133,7 @@ public class Vision
 
             tracer.traceInfo(moduleName, "Starting RawEocvColorBlobVision...");
             rawColorBlobPipeline = new FtcRawEocvColorBlobPipeline(
-                "rawColorBlobPipeline", colorConversion, redBlobColorThresholds, colorBlobFilterContourParams, true);
+                "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, sampleFilterContourParams, true);
             // By default, display original Mat.
             rawColorBlobPipeline.setVideoOutput(0);
             rawColorBlobPipeline.setAnnotateEnabled(true);
@@ -169,19 +172,25 @@ public class Vision
 
             if (RobotParams.Preferences.useColorBlobVision)
             {
-                tracer.traceInfo(moduleName, "Starting ColorBlobVision...");
+                tracer.traceInfo(moduleName, "Starting SampleVision...");
 
-                redBlobVision = new FtcVisionEocvColorBlob(
-                    "RedBlob", colorConversion, redBlobColorThresholds, colorBlobFilterContourParams, true,
+                redSampleVision = new FtcVisionEocvColorBlob(
+                    "RedSample", colorConversion, redSampleColorThresholds, sampleFilterContourParams, true,
                     robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
-                redBlobProcessor = redBlobVision.getVisionProcessor();
-                visionProcessorsList.add(redBlobProcessor);
+                redSampleProcessor = redSampleVision.getVisionProcessor();
+                visionProcessorsList.add(redSampleProcessor);
 
-                blueBlobVision = new FtcVisionEocvColorBlob(
-                    "BlueBlob", colorConversion, blueBlobColorThresholds, colorBlobFilterContourParams, true,
+                blueSampleVision = new FtcVisionEocvColorBlob(
+                    "BlueSample", colorConversion, blueSampleColorThresholds, sampleFilterContourParams, true,
                     robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
-                blueBlobProcessor = blueBlobVision.getVisionProcessor();
-                visionProcessorsList.add(blueBlobProcessor);
+                blueSampleProcessor = blueSampleVision.getVisionProcessor();
+                visionProcessorsList.add(blueSampleProcessor);
+
+                yellowSampleVision = new FtcVisionEocvColorBlob(
+                    "YellowSample", colorConversion, yellowSampleColorThresholds, sampleFilterContourParams, true,
+                    robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                yellowSampleProcessor = yellowSampleVision.getVisionProcessor();
+                visionProcessorsList.add(yellowSampleProcessor);
             }
 
             VisionProcessor[] visionProcessors = new VisionProcessor[visionProcessorsList.size()];
@@ -466,100 +475,148 @@ public class Vision
     }   //getRobotFieldPose
 
     /**
-     * This method enables/disables RedBlob vision.
+     * This method enables/disables RedSample vision.
      *
      * @param enabled specifies true to enable, false to disable.
      */
-    public void setRedBlobVisionEnabled(boolean enabled)
+    public void setRedSampleVisionEnabled(boolean enabled)
     {
-        if (redBlobProcessor != null)
+        if (redSampleProcessor != null)
         {
-            vision.setProcessorEnabled(redBlobProcessor, enabled);
+            vision.setProcessorEnabled(redSampleProcessor, enabled);
         }
-    }   //setRedBlobVisionEnabled
+    }   //setRedSampleVisionEnabled
 
     /**
-     * This method checks if RedBlob vision is enabled.
+     * This method checks if RedSample vision is enabled.
      *
      * @return true if enabled, false if disabled.
      */
-    public boolean isRedBlobVisionEnabled()
+    public boolean isRedSampleVisionEnabled()
     {
-        return redBlobProcessor != null && vision.isVisionProcessorEnabled(redBlobProcessor);
-    }   //isRedBlobVisionEnabled
+        return redSampleProcessor != null && vision.isVisionProcessorEnabled(redSampleProcessor);
+    }   //isRedSampleVisionEnabled
 
     /**
-     * This method calls ColorBlob vision to detect the Red Blob object.
+     * This method calls ColorBlob vision to detect the Red Sample object.
      *
      * @param lineNum specifies the dashboard line number to display the detected object info, -1 to disable printing.
-     * @return detected Red Blob object info.
+     * @return detected Red Sample object info.
      */
-    public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedRedBlob(int lineNum)
+    public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedRedSample(int lineNum)
     {
         TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> colorBlobInfo =
-            redBlobVision.getBestDetectedTargetInfo(null, null, 0.0, 0.0);
+            redSampleVision.getBestDetectedTargetInfo(null, null, 0.0, 0.0);
 
         if (colorBlobInfo != null && robot.blinkin != null)
         {
-            robot.blinkin.setDetectedPattern(BlinkinLEDs.RED_BLOB);
+            robot.blinkin.setDetectedPattern(BlinkinLEDs.RED_SAMPLE);
         }
 
         if (lineNum != -1)
         {
             robot.dashboard.displayPrintf(
-                lineNum, "%s: %s", BlinkinLEDs.RED_BLOB, colorBlobInfo != null? colorBlobInfo: "Not found.");
+                lineNum, "%s: %s", BlinkinLEDs.RED_SAMPLE, colorBlobInfo != null? colorBlobInfo: "Not found.");
         }
 
         return colorBlobInfo;
-    }   //getDetectedRedBlob
+    }   //getDetectedRedSample
 
     /**
-     * This method enables/disables BlueBlob vision.
+     * This method enables/disables BlueSample vision.
      *
      * @param enabled specifies true to enable, false to disable.
      */
-    public void setBlueBlobVisionEnabled(boolean enabled)
+    public void setBlueSampleVisionEnabled(boolean enabled)
     {
-        if (blueBlobProcessor != null)
+        if (blueSampleProcessor != null)
         {
-            vision.setProcessorEnabled(blueBlobProcessor, enabled);
+            vision.setProcessorEnabled(blueSampleProcessor, enabled);
         }
-    }   //setBlueBlobVisionEnabled
+    }   //setBlueSampleVisionEnabled
 
     /**
-     * This method checks if BlueBlob vision is enabled.
+     * This method checks if BlueSample vision is enabled.
      *
      * @return true if enabled, false if disabled.
      */
-    public boolean isBlueBlobVisionEnabled()
+    public boolean isBlueSampleVisionEnabled()
     {
-        return blueBlobProcessor != null && vision.isVisionProcessorEnabled(blueBlobProcessor);
-    }   //isBlueBlobVisionEnabled
+        return blueSampleProcessor != null && vision.isVisionProcessorEnabled(blueSampleProcessor);
+    }   //isBlueSampleVisionEnabled
 
     /**
-     * This method calls ColorBlob vision to detect the Blue Blob object.
+     * This method calls ColorBlob vision to detect the Blue Sample object.
      *
      * @param lineNum specifies the dashboard line number to display the detected object info, -1 to disable printing.
-     * @return detected Blue Blob object info.
+     * @return detected Blue Sample object info.
      */
-    public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedBlueBlob(int lineNum)
+    public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedBlueSample(int lineNum)
     {
         TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> colorBlobInfo =
-            blueBlobVision.getBestDetectedTargetInfo(null, null, 0.0, 0.0);
+            blueSampleVision.getBestDetectedTargetInfo(null, null, 0.0, 0.0);
 
         if (colorBlobInfo != null && robot.blinkin != null)
         {
-            robot.blinkin.setDetectedPattern(BlinkinLEDs.BLUE_BLOB);
+            robot.blinkin.setDetectedPattern(BlinkinLEDs.BLUE_SAMPLE);
         }
 
         if (lineNum != -1)
         {
             robot.dashboard.displayPrintf(
-                lineNum, "%s: %s", BlinkinLEDs.BLUE_BLOB, colorBlobInfo != null? colorBlobInfo: "Not found.");
+                lineNum, "%s: %s", BlinkinLEDs.BLUE_SAMPLE, colorBlobInfo != null? colorBlobInfo: "Not found.");
         }
 
         return colorBlobInfo;
-    }   //getDetectedBlueBlob
+    }   //getDetectedBlueSample
+
+    /**
+     * This method enables/disables YellowSample vision.
+     *
+     * @param enabled specifies true to enable, false to disable.
+     */
+    public void setYellowSampleVisionEnabled(boolean enabled)
+    {
+        if (yellowSampleProcessor != null)
+        {
+            vision.setProcessorEnabled(yellowSampleProcessor, enabled);
+        }
+    }   //setYellowSampleVisionEnabled
+
+    /**
+     * This method checks if YellowSample vision is enabled.
+     *
+     * @return true if enabled, false if disabled.
+     */
+    public boolean isYellowSampleVisionEnabled()
+    {
+        return yellowSampleProcessor != null && vision.isVisionProcessorEnabled(yellowSampleProcessor);
+    }   //isYellowSampleVisionEnabled
+
+    /**
+     * This method calls ColorBlob vision to detect the Yellow Sample object.
+     *
+     * @param lineNum specifies the dashboard line number to display the detected object info, -1 to disable printing.
+     * @return detected Yellow Sample object info.
+     */
+    public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedYellowSample(int lineNum)
+    {
+        TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> colorBlobInfo =
+            yellowSampleVision.getBestDetectedTargetInfo(null, null, 0.0, 0.0);
+
+        if (colorBlobInfo != null && robot.blinkin != null)
+        {
+            robot.blinkin.setDetectedPattern(BlinkinLEDs.YELLOW_SAMPLE);
+        }
+
+        if (lineNum != -1)
+        {
+            robot.dashboard.displayPrintf(
+                lineNum, "%s: %s", BlinkinLEDs.YELLOW_SAMPLE, colorBlobInfo != null? colorBlobInfo: "Not found.");
+        }
+
+        return colorBlobInfo;
+    }   //getDetectedYellowSample
 
     /**
      * This method returns the target Z offset from ground.

@@ -239,16 +239,22 @@ public class FtcTest extends FtcTeleOp
                         robot.vision.setAprilTagVisionEnabled(true);
                     }
 
-                    if (robot.vision.redBlobVision != null)
+                    if (robot.vision.redSampleVision != null)
                     {
-                        robot.globalTracer.traceInfo(moduleName, "Enabling RedBlobVision.");
-                        robot.vision.setRedBlobVisionEnabled(true);
+                        robot.globalTracer.traceInfo(moduleName, "Enabling RedSampleVision.");
+                        robot.vision.setRedSampleVisionEnabled(true);
                     }
 
-                    if (robot.vision.blueBlobVision != null)
+                    if (robot.vision.blueSampleVision != null)
                     {
-                        robot.globalTracer.traceInfo(moduleName, "Enabling BlueBlobVision.");
-                        robot.vision.setBlueBlobVisionEnabled(true);
+                        robot.globalTracer.traceInfo(moduleName, "Enabling BlueSampleVision.");
+                        robot.vision.setBlueSampleVisionEnabled(true);
+                    }
+
+                    if (robot.vision.yellowSampleVision != null)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, "Enabling YellowSampleVision.");
+                        robot.vision.setYellowSampleVisionEnabled(true);
                     }
                 }
                 break;
@@ -1081,14 +1087,19 @@ public class FtcTest extends FtcTeleOp
                 robot.vision.getDetectedAprilTag(null, lineNum++);
             }
 
-            if (robot.vision.redBlobVision != null)
+            if (robot.vision.redSampleVision != null)
             {
-                robot.vision.getDetectedRedBlob(lineNum++);
+                robot.vision.getDetectedRedSample(lineNum++);
             }
 
-            if (robot.vision.blueBlobVision != null)
+            if (robot.vision.blueSampleVision != null)
             {
-                robot.vision.getDetectedBlueBlob(lineNum++);
+                robot.vision.getDetectedBlueSample(lineNum++);
+            }
+
+            if (robot.vision.yellowSampleVision != null)
+            {
+                robot.vision.getDetectedYellowSample(lineNum++);
             }
         }
     }   //doVisionTest

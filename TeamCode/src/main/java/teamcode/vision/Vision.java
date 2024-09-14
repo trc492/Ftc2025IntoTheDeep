@@ -35,6 +35,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ftclib.robotcore.FtcOpMode;
 import ftclib.vision.FtcEocvColorBlobProcessor;
@@ -61,6 +62,17 @@ import trclib.vision.TrcVisionTargetInfo;
 public class Vision
 {
     private static final String moduleName = Vision.class.getSimpleName();
+
+    public enum SampleType
+    {
+        RedSample,
+        BlueSample,
+        YellowSample,
+        RedAllianceSamples,
+        BlueAllianceSamples,
+        AnySample
+    }   //enum SampleType
+
     // Warning: EOCV converts camera stream to RGBA whereas Desktop OpenCV converts it to BGRA. Therefore, the correct
     // color conversion must be RGBA (or RGB) to whatever color space you want to convert.
     //
@@ -175,19 +187,19 @@ public class Vision
                 tracer.traceInfo(moduleName, "Starting SampleVision...");
 
                 redSampleVision = new FtcVisionEocvColorBlob(
-                    "RedSample", colorConversion, redSampleColorThresholds, sampleFilterContourParams, true,
+                    BlinkinLEDs.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams, true,
                     robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 redSampleProcessor = redSampleVision.getVisionProcessor();
                 visionProcessorsList.add(redSampleProcessor);
 
                 blueSampleVision = new FtcVisionEocvColorBlob(
-                    "BlueSample", colorConversion, blueSampleColorThresholds, sampleFilterContourParams, true,
+                    BlinkinLEDs.BLUE_SAMPLE, colorConversion, blueSampleColorThresholds, sampleFilterContourParams, true,
                     robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 blueSampleProcessor = blueSampleVision.getVisionProcessor();
                 visionProcessorsList.add(blueSampleProcessor);
 
                 yellowSampleVision = new FtcVisionEocvColorBlob(
-                    "YellowSample", colorConversion, yellowSampleColorThresholds, sampleFilterContourParams, true,
+                    BlinkinLEDs.YELLOW_SAMPLE, colorConversion, yellowSampleColorThresholds, sampleFilterContourParams, true,
                     robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 yellowSampleProcessor = yellowSampleVision.getVisionProcessor();
                 visionProcessorsList.add(yellowSampleProcessor);
@@ -475,148 +487,185 @@ public class Vision
     }   //getRobotFieldPose
 
     /**
-     * This method enables/disables RedSample vision.
+     * This method enables/disables vision for the specified sample type.
      *
+     * @param sampleType specifies the sample type to be detected.
      * @param enabled specifies true to enable, false to disable.
      */
-    public void setRedSampleVisionEnabled(boolean enabled)
+    public void setSampleVisionEnabled(SampleType sampleType, boolean enabled)
     {
-        if (redSampleProcessor != null)
+        switch (sampleType)
         {
-            vision.setProcessorEnabled(redSampleProcessor, enabled);
+            case RedSample:
+                if (redSampleProcessor != null)
+                {
+                    vision.setProcessorEnabled(redSampleProcessor, enabled);
+                }
+                break;
+
+            case BlueSample:
+                if (blueSampleProcessor != null)
+                {
+                    vision.setProcessorEnabled(blueSampleProcessor, enabled);
+                }
+                break;
+
+            case YellowSample:
+                if (yellowSampleProcessor != null)
+                {
+                    vision.setProcessorEnabled(yellowSampleProcessor, enabled);
+                }
+                break;
+
+            case RedAllianceSamples:
+            case BlueAllianceSamples:
+            case AnySample:
+                if (sampleType != SampleType.BlueAllianceSamples && redSampleProcessor != null)
+                {
+                    vision.setProcessorEnabled(redSampleProcessor, enabled);
+                }
+                if (sampleType != SampleType.RedAllianceSamples && blueSampleProcessor != null)
+                {
+                    vision.setProcessorEnabled(blueSampleProcessor, enabled);
+                }
+                if (yellowSampleProcessor != null)
+                {
+                    vision.setProcessorEnabled(yellowSampleProcessor, enabled);
+                }
+                break;
         }
-    }   //setRedSampleVisionEnabled
+    }   //setSampleVisionEnabled
 
     /**
-     * This method checks if RedSample vision is enabled.
+     * This method checks if vision is enabled for the specified sample type.
      *
+     * @param sampleType specifies the sample type to be detected.
      * @return true if enabled, false if disabled.
      */
-    public boolean isRedSampleVisionEnabled()
+    public boolean isSampleVisionEnabled(SampleType sampleType)
     {
-        return redSampleProcessor != null && vision.isVisionProcessorEnabled(redSampleProcessor);
-    }   //isRedSampleVisionEnabled
+        boolean enabled = false;
+
+        switch (sampleType)
+        {
+            case RedSample:
+                enabled = redSampleProcessor != null && vision.isVisionProcessorEnabled(redSampleProcessor);
+                break;
+
+            case BlueSample:
+                enabled = blueSampleProcessor != null && vision.isVisionProcessorEnabled(blueSampleProcessor);
+                break;
+
+            case YellowSample:
+                enabled = yellowSampleProcessor != null && vision.isVisionProcessorEnabled(yellowSampleProcessor);
+                break;
+
+            case RedAllianceSamples:
+            case BlueAllianceSamples:
+            case AnySample:
+                enabled =
+                    sampleType != SampleType.BlueAllianceSamples &&
+                    redSampleProcessor != null && vision.isVisionProcessorEnabled(redSampleProcessor) ||
+                    sampleType != SampleType.RedAllianceSamples &&
+                    blueSampleProcessor != null && vision.isVisionProcessorEnabled(blueSampleProcessor) ||
+                    yellowSampleProcessor != null && vision.isVisionProcessorEnabled(yellowSampleProcessor);
+                break;
+        }
+
+        return enabled;
+    }   //isSampleVisionEnabled
 
     /**
-     * This method calls ColorBlob vision to detect the Red Sample object.
+     * This method calls ColorBlob vision to detect the specified Sample object.
      *
+     * @param sampleType specifies the sample type to be detected.
      * @param lineNum specifies the dashboard line number to display the detected object info, -1 to disable printing.
-     * @return detected Red Sample object info.
+     * @return detected Sample object info.
      */
-    public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedRedSample(int lineNum)
+    public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedSample(
+        SampleType sampleType, int lineNum)
     {
-        TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> colorBlobInfo =
-            redSampleVision.getBestDetectedTargetInfo(null, null, 0.0, 0.0);
+        TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo = null;
+        String sampleName = null;
 
-        if (colorBlobInfo != null && robot.blinkin != null)
+        switch (sampleType)
         {
-            robot.blinkin.setDetectedPattern(BlinkinLEDs.RED_SAMPLE);
+            case RedSample:
+                sampleInfo = redSampleVision != null? redSampleVision.getBestDetectedTargetInfo(
+                    null, this::compareDistance, 0.0, 0.0): null;
+                sampleName = BlinkinLEDs.RED_SAMPLE;
+                break;
+
+            case BlueSample:
+                sampleInfo = blueSampleVision != null? blueSampleVision.getBestDetectedTargetInfo(
+                    null, this::compareDistance, 0.0, 0.0): null;
+                sampleName = BlinkinLEDs.BLUE_SAMPLE;
+                break;
+
+            case YellowSample:
+                sampleInfo = yellowSampleVision != null? yellowSampleVision.getBestDetectedTargetInfo(
+                    null, this::compareDistance, 0.0, 0.0): null;
+                sampleName = BlinkinLEDs.YELLOW_SAMPLE;
+                break;
+
+            case RedAllianceSamples:
+            case BlueAllianceSamples:
+            case AnySample:
+                ArrayList<TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject>> sampleList =
+                    new ArrayList<>();
+
+                if (sampleType != SampleType.BlueAllianceSamples)
+                {
+                    sampleInfo = redSampleVision != null ? redSampleVision.getBestDetectedTargetInfo(
+                        null, this::compareDistance, 0.0, 0.0) : null;
+                    if (sampleInfo != null)
+                    {
+                        sampleList.add(sampleInfo);
+                    }
+                }
+
+                if (sampleType != SampleType.RedAllianceSamples)
+                {
+                    sampleInfo = blueSampleVision != null ? blueSampleVision.getBestDetectedTargetInfo(
+                        null, this::compareDistance, 0.0, 0.0) : null;
+                    if (sampleInfo != null)
+                    {
+                        sampleList.add(sampleInfo);
+                    }
+                }
+
+                sampleInfo = yellowSampleVision != null? yellowSampleVision.getBestDetectedTargetInfo(
+                    null, this::compareDistance, 0.0, 0.0): null;
+                if (sampleInfo != null)
+                {
+                    sampleList.add(sampleInfo);
+                }
+
+                TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject>[] samples =
+                    new TrcVisionTargetInfo[sampleList.size()];
+                sampleList.toArray(samples);
+                if (samples.length > 1)
+                {
+                    Arrays.sort(samples, this::compareDistance);
+                }
+                sampleInfo = samples[0];
+                sampleName = sampleInfo.detectedObj.label;
+                break;
+        }
+
+        if (sampleInfo != null && robot.blinkin != null)
+        {
+            robot.blinkin.setDetectedPattern(sampleName);
         }
 
         if (lineNum != -1)
         {
             robot.dashboard.displayPrintf(
-                lineNum, "%s: %s", BlinkinLEDs.RED_SAMPLE, colorBlobInfo != null? colorBlobInfo: "Not found.");
+                lineNum, "%s: %s", sampleName, sampleInfo != null? sampleInfo: "Not found.");
         }
 
-        return colorBlobInfo;
-    }   //getDetectedRedSample
-
-    /**
-     * This method enables/disables BlueSample vision.
-     *
-     * @param enabled specifies true to enable, false to disable.
-     */
-    public void setBlueSampleVisionEnabled(boolean enabled)
-    {
-        if (blueSampleProcessor != null)
-        {
-            vision.setProcessorEnabled(blueSampleProcessor, enabled);
-        }
-    }   //setBlueSampleVisionEnabled
-
-    /**
-     * This method checks if BlueSample vision is enabled.
-     *
-     * @return true if enabled, false if disabled.
-     */
-    public boolean isBlueSampleVisionEnabled()
-    {
-        return blueSampleProcessor != null && vision.isVisionProcessorEnabled(blueSampleProcessor);
-    }   //isBlueSampleVisionEnabled
-
-    /**
-     * This method calls ColorBlob vision to detect the Blue Sample object.
-     *
-     * @param lineNum specifies the dashboard line number to display the detected object info, -1 to disable printing.
-     * @return detected Blue Sample object info.
-     */
-    public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedBlueSample(int lineNum)
-    {
-        TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> colorBlobInfo =
-            blueSampleVision.getBestDetectedTargetInfo(null, null, 0.0, 0.0);
-
-        if (colorBlobInfo != null && robot.blinkin != null)
-        {
-            robot.blinkin.setDetectedPattern(BlinkinLEDs.BLUE_SAMPLE);
-        }
-
-        if (lineNum != -1)
-        {
-            robot.dashboard.displayPrintf(
-                lineNum, "%s: %s", BlinkinLEDs.BLUE_SAMPLE, colorBlobInfo != null? colorBlobInfo: "Not found.");
-        }
-
-        return colorBlobInfo;
-    }   //getDetectedBlueSample
-
-    /**
-     * This method enables/disables YellowSample vision.
-     *
-     * @param enabled specifies true to enable, false to disable.
-     */
-    public void setYellowSampleVisionEnabled(boolean enabled)
-    {
-        if (yellowSampleProcessor != null)
-        {
-            vision.setProcessorEnabled(yellowSampleProcessor, enabled);
-        }
-    }   //setYellowSampleVisionEnabled
-
-    /**
-     * This method checks if YellowSample vision is enabled.
-     *
-     * @return true if enabled, false if disabled.
-     */
-    public boolean isYellowSampleVisionEnabled()
-    {
-        return yellowSampleProcessor != null && vision.isVisionProcessorEnabled(yellowSampleProcessor);
-    }   //isYellowSampleVisionEnabled
-
-    /**
-     * This method calls ColorBlob vision to detect the Yellow Sample object.
-     *
-     * @param lineNum specifies the dashboard line number to display the detected object info, -1 to disable printing.
-     * @return detected Yellow Sample object info.
-     */
-    public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedYellowSample(int lineNum)
-    {
-        TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> colorBlobInfo =
-            yellowSampleVision.getBestDetectedTargetInfo(null, null, 0.0, 0.0);
-
-        if (colorBlobInfo != null && robot.blinkin != null)
-        {
-            robot.blinkin.setDetectedPattern(BlinkinLEDs.YELLOW_SAMPLE);
-        }
-
-        if (lineNum != -1)
-        {
-            robot.dashboard.displayPrintf(
-                lineNum, "%s: %s", BlinkinLEDs.YELLOW_SAMPLE, colorBlobInfo != null? colorBlobInfo: "Not found.");
-        }
-
-        return colorBlobInfo;
-    }   //getDetectedYellowSample
+        return sampleInfo;
+    }   //getDetectedSample
 
     /**
      * This method returns the target Z offset from ground.

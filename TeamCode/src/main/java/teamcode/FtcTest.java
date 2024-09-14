@@ -38,6 +38,7 @@ import ftclib.driverio.FtcGamepad;
 import ftclib.driverio.FtcMenu;
 import ftclib.driverio.FtcValueMenu;
 import ftclib.robotcore.FtcPidCoeffCache;
+import teamcode.vision.Vision;
 import trclib.command.CmdDriveMotorsTest;
 import trclib.command.CmdPidDrive;
 import trclib.command.CmdTimedDrive;
@@ -242,19 +243,19 @@ public class FtcTest extends FtcTeleOp
                     if (robot.vision.redSampleVision != null)
                     {
                         robot.globalTracer.traceInfo(moduleName, "Enabling RedSampleVision.");
-                        robot.vision.setRedSampleVisionEnabled(true);
+                        robot.vision.setSampleVisionEnabled(Vision.SampleType.RedSample, true);
                     }
 
                     if (robot.vision.blueSampleVision != null)
                     {
                         robot.globalTracer.traceInfo(moduleName, "Enabling BlueSampleVision.");
-                        robot.vision.setBlueSampleVisionEnabled(true);
+                        robot.vision.setSampleVisionEnabled(Vision.SampleType.BlueSample, true);
                     }
 
                     if (robot.vision.yellowSampleVision != null)
                     {
                         robot.globalTracer.traceInfo(moduleName, "Enabling YellowSampleVision.");
-                        robot.vision.setYellowSampleVisionEnabled(true);
+                        robot.vision.setSampleVisionEnabled(Vision.SampleType.YellowSample, true);
                     }
                 }
                 break;
@@ -1089,17 +1090,17 @@ public class FtcTest extends FtcTeleOp
 
             if (robot.vision.redSampleVision != null)
             {
-                robot.vision.getDetectedRedSample(lineNum++);
+                robot.vision.getDetectedSample(Vision.SampleType.RedSample, lineNum++);
             }
 
             if (robot.vision.blueSampleVision != null)
             {
-                robot.vision.getDetectedBlueSample(lineNum++);
+                robot.vision.getDetectedSample(Vision.SampleType.BlueSample, lineNum++);
             }
 
             if (robot.vision.yellowSampleVision != null)
             {
-                robot.vision.getDetectedYellowSample(lineNum++);
+                robot.vision.getDetectedSample(Vision.SampleType.YellowSample, lineNum++);
             }
         }
     }   //doVisionTest

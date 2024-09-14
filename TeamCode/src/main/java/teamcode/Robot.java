@@ -210,19 +210,19 @@ public class Robot
             if (vision.redSampleVision != null)
             {
                 globalTracer.traceInfo(moduleName, "Disabling RedSampleVision.");
-                vision.setRedSampleVisionEnabled(false);
+                vision.setSampleVisionEnabled(Vision.SampleType.RedSample, false);
             }
 
             if (vision.blueSampleVision != null)
             {
                 globalTracer.traceInfo(moduleName, "Disabling BlueSampleVision.");
-                vision.setBlueSampleVisionEnabled(false);
+                vision.setSampleVisionEnabled(Vision.SampleType.BlueSample, false);
             }
 
             if (vision.yellowSampleVision != null)
             {
                 globalTracer.traceInfo(moduleName, "Disabling YellowSampleVision.");
-                vision.setYellowSampleVisionEnabled(false);
+                vision.setSampleVisionEnabled(Vision.SampleType.YellowSample, false);
             }
 
             vision.close();

@@ -141,15 +141,15 @@ public class RobotParams
         public static final boolean doStatusUpdate              = !inCompetition;
         public static final boolean showSubsystems              = true;
         // Vision
-        public static final boolean useVision                   = false;
-        public static final boolean useWebCam                   = false;
+        public static final boolean useVision                   = true;
+        public static final boolean useWebCam                   = true;
         public static final boolean useBuiltinCamBack           = false;    // For Android Phone as Robot Controller.
         public static final boolean tuneColorBlobVision         = false;
-        public static final boolean useAprilTagVision           = false;
-        public static final boolean useColorBlobVision          = false;
+        public static final boolean useAprilTagVision           = true;
+        public static final boolean useColorBlobVision          = true;
         public static final boolean useLimelightVision          = false;
         public static final boolean showVisionView              = !inCompetition;
-        public static final boolean showVisionStat              = false;
+        public static final boolean showVisionStat              = true;
         // Drive Base
         public static final boolean useDriveBase                = false;
         public static final boolean useExternalOdometry         = false;

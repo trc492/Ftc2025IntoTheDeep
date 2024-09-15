@@ -97,13 +97,13 @@ public class Vision
     private FtcRawEocvColorBlobPipeline rawColorBlobPipeline;
     public FtcRawEocvVision rawColorBlobVision;
     public FtcVisionAprilTag aprilTagVision;
-    private AprilTagProcessor aprilTagProcessor;
+    private final AprilTagProcessor aprilTagProcessor;
     public FtcVisionEocvColorBlob redSampleVision;
-    private FtcEocvColorBlobProcessor redSampleProcessor;
+    private final FtcEocvColorBlobProcessor redSampleProcessor;
     public FtcVisionEocvColorBlob blueSampleVision;
-    private FtcEocvColorBlobProcessor blueSampleProcessor;
+    private final FtcEocvColorBlobProcessor blueSampleProcessor;
     public FtcVisionEocvColorBlob yellowSampleVision;
-    private FtcEocvColorBlobProcessor yellowSampleProcessor;
+    private final FtcEocvColorBlobProcessor yellowSampleProcessor;
     public FtcVision vision;
     public FtcLimelightVision limelightVision;
 
@@ -187,20 +187,20 @@ public class Vision
                 tracer.traceInfo(moduleName, "Starting SampleVision...");
 
                 redSampleVision = new FtcVisionEocvColorBlob(
-                    BlinkinLEDs.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams, true,
-                    robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    BlinkinLEDs.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams,
+                    true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 redSampleProcessor = redSampleVision.getVisionProcessor();
                 visionProcessorsList.add(redSampleProcessor);
 
                 blueSampleVision = new FtcVisionEocvColorBlob(
-                    BlinkinLEDs.BLUE_SAMPLE, colorConversion, blueSampleColorThresholds, sampleFilterContourParams, true,
-                    robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    BlinkinLEDs.BLUE_SAMPLE, colorConversion, blueSampleColorThresholds, sampleFilterContourParams,
+                    true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 blueSampleProcessor = blueSampleVision.getVisionProcessor();
                 visionProcessorsList.add(blueSampleProcessor);
 
                 yellowSampleVision = new FtcVisionEocvColorBlob(
-                    BlinkinLEDs.YELLOW_SAMPLE, colorConversion, yellowSampleColorThresholds, sampleFilterContourParams, true,
-                    robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    BlinkinLEDs.YELLOW_SAMPLE, colorConversion, yellowSampleColorThresholds, sampleFilterContourParams,
+                    true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 yellowSampleProcessor = yellowSampleVision.getVisionProcessor();
                 visionProcessorsList.add(yellowSampleProcessor);
             }

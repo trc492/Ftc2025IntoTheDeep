@@ -154,8 +154,6 @@ public class RobotParams
         public static final boolean showVisionStat              = true;
         // Drive Base
         public static final boolean useDriveBase                = false;
-//        public static final boolean useOdometryWheels           = false;
-//        public static final boolean useAbsoluteOdometry         = false;
         // Subsystems
         public static final boolean useSubsystems               = false;
     }   //class Preferences

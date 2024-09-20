@@ -97,13 +97,13 @@ public class Vision
     private FtcRawEocvColorBlobPipeline rawColorBlobPipeline;
     public FtcRawEocvVision rawColorBlobVision;
     public FtcVisionAprilTag aprilTagVision;
-    private final AprilTagProcessor aprilTagProcessor;
+    private AprilTagProcessor aprilTagProcessor;
     public FtcVisionEocvColorBlob redSampleVision;
-    private final FtcEocvColorBlobProcessor redSampleProcessor;
+    private FtcEocvColorBlobProcessor redSampleProcessor;
     public FtcVisionEocvColorBlob blueSampleVision;
-    private final FtcEocvColorBlobProcessor blueSampleProcessor;
+    private FtcEocvColorBlobProcessor blueSampleProcessor;
     public FtcVisionEocvColorBlob yellowSampleVision;
-    private final FtcEocvColorBlobProcessor yellowSampleProcessor;
+    private FtcEocvColorBlobProcessor yellowSampleProcessor;
     public FtcVision vision;
     public FtcLimelightVision limelightVision;
 

@@ -82,8 +82,8 @@ public class Vision
     private static final double[] yellowSampleColorThresholds = {150.0, 250.0, 110.0, 160.0, 20.0, 100.0};
     private static final TrcOpenCvColorBlobPipeline.FilterContourParams sampleFilterContourParams =
         new TrcOpenCvColorBlobPipeline.FilterContourParams()
-            .setMinArea(1000.0)
-            .setMinPerimeter(200.0)
+            .setMinArea(500.0)
+            .setMinPerimeter(100.0)
             .setWidthRange(10.0, 1000.0)
             .setHeightRange(10.0, 1000.0)
             .setSolidityRange(0.0, 100.0)
@@ -96,13 +96,13 @@ public class Vision
     private FtcRawEocvColorBlobPipeline rawColorBlobPipeline;
     public FtcRawEocvVision rawColorBlobVision;
     public FtcVisionAprilTag aprilTagVision;
-    private final AprilTagProcessor aprilTagProcessor;
+    private AprilTagProcessor aprilTagProcessor;
     public FtcVisionEocvColorBlob redSampleVision;
-    private final FtcEocvColorBlobProcessor redSampleProcessor;
+    private FtcEocvColorBlobProcessor redSampleProcessor;
     public FtcVisionEocvColorBlob blueSampleVision;
-    private final FtcEocvColorBlobProcessor blueSampleProcessor;
+    private FtcEocvColorBlobProcessor blueSampleProcessor;
     public FtcVisionEocvColorBlob yellowSampleVision;
-    private final FtcEocvColorBlobProcessor yellowSampleProcessor;
+    private FtcEocvColorBlobProcessor yellowSampleProcessor;
     public FtcVision vision;
     public FtcLimelightVision limelightVision;
 

@@ -147,8 +147,8 @@ public class RobotParams
         public static final boolean useWebCam                   = true;
         public static final boolean useBuiltinCamBack           = false;    // For Android Phone as Robot Controller.
         public static final boolean tuneColorBlobVision         = false;
-        public static final boolean useAprilTagVision           = false;
-        public static final boolean useColorBlobVision          = false;
+        public static final boolean useAprilTagVision           = true;
+        public static final boolean useColorBlobVision          = true;
         public static final boolean useLimelightVision          = false;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;
@@ -169,7 +169,7 @@ public class RobotParams
     {
         public FrontCamParams()
         {
-            camName = "WebCam 1";
+            camName = "Webcam 1";
             camImageWidth = 640;
             camImageHeight = 480;
             camXOffset = 0.0;                   // Inches to the right from robot center
@@ -201,7 +201,7 @@ public class RobotParams
     {
         public BackCamParams()
         {
-            camName = "WebCam 2";
+            camName = "Webcam 2";
             camImageWidth = 640;
             camImageHeight = 480;
             camXOffset = 0.0;                   // Inches to the right from robot center
@@ -366,7 +366,7 @@ public class RobotParams
             driveMotorType = MotorType.DcMotor;
             driveMotorNames = new String[] {"lfDriveMotor", "rfDriveMotor", "lbDriveMotor", "rbDriveMotor"};
             driveMotorInverted = new boolean[] {true, false, true, false};
-            odometryType = TrcDriveBase.OdometryType.AbsoluteOdometry;
+            odometryType = null;//TrcDriveBase.OdometryType.AbsoluteOdometry;
             // Odometry Wheels
             odWheelXScale = odWheelYScale = Math.PI * ODWHEEL_DIAMETER / ODWHEEL_CPR;
             xOdWheelSensorNames = new String[] {"xOdWheelSensor"};

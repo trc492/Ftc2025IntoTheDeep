@@ -35,7 +35,6 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import ftclib.robotcore.FtcOpMode;
 import ftclib.vision.FtcEocvColorBlobProcessor;
@@ -83,10 +82,10 @@ public class Vision
     private static final double[] yellowSampleColorThresholds = {150.0, 250.0, 110.0, 160.0, 20.0, 100.0};
     private static final TrcOpenCvColorBlobPipeline.FilterContourParams sampleFilterContourParams =
         new TrcOpenCvColorBlobPipeline.FilterContourParams()
-            .setMinArea(5000.0)
+            .setMinArea(1000.0)
             .setMinPerimeter(200.0)
-            .setWidthRange(50.0, 1000.0)
-            .setHeightRange(80.0, 1000.0)
+            .setWidthRange(10.0, 1000.0)
+            .setHeightRange(10.0, 1000.0)
             .setSolidityRange(0.0, 100.0)
             .setVerticesRange(0.0, 1000.0)
             .setAspectRatioRange(0.5, 2.5);
@@ -97,13 +96,13 @@ public class Vision
     private FtcRawEocvColorBlobPipeline rawColorBlobPipeline;
     public FtcRawEocvVision rawColorBlobVision;
     public FtcVisionAprilTag aprilTagVision;
-    private AprilTagProcessor aprilTagProcessor;
+    private final AprilTagProcessor aprilTagProcessor;
     public FtcVisionEocvColorBlob redSampleVision;
-    private FtcEocvColorBlobProcessor redSampleProcessor;
+    private final FtcEocvColorBlobProcessor redSampleProcessor;
     public FtcVisionEocvColorBlob blueSampleVision;
-    private FtcEocvColorBlobProcessor blueSampleProcessor;
+    private final FtcEocvColorBlobProcessor blueSampleProcessor;
     public FtcVisionEocvColorBlob yellowSampleVision;
-    private FtcEocvColorBlobProcessor yellowSampleProcessor;
+    private final FtcEocvColorBlobProcessor yellowSampleProcessor;
     public FtcVision vision;
     public FtcLimelightVision limelightVision;
 
@@ -641,15 +640,15 @@ public class Vision
                     sampleList.add(sampleInfo);
                 }
 
-                TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject>[] samples =
-                    new TrcVisionTargetInfo[sampleList.size()];
-                sampleList.toArray(samples);
-                if (samples.length > 1)
+                if (!sampleList.isEmpty())
                 {
-                    Arrays.sort(samples, this::compareDistance);
+                    if (sampleList.size() > 1)
+                    {
+                        sampleList.sort(this::compareDistance);
+                    }
+                    sampleInfo = sampleList.get(0);
+                    sampleName = sampleInfo.detectedObj.label;
                 }
-                sampleInfo = samples[0];
-                sampleName = sampleInfo.detectedObj.label;
                 break;
         }
 

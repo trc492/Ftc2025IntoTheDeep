@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<!--
+Copyright (c) 2024 Titan Robotics Club (http://www.titanrobotics.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+UTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<Robot type="FirstInspires-FTC" name="IntoTheDeep2025">
+    <Webcam name="Webcam 1" serialNumber="679ED7BF"/>
+<!--    <Webcam name="Webcam 2" serialNumber="5DCAD5AF"/> -->
+    <EthernetDevice name="Limelight3a" serialNumber="EthernetOverUsb:eth0:172.29.0.21" port="0" ipAddress="172.29.0.1" />
+    <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
+        <LynxModule name="Control Hub" port="173">
+            <goBILDA5202SeriesMotor name="rfDriveMotor" port="0"/>
+            <goBILDA5202SeriesMotor name="launcher" port="1"/>
+            <goBILDA5202SeriesMotor name="rbDriveMotor" port="3"/>
+            <Servo name="pixelTray.lowerGate" port="0" />
+            <Servo name="wrist.followerServo" port="1" />
+            <RevBlinkinLedDriver name="blinkin" port="5" />
+            <REV_VL53L0X_RANGE_SENSOR name="intake.sensor" port="0" bus="1"/>
+            <SparkFunOTOS name="otos" port="0" bus="2"/>
+            <OctoQuadFTC name="octoquad" port="0" bus="3"/>
+            <!--
+            <ControlHubImuBHI260AP name="imu" port="0" bus="0"/>
+            -->
+        </LynxModule>
+        <LynxModule name="Expansion Hub 3" port="3">
+            <goBILDA5202SeriesMotor name="lfDriveMotor" port="0"/>
+            <goBILDA5202SeriesMotor name="elevator.motor" port="1" />
+            <RevRoboticsCoreHexMotor name="intake.motor" port="2" />
+            <goBILDA5202SeriesMotor name="lbDriveMotor" port="3"/>
+            <ContinuousRotationServo name="arm.servo" port="2" />
+            <Servo name="pixelTray.upperGate" port="0" />
+            <Servo name="wrist.servo" port="4" />
+            <ContinuousRotationServo name="arm.followerServo" port="5" />
+            <AnalogInput name="arm.encoder" port="0" />
+            <DigitalDevice name="elevator.lowerLimit" port="0" />
+            <LynxEmbeddedIMU name="imu" port="0" bus="0"/>
+            <REV_VL53L0X_RANGE_SENSOR name="wrist.sensor" port="0" bus="1"/>
+        </LynxModule>
+    </LynxUsbDevice>
+</Robot>

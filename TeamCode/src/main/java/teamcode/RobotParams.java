@@ -149,7 +149,7 @@ public class RobotParams
         public static final boolean tuneColorBlobVision         = false;
         public static final boolean useAprilTagVision           = true;
         public static final boolean useColorBlobVision          = true;
-        public static final boolean useLimelightVision          = false;
+        public static final boolean useLimelightVision          = true;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;
         // Drive Base
@@ -201,7 +201,7 @@ public class RobotParams
     {
         public BackCamParams()
         {
-            camName = "Webcam 2";
+            camName = null; //"Webcam 2";
             camImageWidth = 640;
             camImageHeight = 480;
             camXOffset = 0.0;                   // Inches to the right from robot center

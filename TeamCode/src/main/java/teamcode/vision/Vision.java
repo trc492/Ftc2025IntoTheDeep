@@ -77,9 +77,9 @@ public class Vision
     //
     // YCrCb Color Space.
     private static final int colorConversion = Imgproc.COLOR_RGB2YCrCb;
-    private static final double[] redSampleColorThresholds = {20.0, 120.0, 180.0, 240.0, 90.0, 120.0};
-    private static final double[] blueSampleColorThresholds = {20.0, 250.0, 40.0, 250.0, 160.0, 240.0};
-    private static final double[] yellowSampleColorThresholds = {150.0, 250.0, 110.0, 160.0, 20.0, 100.0};
+    private static final double[] redSampleColorThresholds = {20.0, 120.0, 170.0, 220.0, 80.0, 120.0};
+    private static final double[] blueSampleColorThresholds = {20.0, 60.0, 100.0, 150.0, 150.0, 180.0};
+    private static final double[] yellowSampleColorThresholds = {80.0, 255.0, 150.0, 180.0, 30.0, 80.0};
     private static final TrcOpenCvColorBlobPipeline.FilterContourParams sampleFilterContourParams =
         new TrcOpenCvColorBlobPipeline.FilterContourParams()
             .setMinArea(500.0)

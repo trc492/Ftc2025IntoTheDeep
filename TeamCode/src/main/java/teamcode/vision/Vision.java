@@ -123,11 +123,11 @@ public class Vision
 
         this.tracer = new TrcDbgTrace();
         this.robot = robot;
-        this.webcam1 = robot.robotInfo.webCam1.camName != null?
+        this.webcam1 = robot.robotInfo.webCam1 != null?
             opMode.hardwareMap.get(WebcamName.class, robot.robotInfo.webCam1.camName): null;
-        this.webcam2 = robot.robotInfo.webCam2.camName != null?
+        this.webcam2 = robot.robotInfo.webCam2 != null?
             opMode.hardwareMap.get(WebcamName.class, robot.robotInfo.webCam2.camName): null;
-        if (RobotParams.Preferences.tuneColorBlobVision)
+        if (RobotParams.Preferences.tuneColorBlobVision && webcam1 != null)
         {
             OpenCvCamera openCvCamera;
 
@@ -155,16 +155,15 @@ public class Vision
             rawColorBlobVision.setFpsMeterEnabled(RobotParams.Preferences.showVisionStat);
             setRawColorBlobVisionEnabled(false);
         }
-        else if (RobotParams.Preferences.useLimelightVision)
-        {
-            limelightVision = new FtcLimelightVision(
-                robot.robotInfo.limelight.camName, robot.robotInfo.limelight.camPose, this::getTargetGroundOffset);
-        }
         else
         {
+            if (RobotParams.Preferences.useLimelightVision && robot.robotInfo.limelight != null)
+            {
+                limelightVision = new FtcLimelightVision(
+                    robot.robotInfo.limelight.camName, robot.robotInfo.limelight.camPose, this::getTargetGroundOffset);
+            }
             // Creating Vision Processors for VisionPortal.
             ArrayList<VisionProcessor> visionProcessorsList = new ArrayList<>();
-
             if (RobotParams.Preferences.useAprilTagVision)
             {
                 tracer.traceInfo(moduleName, "Starting AprilTagVision...");
@@ -173,15 +172,13 @@ public class Vision
                     .setDrawTagOutlineEnabled(true)
                     .setDrawAxesEnabled(false)
                     .setDrawCubeProjectionEnabled(false)
-//                    .setLensIntrinsics(
-//                        RobotParams.WEBCAM_FX, RobotParams.WEBCAM_FY, RobotParams.WEBCAM_CX, RobotParams.WEBCAM_CY)
                     .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES);
                 aprilTagVision = new FtcVisionAprilTag(aprilTagParams, AprilTagProcessor.TagFamily.TAG_36h11);
                 aprilTagProcessor = aprilTagVision.getVisionProcessor();
                 visionProcessorsList.add(aprilTagProcessor);
             }
 
-            if (RobotParams.Preferences.useColorBlobVision)
+            if (RobotParams.Preferences.useColorBlobVision && robot.robotInfo.webCam1 != null)
             {
                 tracer.traceInfo(moduleName, "Starting SampleVision...");
 
@@ -204,28 +201,31 @@ public class Vision
                 visionProcessorsList.add(yellowSampleProcessor);
             }
 
-            VisionProcessor[] visionProcessors = new VisionProcessor[visionProcessorsList.size()];
-            visionProcessorsList.toArray(visionProcessors);
-            if (RobotParams.Preferences.useWebCam)
+            if (!visionProcessorsList.isEmpty())
             {
-                // Use USB webcams.
-                vision = new FtcVision(
-                    webcam1, webcam2, robot.robotInfo.webCam1.camImageWidth, robot.robotInfo.webCam1.camImageHeight,
-                    RobotParams.Preferences.showVisionView, RobotParams.Preferences.showVisionStat, visionProcessors);
-            }
-            else
-            {
-                // Use phone camera.
-                vision = new FtcVision(
-                    RobotParams.Preferences.useBuiltinCamBack?
-                        BuiltinCameraDirection.BACK: BuiltinCameraDirection.FRONT,
-                    robot.robotInfo.webCam1.camImageWidth, robot.robotInfo.webCam1.camImageHeight,
-                    RobotParams.Preferences.showVisionView, RobotParams.Preferences.showVisionStat, visionProcessors);
-            }
-            // Disable all vision until they are needed.
-            for (VisionProcessor processor: visionProcessors)
-            {
-                vision.setProcessorEnabled(processor, false);
+                VisionProcessor[] visionProcessors = new VisionProcessor[visionProcessorsList.size()];
+                visionProcessorsList.toArray(visionProcessors);
+                if (RobotParams.Preferences.useWebCam)
+                {
+                    // Use USB webcams.
+                    vision = new FtcVision(
+                        webcam1, webcam2, robot.robotInfo.webCam1.camImageWidth, robot.robotInfo.webCam1.camImageHeight,
+                        RobotParams.Preferences.showVisionView, RobotParams.Preferences.showVisionStat, visionProcessors);
+                }
+                else
+                {
+                    // Use phone camera.
+                    vision = new FtcVision(
+                        RobotParams.Preferences.useBuiltinCamBack?
+                            BuiltinCameraDirection.BACK: BuiltinCameraDirection.FRONT,
+                        robot.robotInfo.webCam1.camImageWidth, robot.robotInfo.webCam1.camImageHeight,
+                        RobotParams.Preferences.showVisionView, RobotParams.Preferences.showVisionStat, visionProcessors);
+                }
+                // Disable all vision until they are needed.
+                for (VisionProcessor processor: visionProcessors)
+                {
+                    vision.setProcessorEnabled(processor, false);
+                }
             }
         }
     }   //Vision

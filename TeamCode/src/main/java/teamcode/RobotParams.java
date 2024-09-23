@@ -144,7 +144,7 @@ public class RobotParams
         public static final boolean showSubsystems              = true;
         // Vision
         public static final boolean useVision                   = true;
-        public static final boolean useWebCam                   = true;
+        public static final boolean useWebCam                   = true;     // false to use Android phone camera.
         public static final boolean useBuiltinCamBack           = false;    // For Android Phone as Robot Controller.
         public static final boolean tuneColorBlobVision         = false;
         public static final boolean useAprilTagVision           = true;
@@ -201,7 +201,7 @@ public class RobotParams
     {
         public BackCamParams()
         {
-            camName = null; //"Webcam 2";
+            camName = "Webcam 2";
             camImageWidth = 640;
             camImageHeight = 480;
             camXOffset = 0.0;                   // Inches to the right from robot center
@@ -418,7 +418,7 @@ public class RobotParams
             velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);
             // Vision
             webCam1 = new FrontCamParams();
-            webCam2 = new BackCamParams();
+            webCam2 = null; //new BackCamParams();
             limelight = new LimelightParams();
             // Miscellaneous
             blinkinName = "blinkin";

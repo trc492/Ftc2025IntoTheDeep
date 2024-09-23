@@ -26,8 +26,6 @@ import androidx.annotation.NonNull;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -139,8 +137,6 @@ public class FtcTest extends FtcTeleOp
     private double colorThresholdMultiplier = 1.0;
     private boolean teleOpControlEnabled = true;
     private long exposure;
-    private WebcamName frontWebcam = null;
-    private WebcamName rearWebcam = null;
     private boolean fpsMeterEnabled = false;
     //
     // Overrides FtcOpMode abstract method.
@@ -157,12 +153,6 @@ public class FtcTest extends FtcTeleOp
         // TeleOp initialization.
         //
         super.robotInit();
-        if (robot.vision != null)
-        {
-            frontWebcam = robot.vision.getFrontWebcam();
-            rearWebcam = robot.vision.getRearWebcam();
-        }
-
         if (RobotParams.Preferences.useLoopPerformanceMonitor)
         {
             elapsedTimer = new TrcElapsedTimer("TestLoopMonitor", 2.0);

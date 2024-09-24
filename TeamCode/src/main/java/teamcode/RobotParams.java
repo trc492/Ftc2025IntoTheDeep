@@ -233,7 +233,7 @@ public class RobotParams
     {
         public LimelightParams()
         {
-            camName = "limelight3a";
+            camName = "Limelight3a";
             camImageWidth = 640;
             camImageHeight = 480;
             camXOffset = 0.0;                   // Inches to the right from robot center

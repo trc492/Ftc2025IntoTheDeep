@@ -225,6 +225,12 @@ public class Robot
                 vision.setSampleVisionEnabled(Vision.SampleType.YellowSample, false);
             }
 
+            if (vision.limelightVision != null)
+            {
+                globalTracer.traceInfo(moduleName, "Disabling LimelightVision.");
+                vision.setLimelightVisionEnabled(0, false);
+            }
+
             vision.close();
        }
 

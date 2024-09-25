@@ -22,8 +22,6 @@
 
 package teamcode.vision;
 
-import com.qualcomm.hardware.limelightvision.LLResult;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;

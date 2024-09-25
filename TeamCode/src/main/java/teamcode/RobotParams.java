@@ -78,11 +78,20 @@ public class RobotParams
      */
     public static class Game
     {
-        public static final TrcPose2D[] APRILTAG_POSES          = new TrcPose2D[] {
-            new TrcPose2D(0.0, 0.0, 0.0),   // TagId 1
-            new TrcPose2D(0.0, 0.0, 0.0),   // TagId 2
-            new TrcPose2D(0.0, 0.0, 0.0),   // TagId 3
-            new TrcPose2D(0.0, 0.0, 0.0)    // TagId 4
+        // DO NOT CHANGE the AprilTag location numbers. They are from the AprilTag metadata.
+        // All AprilTags are at the height of 5.75-inch from the tile floor.
+        public static final double APRILTAG_AUDIENCE_WALL_X         = -70.25;
+        public static final double APRILTAG_BACK_WALL_X             = 70.25;
+        public static final double APRILTAG_BLUE_ALLIANCE_WALL_Y    = 70.25;
+        public static final double APRILTAG_RED_ALLIANCE_WALL_Y     = -70.25;
+        public static final double APRILTAG_WALL_OFFSET_Y           = 46.83;
+        public static final TrcPose2D[] APRILTAG_POSES              = new TrcPose2D[] {
+            new TrcPose2D(APRILTAG_AUDIENCE_WALL_X, APRILTAG_WALL_OFFSET_Y, -90.0), // TagId 11
+            new TrcPose2D(0.0, APRILTAG_BLUE_ALLIANCE_WALL_Y, 0.0),                 // TagId 12
+            new TrcPose2D(APRILTAG_BACK_WALL_X, APRILTAG_WALL_OFFSET_Y, 90.0),      // TagId 13
+            new TrcPose2D(APRILTAG_BACK_WALL_X, -APRILTAG_WALL_OFFSET_Y, 90.0),     // TagId 14
+            new TrcPose2D(0.0, APRILTAG_RED_ALLIANCE_WALL_Y, 180.0),                // TagId 15
+            new TrcPose2D(APRILTAG_AUDIENCE_WALL_X, -APRILTAG_WALL_OFFSET_Y, -90.0) // TagId 16
         };
     }   //class Game
 
@@ -144,11 +153,11 @@ public class RobotParams
         public static final boolean showSubsystems              = true;
         // Vision
         public static final boolean useVision                   = true;
-        public static final boolean useWebCam                   = false;     // false to use Android phone camera.
+        public static final boolean useWebCam                   = true;     // false to use Android phone camera.
         public static final boolean useBuiltinCamBack           = false;    // For Android Phone as Robot Controller.
         public static final boolean tuneColorBlobVision         = false;
-        public static final boolean useAprilTagVision           = false;
-        public static final boolean useColorBlobVision          = false;
+        public static final boolean useAprilTagVision           = true;
+        public static final boolean useColorBlobVision          = true;
         public static final boolean useLimelightVision          = true;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;

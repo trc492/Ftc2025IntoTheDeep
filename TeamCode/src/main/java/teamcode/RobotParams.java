@@ -144,11 +144,11 @@ public class RobotParams
         public static final boolean showSubsystems              = true;
         // Vision
         public static final boolean useVision                   = true;
-        public static final boolean useWebCam                   = true;     // false to use Android phone camera.
+        public static final boolean useWebCam                   = false;     // false to use Android phone camera.
         public static final boolean useBuiltinCamBack           = false;    // For Android Phone as Robot Controller.
         public static final boolean tuneColorBlobVision         = false;
-        public static final boolean useAprilTagVision           = true;
-        public static final boolean useColorBlobVision          = true;
+        public static final boolean useAprilTagVision           = false;
+        public static final boolean useColorBlobVision          = false;
         public static final boolean useLimelightVision          = true;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;
@@ -237,9 +237,9 @@ public class RobotParams
             camImageWidth = 640;
             camImageHeight = 480;
             camXOffset = 0.0;                   // Inches to the right from robot center
-            camYOffset = 2.0;                   // Inches forward from robot center
-            camZOffset = 9.75;                  // Inches up from the floor
-            camPitch = 15.0;                    // degrees down from horizontal
+            camYOffset = 0.0;                   // Inches forward from robot center
+            camZOffset = 0.0;                   // Inches up from the floor
+            camPitch = 0.0;                     // degrees down from horizontal
             camYaw = 0.0;                       // degrees clockwise from robot front
             camRoll = 0.0;
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);

@@ -101,11 +101,11 @@ public class RobotParams
     public static class Robot
     {
         public static final String TEAM_FOLDER_PATH             =
-            Environment.getExternalStorageDirectory().getPath() + "/FIRST/ftcTeam";
+            Environment.getExternalStorageDirectory().getPath() + "/FIRST/ftc3543";
         public static final String LOG_FOLDER_PATH              = TEAM_FOLDER_PATH + "/tracelogs";
         public static final String STEER_ZERO_CAL_FILE          = TEAM_FOLDER_PATH + "/SteerZeroCalibration.txt";
         public static final double DASHBOARD_UPDATE_INTERVAL    = 0.1;      // in msec
-        public static final String ROBOT_CODEBASE               = "Robot2025";
+        public static final String ROBOT_CODEBASE               = "RobotIntoTheDeep";
         public static final double ROBOT_LENGTH                 = 17.0;
         public static final double ROBOT_WIDTH                  = 17.0;
         // Robot Drive Parameters.
@@ -158,7 +158,7 @@ public class RobotParams
         public static final boolean tuneColorBlobVision         = false;
         public static final boolean useAprilTagVision           = true;
         public static final boolean useColorBlobVision          = true;
-        public static final boolean useLimelightVision          = true;
+        public static final boolean useLimelightVision          = false;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;
         // Drive Base
@@ -521,5 +521,29 @@ public class RobotParams
     //
     // Subsystems.
     //
+
+    public static class ElbowParams
+    {
+    }   //class ElbowParams
+
+    public static class ExtenderParams
+    {
+    }   //class ExtenderParams
+
+    public static class WristParams
+    {
+    }   //class WristParams
+
+    public static class ClimberParams
+    {
+    }   //class ClimberParams
+
+//    public static class IntakeParams
+//    {
+//    }   //class IntakeParams
+//
+//    public static class GrabberParams
+//    {
+//    }   //class GrabberParams
 
 }   //class RobotParams

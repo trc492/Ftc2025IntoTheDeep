@@ -451,13 +451,13 @@ public class RobotParams
     /**
      * This class contains the Differential Robot Parameters.
      */
-    public static class DifferentialParams extends FtcRobotDrive.RobotInfo
+    public static class DifferentialRobotParams extends FtcRobotDrive.RobotInfo
     {
         // Optii Odometry Wheel
         private static final double ODWHEEL_DIAMETER = 35.0 * TrcUtil.INCHES_PER_MM;
         private static final double ODWHEEL_CPR = 4096.0;
 
-        public DifferentialParams()
+        public DifferentialRobotParams()
         {
             robotName = "DifferentialRobot";
             // Robot Dimensions
@@ -515,19 +515,19 @@ public class RobotParams
             limelight = new LimelightParams();
             // Miscellaneous
             blinkinName = "blinkin";
-        }   //DifferentialParams
-    }   //class DifferentialParams
+        }   //DifferentialRobotParams
+    }   //class DifferentialRobotParams
 
     /**
      * This class contains the Swerve Drive Base Parameters.
      */
-    public static class SwerveParams extends FtcSwerveDrive.SwerveInfo
+    public static class SwerveRobotParams extends FtcSwerveDrive.SwerveInfo
     {
         // Optii Odometry Wheel
         private static final double ODWHEEL_DIAMETER = 35.0 * TrcUtil.INCHES_PER_MM;
         private static final double ODWHEEL_CPR = 4096.0;
 
-        public SwerveParams()
+        public SwerveRobotParams()
         {
             robotName = "SwerveRobot";
             // Robot Dimensions
@@ -599,8 +599,8 @@ public class RobotParams
             steerMotorPidTolerance = 1.0;
             // Swerve Modules
             swerveModuleNames = new String[] {"lfWheel", "rfWheel", "lbWheel", "rbWheel"};
-        }   //SwerveParams
-    }   //class SwerveParams
+        }   //SwerveRobotParams
+    }   //class SwerveRobotParams
 
     //
     // Subsystems.

@@ -105,7 +105,7 @@ public class RobotParams
         public static final String LOG_FOLDER_PATH              = TEAM_FOLDER_PATH + "/tracelogs";
         public static final String STEER_ZERO_CAL_FILE          = TEAM_FOLDER_PATH + "/SteerZeroCalibration.txt";
         public static final double DASHBOARD_UPDATE_INTERVAL    = 0.1;      // in msec
-        public static final String ROBOT_CODEBASE               = "RobotIntoTheDeep";
+        public static final String ROBOT_CODEBASE               = "Robot2025";
         public static final double ROBOT_LENGTH                 = 17.0;
         public static final double ROBOT_WIDTH                  = 17.0;
         // Robot Drive Parameters.
@@ -124,12 +124,12 @@ public class RobotParams
      */
     public enum RobotType
     {
+        IntoTheDeepRobot,
+        CenterStageRobot,
         // This is useful for developing Vision code where all you need is a Control Hub and camera.
         VisionOnly,
         // Generic Differential Drive Base Robot
         DifferentialRobot,
-        // Generic Mecanum Drive Base Robot
-        MecanumRobot,
         // Generic Swerve Drive Base Robot
         SwerveRobot
     }   //enum RobotType
@@ -143,7 +143,7 @@ public class RobotParams
     public static class Preferences
     {
         // Global config
-        public static final RobotType robotType                 = RobotType.MecanumRobot;
+        public static final RobotType robotType                 = RobotType.CenterStageRobot;
         public static final boolean inCompetition               = false;
         public static final boolean useTraceLog                 = true;
         public static final boolean useLoopPerformanceMonitor   = true;
@@ -267,6 +267,174 @@ public class RobotParams
         }   //LimelightParams
     }   //class LimelightParams
 
+    /**
+     * This class contains the IntoTheDeep Robot Parameters.
+     */
+    public static class IntoTheDeepRobotParams extends FtcRobotDrive.RobotInfo
+    {
+        // Optii Odometry Wheel
+        private static final double ODWHEEL_DIAMETER = 35.0 * TrcUtil.INCHES_PER_MM;
+        private static final double ODWHEEL_CPR = 4096.0;
+
+        public IntoTheDeepRobotParams()
+        {
+            robotName = "IntoTheDeepRobot";
+            // Robot Dimensions
+            robotLength = Robot.ROBOT_LENGTH;
+            robotWidth = Robot.ROBOT_WIDTH;
+            wheelBaseLength = (24.0 * 14)*TrcUtil.INCHES_PER_MM;
+            wheelBaseWidth = 16.0;
+            // IMU
+            imuName = "imu";
+            hubLogoDirection = LogoFacingDirection.UP;
+            hubUsbDirection = UsbFacingDirection.FORWARD;
+            // Drive Motors
+            driveMotorType = MotorType.DcMotor;
+            driveMotorNames = new String[] {"lfDriveMotor", "rfDriveMotor", "lbDriveMotor", "rbDriveMotor"};
+            driveMotorInverted = new boolean[] {true, false, true, false};
+            odometryType = null;//TrcDriveBase.OdometryType.AbsoluteOdometry;
+            // Odometry Wheels
+            odWheelXScale = odWheelYScale = Math.PI * ODWHEEL_DIAMETER / ODWHEEL_CPR;
+            xOdWheelSensorNames = new String[] {"xOdWheelSensor"};
+            xOdWheelIndices = new int[] {0};
+            xOdWheelXOffsets = new double[] {0.0};
+            xOdWheelYOffsets = new double[] {-168.0 * TrcUtil.INCHES_PER_MM};
+            yOdWheelSensorNames = new String[] {"yLeftOdWheelSensor", "yRightOdWheelSensor"};
+            yOdWheelIndices = new int[] {1, 2};
+            yOdWheelXOffsets = new double[] {-144.0 * TrcUtil.INCHES_PER_MM, -12.0 * TrcUtil.INCHES_PER_MM};
+            yOdWheelYOffsets = new double[] {144.0 * TrcUtil.INCHES_PER_MM, -12.0 * TrcUtil.INCHES_PER_MM};
+            // Absolute Odometry
+            if (odometryType == TrcDriveBase.OdometryType.AbsoluteOdometry)
+            {
+                FtcSparkFunOtos.Config otosConfig = new FtcSparkFunOtos.Config()
+                    .setOffset(0.0, 0.0, 0.0)
+                    .setScale(1.0, 1.0);
+                absoluteOdometry = new FtcSparkFunOtos("SparkfunOtos", otosConfig);
+            }
+            else
+            {
+                absoluteOdometry = null;
+            }
+            // Drive Motor Odometry
+            xDrivePosScale = 0.01924724265461924299065420560748;        // in/count
+            yDrivePosScale = 0.02166184604662450653409090909091;        // in/count
+            // Robot Drive Characteristics
+            robotMaxVelocity = 23.0;        // inches/sec
+            robotMaxAcceleration  = 500.0;  // inches/sec2
+            robotMaxTurnRate = 100.0;       // degrees/sec
+            profiledMaxVelocity = robotMaxVelocity;
+            profiledMaxAcceleration = robotMaxAcceleration;
+            profiledMaxTurnRate = robotMaxTurnRate;
+            // DriveBase PID Parameters
+            drivePidTolerance = 1.0;
+            turnPidTolerance = 1.0;
+            xDrivePidCoeffs = new PidCoefficients(0.95, 0.0, 0.001, 0.0, 0.0);
+            xDrivePidPowerLimit = 1.0;
+            xDriveMaxPidRampRate = null;
+            yDrivePidCoeffs = new PidCoefficients(0.06, 0.0, 0.002, 0.0, 0.0);
+            yDrivePidPowerLimit = 1.0;
+            yDriveMaxPidRampRate = null;
+            turnPidCoeffs = new PidCoefficients(0.02, 0.0, 0.002, 0.0, 0.0);
+            turnPidPowerLimit = 0.5;
+            turnMaxPidRampRate = null;
+            // PID Stall Detection
+            pidStallDetectionEnabled = true;
+            // PurePursuit Parameters
+            ppdFollowingDistance = 6.0;
+            velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);
+            // Vision
+            webCam1 = new FrontCamParams();
+            webCam2 = null; //new BackCamParams();
+            limelight = new LimelightParams();
+            // Miscellaneous
+            blinkinName = "blinkin";
+        }   //IntoTheDeepRobotParams
+    }   //class IntoTheDeepRobotParams
+
+    /**
+     * This class contains the CenterStage Robot Parameters.
+     */
+    public static class CenterStageRobotParams extends FtcRobotDrive.RobotInfo
+    {
+        // Optii Odometry Wheel
+        private static final double ODWHEEL_DIAMETER = 35.0 * TrcUtil.INCHES_PER_MM;
+        private static final double ODWHEEL_CPR = 4096.0;
+
+        public CenterStageRobotParams()
+        {
+            robotName = "CenterStageRobot";
+            // Robot Dimensions
+            robotLength = 18.0;
+            robotWidth = 17.25;
+            wheelBaseLength = (24.0 * 15)*TrcUtil.INCHES_PER_MM;
+            wheelBaseWidth = 390.0 * TrcUtil.INCHES_PER_MM;
+            // IMU
+            imuName = "imu";
+            hubLogoDirection = LogoFacingDirection.LEFT;
+            hubUsbDirection = UsbFacingDirection.UP;
+            // Drive Motors
+            driveMotorType = MotorType.DcMotor;
+            driveMotorNames = new String[] {"lfDriveMotor", "rfDriveMotor", "lbDriveMotor", "rbDriveMotor"};
+            driveMotorInverted = new boolean[] {true, false, true, false};
+            odometryType = TrcDriveBase.OdometryType.OdometryWheels;
+            // Odometry Wheels
+            odWheelXScale = odWheelYScale = Math.PI * ODWHEEL_DIAMETER / ODWHEEL_CPR;
+            xOdWheelSensorNames = new String[] {"xOdWheelSensor"};
+            xOdWheelIndices = new int[] {0};
+            xOdWheelXOffsets = new double[] {0.0};
+            xOdWheelYOffsets = new double[] {-168.0 * TrcUtil.INCHES_PER_MM};
+            yOdWheelSensorNames = new String[] {"yLeftOdWheelSensor", "yRightOdWheelSensor"};
+            yOdWheelIndices = new int[] {1, 2};
+            yOdWheelXOffsets = new double[] {-144.0 * TrcUtil.INCHES_PER_MM, -12.0 * TrcUtil.INCHES_PER_MM};
+            yOdWheelYOffsets = new double[] {144.0 * TrcUtil.INCHES_PER_MM, -12.0 * TrcUtil.INCHES_PER_MM};
+            // Absolute Odometry
+            if (odometryType == TrcDriveBase.OdometryType.AbsoluteOdometry)
+            {
+                FtcSparkFunOtos.Config otosConfig = new FtcSparkFunOtos.Config()
+                    .setOffset(0.0, 0.0, 0.0)
+                    .setScale(1.0, 1.0);
+                absoluteOdometry = new FtcSparkFunOtos("SparkfunOtos", otosConfig);
+            }
+            else
+            {
+                absoluteOdometry = null;
+            }
+            // Drive Motor Odometry
+            xDrivePosScale = 0.01924724265461924299065420560748;        // in/count
+            yDrivePosScale = 0.02166184604662450653409090909091;        // in/count
+            // Robot Drive Characteristics
+            robotMaxVelocity = 72.0;        // inches/sec
+            robotMaxAcceleration  = 530.0;  // inches/sec2
+            robotMaxTurnRate = 100.0;       // degrees/sec
+            profiledMaxVelocity = robotMaxVelocity;
+            profiledMaxAcceleration = robotMaxAcceleration;
+            profiledMaxTurnRate = robotMaxTurnRate;
+            // DriveBase PID Parameters
+            drivePidTolerance = 1.0;
+            turnPidTolerance = 2.0;
+            xDrivePidCoeffs = new PidCoefficients(0.095, 0.0, 0.006, 0.0, 0.0);
+            xDrivePidPowerLimit = 1.0;
+            xDriveMaxPidRampRate = null;
+            yDrivePidCoeffs = new PidCoefficients(0.035, 0.0, 0.0035, 0.0, 0.0);
+            yDrivePidPowerLimit = 1.0;
+            yDriveMaxPidRampRate = null;
+            turnPidCoeffs = new PidCoefficients(0.012, 0.0, 0.0012, 0.0, 0.0);
+            turnPidPowerLimit = 0.5;
+            turnMaxPidRampRate = null;
+            // PID Stall Detection
+            pidStallDetectionEnabled = true;
+            // PurePursuit Parameters
+            ppdFollowingDistance = 6.0;
+            velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);
+            // Vision
+            webCam1 = new FrontCamParams();
+            webCam2 = null; //new BackCamParams();
+            limelight = new LimelightParams();
+            // Miscellaneous
+            blinkinName = "blinkin";
+        }   //CenterStageRobotParams
+    }   //class CenterStageRobotParams
+
     public static class VisionOnlyParams extends FtcRobotDrive.RobotInfo
     {
         public VisionOnlyParams()
@@ -349,90 +517,6 @@ public class RobotParams
             blinkinName = "blinkin";
         }   //DifferentialParams
     }   //class DifferentialParams
-
-    /**
-     * This class contains the Mecanum Robot Parameters.
-     */
-    public static class MecanumParams extends FtcRobotDrive.RobotInfo
-    {
-        // Optii Odometry Wheel
-        private static final double ODWHEEL_DIAMETER = 35.0 * TrcUtil.INCHES_PER_MM;
-        private static final double ODWHEEL_CPR = 4096.0;
-
-        public MecanumParams()
-        {
-            robotName = "MecanumRobot";
-            // Robot Dimensions
-            robotLength = Robot.ROBOT_LENGTH;
-            robotWidth = Robot.ROBOT_WIDTH;
-            wheelBaseLength = (24.0 * 14)*TrcUtil.INCHES_PER_MM;
-            wheelBaseWidth = 16.0;
-            // IMU
-            imuName = "imu";
-            hubLogoDirection = LogoFacingDirection.UP;
-            hubUsbDirection = UsbFacingDirection.FORWARD;
-            // Drive Motors
-            driveMotorType = MotorType.DcMotor;
-            driveMotorNames = new String[] {"lfDriveMotor", "rfDriveMotor", "lbDriveMotor", "rbDriveMotor"};
-            driveMotorInverted = new boolean[] {true, false, true, false};
-            odometryType = null;//TrcDriveBase.OdometryType.AbsoluteOdometry;
-            // Odometry Wheels
-            odWheelXScale = odWheelYScale = Math.PI * ODWHEEL_DIAMETER / ODWHEEL_CPR;
-            xOdWheelSensorNames = new String[] {"xOdWheelSensor"};
-            xOdWheelIndices = new int[] {0};
-            xOdWheelXOffsets = new double[] {0.0};
-            xOdWheelYOffsets = new double[] {-168.0 * TrcUtil.INCHES_PER_MM};
-            yOdWheelSensorNames = new String[] {"yLeftOdWheelSensor", "yRightOdWheelSensor"};
-            yOdWheelIndices = new int[] {1, 2};
-            yOdWheelXOffsets = new double[] {-144.0 * TrcUtil.INCHES_PER_MM, -12.0 * TrcUtil.INCHES_PER_MM};
-            yOdWheelYOffsets = new double[] {144.0 * TrcUtil.INCHES_PER_MM, -12.0 * TrcUtil.INCHES_PER_MM};
-            // Absolute Odometry
-            if (odometryType == TrcDriveBase.OdometryType.AbsoluteOdometry)
-            {
-                FtcSparkFunOtos.Config otosConfig = new FtcSparkFunOtos.Config()
-                    .setOffset(0.0, 0.0, 0.0)
-                    .setScale(1.0, 1.0);
-                absoluteOdometry = new FtcSparkFunOtos("SparkfunOtos", otosConfig);
-            }
-            else
-            {
-                absoluteOdometry = null;
-            }
-            // Drive Motor Odometry
-            xDrivePosScale = 0.01924724265461924299065420560748;        // in/count
-            yDrivePosScale = 0.02166184604662450653409090909091;        // in/count
-            // Robot Drive Characteristics
-            robotMaxVelocity = 23.0;        // inches/sec
-            robotMaxAcceleration  = 500.0;  // inches/sec2
-            robotMaxTurnRate = 100.0;       // degrees/sec
-            profiledMaxVelocity = robotMaxVelocity;
-            profiledMaxAcceleration = robotMaxAcceleration;
-            profiledMaxTurnRate = robotMaxTurnRate;
-            // DriveBase PID Parameters
-            drivePidTolerance = 1.0;
-            turnPidTolerance = 1.0;
-            xDrivePidCoeffs = new PidCoefficients(0.95, 0.0, 0.001, 0.0, 0.0);
-            xDrivePidPowerLimit = 1.0;
-            xDriveMaxPidRampRate = null;
-            yDrivePidCoeffs = new PidCoefficients(0.06, 0.0, 0.002, 0.0, 0.0);
-            yDrivePidPowerLimit = 1.0;
-            yDriveMaxPidRampRate = null;
-            turnPidCoeffs = new PidCoefficients(0.02, 0.0, 0.002, 0.0, 0.0);
-            turnPidPowerLimit = 0.5;
-            turnMaxPidRampRate = null;
-            // PID Stall Detection
-            pidStallDetectionEnabled = true;
-            // PurePursuit Parameters
-            ppdFollowingDistance = 6.0;
-            velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);
-            // Vision
-            webCam1 = new FrontCamParams();
-            webCam2 = null; //new BackCamParams();
-            limelight = new LimelightParams();
-            // Miscellaneous
-            blinkinName = "blinkin";
-        }   //MecanumParams
-    }   //class MecanumParams
 
     /**
      * This class contains the Swerve Drive Base Parameters.

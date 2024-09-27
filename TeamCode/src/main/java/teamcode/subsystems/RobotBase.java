@@ -43,6 +43,16 @@ public class RobotBase
     {
         switch (RobotParams.Preferences.robotType)
         {
+            case IntoTheDeepRobot:
+                robotInfo = new RobotParams.IntoTheDeepRobotParams();
+                robotDrive = RobotParams.Preferences.useDriveBase? new FtcMecanumDrive(robotInfo): null;
+                break;
+
+            case CenterStageRobot:
+                robotInfo = new RobotParams.CenterStageRobotParams();
+                robotDrive = RobotParams.Preferences.useDriveBase? new FtcMecanumDrive(robotInfo): null;
+                break;
+
             case VisionOnly:
                 robotInfo = new RobotParams.VisionOnlyParams();
                 robotDrive = null;
@@ -51,11 +61,6 @@ public class RobotBase
             case DifferentialRobot:
                 robotInfo = new RobotParams.DifferentialParams();
                 robotDrive = RobotParams.Preferences.useDriveBase? new FtcDifferentialDrive(robotInfo): null;
-                break;
-
-            case MecanumRobot:
-                robotInfo = new RobotParams.MecanumParams();
-                robotDrive = RobotParams.Preferences.useDriveBase? new FtcMecanumDrive(robotInfo): null;
                 break;
 
             case SwerveRobot:

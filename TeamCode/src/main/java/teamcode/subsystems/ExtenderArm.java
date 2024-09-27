@@ -93,7 +93,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
     }   //cancel
 
     /**
-     * This method returns the Elbow, Extendor and Wrist to their resting position and zero calibrates their encoders.
+     * This method returns the Elbow, Extender and Wrist to their resting position and zero calibrates their encoders.
      *
      * @param owner specifies the owner ID to check if the caller has ownership of the subsystem, can be null if
      *        caller is not claiming ownership.
@@ -111,7 +111,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
     }   //zeroCalibrate
 
     /**
-     * This method sets the Elbow, Extendor and Wrist to their specifies positions.
+     * This method sets the Elbow, Extender and Wrist to their specifies positions.
      *
      * @param owner specifies the owner ID to check if the caller has ownership of the subsystem, can be null if
      *        caller is not claiming ownership.

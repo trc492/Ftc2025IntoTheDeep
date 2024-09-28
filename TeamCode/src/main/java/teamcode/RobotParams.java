@@ -612,6 +612,47 @@ public class RobotParams
 
     public static class ExtenderParams
     {
+        // Elevator Subsystem.
+        //
+        // Actuator parameters.
+        public static final boolean EXTENDER_MOTOR_INVERTED         = false;
+        public static final boolean EXTENDER_HAS_LOWER_LIMIT_SWITCH = true;
+        public static final boolean EXTENDER_LOWER_LIMIT_INVERTED   = false;
+        public static final boolean EXTENDER_HAS_UPPER_LIMIT_SWITCH = false;
+        public static final boolean EXTENDER_UPPER_LIMIT_INVERTED   = false;
+        public static final boolean EXTENDER_VOLTAGE_COMP_ENABLED   = true;
+        public static final double EXTENDER_ENCODER_PPR             = GOBILDA_5203_312_ENCODER_PPR;
+        public static final double EXTENDER_PULLEY_DIAMETER         = 1.405;
+        public static final double EXTENDER_PULLEY_CIRCUMFERENCE    = Math.PI*EXTENDER_PULLEY_DIAMETER;
+        public static final double EXTENDER_INCHES_PER_COUNT        = EXTENDER_PULLEY_CIRCUMFERENCE/EXTENDER_ENCODER_PPR;
+        public static final double EXTENDER_POWER_LIMIT             = 1.0;
+        public static final double EXTENDER_OFFSET                  = 12.1;             // in inches
+        public static final double EXTENDER_MIN_POS                 = EXTENDER_OFFSET;
+        public static final double EXTENDER_MAX_POS                 = 22.0;
+        public static final double EXTENDER_LOAD_POS                = 12.4;
+        public static final double EXTENDER_SAFE_POS                = 15.0; //14.0
+        public static final double EXTENDER_HANG_POS                = EXTENDER_MIN_POS;
+        public static final double EXTENDER_LEVEL1_POS              = 15.0;
+        public static final double EXTENDER_LEVEL2_POS              = 21.5;
+        public static final double EXTENDER_LEVEL3_POS              = 21.5;             // Unreachable
+        // Power settings.
+        public static final double EXTENDER_CAL_POWER               = -0.25;
+        // Preset positions.
+        public static final double EXTENDER_PRESET_TOLERANCE        = 0.2;
+        public static final double[] EXTENDER_PRESETS               = new double[] {
+                EXTENDER_LOAD_POS, EXTENDER_LEVEL1_POS, EXTENDER_LEVEL2_POS
+//        14.0, 16.0, 20.0, 22.0
+        };
+        // PID Actuator parameters.
+        public static final double EXTENDER_KP                      = 0.6;
+        public static final double EXTENDER_KI                      = 0.0;
+        public static final double EXTENDER_KD                      = 0.025;
+        public static final double EXTENDER_KF                      = 0.0;
+        public static final double EXTENDER_TOLERANCE               = 0.5;
+        public static final double EXTENDER_IZONE                   = 10.0;
+        public static final double EXTENDER_STALL_DETECTION_DELAY   = 0.5;
+        public static final double EXTENDER_STALL_DETECTION_TIMEOUT = 0.2;
+        public static final double EXTENDER_STALL_ERR_RATE_THRESHOLD= 5.0;
     }   //class ExtenderParams
 
     public static class WristParams

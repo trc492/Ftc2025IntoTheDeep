@@ -24,6 +24,8 @@ package teamcode.subsystems;
 
 import androidx.annotation.NonNull;
 
+import ftclib.motor.FtcMotorActuator;
+import teamcode.RobotParams;
 import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
@@ -51,7 +53,35 @@ class ExtenderArm implements TrcExclusiveSubsystem
         elbow = null;
 
         // Create a FtcMotorActuator for the Extender.
-        extender = null;
+        if (RobotParams.Preferences.useExtender)
+        {
+            FtcMotorActuator.Params extenderParams = new FtcMotorActuator.Params()
+                    //  .setMotorInverted(RobotParams.ExtenderParams.EXTENDER_MOTOR_INVERTED)
+                    .setLowerLimitSwitch(
+                            RobotParams.ExtenderParams.EXTENDER_HAS_LOWER_LIMIT_SWITCH ? RobotParams.HardwareNames.HWNAME_EXTENDER + "_lower-limit": null,
+                            RobotParams.ExtenderParams.EXTENDER_LOWER_LIMIT_INVERTED)
+                    .setUpperLimitSwitch(
+                            RobotParams.ExtenderParams.EXTENDER_HAS_UPPER_LIMIT_SWITCH ? RobotParams.HardwareNames.HWNAME_EXTENDER + "_upper-limit": null,
+                            RobotParams.ExtenderParams.EXTENDER_UPPER_LIMIT_INVERTED)
+                    .setVoltageCompensationEnabled(RobotParams.ExtenderParams.EXTENDER_VOLTAGE_COMP_ENABLED)
+                    .setPositionScaleAndOffset(RobotParams.ExtenderParams.EXTENDER_INCHES_PER_COUNT, RobotParams.ExtenderParams.EXTENDER_OFFSET)
+                    .setPositionPresets(RobotParams.ExtenderParams.EXTENDER_PRESET_TOLERANCE, RobotParams.ExtenderParams.EXTENDER_PRESETS);
+            extender =
+                    new FtcMotorActuator(RobotParams.HardwareNames.HWNAME_EXTENDER, extenderParams).getActuator();
+            extender.setSoftwarePidEnabled(true);
+            extender.setPositionPidParameters(
+                    RobotParams.ExtenderParams.EXTENDER_KP, RobotParams.ExtenderParams.EXTENDER_KI, RobotParams.ExtenderParams.EXTENDER_KD, RobotParams.ExtenderParams.EXTENDER_KF,
+                    RobotParams.ExtenderParams.EXTENDER_IZONE, RobotParams.ExtenderParams.EXTENDER_TOLERANCE);
+            extender.setPidStallDetectionEnabled(
+                    RobotParams.ExtenderParams.EXTENDER_STALL_DETECTION_DELAY, RobotParams.ExtenderParams.EXTENDER_STALL_DETECTION_TIMEOUT,
+                    RobotParams.ExtenderParams.EXTENDER_STALL_ERR_RATE_THRESHOLD);
+            extender.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
+//            extender.resetPositionOnLowerLimitSwitch();
+        }
+        else
+        {
+            extender = null;
+        }
 
         // Create a FtcMotorActuator for the Wrist.
         wrist = null;

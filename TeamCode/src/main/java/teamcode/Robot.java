@@ -287,16 +287,16 @@ public class Robot
                     if (RobotParams.Grabber.USE_REV_2M_SENSOR)
                     {
                         dashboard.displayPrintf(
-                                lineNum++, "Grabber: pos=%.3f, hasObject=%s, sensorValue=%.3f, autoActive=%s",
-                                grabber.getPosition(), grabber.hasObject(), grabber.getSensorValue(),
-                                grabber.isAutoAssistActive());
+                            lineNum++, "Grabber: pos=%.3f, hasObject=%s, sensorValue=%.3f, autoActive=%s",
+                            grabber.getPosition(), grabber.hasObject(), grabber.getSensorValue(),
+                            grabber.isAutoAssistActive());
                     }
                     else if (RobotParams.Grabber.USE_DIGITAL_SENSOR)
                     {
                         dashboard.displayPrintf(
-                                lineNum++, "Grabber: pos=%.3f, hasObject=%s, sensorState=%s, autoActive=%s",
-                                grabber.getPosition(), grabber.hasObject(), grabber.getSensorState(),
-                                grabber.isAutoAssistActive());
+                            lineNum++, "Grabber: pos=%.3f, hasObject=%s, sensorState=%s, autoActive=%s",
+                            grabber.getPosition(), grabber.hasObject(), grabber.getSensorState(),
+                            grabber.isAutoAssistActive());
                     }
                 }
             }

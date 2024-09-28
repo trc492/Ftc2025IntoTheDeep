@@ -24,16 +24,11 @@ package teamcode.subsystems;
 
 import androidx.annotation.NonNull;
 
-import ftclib.motor.FtcMotorActuator;
-import ftclib.motor.FtcServo;
-import ftclib.motor.FtcServoActuator;
 import teamcode.RobotParams;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcExclusiveSubsystem;
 import trclib.motor.TrcMotor;
-import trclib.sensor.TrcSensor;
-import trclib.timer.TrcTimer;
 
 /**
  * This class creates the ExtenderArm subsystem which consists of an elbow, an extender and a wrist.
@@ -46,6 +41,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
     public final TrcMotor elbow;
     public final TrcMotor extender;
     public final TrcMotor wrist;
+    private TrcEvent releaseOwnershipEvent = null;
 
     /**
      * Constructor: Creates an instance of the object.
@@ -53,57 +49,19 @@ class ExtenderArm implements TrcExclusiveSubsystem
     public ExtenderArm()
     {
         tracer = new TrcDbgTrace();
-        // Create a FtcMotorActuator for the Elbow.
-        if (RobotParams.Preferences.useElbow) {
-            FtcMotorActuator.Params elbowParams = new FtcMotorActuator.Params()
-//                    .setMotorInverted(RobotParams.ElbowParams.ELBOW_MOTOR_INVERTED)
-                    .setLowerLimitSwitch(
-                            RobotParams.ElbowParams.ELBOW_HAS_LOWER_LIMIT_SWITCH ? RobotParams.HardwareNames.HWNAME_ELBOW + "_lower-limit": null,
-                            RobotParams.ElbowParams.ELBOW_LOWER_LIMIT_INVERTED)
-                    .setUpperLimitSwitch(
-                            RobotParams.ElbowParams.ELBOW_HAS_UPPER_LIMIT_SWITCH? RobotParams.HardwareNames.HWNAME_ELBOW + "_upper-limit": null,
-                            RobotParams.ElbowParams.ELBOW_UPPER_LIMIT_INVERTED)
-//                    .setVoltageCompensationEnabled(RobotParams.ElbowParams.ELBOW_VOLTAGE_COMP_ENABLED)
-                    .setPositionScaleAndOffset(RobotParams.ElbowParams.ELBOW_DEGREES_PER_COUNT, RobotParams.ElbowParams.ELBOW_OFFSET)
-                    .setPositionPresets(RobotParams.ElbowParams.ELBOW_PRESET_TOLERANCE, RobotParams.ElbowParams.ELBOW_PRESETS);
-            elbow =
-                    new FtcMotorActuator(RobotParams.HardwareNames.HWNAME_ELBOW, elbowParams).getActuator();
-            elbow.setSoftwarePidEnabled(true);
-            elbow.setPositionPidParameters(
-                    RobotParams.ElbowParams.ELBOW_KP, RobotParams.ElbowParams.ELBOW_KI, RobotParams.ElbowParams.ELBOW_KD, RobotParams.ElbowParams.ELBOW_KF,
-                    RobotParams.ElbowParams.ELBOW_IZONE, RobotParams.ElbowParams.ELBOW_TOLERANCE);
-            elbow.setPidStallDetectionEnabled(
-                    RobotParams.ElbowParams.ELBOW_STALL_DETECTION_DELAY, RobotParams.ElbowParams.ELBOW_STALL_DETECTION_TIMEOUT,
-                    RobotParams.ElbowParams.ELBOW_STALL_ERR_RATE_THRESHOLD);
-            elbow.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
-        }
 
+        // Create a FtcMotorActuator for the Elbow.
+        if (RobotParams.Preferences.useElbow)
+        {
+        }
+        else
+        {
+            elbow = null;
+        }
 
         // Create a FtcMotorActuator for the Extender.
         if (RobotParams.Preferences.useExtender)
         {
-            FtcMotorActuator.Params extenderParams = new FtcMotorActuator.Params()
-                    //  .setMotorInverted(RobotParams.ExtenderParams.EXTENDER_MOTOR_INVERTED)
-                    .setLowerLimitSwitch(
-                            RobotParams.ExtenderParams.EXTENDER_HAS_LOWER_LIMIT_SWITCH ? RobotParams.HardwareNames.HWNAME_EXTENDER + "_lower-limit": null,
-                            RobotParams.ExtenderParams.EXTENDER_LOWER_LIMIT_INVERTED)
-                    .setUpperLimitSwitch(
-                            RobotParams.ExtenderParams.EXTENDER_HAS_UPPER_LIMIT_SWITCH ? RobotParams.HardwareNames.HWNAME_EXTENDER + "_upper-limit": null,
-                            RobotParams.ExtenderParams.EXTENDER_UPPER_LIMIT_INVERTED)
-                    .setVoltageCompensationEnabled(RobotParams.ExtenderParams.EXTENDER_VOLTAGE_COMP_ENABLED)
-                    .setPositionScaleAndOffset(RobotParams.ExtenderParams.EXTENDER_INCHES_PER_COUNT, RobotParams.ExtenderParams.EXTENDER_OFFSET)
-                    .setPositionPresets(RobotParams.ExtenderParams.EXTENDER_PRESET_TOLERANCE, RobotParams.ExtenderParams.EXTENDER_PRESETS);
-            extender =
-                    new FtcMotorActuator(RobotParams.HardwareNames.HWNAME_EXTENDER, extenderParams).getActuator();
-            extender.setSoftwarePidEnabled(true);
-            extender.setPositionPidParameters(
-                    RobotParams.ExtenderParams.EXTENDER_KP, RobotParams.ExtenderParams.EXTENDER_KI, RobotParams.ExtenderParams.EXTENDER_KD, RobotParams.ExtenderParams.EXTENDER_KF,
-                    RobotParams.ExtenderParams.EXTENDER_IZONE, RobotParams.ExtenderParams.EXTENDER_TOLERANCE);
-            extender.setPidStallDetectionEnabled(
-                    RobotParams.ExtenderParams.EXTENDER_STALL_DETECTION_DELAY, RobotParams.ExtenderParams.EXTENDER_STALL_DETECTION_TIMEOUT,
-                    RobotParams.ExtenderParams.EXTENDER_STALL_ERR_RATE_THRESHOLD);
-            extender.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
-//            extender.resetPositionOnLowerLimitSwitch();
         }
         else
         {
@@ -111,7 +69,13 @@ class ExtenderArm implements TrcExclusiveSubsystem
         }
 
         // Create a FtcMotorActuator for the Wrist.
-        wrist = null;
+        if (RobotParams.Preferences.useWrist)
+        {
+        }
+        else
+        {
+            wrist = null;
+        }
     }   //ExtenderArm
 
     /**
@@ -154,13 +118,14 @@ class ExtenderArm implements TrcExclusiveSubsystem
      *
      * @param owner specifies the owner ID to check if the caller has ownership of the subsystem, can be null if
      *        caller is not claiming ownership.
+     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
-    public void zeroCalibrate(String owner)
+    public void zeroCalibrate(String owner, TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "owner=" + owner);
         cancel(owner);
-        TrcEvent completionEvent = new TrcEvent(moduleName + ".zeroCalComplete");
-        TrcEvent releaseOwnershipEvent = acquireOwnership(owner, completionEvent, tracer);
+        releaseOwnershipEvent = acquireOwnership(owner, completionEvent, tracer);
+        if (releaseOwnershipEvent != null) completionEvent = releaseOwnershipEvent;
 
         if (validateOwnership(owner))
         {

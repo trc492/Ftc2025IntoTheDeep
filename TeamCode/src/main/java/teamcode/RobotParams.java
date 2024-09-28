@@ -38,6 +38,7 @@ import trclib.drivebase.TrcDriveBase.DriveOrientation;
 import trclib.driverio.TrcGameController.DriveMode;
 import trclib.pathdrive.TrcPose2D;
 import trclib.pathdrive.TrcPose3D;
+import trclib.robotcore.TrcPidController;
 import trclib.robotcore.TrcPidController.PidCoefficients;
 import trclib.vision.TrcHomographyMapper;
 
@@ -168,14 +169,8 @@ public class RobotParams
         public static final boolean useElbow                    = false;
         public static final boolean useExtender                 = false;
         public static final boolean useWrist                    = false;
+        public static final boolean useGrabber                  = false;
     }   //class Preferences
-
-    public static class HardwareNames
-    {
-        public static String HWNAME_ELBOW                       = "elbow";
-        public static String HWNAME_ELEVATOR                    = "elevator";
-        public static String HWNAME_WRIST                       = "wrist";
-    }
 
     //
     // Robot Parameters.
@@ -618,89 +613,61 @@ public class RobotParams
 
     public static class ElbowParams
     {
-        public static final boolean ELBOW_MOTOR_INVERTED         = false;
-        public static final boolean ELBOW_HAS_LOWER_LIMIT_SWITCH = true;
-        public static final boolean ELBOW_LOWER_LIMIT_INVERTED   = false;
-        public static final boolean ELBOW_HAS_UPPER_LIMIT_SWITCH = false;
-        public static final boolean ELBOW_UPPER_LIMIT_INVERTED   = false;
-        public static final boolean ELBOW_VOLTAGE_COMP_ENABLED   = true;
-        public static final double ELBOW_ENCODER_PPR             = GOBILDA_5203_312_ENCODER_PPR;
-        public static final double ELBOW_PULLEY_DIAMETER         = 1.405;
-        public static final double ELBOW_PULLEY_CIRCUMFERENCE    = Math.PI*ELBOW_PULLEY_DIAMETER;
-        public static final double ELBOW_DEGREES_PER_COUNT        = ELBOW_PULLEY_CIRCUMFERENCE/ELBOW_ENCODER_PPR;
-        public static final double ELBOW_POWER_LIMIT             = 1.0;
-        public static final double ELBOW_OFFSET                  = 12.1;             // in inches
-        public static final double ELBOW_MIN_POS                 = ELBOW_OFFSET;
-        public static final double ELBOW_MAX_POS                 = 22.0;
-        public static final double ELBOW_LOAD_POS                = 12.4;
-        public static final double ELBOW_SAFE_POS                = 15.0; //14.0
-        public static final double ELBOW_HANG_POS                = ELBOW_MIN_POS;
-        public static final double ELBOW_LEVEL1_POS              = 15.0;
-        public static final double ELBOW_LEVEL2_POS              = 21.5;
-        public static final double ELBOW_LEVEL3_POS              = 21.5;             // Unreachable
-        // Power settings.
-        public static final double ELBOW_CAL_POWER               = -0.25;
-        // Preset positions.
-        public static final double ELBOW_PRESET_TOLERANCE        = 0.2;
-        public static final double[] ELBOW_PRESETS               = new double[] {
-                ELBOW_LOAD_POS, ELBOW_LEVEL1_POS, ELBOW_LEVEL2_POS
-//        14.0, 16.0, 20.0, 22.0
-        };
-        // PID Actuator parameters.
-        public static final double ELBOW_KP                      = 0.6;
-        public static final double ELBOW_KI                      = 0.0;
-        public static final double ELBOW_KD                      = 0.025;
-        public static final double ELBOW_KF                      = 0.0;
-        public static final double ELBOW_TOLERANCE               = 0.5;
-        public static final double ELBOW_IZONE                   = 10.0;
-        public static final double ELBOW_STALL_DETECTION_DELAY   = 0.5;
-        public static final double ELBOW_STALL_DETECTION_TIMEOUT = 0.2;
-        public static final double ELBOW_STALL_ERR_RATE_THRESHOLD= 5.0;
+        public static final String SUBSYSTEM_NAME               = "Elbow";
+
+        public static final String MOTOR_NAME                   = SUBSYSTEM_NAME + ".motor";
+        public static final MotorType MOTOR_TYPE                = MotorType.DcMotor;
+
+        public static final boolean MOTOR_INVERTED              = true;
+        public static final double GOBILDA312_CPR               = (((1.0 + (46.0/17.0))) * (1.0 + (46.0/11.0))) * 28.0;
+        public static final double DEG_PER_COUNT                = 360.0 / GOBILDA312_CPR;
+        public static final double POS_OFFSET                   = 39.0;
+        public static final double POWER_LIMIT                  = 0.5;
+        public static final double ZERO_CAL_POWER               = -0.25;
+
+        public static final double MIN_POS                      = POS_OFFSET;
+        public static final double MAX_POS                      = 270.0;
+        public static final double[] posPresets                 = {MIN_POS, 60.0, 90.0, 120.0, 150.0, 180.0, 210.0, 240.0, 270.0};
+        public static final double POS_PRESET_TOLERANCE         = 10.0;
+
+        public static final boolean SOFTWARE_PID_ENABLED        = true;
+        public static final TrcPidController.PidCoefficients posPidCoeffs =
+            new TrcPidController.PidCoefficients(0.018, 0.1, 0.001, 0.0, 2.0);
+        public static final double POS_PID_TOLERANCE            = 1.0;
+        public static final double GRAVITY_COMP_MAX_POWER       = 0.158;
+        public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
+        public static final double STALL_TOLERANCE              = 0.1;
+        public static final double STALL_TIMEOUT                = 0.1;
+        public static final double STALL_RESET_TIMEOUT          = 0.0;
     }   //class ElbowParams
 
     public static class ExtenderParams
     {
-        // Elevator Subsystem.
-        //
-        // Actuator parameters.
-        public static final boolean EXTENDER_MOTOR_INVERTED         = false;
-        public static final boolean EXTENDER_HAS_LOWER_LIMIT_SWITCH = true;
-        public static final boolean EXTENDER_LOWER_LIMIT_INVERTED   = false;
-        public static final boolean EXTENDER_HAS_UPPER_LIMIT_SWITCH = false;
-        public static final boolean EXTENDER_UPPER_LIMIT_INVERTED   = false;
-        public static final boolean EXTENDER_VOLTAGE_COMP_ENABLED   = true;
-        public static final double EXTENDER_ENCODER_PPR             = GOBILDA_5203_312_ENCODER_PPR;
-        public static final double EXTENDER_PULLEY_DIAMETER         = 1.405;
-        public static final double EXTENDER_PULLEY_CIRCUMFERENCE    = Math.PI*EXTENDER_PULLEY_DIAMETER;
-        public static final double EXTENDER_INCHES_PER_COUNT        = EXTENDER_PULLEY_CIRCUMFERENCE/EXTENDER_ENCODER_PPR;
-        public static final double EXTENDER_POWER_LIMIT             = 1.0;
-        public static final double EXTENDER_OFFSET                  = 12.1;             // in inches
-        public static final double EXTENDER_MIN_POS                 = EXTENDER_OFFSET;
-        public static final double EXTENDER_MAX_POS                 = 22.0;
-        public static final double EXTENDER_LOAD_POS                = 12.4;
-        public static final double EXTENDER_SAFE_POS                = 15.0; //14.0
-        public static final double EXTENDER_HANG_POS                = EXTENDER_MIN_POS;
-        public static final double EXTENDER_LEVEL1_POS              = 15.0;
-        public static final double EXTENDER_LEVEL2_POS              = 21.5;
-        public static final double EXTENDER_LEVEL3_POS              = 21.5;             // Unreachable
-        // Power settings.
-        public static final double EXTENDER_CAL_POWER               = -0.25;
-        // Preset positions.
-        public static final double EXTENDER_PRESET_TOLERANCE        = 0.2;
-        public static final double[] EXTENDER_PRESETS               = new double[] {
-                EXTENDER_LOAD_POS, EXTENDER_LEVEL1_POS, EXTENDER_LEVEL2_POS
-//        14.0, 16.0, 20.0, 22.0
-        };
-        // PID Actuator parameters.
-        public static final double EXTENDER_KP                      = 0.6;
-        public static final double EXTENDER_KI                      = 0.0;
-        public static final double EXTENDER_KD                      = 0.025;
-        public static final double EXTENDER_KF                      = 0.0;
-        public static final double EXTENDER_TOLERANCE               = 0.5;
-        public static final double EXTENDER_IZONE                   = 10.0;
-        public static final double EXTENDER_STALL_DETECTION_DELAY   = 0.5;
-        public static final double EXTENDER_STALL_DETECTION_TIMEOUT = 0.2;
-        public static final double EXTENDER_STALL_ERR_RATE_THRESHOLD= 5.0;
+        public static final String SUBSYSTEM_NAME               = "Extender";
+
+        public static final String MOTOR_NAME                   = SUBSYSTEM_NAME + ".motor";
+        public static final MotorType MOTOR_TYPE                = MotorType.DcMotor;
+
+        public static final boolean MOTOR_INVERTED              = true;
+        public static final double INCHES_PER_COUNT             = 18.25/4941.0;
+        public static final double POS_OFFSET                   = 10.875;
+        public static final double POWER_LIMIT                  = 1.0;
+        public static final double ZERO_CAL_POWER               = -0.25;
+
+        public static final double MIN_POS                      = POS_OFFSET;
+        public static final double MAX_POS                      = 30.25;
+        public static final double[] posPresets                 = {MIN_POS, 15.0, 20.0, 25.0, 30.0};
+        public static final double POS_PRESET_TOLERANCE         = 1.0;
+
+        public static final boolean SOFTWARE_PID_ENABLED        = true;
+        public static final TrcPidController.PidCoefficients posPidCoeffs =
+            new TrcPidController.PidCoefficients(1.0, 0.0, 0.0, 0.0, 0.0);
+        public static final double POS_PID_TOLERANCE            = 0.1;
+        public static final double GRAVITY_COMP_POWER           = 0.0;
+        public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
+        public static final double STALL_TOLERANCE              = 0.1;
+        public static final double STALL_TIMEOUT                = 0.1;
+        public static final double STALL_RESET_TIMEOUT          = 0.0;
     }   //class ExtenderParams
 
     public static class WristParams
@@ -742,8 +709,8 @@ public class RobotParams
         public static final String FOLLOWER_SERVO_NAME          = SUBSYSTEM_NAME + ".follower";
         public static final boolean FOLLOWER_SERVO_INVERTED     = !PRIMARY_SERVO_INVERTED;
 
-        public static final double OPEN_POS                     = 0.2;
-        public static final double OPEN_TIME                    = 0.5;
+        public static final double OPEN_POS                     = 0.4;
+        public static final double OPEN_TIME                    = 0.6;
         public static final double CLOSE_POS                    = 0.55;
         public static final double CLOSE_TIME                   = 0.5;
 
@@ -754,9 +721,8 @@ public class RobotParams
         public static final boolean ANALOG_TRIGGER_INVERTED     = true;
 
         public static final boolean USE_DIGITAL_SENSOR          = false;
-        public static final int SENSOR_DIGITAL_CHANNEL          = 0;
+        public static final String DIGITAL_SENSOR_NAME          = SUBSYSTEM_NAME + ".sensor";
         public static final boolean DIGITAL_TRIGGER_INVERTED    = false;
     }   //class Grabber
-
 
 }   //class RobotParams

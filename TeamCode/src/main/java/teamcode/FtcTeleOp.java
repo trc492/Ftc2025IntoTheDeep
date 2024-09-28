@@ -373,10 +373,12 @@ public class FtcTeleOp extends FtcOpMode
         {
             case A:
             case B:
+                break;
+
             case X:
                 if (robot.grabber != null)
                 {
-                    if (driverAltFunc)
+                    if (operatorAltFunc)
                     {
                         if (pressed)
                         {
@@ -403,6 +405,7 @@ public class FtcTeleOp extends FtcOpMode
                     }
                 }
                 break;
+
             case Y:
                 break;
 

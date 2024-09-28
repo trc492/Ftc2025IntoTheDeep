@@ -24,7 +24,10 @@ package teamcode.subsystems;
 
 import androidx.annotation.NonNull;
 
+import ftclib.motor.FtcMotorActuator;
+import ftclib.motor.FtcServoActuator;
 import teamcode.RobotParams;
+import trclib.motor.TrcServo;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcExclusiveSubsystem;
@@ -40,7 +43,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
     public final TrcDbgTrace tracer;
     public final TrcMotor elbow;
     public final TrcMotor extender;
-    public final TrcMotor wrist;
+    public final TrcServo wrist;
     private TrcEvent releaseOwnershipEvent = null;
 
     /**
@@ -53,6 +56,21 @@ class ExtenderArm implements TrcExclusiveSubsystem
         // Create a FtcMotorActuator for the Elbow.
         if (RobotParams.Preferences.useElbow)
         {
+            FtcMotorActuator.Params elbowParams = new FtcMotorActuator.Params()
+                    .setPrimaryMotor(RobotParams.ElbowParams.PRIMARY_MOTOR_NAME, RobotParams.ElbowParams.PRIMARY_MOTOR_TYPE, RobotParams.ElbowParams.PRIMARY_MOTOR_INVERTED)
+                    .setFollowerMotor(RobotParams.ElbowParams.FOLLOWER_MOTOR_NAME, RobotParams.ElbowParams.FOLLOWER_MOTOR_TYPE, RobotParams.ElbowParams.FOLLOWER_MOTOR_INVERTED)
+                    .setLowerLimitSwitch(RobotParams.ElbowParams.LOWER_LIMIT_NAME, RobotParams.ElbowParams.LOWER_LIMIT_INVERTED)
+                    .setUpperLimitSwitch(RobotParams.ElbowParams.UPPER_LIMIT_NAME, RobotParams.ElbowParams.UPPER_LIMIT_INVERTED)
+                    .setPositionScaleAndOffset(RobotParams.ElbowParams.DEG_SCALE, RobotParams.ElbowParams.POS_OFFSET,
+                            RobotParams.ElbowParams.ZERO_OFFSET)
+                    .setPositionPresets(RobotParams.ElbowParams.POS_PRESET_TOLERANCE, RobotParams.ElbowParams.posPresets);
+            elbow = new FtcMotorActuator(elbowParams).getMotor();
+            elbow.setPositionPidParameters(RobotParams.ElbowParams.posPidCoeffs, RobotParams.ElbowParams.POS_PID_TOLERANCE);
+            elbow.setPositionPidPowerComp(this::elbowGetPowerComp);
+            elbow.setPidStallDetectionEnabled(
+                    RobotParams.ElbowParams.STALL_RESET_TIMEOUT, RobotParams.ElbowParams.STALL_TIMEOUT,
+                    RobotParams.ElbowParams.STALL_TOLERANCE);
+            elbow.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
         }
         else
         {
@@ -62,6 +80,21 @@ class ExtenderArm implements TrcExclusiveSubsystem
         // Create a FtcMotorActuator for the Extender.
         if (RobotParams.Preferences.useExtender)
         {
+            FtcMotorActuator.Params extenderParams = new FtcMotorActuator.Params()
+                    .setPrimaryMotor(RobotParams.ExtenderParams.MOTOR_NAME, RobotParams.ExtenderParams.MOTOR_TYPE, RobotParams.ExtenderParams.MOTOR_INVERTED)
+                    .setLowerLimitSwitch(RobotParams.ExtenderParams.LOWER_LIMIT_NAME, RobotParams.ExtenderParams.LOWER_LIMIT_INVERTED)
+                    .setPositionScaleAndOffset(RobotParams.ExtenderParams.INCHES_PER_COUNT, RobotParams.ExtenderParams.POS_OFFSET)
+                    .setPositionPresets(RobotParams.ExtenderParams.POS_PRESET_TOLERANCE, RobotParams.ExtenderParams.posPresets);
+            extender =
+                    new FtcMotorActuator(extenderParams).getMotor();
+            extender.setSoftwarePidEnabled(true);
+            extender.setPositionPidParameters(
+                    RobotParams.ExtenderParams.posPidCoeffs, RobotParams.ExtenderParams.POS_PID_TOLERANCE);
+            extender.setPidStallDetectionEnabled(
+                    RobotParams.ExtenderParams.STALL_RESET_TIMEOUT, RobotParams.ExtenderParams.STALL_TIMEOUT,
+                    RobotParams.ExtenderParams.STALL_TOLERANCE);
+            extender.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
+//            extender.resetPositionOnLowerLimitSwitch();
         }
         else
         {
@@ -71,6 +104,12 @@ class ExtenderArm implements TrcExclusiveSubsystem
         // Create a FtcMotorActuator for the Wrist.
         if (RobotParams.Preferences.useWrist)
         {
+            FtcServoActuator.Params wristParams = new FtcServoActuator.Params()
+                    .setPrimaryServo(RobotParams.WristParams.PRIMARY_SERVO_NAME, RobotParams.WristParams.PRIMARY_SERVO_INVERTED)
+                    .setFollowerServo(RobotParams.WristParams.FOLLOWER_SERVO_NAME, RobotParams.WristParams.FOLLOWER_SERVO_INVERTED);
+
+            wrist = new FtcServoActuator(wristParams).getServo();
+            wrist.tracer.setTraceLevel(TrcDbgTrace.MsgLevel.INFO);
         }
         else
         {
@@ -139,18 +178,30 @@ class ExtenderArm implements TrcExclusiveSubsystem
      *        caller is not claiming ownership.
      * @param elbowAngle specifies the elbow angle.
      * @param extenderPosition specifies the extender position.
-     * @param wristAngle specifies the wrist angle.
+     * @param wristPosition specifies the wrist position.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
     public void setPosition(
-        String owner, double elbowAngle, double extenderPosition, double wristAngle, TrcEvent completionEvent)
+        String owner, double elbowAngle, double extenderPosition, double wristPosition, TrcEvent completionEvent)
     {
+        setElbowAngle(owner, elbowAngle, RobotParams.ElbowParams.POWER_LIMIT, null);
+        setExtenderPosition(owner, extenderPosition, RobotParams.ExtenderParams.POWER_LIMIT, null);
+        setWristPosition(wristPosition);
     }   //setPosition
 
     //
     // Elbow methods.
     //
-
+    /**
+     * This method is called to compute the power compensation to counteract gravity on the Elbow.
+     *
+     * @param currPower specifies the current motor power (not used).
+     * @return gravity compensation for the arm.
+     */
+    private double elbowGetPowerComp(double currPower)
+    {
+        return RobotParams.ElbowParams.GRAVITY_COMP_MAX_POWER * Math.sin(Math.toRadians(elbow.getPosition()));
+    }   //armGetPowerComp
     /**
      * This method sets the Elbow angle.
      *
@@ -162,6 +213,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
      */
     public void setElbowAngle(String owner, double pos, double powerLimit, TrcEvent completionEvent)
     {
+        elbow.setPosition(owner, 0.0, pos, true, powerLimit, completionEvent, 0.0);
     }   //setElbowAngle
 
     /**
@@ -173,6 +225,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
      */
     public void setElbowPower(String owner, double power)
     {
+        elbow.setPower(owner, 0.0, power, 0.0, null);
     }   //setElbowPower
 
     /**
@@ -186,6 +239,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
      */
     public void setElbowPidPower(String owner, double power, double minPos, double maxPos)
     {
+        elbow.setPidPower(owner, power,minPos, maxPos, false);
     }   //setElbowPidPower
 
     //
@@ -203,6 +257,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
      */
     public void setExtenderPosition(String owner, double pos, double powerLimit, TrcEvent completionEvent)
     {
+        extender.setPosition(owner, 0.0, pos, true, powerLimit, completionEvent, 0.0);
     }   //setExtenderPosition
 
     /**
@@ -214,6 +269,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
      */
     public void setExtenderPower(String owner, double power)
     {
+        extender.setPower(owner, 0.0,power, 0.0, null);
     }   //setExtenderPower
 
     /**
@@ -227,6 +283,7 @@ class ExtenderArm implements TrcExclusiveSubsystem
      */
     public void setExtenderPidPower(String owner, double power, double minPos, double maxPos)
     {
+        extender.setPidPower(owner, power, minPos, maxPos, false);
     }   //setExtenderPidPower
 
     //
@@ -234,40 +291,28 @@ class ExtenderArm implements TrcExclusiveSubsystem
     //
 
     /**
-     * This method sets the Wrist angle.
+     * This method sets the wrist position.
      *
-     * @param owner specifies the owner ID to check if the caller has ownership of the subsystem, can be null if
-     *        caller is not claiming ownership.
-     * @param pos specifies the wrist position.
-     * @param powerLimit specifies the maximum power limit the Extender is moving.
-     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
+     * @param owner specifies the owner ID to check if the caller has ownership of the subsystem.
+     * @param delay specifies the delay in seconds before setting the position of the servo, can be zero if no delay.
+     * @param position specifies the physical position of the servo motor. This value may be in degrees if
+     *        setPhysicalPosRange is called with the degree range.
+     * @param completionEvent specifies an event object to signal when the timeout event has expired.
+     * @param timeout specifies a maximum time value the operation should be completed in seconds.
      */
-    public void setWristAngle(String owner, double pos, double powerLimit, TrcEvent completionEvent)
+    public void setWristPosition(String owner, double delay, double position, TrcEvent completionEvent, double timeout)
     {
-    }   //setWristAngle
+        wrist.setPosition(owner, delay, position, completionEvent, timeout);
+    }   //wristSetPosition
 
     /**
-     * This method sets the motor power to move the Wrist.
+     * This method sets the wrist position.
      *
-     * @param owner specifies the owner ID to check if the caller has ownership of the subsystem, can be null if
-     *        caller is not claiming ownership.
-     * @param power specifies the power applied to the motor.
+     * @param position specifies the physical position of the servo motor. This value may be in degrees if
      */
-    public void setWristPower(String owner, double power)
+    public void setWristPosition(double position)
     {
-    }   //setWristPower
-
-    /**
-     * This method sets the motor power limit to move the Wrist with PID control.
-     *
-     * @param owner specifies the owner ID to check if the caller has ownership of the subsystem, can be null if
-     *        caller is not claiming ownership.
-     * @param power specifies the PID power limit.
-     * @param minPos specifies the lowest Wrist position limit.
-     * @param maxPos specifies the upper Wrist position limit.
-     */
-    public void setWristPidPower(String owner, double power, double minPos, double maxPos)
-    {
-    }   //setWristPidPower
+        setWristPosition(null, 0.0, position, null, 0.0);
+    }   //wristSetPosition
 
 }   //class ExtenderArm

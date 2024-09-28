@@ -615,13 +615,23 @@ public class RobotParams
     {
         public static final String SUBSYSTEM_NAME               = "Elbow";
 
-        public static final String MOTOR_NAME                   = SUBSYSTEM_NAME + ".motor";
-        public static final MotorType MOTOR_TYPE                = MotorType.DcMotor;
+        public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final MotorType PRIMARY_MOTOR_TYPE                = MotorType.DcMotor;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
 
-        public static final boolean MOTOR_INVERTED              = true;
+        public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
+        public static final MotorType FOLLOWER_MOTOR_TYPE                = MotorType.DcMotor;
+        public static final boolean FOLLOWER_MOTOR_INVERTED     = true;
+
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + "-lower.limit";
+        public static final String UPPER_LIMIT_NAME             = SUBSYSTEM_NAME + "-upper.limit";
+        public static final boolean LOWER_LIMIT_INVERTED        = false;
+        public static final boolean UPPER_LIMIT_INVERTED        = false;
+
         public static final double GOBILDA312_CPR               = (((1.0 + (46.0/17.0))) * (1.0 + (46.0/11.0))) * 28.0;
-        public static final double DEG_PER_COUNT                = 360.0 / GOBILDA312_CPR;
-        public static final double POS_OFFSET                   = 39.0;
+        public static final double DEG_SCALE                    = 360.0 / GOBILDA312_CPR;
+        public static final double POS_OFFSET                       = 39.0;
+        public static final double ZERO_OFFSET                  = 0.0;
         public static final double POWER_LIMIT                  = 0.5;
         public static final double ZERO_CAL_POWER               = -0.25;
 
@@ -654,6 +664,9 @@ public class RobotParams
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.25;
 
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + "-lower.limit";
+        public static final boolean LOWER_LIMIT_INVERTED        = false;
+
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 30.25;
         public static final double[] posPresets                 = {MIN_POS, 15.0, 20.0, 25.0, 30.0};
@@ -672,24 +685,46 @@ public class RobotParams
 
     public static class WristParams
     {
+        public static final String SUBSYSTEM_NAME               = "Wrist";
+
+        public static final String PRIMARY_SERVO_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final boolean PRIMARY_SERVO_INVERTED      = false;
+        public static final String FOLLOWER_SERVO_NAME          = SUBSYSTEM_NAME + ".follower";
+        public static final boolean FOLLOWER_SERVO_INVERTED     = !PRIMARY_SERVO_INVERTED;
     }   //class WristParams
 
     public static class ClimberParams
     {
+        public static final String SUBSYSTEM_NAME               = "Climber";
+
+        public static final String MOTOR_NAME                   = SUBSYSTEM_NAME + ".motor";
+        public static final MotorType MOTOR_TYPE                = MotorType.DcMotor;
+
+        public static final boolean MOTOR_INVERTED              = true;
+        public static final double INCHES_PER_COUNT             = 18.25/4941.0;
+        public static final double POS_OFFSET                   = 10.875;
+        public static final double POWER_LIMIT                  = 1.0;
+        public static final double ZERO_CAL_POWER               = -0.25;
+
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + "-lower.limit";
+        public static final boolean LOWER_LIMIT_INVERTED        = false;
+
+        public static final double MIN_POS                      = POS_OFFSET;
+        public static final double MAX_POS                      = 30.25;
+        public static final double[] posPresets                 = {MIN_POS, MAX_POS};
+        public static final double POS_PRESET_TOLERANCE         = 1.0;
     }   //class ClimberParams
 
     public static final class Intake
     {
         public static final String SUBSYSTEM_NAME               = "Intake";
-        public static final boolean TWO_MOTOR_INTAKE            = true;
+        public static final boolean TWO_SERVO_INTAKE            = true;
 
-        public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
-        public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
-        public static final boolean PRIMARY_MOTOR_INVERTED      = !TWO_MOTOR_INTAKE;
+        public static final String PRIMARY_SERVO_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final boolean PRIMARY_SERVO_INVERTED      = !TWO_SERVO_INTAKE;
 
-        public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
-        public static final MotorType FOLLOWER_MOTOR_TYPE       = MotorType.DcMotor;
-        public static final boolean FOLLOWER_MOTOR_INVERTED     = PRIMARY_MOTOR_INVERTED;
+        public static final String FOLLOWER_SERVO_NAME          = SUBSYSTEM_NAME + ".follower";
+        public static final boolean FOLLOWER_SERVO_INVERTED     = PRIMARY_SERVO_INVERTED;
 
         public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
         public static final boolean SENSOR_INVERTED             = false;

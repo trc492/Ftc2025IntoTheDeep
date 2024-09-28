@@ -22,7 +22,11 @@
 
 package teamcode.subsystems;
 
+import org.firstinspires.ftc.robotcore.internal.camera.names.CameraNameImplBase;
+
+import teamcode.RobotParams;
 import trclib.motor.TrcMotor;
+import ftclib.motor.FtcMotorActuator;
 
 /**
  * This class creates the AuxClimber subsystem which consists of a climber motor actuator.
@@ -37,7 +41,12 @@ class AuxClimber
      */
     public AuxClimber()
     {
-        // Create a FtcMotorActuator for the Climber.
+        // Create a FtcMotorActuator for the Climber.\
+        FtcMotorActuator.Params climberParams = new FtcMotorActuator.Params()
+                .setPrimaryMotor(RobotParams.ClimberParams.MOTOR_NAME, RobotParams.ClimberParams.MOTOR_TYPE, RobotParams.ClimberParams.MOTOR_INVERTED)
+                .setLowerLimitSwitch(RobotParams.ClimberParams.LOWER_LIMIT_NAME, RobotParams.ClimberParams.LOWER_LIMIT_INVERTED)
+                .setPositionScaleAndOffset(RobotParams.ClimberParams.INCHES_PER_COUNT, RobotParams.ClimberParams.POS_OFFSET)
+                .setPositionPresets(RobotParams.ClimberParams.POS_PRESET_TOLERANCE, RobotParams.ClimberParams.posPresets);
         climber = null;
     }   //AuxClimber
 

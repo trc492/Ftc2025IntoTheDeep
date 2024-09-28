@@ -25,11 +25,15 @@ package teamcode.subsystems;
 import androidx.annotation.NonNull;
 
 import ftclib.motor.FtcMotorActuator;
+import ftclib.motor.FtcServo;
+import ftclib.motor.FtcServoActuator;
 import teamcode.RobotParams;
-import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcExclusiveSubsystem;
+import trclib.motor.TrcMotor;
+import trclib.sensor.TrcSensor;
+import trclib.timer.TrcTimer;
 
 /**
  * This class creates the ExtenderArm subsystem which consists of an elbow, an extender and a wrist.
@@ -50,7 +54,30 @@ class ExtenderArm implements TrcExclusiveSubsystem
     {
         tracer = new TrcDbgTrace();
         // Create a FtcMotorActuator for the Elbow.
-        elbow = null;
+        if (RobotParams.Preferences.useElbow) {
+            FtcMotorActuator.Params elbowParams = new FtcMotorActuator.Params()
+//                    .setMotorInverted(RobotParams.ElbowParams.ELBOW_MOTOR_INVERTED)
+                    .setLowerLimitSwitch(
+                            RobotParams.ElbowParams.ELBOW_HAS_LOWER_LIMIT_SWITCH ? RobotParams.HardwareNames.HWNAME_ELBOW + "_lower-limit": null,
+                            RobotParams.ElbowParams.ELBOW_LOWER_LIMIT_INVERTED)
+                    .setUpperLimitSwitch(
+                            RobotParams.ElbowParams.ELBOW_HAS_UPPER_LIMIT_SWITCH? RobotParams.HardwareNames.HWNAME_ELBOW + "_upper-limit": null,
+                            RobotParams.ElbowParams.ELBOW_UPPER_LIMIT_INVERTED)
+//                    .setVoltageCompensationEnabled(RobotParams.ElbowParams.ELBOW_VOLTAGE_COMP_ENABLED)
+                    .setPositionScaleAndOffset(RobotParams.ElbowParams.ELBOW_DEGREES_PER_COUNT, RobotParams.ElbowParams.ELBOW_OFFSET)
+                    .setPositionPresets(RobotParams.ElbowParams.ELBOW_PRESET_TOLERANCE, RobotParams.ElbowParams.ELBOW_PRESETS);
+            elbow =
+                    new FtcMotorActuator(RobotParams.HardwareNames.HWNAME_ELBOW, elbowParams).getActuator();
+            elbow.setSoftwarePidEnabled(true);
+            elbow.setPositionPidParameters(
+                    RobotParams.ElbowParams.ELBOW_KP, RobotParams.ElbowParams.ELBOW_KI, RobotParams.ElbowParams.ELBOW_KD, RobotParams.ElbowParams.ELBOW_KF,
+                    RobotParams.ElbowParams.ELBOW_IZONE, RobotParams.ElbowParams.ELBOW_TOLERANCE);
+            elbow.setPidStallDetectionEnabled(
+                    RobotParams.ElbowParams.ELBOW_STALL_DETECTION_DELAY, RobotParams.ElbowParams.ELBOW_STALL_DETECTION_TIMEOUT,
+                    RobotParams.ElbowParams.ELBOW_STALL_ERR_RATE_THRESHOLD);
+            elbow.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
+        }
+
 
         // Create a FtcMotorActuator for the Extender.
         if (RobotParams.Preferences.useExtender)

@@ -165,7 +165,17 @@ public class RobotParams
         public static final boolean useDriveBase                = false;
         // Subsystems
         public static final boolean useSubsystems               = false;
+        public static final boolean useElbow                    = false;
+        public static final boolean useExtender                 = false;
+        public static final boolean useWrist                    = false;
     }   //class Preferences
+
+    public static class HardwareNames
+    {
+        public static String HWNAME_ELBOW                       = "elbow";
+        public static String HWNAME_ELEVATOR                    = "elevator";
+        public static String HWNAME_WRIST                       = "wrist";
+    }
 
     //
     // Robot Parameters.
@@ -608,6 +618,44 @@ public class RobotParams
 
     public static class ElbowParams
     {
+        public static final boolean ELBOW_MOTOR_INVERTED         = false;
+        public static final boolean ELBOW_HAS_LOWER_LIMIT_SWITCH = true;
+        public static final boolean ELBOW_LOWER_LIMIT_INVERTED   = false;
+        public static final boolean ELBOW_HAS_UPPER_LIMIT_SWITCH = false;
+        public static final boolean ELBOW_UPPER_LIMIT_INVERTED   = false;
+        public static final boolean ELBOW_VOLTAGE_COMP_ENABLED   = true;
+        public static final double ELBOW_ENCODER_PPR             = GOBILDA_5203_312_ENCODER_PPR;
+        public static final double ELBOW_PULLEY_DIAMETER         = 1.405;
+        public static final double ELBOW_PULLEY_CIRCUMFERENCE    = Math.PI*ELBOW_PULLEY_DIAMETER;
+        public static final double ELBOW_DEGREES_PER_COUNT        = ELBOW_PULLEY_CIRCUMFERENCE/ELBOW_ENCODER_PPR;
+        public static final double ELBOW_POWER_LIMIT             = 1.0;
+        public static final double ELBOW_OFFSET                  = 12.1;             // in inches
+        public static final double ELBOW_MIN_POS                 = ELBOW_OFFSET;
+        public static final double ELBOW_MAX_POS                 = 22.0;
+        public static final double ELBOW_LOAD_POS                = 12.4;
+        public static final double ELBOW_SAFE_POS                = 15.0; //14.0
+        public static final double ELBOW_HANG_POS                = ELBOW_MIN_POS;
+        public static final double ELBOW_LEVEL1_POS              = 15.0;
+        public static final double ELBOW_LEVEL2_POS              = 21.5;
+        public static final double ELBOW_LEVEL3_POS              = 21.5;             // Unreachable
+        // Power settings.
+        public static final double ELBOW_CAL_POWER               = -0.25;
+        // Preset positions.
+        public static final double ELBOW_PRESET_TOLERANCE        = 0.2;
+        public static final double[] ELBOW_PRESETS               = new double[] {
+                ELBOW_LOAD_POS, ELBOW_LEVEL1_POS, ELBOW_LEVEL2_POS
+//        14.0, 16.0, 20.0, 22.0
+        };
+        // PID Actuator parameters.
+        public static final double ELBOW_KP                      = 0.6;
+        public static final double ELBOW_KI                      = 0.0;
+        public static final double ELBOW_KD                      = 0.025;
+        public static final double ELBOW_KF                      = 0.0;
+        public static final double ELBOW_TOLERANCE               = 0.5;
+        public static final double ELBOW_IZONE                   = 10.0;
+        public static final double ELBOW_STALL_DETECTION_DELAY   = 0.5;
+        public static final double ELBOW_STALL_DETECTION_TIMEOUT = 0.2;
+        public static final double ELBOW_STALL_ERR_RATE_THRESHOLD= 5.0;
     }   //class ElbowParams
 
     public static class ExtenderParams

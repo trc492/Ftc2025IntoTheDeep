@@ -670,12 +670,52 @@ public class RobotParams
     {
     }   //class ClimberParams
 
-//    public static class IntakeParams
-//    {
-//    }   //class IntakeParams
-//
-//    public static class GrabberParams
-//    {
-//    }   //class GrabberParams
+    public static final class Intake
+    {
+        public static final String SUBSYSTEM_NAME               = "Intake";
+        public static final boolean TWO_MOTOR_INTAKE            = true;
+
+        public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = !TWO_MOTOR_INTAKE;
+
+        public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
+        public static final MotorType FOLLOWER_MOTOR_TYPE       = MotorType.DcMotor;
+        public static final boolean FOLLOWER_MOTOR_INVERTED     = PRIMARY_MOTOR_INVERTED;
+
+        public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
+        public static final boolean SENSOR_INVERTED             = false;
+
+        public static final double INTAKE_FORWARD_POWER         = 1.0;
+        public static final double RETAIN_POWER                 = 0.0;
+        public static final double FINISH_DELAY                 = 0.0;
+    }   //class Intake
+
+    public static final class Grabber
+    {
+        public static final String SUBSYSTEM_NAME               = "Grabber";
+
+        public static final String PRIMARY_SERVO_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final boolean PRIMARY_SERVO_INVERTED      = false;
+
+        public static final String FOLLOWER_SERVO_NAME          = SUBSYSTEM_NAME + ".follower";
+        public static final boolean FOLLOWER_SERVO_INVERTED     = !PRIMARY_SERVO_INVERTED;
+
+        public static final double OPEN_POS                     = 0.2;
+        public static final double OPEN_TIME                    = 0.5;
+        public static final double CLOSE_POS                    = 0.55;
+        public static final double CLOSE_TIME                   = 0.5;
+
+        public static final boolean USE_REV_2M_SENSOR           = false;
+        public static final String REV_2M_SENSOR_NAME           = SUBSYSTEM_NAME + ".sensor";
+        public static final double SENSOR_TRIGGER_THRESHOLD     = 2.0;
+        public static final double HAS_OBJECT_THRESHOLD         = 2.0;
+        public static final boolean ANALOG_TRIGGER_INVERTED     = true;
+
+        public static final boolean USE_DIGITAL_SENSOR          = false;
+        public static final int SENSOR_DIGITAL_CHANNEL          = 0;
+        public static final boolean DIGITAL_TRIGGER_INVERTED    = false;
+    }   //class Grabber
+
 
 }   //class RobotParams

@@ -374,6 +374,35 @@ public class FtcTeleOp extends FtcOpMode
             case A:
             case B:
             case X:
+                if (robot.grabber != null)
+                {
+                    if (driverAltFunc)
+                    {
+                        if (pressed)
+                        {
+                            if (robot.grabber.isClosed())
+                            {
+                                robot.grabber.open();
+                            }
+                            else
+                            {
+                                robot.grabber.close();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (pressed)
+                        {
+                            robot.grabber.enableAutoAssist(null, 0.0, null, 0.0);
+                        }
+                        else
+                        {
+                            robot.grabber.cancelAutoAssist();
+                        }
+                    }
+                }
+                break;
             case Y:
                 break;
 

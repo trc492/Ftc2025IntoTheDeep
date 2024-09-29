@@ -169,6 +169,7 @@ public class RobotParams
         public static final boolean useElbow                    = false;
         public static final boolean useExtender                 = false;
         public static final boolean useWrist                    = false;
+        public static final boolean useAuxClimber               = false;
         public static final boolean useGrabber                  = false;
     }   //class Preferences
 
@@ -616,21 +617,21 @@ public class RobotParams
         public static final String SUBSYSTEM_NAME               = "Elbow";
 
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
-        public static final MotorType PRIMARY_MOTOR_TYPE                = MotorType.DcMotor;
+        public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
         public static final boolean PRIMARY_MOTOR_INVERTED      = true;
 
         public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
-        public static final MotorType FOLLOWER_MOTOR_TYPE                = MotorType.DcMotor;
+        public static final MotorType FOLLOWER_MOTOR_TYPE       = MotorType.DcMotor;
         public static final boolean FOLLOWER_MOTOR_INVERTED     = true;
 
-        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + "-lower.limit";
-        public static final String UPPER_LIMIT_NAME             = SUBSYSTEM_NAME + "-upper.limit";
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
+        public static final String UPPER_LIMIT_NAME             = SUBSYSTEM_NAME + ".upperLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = false;
         public static final boolean UPPER_LIMIT_INVERTED        = false;
 
         public static final double GOBILDA312_CPR               = (((1.0 + (46.0/17.0))) * (1.0 + (46.0/11.0))) * 28.0;
         public static final double DEG_SCALE                    = 360.0 / GOBILDA312_CPR;
-        public static final double POS_OFFSET                       = 39.0;
+        public static final double POS_OFFSET                   = 39.0;
         public static final double ZERO_OFFSET                  = 0.0;
         public static final double POWER_LIMIT                  = 0.5;
         public static final double ZERO_CAL_POWER               = -0.25;
@@ -664,7 +665,7 @@ public class RobotParams
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.25;
 
-        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + "-lower.limit";
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = false;
 
         public static final double MIN_POS                      = POS_OFFSET;
@@ -699,14 +700,14 @@ public class RobotParams
 
         public static final String MOTOR_NAME                   = SUBSYSTEM_NAME + ".motor";
         public static final MotorType MOTOR_TYPE                = MotorType.DcMotor;
-
         public static final boolean MOTOR_INVERTED              = true;
+
         public static final double INCHES_PER_COUNT             = 18.25/4941.0;
         public static final double POS_OFFSET                   = 10.875;
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.25;
 
-        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + "-lower.limit";
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = false;
 
         public static final double MIN_POS                      = POS_OFFSET;

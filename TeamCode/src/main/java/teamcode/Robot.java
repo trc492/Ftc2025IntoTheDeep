@@ -29,7 +29,9 @@ import ftclib.driverio.FtcDashboard;
 import ftclib.driverio.FtcMatchInfo;
 import ftclib.robotcore.FtcOpMode;
 import ftclib.sensor.FtcRobotBattery;
+import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.BlinkinLEDs;
+import teamcode.subsystems.ExtenderArm;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Grabber;
 import teamcode.vision.Vision;
@@ -64,6 +66,8 @@ public class Robot
     public BlinkinLEDs blinkin;
     public FtcRobotBattery battery;
     // Subsystems.
+    public ExtenderArm extenderArm;
+    public TrcMotor auxClimber;
     public TrcServoGrabber grabber;
 
     /**
@@ -112,6 +116,18 @@ public class Robot
             //
             if (RobotParams.Preferences.useSubsystems)
             {
+                if (RobotParams.Preferences.useElbow ||
+                    RobotParams.Preferences.useExtender ||
+                    RobotParams.Preferences.useWrist)
+                {
+                    extenderArm = new ExtenderArm();
+                }
+
+                if (RobotParams.Preferences.useAuxClimber)
+                {
+                    auxClimber = new AuxClimber().getClimber();
+                }
+
                 if (RobotParams.Preferences.useGrabber)
                 {
                     grabber = new Grabber().getGrabber();
@@ -265,13 +281,15 @@ public class Robot
 
     /**
      * This method update all subsystem status on the dashboard.
+     *
+     * @param startLineNum specifies the first Dashboard line for printing status.
      */
-    public void updateStatus()
+    public void updateStatus(int startLineNum)
     {
         double currTime = TrcTimer.getCurrentTime();
         if (currTime > nextStatusUpdateTime)
         {
-            int lineNum = 2;
+            int lineNum = startLineNum;
             nextStatusUpdateTime = currTime + RobotParams.Robot.DASHBOARD_UPDATE_INTERVAL;
             if (robotDrive != null)
             {
@@ -282,6 +300,29 @@ public class Robot
             //
             if (RobotParams.Preferences.showSubsystems)
             {
+                if (extenderArm != null)
+                {
+                    if (extenderArm.elbow != null)
+                    {
+
+                    }
+
+                    if (extenderArm.extender != null)
+                    {
+
+                    }
+
+                    if (extenderArm.wrist != null)
+                    {
+
+                    }
+                }
+
+                if (auxClimber != null)
+                {
+
+                }
+
                 if (grabber != null)
                 {
                     if (RobotParams.Grabber.USE_REV_2M_SENSOR)
@@ -315,6 +356,21 @@ public class Robot
             // Cancel all auto-assist driving.
             robotDrive.cancel();
         }
+
+        if (extenderArm != null)
+        {
+
+        }
+
+        if (auxClimber != null)
+        {
+
+        }
+
+        if (grabber != null)
+        {
+
+        }
     }   //cancelAll
 
     /**
@@ -324,6 +380,15 @@ public class Robot
      */
     public void zeroCalibrate(String owner)
     {
+        if (extenderArm != null)
+        {
+            extenderArm.zeroCalibrate(owner, null);
+        }
+
+        if (auxClimber != null)
+        {
+
+        }
     }   //zeroCalibrate
 
     /**

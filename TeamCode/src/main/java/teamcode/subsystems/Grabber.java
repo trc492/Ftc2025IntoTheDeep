@@ -47,7 +47,7 @@ public class Grabber
         if (RobotParams.Grabber.USE_REV_2M_SENSOR)
         {
             rev2mSensor = FtcOpMode.getInstance().hardwareMap.get(
-                    Rev2mDistanceSensor.class, RobotParams.Grabber.REV_2M_SENSOR_NAME);
+                Rev2mDistanceSensor.class, RobotParams.Grabber.REV_2M_SENSOR_NAME);
         }
         else
         {
@@ -63,14 +63,13 @@ public class Grabber
         if (rev2mSensor != null)
         {
             grabberParams.setAnalogSensorTrigger(
-                    this::getSensorData, RobotParams.Grabber.ANALOG_TRIGGER_INVERTED,
-                    RobotParams.Grabber.SENSOR_TRIGGER_THRESHOLD, RobotParams.Grabber.HAS_OBJECT_THRESHOLD,
-                    null);
+                this::getSensorData, RobotParams.Grabber.ANALOG_TRIGGER_INVERTED,
+                RobotParams.Grabber.SENSOR_TRIGGER_THRESHOLD, RobotParams.Grabber.HAS_OBJECT_THRESHOLD, null);
         }
         else if (RobotParams.Grabber.USE_DIGITAL_SENSOR)
         {
             grabberParams.setDigitalInputTrigger(
-                    RobotParams.Grabber.DIGITAL_SENSOR_NAME, RobotParams.Grabber.DIGITAL_TRIGGER_INVERTED, null);
+                RobotParams.Grabber.DIGITAL_SENSOR_NAME, RobotParams.Grabber.DIGITAL_TRIGGER_INVERTED, null);
         }
 
         grabber = new FtcServoGrabber(RobotParams.Grabber.SUBSYSTEM_NAME, grabberParams).getGrabber();

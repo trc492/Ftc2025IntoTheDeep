@@ -726,7 +726,7 @@ public class RobotParams
         public static final boolean PRIMARY_MOTOR_INVERTED      = !TWO_MOTOR_INTAKE;
 
         public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
-        public static final MotorType FOLLOWER_MOTOR_TYPE        = MotorType.CRServo;
+        public static final MotorType FOLLOWER_MOTOR_TYPE       = MotorType.CRServo;
         public static final boolean FOLLOWER_MOTOR_INVERTED     = PRIMARY_MOTOR_INVERTED;
 
         public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";

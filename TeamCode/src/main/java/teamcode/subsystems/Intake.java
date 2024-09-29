@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Titan Robotics Club (http://www.titanrobotics.com)
+ * Copyright (c) 2024 Titan Robotics Club (http://www.titanrobotics.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@ package teamcode.subsystems;
 
 import ftclib.motor.FtcMotorActuator;
 import ftclib.sensor.FtcDistanceSensor;
-import teamcode.Robot;
 import teamcode.RobotParams;
 import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;
@@ -50,16 +49,17 @@ public class Intake
         this.tracer = new TrcDbgTrace();
 
         FtcMotorActuator.Params intakeParams = new FtcMotorActuator.Params()
-                .setPrimaryMotor(RobotParams.Intake.PRIMARY_MOTOR_NAME, RobotParams.Intake.PRIMARY_MOTOR_TYPE, RobotParams.Intake.PRIMARY_MOTOR_INVERTED)
-                .setFollowerMotor(RobotParams.Intake.FOLLOWER_MOTOR_NAME, RobotParams.Intake.FOLLOWER_MOTOR_TYPE, RobotParams.Intake.FOLLOWER_MOTOR_INVERTED);
+            .setPrimaryMotor(
+                RobotParams.Intake.PRIMARY_MOTOR_NAME, RobotParams.Intake.PRIMARY_MOTOR_TYPE,
+                RobotParams.Intake.PRIMARY_MOTOR_INVERTED)
+            .setFollowerMotor(
+                RobotParams.Intake.FOLLOWER_MOTOR_NAME, RobotParams.Intake.FOLLOWER_MOTOR_TYPE,
+                RobotParams.Intake.FOLLOWER_MOTOR_INVERTED);
         intake = new FtcMotorActuator(intakeParams).getMotor();
-
 
         intakeSensor = null; //new FtcDistanceSensor(RobotParams.Intake.SENSOR_NAME);
         analogTrigger = null; //new TrcTriggerThresholdZones(RobotParams.Intake.SUBSYSTEM_NAME + ".analogTrigger", this::getDistance, RobotParams.Intake.SENSOR_THRESHOLDS, false);
-
     }   //Intake
-
 
     public void stop()
     {
@@ -92,7 +92,7 @@ public class Intake
         analogTrigger.disableTrigger();
     }   //setReverse
 
-    public void pickupPixel(boolean on, TrcEvent event)
+    public void pickupSample(boolean on, TrcEvent event)
     {
         setOn(on);
         if (analogTrigger != null)
@@ -108,12 +108,12 @@ public class Intake
                 analogTrigger.disableTrigger();
             }
         }
-    }   //pickupPixel
+    }   //pickupSample
 
-    public boolean hasTwoPixels()
+    public boolean hasSample()
     {
         return getDistance() < RobotParams.Intake.SENSOR_THRESHOLDS[0];
-    }   //hasTwoPixels
+    }   //hasSample
 
     /**
      * This method is called when an analog sensor threshold has been crossed.
@@ -127,7 +127,7 @@ public class Intake
         tracer.traceInfo(
             RobotParams.Intake.SUBSYSTEM_NAME, "Zone=%d->%d, value=%.3f",
             callbackContext.prevZone, callbackContext.currZone, callbackContext.sensorValue);
-        if (hasTwoPixels())
+        if (hasSample())
         {
             analogTrigger.disableTrigger();
             // CodeReview: it doesn't work this way. By calling setPower twice, the second one will cancel the first

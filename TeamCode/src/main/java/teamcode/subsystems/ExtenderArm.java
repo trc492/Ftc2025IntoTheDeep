@@ -152,16 +152,19 @@ public class ExtenderArm implements TrcExclusiveSubsystem
         if (elbow != null)
         {
             // Cancel elbow operation if any.
+            elbow.cancel();
         }
 
         if (extender != null)
         {
             // Cancel extender operation if any.
+            extender.cancel();
         }
 
         if (wrist != null)
         {
             // Cancel wrist operation if any.
+            wrist.cancel();
         }
 
         if (releaseOwnershipEvent != null)
@@ -210,12 +213,12 @@ public class ExtenderArm implements TrcExclusiveSubsystem
             // event.
             if (elbow != null)
             {
-
+                elbow.zeroCalibrate(owner, RobotParams.ElbowParams.ZERO_CAL_POWER, (TrcEvent) null);
             }
 
             if (extender != null)
             {
-
+                extender.zeroCalibrate(owner, RobotParams.ExtenderParams.ZERO_CAL_POWER, (TrcEvent) null);
             }
         }
     }   //zeroCalibrate

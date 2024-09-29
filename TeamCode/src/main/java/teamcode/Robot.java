@@ -304,23 +304,37 @@ public class Robot
                 {
                     if (extenderArm.elbow != null)
                     {
-
+                        dashboard.displayPrintf(
+                            ++lineNum,
+                            "Elbow: power=" + extenderArm.elbow.getPower() +
+                            ",pos=" + extenderArm.elbow.getPosition() + "/" + extenderArm.elbow.getEncoderRawPosition() +
+                            ",target=" + extenderArm.elbow.getPidTarget());
                     }
 
                     if (extenderArm.extender != null)
                     {
-
+                        dashboard.displayPrintf(
+                            ++lineNum,
+                            "Extender: power=" + extenderArm.extender.getPower() +
+                            ",pos=" + extenderArm.extender.getPosition() +
+                            ",target=" + extenderArm.extender.getPidTarget() +
+                            ",lowerLimitSw=" + extenderArm.extender.isLowerLimitSwitchActive());
                     }
 
                     if (extenderArm.wrist != null)
                     {
-
+                        dashboard.displayPrintf(++lineNum, "Wrist: pos=" + extenderArm.wrist.getPosition());
                     }
                 }
 
                 if (auxClimber != null)
                 {
-
+                    dashboard.displayPrintf(
+                        ++lineNum,
+                        "AuxClimber: power=" + auxClimber.getPower() +
+                        ",pos=" + auxClimber.getPosition() +
+                        ",target=" + auxClimber.getPidTarget() +
+                        ",lowerLimitSw=" + auxClimber.isLowerLimitSwitchActive());
                 }
 
                 if (grabber != null)
@@ -359,17 +373,17 @@ public class Robot
 
         if (extenderArm != null)
         {
-
+            extenderArm.cancel();
         }
 
         if (auxClimber != null)
         {
-
+            auxClimber.cancel();
         }
 
         if (grabber != null)
         {
-
+            grabber.cancelAutoAssist();
         }
     }   //cancelAll
 
@@ -387,7 +401,7 @@ public class Robot
 
         if (auxClimber != null)
         {
-
+            auxClimber.zeroCalibrate(owner, RobotParams.ClimberParams.ZERO_CAL_POWER);
         }
     }   //zeroCalibrate
 

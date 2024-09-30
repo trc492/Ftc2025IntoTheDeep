@@ -382,20 +382,20 @@ public class ExtenderArm implements TrcExclusiveSubsystem
      *
      * @param owner specifies the owner ID to check if the caller has ownership of the subsystem, can be null if
      *        caller is not claiming ownership.
-     * @param elbowAngle specifies the elbow angle.
-     * @param extenderPosition specifies the extender position.
-     * @param wristPosition specifies the wrist position.
+     * @param elbowAngle specifies the elbow angle, null if not moving elbow.
+     * @param extenderPosition specifies the extender position, null if not moving extender.
+     * @param wristPosition specifies the wrist position, null if not moving wrist.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
     public void setPosition(
-        String owner, double elbowAngle, double extenderPosition, double wristPosition, TrcEvent completionEvent)
+        String owner, Double elbowAngle, Double extenderPosition, Double wristPosition, TrcEvent completionEvent)
     {
         // Pseudocode:
-        // Move the wrist to the set position.
-        // If elbowAngle is the same as the current elbow angle
-        //    move extender to the set position
+        // If moving wrist, set wrist position.
+        // If not moving elbow
+        //    if moving extender, set extender position
         // else if extender is retracted
-        //    move elbow the the set angle
+        //    set elbow angle
         // else
         //    start a state machine that will do the following sequence:
         //      fully retract the extender

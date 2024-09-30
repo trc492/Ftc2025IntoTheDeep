@@ -29,11 +29,14 @@ import ftclib.driverio.FtcDashboard;
 import ftclib.driverio.FtcMatchInfo;
 import ftclib.robotcore.FtcOpMode;
 import ftclib.sensor.FtcRobotBattery;
+import teamcode.autotasks.TaskExtenderArm;
 import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.BlinkinLEDs;
-import teamcode.subsystems.ExtenderArm;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Grabber;
+import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.motor.TrcMotor;
 import trclib.motor.TrcServo;
@@ -66,7 +69,10 @@ public class Robot
     public BlinkinLEDs blinkin;
     public FtcRobotBattery battery;
     // Subsystems.
-    public ExtenderArm extenderArm;
+    public TrcMotor elbow;
+    public TrcMotor extender;
+    public TrcServo wrist;
+    public TaskExtenderArm extenderArm;
     public TrcMotor auxClimber;
     public TrcServoGrabber grabber;
 
@@ -116,11 +122,26 @@ public class Robot
             //
             if (RobotParams.Preferences.useSubsystems)
             {
-                if (RobotParams.Preferences.useElbow ||
-                    RobotParams.Preferences.useExtender ||
+                if (RobotParams.Preferences.useElbow)
+                {
+                    elbow = new Elbow().getMotor();
+                }
+
+                if (RobotParams.Preferences.useExtender)
+                {
+                    extender = new Extender().getMotor();
+                }
+
+                if (RobotParams.Preferences.useWrist)
+                {
+                    wrist = new Wrist().getServo();
+                }
+
+                if (RobotParams.Preferences.useElbow &&
+                    RobotParams.Preferences.useExtender &&
                     RobotParams.Preferences.useWrist)
                 {
-                    extenderArm = new ExtenderArm();
+                    extenderArm = new TaskExtenderArm("ExtenderArm", this);
                 }
 
                 if (RobotParams.Preferences.useAuxClimber)
@@ -300,30 +321,27 @@ public class Robot
             //
             if (RobotParams.Preferences.showSubsystems)
             {
-                if (extenderArm != null)
+                if (elbow != null)
                 {
-                    if (extenderArm.elbow != null)
-                    {
-                        dashboard.displayPrintf(
-                            lineNum++,
-                            "Elbow: power=" + extenderArm.elbow.getPower() +
-                            ",pos=" + extenderArm.elbow.getPosition() + "/" + extenderArm.elbow.getPidTarget() +
-                            ",limitSW=" + extenderArm.elbow.isLowerLimitSwitchActive());
-                    }
+                    dashboard.displayPrintf(
+                        lineNum++,
+                        "Elbow: power=" + elbow.getPower() +
+                        ",pos=" + elbow.getPosition() + "/" + elbow.getPidTarget() +
+                        ",limitSW=" + elbow.isLowerLimitSwitchActive());
+                }
 
-                    if (extenderArm.extender != null)
-                    {
-                        dashboard.displayPrintf(
-                            lineNum++,
-                            "Extender: power=" + extenderArm.extender.getPower() +
-                            ",pos=" + extenderArm.extender.getPosition() + "/" + extenderArm.extender.getPidTarget() +
-                            ",limitSw=" + extenderArm.extender.isLowerLimitSwitchActive());
-                    }
+                if (extender != null)
+                {
+                    dashboard.displayPrintf(
+                        lineNum++,
+                        "Extender: power=" + extender.getPower() +
+                        ",pos=" + extender.getPosition() + "/" + extender.getPidTarget() +
+                        ",limitSw=" + extender.isLowerLimitSwitchActive());
+                }
 
-                    if (extenderArm.wrist != null)
-                    {
-                        dashboard.displayPrintf(lineNum++, "Wrist: pos=" + extenderArm.wrist.getPosition());
-                    }
+                if (wrist != null)
+                {
+                    dashboard.displayPrintf(lineNum++, "Wrist: pos=" + wrist.getPosition());
                 }
 
                 if (auxClimber != null)
@@ -363,26 +381,13 @@ public class Robot
     {
         globalTracer.traceInfo(moduleName, "Cancel all operations.");
 
-        if (robotDrive != null)
-        {
-            // Cancel all auto-assist driving.
-            robotDrive.cancel();
-        }
-
-        if (extenderArm != null)
-        {
-            extenderArm.cancel();
-        }
-
-        if (auxClimber != null)
-        {
-            auxClimber.cancel();
-        }
-
-        if (grabber != null)
-        {
-            grabber.cancelAutoAssist();
-        }
+        if (extenderArm != null) extenderArm.cancel();
+        if (elbow != null) elbow.cancel();
+        if (extender != null) extender.cancel();
+        if (wrist != null) wrist.cancel();
+        if (auxClimber != null) auxClimber.cancel();
+        if (grabber != null) grabber.cancel();
+        if (robotDrive != null) robotDrive.cancel();
     }   //cancelAll
 
     /**
@@ -392,9 +397,14 @@ public class Robot
      */
     public void zeroCalibrate(String owner)
     {
-        if (extenderArm != null)
+        if (elbow != null)
         {
-            extenderArm.zeroCalibrate(owner, null);
+            elbow.zeroCalibrate(owner, RobotParams.ElbowParams.ZERO_CAL_POWER);
+        }
+
+        if (extender != null)
+        {
+            extender.zeroCalibrate(owner, RobotParams.ExtenderParams.ZERO_CAL_POWER);
         }
 
         if (auxClimber != null)

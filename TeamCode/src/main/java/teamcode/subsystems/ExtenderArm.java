@@ -32,26 +32,40 @@ import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcExclusiveSubsystem;
 import trclib.motor.TrcMotor;
+import trclib.robotcore.TrcRobot;
+import trclib.robotcore.TrcStateMachine;
+import trclib.robotcore.TrcTaskMgr;
 
 /**
  * This class creates the ExtenderArm subsystem which consists of an elbow, an extender and a wrist.
  */
 public class ExtenderArm implements TrcExclusiveSubsystem
-
 {
+    private final String moduleName = getClass().getSimpleName();
+
+    private enum State
+    {
+        RETRACT_EXTENDER,
+        SET_ELBOW_ANGLE,
+        SET_EXTENDER_POSITION,
+        DONE
+    }   //enum State
+
     private static class ZeroCalCallbackContext
     {
         boolean elbowZeroCalCompleted = false;
         boolean extenderZeroCalCompleted = false;
-        TrcEvent zeroCalCompletionEvent = null;
     }   //class ZeroCalCallbackContext
 
-    private final String moduleName = getClass().getSimpleName();
     public final TrcDbgTrace tracer;
     public final TrcMotor elbow;
     public final TrcMotor extender;
     public final TrcServo wrist;
-    private TrcEvent releaseOwnershipEvent = null;
+    private final TrcTaskMgr.TaskObject extenderArmTask;
+    private final TrcStateMachine<State> sm;
+    private final TrcEvent elbowEvent;
+    private final TrcEvent extenderEvent;
+    private TrcEvent completionEvent = null;
 
     /**
      * Constructor: Creates an instance of the object.
@@ -136,6 +150,11 @@ public class ExtenderArm implements TrcExclusiveSubsystem
         {
             wrist = null;
         }
+
+        extenderArmTask = TrcTaskMgr.createTask(moduleName + ".task", this::extenderArmTask);
+        sm = new TrcStateMachine<>(moduleName + ".sm");
+        elbowEvent = new TrcEvent(RobotParams.ElbowParams.SUBSYSTEM_NAME);
+        extenderEvent = new TrcEvent(RobotParams.ExtenderParams.SUBSYSTEM_NAME);
     }   //ExtenderArm
 
     /**
@@ -151,11 +170,90 @@ public class ExtenderArm implements TrcExclusiveSubsystem
     }   //toString
 
     /**
+     * This method enables/disables the Extender Arm Task.
+     *
+     * @param enabled specifies true to enable task, false to disable.
+     */
+    private void setTaskEnabled(boolean enabled)
+    {
+        boolean taskEnabled = extenderArmTask.isRegistered();
+
+        if (enabled && !taskEnabled)
+        {
+            // Enabling task.
+            sm.start(State.RETRACT_EXTENDER);
+            extenderArmTask.registerTask(TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
+        }
+        else if (!enabled && taskEnabled)
+        {
+            // Disabling task;
+            sm.stop();
+            extenderArmTask.unregisterTask();
+        }
+    }   //setTaskEnabled
+
+    /**
+     * This method is called to finish the operation. The operation can be finished either because it has been
+     * completed or it has been canceled.
+     *
+     * @param completed specified true if operation has been completed, false if canceled.
+     */
+    private void finish(boolean completed)
+    {
+        setTaskEnabled(false);
+        if (completionEvent != null)
+        {
+            if (completed)
+            {
+                completionEvent.signal();
+            }
+            else
+            {
+                completionEvent.cancel();
+            }
+            completionEvent = null;
+        }
+    }   //finish
+
+    /**
+     * This method is called periodically at the appropriate time this task is registered for.
+     *
+     * @param taskType specifies the type of task being run. This may be useful for handling multiple task types.
+     * @param runMode specifies the competition mode (e.g. Autonomous, TeleOp, Test).
+     * @param slowPeriodicLoop specifies true if it is running the slow periodic loop on the main robot thread,
+     *        false otherwise.
+     */
+    private void extenderArmTask(TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode, boolean slowPeriodicLoop)
+    {
+        State state = sm.checkReadyAndGetState();
+
+        if (state != null)
+        {
+            switch (state)
+            {
+                case RETRACT_EXTENDER:
+                    break;
+
+                case SET_ELBOW_ANGLE:
+                    break;
+
+                case SET_EXTENDER_POSITION:
+                    break;
+
+                case DONE:
+                default:
+                    finish(true);
+            }
+        }
+    }   //extenderArmTask
+
+    /**
      * This method cancels the ExtenderArm operation if there is any, regardless of ownership.
      */
     public void cancel()
     {
         tracer.traceInfo(moduleName, "Canceling ...");
+
         if (elbow != null)
         {
             // Cancel elbow operation if any.
@@ -174,12 +272,7 @@ public class ExtenderArm implements TrcExclusiveSubsystem
             wrist.cancel();
         }
 
-        if (releaseOwnershipEvent != null)
-        {
-            // We are holding ownership, release it.
-            releaseOwnershipEvent.cancel();
-            releaseOwnershipEvent = null;
-        }
+        finish(false);
     }   //cancel
 
     /**
@@ -208,10 +301,14 @@ public class ExtenderArm implements TrcExclusiveSubsystem
     public void zeroCalibrate(String owner, TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "owner=" + owner);
+        // Cancel previous operation if any.
         cancel(owner);
         // Acquires ownership on behalf of the caller if necessary.
-        releaseOwnershipEvent = acquireOwnership(owner, completionEvent, tracer);
-        if (releaseOwnershipEvent != null) completionEvent = releaseOwnershipEvent;
+        this.completionEvent = acquireOwnership(owner, completionEvent, tracer);
+        if (this.completionEvent == null)
+        {
+            this.completionEvent = completionEvent;
+        }
 
         if (validateOwnership(owner))
         {
@@ -219,17 +316,15 @@ public class ExtenderArm implements TrcExclusiveSubsystem
             // check if both zero calibration have been completed. If so, it will then signal the caller's completion
             // event.
             ZeroCalCallbackContext zeroCalCallbackContext = null;
-            if (completionEvent != null)
+            if (this.completionEvent != null)
             {
                 zeroCalCallbackContext = new ZeroCalCallbackContext();
-                zeroCalCallbackContext.zeroCalCompletionEvent = completionEvent;
             }
 
             if (elbow != null)
             {
                 // Signal ZeroCal event only if there is a completion event.
-                TrcEvent elbowZeroCalEvent = completionEvent != null?
-                    new TrcEvent(RobotParams.ElbowParams.SUBSYSTEM_NAME + ".zeroCalEvent"): null;
+                TrcEvent elbowZeroCalEvent = this.completionEvent != null? elbowEvent: null;
                 if (elbowZeroCalEvent != null)
                 {
                     elbowZeroCalEvent.setCallback(this::elbowZeroCalCallback, zeroCalCallbackContext);
@@ -240,8 +335,7 @@ public class ExtenderArm implements TrcExclusiveSubsystem
             if (extender != null)
             {
                 // Signal ZeroCal event only if there is a completion event.
-                TrcEvent extenderZeroCalEvent = completionEvent != null?
-                    new TrcEvent(RobotParams.ExtenderParams.SUBSYSTEM_NAME + ".zeroCalEvent"): null;
+                TrcEvent extenderZeroCalEvent = this.completionEvent != null? extenderEvent: null;
                 if (extenderZeroCalEvent != null)
                 {
                     extenderZeroCalEvent.setCallback(this::extenderZeroCalCallback, zeroCalCallbackContext);
@@ -251,6 +345,11 @@ public class ExtenderArm implements TrcExclusiveSubsystem
         }
     }   //zeroCalibrate
 
+    /**
+     * This method is called when elbow zero calibration is done.
+     *
+     * @param context specifies the ZeroCalCallback context object.
+     */
     private void elbowZeroCalCallback(Object context)
     {
         ZeroCalCallbackContext callbackContext = (ZeroCalCallbackContext) context;
@@ -258,10 +357,15 @@ public class ExtenderArm implements TrcExclusiveSubsystem
         callbackContext.elbowZeroCalCompleted = true;
         if (callbackContext.extenderZeroCalCompleted)
         {
-            callbackContext.zeroCalCompletionEvent.signal();
+            finish(true);
         }
     }   //elbowZeroCalCallback
 
+    /**
+     * This method is called when extender zero calibration is done.
+     *
+     * @param context specifies the ZeroCalCallback context object.
+     */
     private void extenderZeroCalCallback(Object context)
     {
         ZeroCalCallbackContext callbackContext = (ZeroCalCallbackContext) context;
@@ -269,7 +373,7 @@ public class ExtenderArm implements TrcExclusiveSubsystem
         callbackContext.extenderZeroCalCompleted = true;
         if (callbackContext.elbowZeroCalCompleted)
         {
-            callbackContext.zeroCalCompletionEvent.signal();
+            finish(true);
         }
     }   //extenderZeroCalCallback
 
@@ -286,7 +390,17 @@ public class ExtenderArm implements TrcExclusiveSubsystem
     public void setPosition(
         String owner, double elbowAngle, double extenderPosition, double wristPosition, TrcEvent completionEvent)
     {
-        // May have to use a state machine to make sure the three subsystems moves harmoniously in a sequence.
+        // Pseudocode:
+        // Move the wrist to the set position.
+        // If elbowAngle is the same as the current elbow angle
+        //    move extender to the set position
+        // else if extender is retracted
+        //    move elbow the the set angle
+        // else
+        //    start a state machine that will do the following sequence:
+        //      fully retract the extender
+        //      move elbow to the set angle
+        //      move extender to the set position
         setElbowAngle(owner, elbowAngle, RobotParams.ElbowParams.POWER_LIMIT, null);
         setExtenderPosition(owner, extenderPosition, RobotParams.ExtenderParams.POWER_LIMIT, null);
         setWristPosition(owner, 0.0, wristPosition, null, 0.0);

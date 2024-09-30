@@ -39,6 +39,13 @@ import trclib.motor.TrcMotor;
 public class ExtenderArm implements TrcExclusiveSubsystem
 
 {
+    private static class ZeroCalCallbackContext
+    {
+        boolean elbowZeroCalCompleted = false;
+        boolean extenderZeroCalCompleted = false;
+        TrcEvent zeroCalCompletionEvent = null;
+    }   //class ZeroCalCallbackContext
+
     private final String moduleName = getClass().getSimpleName();
     public final TrcDbgTrace tracer;
     public final TrcMotor elbow;
@@ -211,17 +218,60 @@ public class ExtenderArm implements TrcExclusiveSubsystem
             // Elbow and Extender zero calibration need to signal separate events which would trigger a callback to
             // check if both zero calibration have been completed. If so, it will then signal the caller's completion
             // event.
+            ZeroCalCallbackContext zeroCalCallbackContext = null;
+            if (completionEvent != null)
+            {
+                zeroCalCallbackContext = new ZeroCalCallbackContext();
+                zeroCalCallbackContext.zeroCalCompletionEvent = completionEvent;
+            }
+
             if (elbow != null)
             {
-                elbow.zeroCalibrate(owner, RobotParams.ElbowParams.ZERO_CAL_POWER, (TrcEvent) null);
+                // Signal ZeroCal event only if there is a completion event.
+                TrcEvent elbowZeroCalEvent = completionEvent != null?
+                    new TrcEvent(RobotParams.ElbowParams.SUBSYSTEM_NAME + ".zeroCalEvent"): null;
+                if (elbowZeroCalEvent != null)
+                {
+                    elbowZeroCalEvent.setCallback(this::elbowZeroCalCallback, zeroCalCallbackContext);
+                }
+                elbow.zeroCalibrate(owner, RobotParams.ElbowParams.ZERO_CAL_POWER, elbowZeroCalEvent);
             }
 
             if (extender != null)
             {
-                extender.zeroCalibrate(owner, RobotParams.ExtenderParams.ZERO_CAL_POWER, (TrcEvent) null);
+                // Signal ZeroCal event only if there is a completion event.
+                TrcEvent extenderZeroCalEvent = completionEvent != null?
+                    new TrcEvent(RobotParams.ExtenderParams.SUBSYSTEM_NAME + ".zeroCalEvent"): null;
+                if (extenderZeroCalEvent != null)
+                {
+                    extenderZeroCalEvent.setCallback(this::extenderZeroCalCallback, zeroCalCallbackContext);
+                }
+                extender.zeroCalibrate(owner, RobotParams.ExtenderParams.ZERO_CAL_POWER, extenderZeroCalEvent);
             }
         }
     }   //zeroCalibrate
+
+    private void elbowZeroCalCallback(Object context)
+    {
+        ZeroCalCallbackContext callbackContext = (ZeroCalCallbackContext) context;
+
+        callbackContext.elbowZeroCalCompleted = true;
+        if (callbackContext.extenderZeroCalCompleted)
+        {
+            callbackContext.zeroCalCompletionEvent.signal();
+        }
+    }   //elbowZeroCalCallback
+
+    private void extenderZeroCalCallback(Object context)
+    {
+        ZeroCalCallbackContext callbackContext = (ZeroCalCallbackContext) context;
+
+        callbackContext.extenderZeroCalCompleted = true;
+        if (callbackContext.elbowZeroCalCompleted)
+        {
+            callbackContext.zeroCalCompletionEvent.signal();
+        }
+    }   //extenderZeroCalCallback
 
     /**
      * This method sets the Elbow, Extender and Wrist to their specifies positions.

@@ -305,36 +305,34 @@ public class Robot
                     if (extenderArm.elbow != null)
                     {
                         dashboard.displayPrintf(
-                            ++lineNum,
+                            lineNum++,
                             "Elbow: power=" + extenderArm.elbow.getPower() +
-                            ",pos=" + extenderArm.elbow.getPosition() + "/" + extenderArm.elbow.getEncoderRawPosition() +
-                            ",target=" + extenderArm.elbow.getPidTarget());
+                            ",pos=" + extenderArm.elbow.getPosition() + "/" + extenderArm.elbow.getPidTarget() +
+                            ",limitSW=" + extenderArm.elbow.isLowerLimitSwitchActive());
                     }
 
                     if (extenderArm.extender != null)
                     {
                         dashboard.displayPrintf(
-                            ++lineNum,
+                            lineNum++,
                             "Extender: power=" + extenderArm.extender.getPower() +
-                            ",pos=" + extenderArm.extender.getPosition() +
-                            ",target=" + extenderArm.extender.getPidTarget() +
-                            ",lowerLimitSw=" + extenderArm.extender.isLowerLimitSwitchActive());
+                            ",pos=" + extenderArm.extender.getPosition() + "/" + extenderArm.extender.getPidTarget() +
+                            ",limitSw=" + extenderArm.extender.isLowerLimitSwitchActive());
                     }
 
                     if (extenderArm.wrist != null)
                     {
-                        dashboard.displayPrintf(++lineNum, "Wrist: pos=" + extenderArm.wrist.getPosition());
+                        dashboard.displayPrintf(lineNum++, "Wrist: pos=" + extenderArm.wrist.getPosition());
                     }
                 }
 
                 if (auxClimber != null)
                 {
                     dashboard.displayPrintf(
-                        ++lineNum,
+                        lineNum++,
                         "AuxClimber: power=" + auxClimber.getPower() +
-                        ",pos=" + auxClimber.getPosition() +
-                        ",target=" + auxClimber.getPidTarget() +
-                        ",lowerLimitSw=" + auxClimber.isLowerLimitSwitchActive());
+                        ",pos=" + auxClimber.getPosition() + "/" + auxClimber.getPidTarget() +
+                        ",limitSw=" + auxClimber.isLowerLimitSwitchActive());
                 }
 
                 if (grabber != null)

@@ -39,7 +39,7 @@ public class AuxClimber
      */
     public AuxClimber()
     {
-        // Create a FtcMotorActuator for the Climber.\
+        // Create a FtcMotorActuator for the Climber.
         FtcMotorActuator.Params climberParams = new FtcMotorActuator.Params()
             .setPrimaryMotor(
                 RobotParams.ClimberParams.MOTOR_NAME, RobotParams.ClimberParams.MOTOR_TYPE,

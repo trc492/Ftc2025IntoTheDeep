@@ -296,18 +296,18 @@ public class ExtenderArm implements TrcExclusiveSubsystem
      *
      * @param owner specifies the owner ID to check if the caller has ownership of the subsystem, can be null if
      *        caller is not claiming ownership.
-     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
+     * @param event specifies the event to signal when completed, can be null if not provided.
      */
-    public void zeroCalibrate(String owner, TrcEvent completionEvent)
+    public void zeroCalibrate(String owner, TrcEvent event)
     {
         tracer.traceInfo(moduleName, "owner=" + owner);
         // Cancel previous operation if any.
         cancel(owner);
         // Acquires ownership on behalf of the caller if necessary.
-        this.completionEvent = acquireOwnership(owner, completionEvent, tracer);
-        if (this.completionEvent == null)
+        completionEvent = acquireOwnership(owner, event, tracer);
+        if (completionEvent == null)
         {
-            this.completionEvent = completionEvent;
+            completionEvent = event;
         }
 
         if (validateOwnership(owner))
@@ -316,7 +316,7 @@ public class ExtenderArm implements TrcExclusiveSubsystem
             // check if both zero calibration have been completed. If so, it will then signal the caller's completion
             // event.
             ZeroCalCallbackContext zeroCalCallbackContext = null;
-            if (this.completionEvent != null)
+            if (completionEvent != null)
             {
                 zeroCalCallbackContext = new ZeroCalCallbackContext();
             }
@@ -324,7 +324,7 @@ public class ExtenderArm implements TrcExclusiveSubsystem
             if (elbow != null)
             {
                 // Signal ZeroCal event only if there is a completion event.
-                TrcEvent elbowZeroCalEvent = this.completionEvent != null? elbowEvent: null;
+                TrcEvent elbowZeroCalEvent = completionEvent != null? elbowEvent: null;
                 if (elbowZeroCalEvent != null)
                 {
                     elbowZeroCalEvent.setCallback(this::elbowZeroCalCallback, zeroCalCallbackContext);
@@ -335,7 +335,7 @@ public class ExtenderArm implements TrcExclusiveSubsystem
             if (extender != null)
             {
                 // Signal ZeroCal event only if there is a completion event.
-                TrcEvent extenderZeroCalEvent = this.completionEvent != null? extenderEvent: null;
+                TrcEvent extenderZeroCalEvent = completionEvent != null? extenderEvent: null;
                 if (extenderZeroCalEvent != null)
                 {
                     extenderZeroCalEvent.setCallback(this::extenderZeroCalCallback, zeroCalCallbackContext);
@@ -385,10 +385,10 @@ public class ExtenderArm implements TrcExclusiveSubsystem
      * @param elbowAngle specifies the elbow angle, null if not moving elbow.
      * @param extenderPosition specifies the extender position, null if not moving extender.
      * @param wristPosition specifies the wrist position, null if not moving wrist.
-     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
+     * @param event specifies the event to signal when completed, can be null if not provided.
      */
     public void setPosition(
-        String owner, Double elbowAngle, Double extenderPosition, Double wristPosition, TrcEvent completionEvent)
+        String owner, Double elbowAngle, Double extenderPosition, Double wristPosition, TrcEvent event)
     {
         // Pseudocode:
         // If moving wrist, set wrist position.
@@ -428,13 +428,13 @@ public class ExtenderArm implements TrcExclusiveSubsystem
      *        caller is not claiming ownership.
      * @param pos specifies the elbow angle.
      * @param powerLimit specifies the maximum power limit the Elbow is moving.
-     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
+     * @param event specifies the event to signal when completed, can be null if not provided.
      */
-    public void setElbowAngle(String owner, double pos, double powerLimit, TrcEvent completionEvent)
+    public void setElbowAngle(String owner, double pos, double powerLimit, TrcEvent event)
     {
         if (elbow != null)
         {
-            elbow.setPosition(owner, 0.0, pos, true, powerLimit, completionEvent, 0.0);
+            elbow.setPosition(owner, 0.0, pos, true, powerLimit, event, 0.0);
         }
     }   //setElbowAngle
 
@@ -481,13 +481,13 @@ public class ExtenderArm implements TrcExclusiveSubsystem
      *        caller is not claiming ownership.
      * @param pos specifies the extender position.
      * @param powerLimit specifies the maximum power limit the Extender is moving.
-     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
+     * @param event specifies the event to signal when completed, can be null if not provided.
      */
-    public void setExtenderPosition(String owner, double pos, double powerLimit, TrcEvent completionEvent)
+    public void setExtenderPosition(String owner, double pos, double powerLimit, TrcEvent event)
     {
         if (extender != null)
         {
-            extender.setPosition(owner, 0.0, pos, true, powerLimit, completionEvent, 0.0);
+            extender.setPosition(owner, 0.0, pos, true, powerLimit, event, 0.0);
         }
     }   //setExtenderPosition
 
@@ -534,14 +534,14 @@ public class ExtenderArm implements TrcExclusiveSubsystem
      * @param delay specifies the delay in seconds before setting the position of the servo, can be zero if no delay.
      * @param position specifies the physical position of the servo motor. This value may be in degrees if
      *        setPhysicalPosRange is called with the degree range.
-     * @param completionEvent specifies an event object to signal when the timeout event has expired.
+     * @param event specifies an event object to signal when the timeout event has expired.
      * @param timeout specifies a maximum time value the operation should be completed in seconds.
      */
-    public void setWristPosition(String owner, double delay, double position, TrcEvent completionEvent, double timeout)
+    public void setWristPosition(String owner, double delay, double position, TrcEvent event, double timeout)
     {
         if (wrist != null)
         {
-            wrist.setPosition(owner, delay, position, completionEvent, timeout);
+            wrist.setPosition(owner, delay, position, event, timeout);
         }
     }   //wristSetPosition
 

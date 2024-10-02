@@ -31,6 +31,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import ftclib.drivebase.FtcRobotDrive;
 import ftclib.drivebase.FtcSwerveDrive;
 import ftclib.motor.FtcMotorActuator.MotorType;
+import ftclib.sensor.FtcPinpointOdometry;
 import ftclib.sensor.FtcSparkFunOtos;
 import trclib.dataprocessor.TrcUtil;
 import trclib.drivebase.TrcDriveBase;
@@ -144,7 +145,7 @@ public class RobotParams
     public static class Preferences
     {
         // Global config
-        public static final RobotType robotType                 = RobotType.CenterStageRobot;
+        public static final RobotType robotType                 = RobotType.IntoTheDeepRobot;
         public static final boolean inCompetition               = false;
         public static final boolean useTraceLog                 = true;
         public static final boolean useLoopPerformanceMonitor   = true;
@@ -153,8 +154,8 @@ public class RobotParams
         public static final boolean doStatusUpdate              = !inCompetition;
         public static final boolean showSubsystems              = true;
         // Vision
-        public static final boolean useVision                   = true;
-        public static final boolean useWebCam                   = true;     // false to use Android phone camera.
+        public static final boolean useVision                   = false;
+        public static final boolean useWebCam                   = false;     // false to use Android phone camera.
         public static final boolean useBuiltinCamBack           = false;    // For Android Phone as Robot Controller.
         public static final boolean tuneColorBlobVision         = false;
         public static final boolean useAprilTagVision           = true;
@@ -163,7 +164,9 @@ public class RobotParams
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;
         // Drive Base
-        public static final boolean useDriveBase                = false;
+        public static final boolean useDriveBase                = true;
+        public static final boolean usePinpointOdometry         = true;
+        public static final boolean useSparkfunOTOS             = false;
         // Subsystems
         public static final boolean useSubsystems               = false;
         public static final boolean useElbow                    = false;
@@ -291,14 +294,14 @@ public class RobotParams
             wheelBaseLength = (24.0 * 14)*TrcUtil.INCHES_PER_MM;
             wheelBaseWidth = 16.0;
             // IMU
-            imuName = "imu";
+            imuName = null;
             hubLogoDirection = LogoFacingDirection.UP;
             hubUsbDirection = UsbFacingDirection.FORWARD;
             // Drive Motors
             driveMotorType = MotorType.DcMotor;
             driveMotorNames = new String[] {"lfDriveMotor", "rfDriveMotor", "lbDriveMotor", "rbDriveMotor"};
             driveMotorInverted = new boolean[] {true, false, true, false};
-            odometryType = null;//TrcDriveBase.OdometryType.AbsoluteOdometry;
+            odometryType = TrcDriveBase.OdometryType.AbsoluteOdometry;
             // Odometry Wheels
             odWheelXScale = odWheelYScale = Math.PI * ODWHEEL_DIAMETER / ODWHEEL_CPR;
             xOdWheelSensorNames = new String[] {"xOdWheelSensor"};
@@ -312,10 +315,21 @@ public class RobotParams
             // Absolute Odometry
             if (odometryType == TrcDriveBase.OdometryType.AbsoluteOdometry)
             {
-                FtcSparkFunOtos.Config otosConfig = new FtcSparkFunOtos.Config()
-                    .setOffset(0.0, 0.0, 0.0)
-                    .setScale(1.0, 1.0);
-                absoluteOdometry = new FtcSparkFunOtos("SparkfunOtos", otosConfig);
+                if (RobotParams.Preferences.usePinpointOdometry)
+                {
+                    FtcPinpointOdometry.Config ppOdoConfig = new FtcPinpointOdometry.Config()
+                        .setPodOffsets(0.0, 0.0)
+                        .setEncoderResolution(ODWHEEL_CPR / Math.PI * ODWHEEL_DIAMETER)
+                        .setEncodersInverted(false, false);
+                    absoluteOdometry = new FtcPinpointOdometry("pinpointOdo", ppOdoConfig);
+                }
+                else if (RobotParams.Preferences.useSparkfunOTOS)
+                {
+                    FtcSparkFunOtos.Config otosConfig = new FtcSparkFunOtos.Config()
+                        .setOffset(0.0, 0.0, 0.0)
+                        .setScale(1.0, 1.0);
+                    absoluteOdometry = new FtcSparkFunOtos("sparkfunOtos", otosConfig);
+                }
             }
             else
             {

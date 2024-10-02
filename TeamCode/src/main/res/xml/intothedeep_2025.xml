@@ -27,18 +27,19 @@ SOFTWARE.
     <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
         <LynxModule name="Control Hub" port="173">
             <goBILDA5202SeriesMotor name="rfDriveMotor" port="0"/>
-            <goBILDA5202SeriesMotor name="launcher" port="1"/>
             <goBILDA5202SeriesMotor name="rbDriveMotor" port="3"/>
-            <Servo name="pixelTray.lowerGate" port="0" />
-            <Servo name="wrist.followerServo" port="1" />
+            <goBILDA5202SeriesMotor name="lfDriveMotor" port="1"/>
+            <goBILDA5202SeriesMotor name="lbDriveMotor" port="2"/>
             <RevBlinkinLedDriver name="blinkin" port="5" />
-            <REV_VL53L0X_RANGE_SENSOR name="intake.sensor" port="0" bus="1"/>
-            <SparkFunOTOS name="otos" port="0" bus="2"/>
-            <OctoQuadFTC name="octoquad" port="0" bus="3"/>
+            <goBILDAPinpoint name="pinpointOdo" port="0" bus="1"/>
             <!--
-            <ControlHubImuBHI260AP name="imu" port="0" bus="0"/>
+            <SparkFunOTOS name="sparkfunOtos" port="0" bus="1"/>
+            <OctoQuadFTC name="octoquad" port="0" bus="1"/>
+            <REV_VL53L0X_RANGE_SENSOR name="intake.sensor" port="0" bus="1"/>
             -->
+            <ControlHubImuBHI260AP name="imu" port="0" bus="0"/>
         </LynxModule>
+        <!--
         <LynxModule name="Expansion Hub 3" port="3">
             <goBILDA5202SeriesMotor name="lfDriveMotor" port="0"/>
             <goBILDA5202SeriesMotor name="elevator.motor" port="1" />
@@ -53,5 +54,6 @@ SOFTWARE.
             <LynxEmbeddedIMU name="imu" port="0" bus="0"/>
             <REV_VL53L0X_RANGE_SENSOR name="wrist.sensor" port="0" bus="1"/>
         </LynxModule>
+        -->
     </LynxUsbDevice>
 </Robot>

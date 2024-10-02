@@ -34,6 +34,7 @@ import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.BlinkinLEDs;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.Intake;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
@@ -44,6 +45,7 @@ import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcRobot;
 import trclib.sensor.TrcDigitalInput;
+import trclib.subsystem.TrcIntake;
 import trclib.subsystem.TrcServoGrabber;
 import trclib.timer.TrcTimer;
 
@@ -74,6 +76,7 @@ public class Robot
     public TrcServo wrist;
     public TaskExtenderArm extenderArm;
     public TrcMotor auxClimber;
+    public TrcIntake intake;
     public TrcServoGrabber grabber;
 
     /**
@@ -147,6 +150,11 @@ public class Robot
                 if (RobotParams.Preferences.useAuxClimber)
                 {
                     auxClimber = new AuxClimber().getClimber();
+                }
+
+                if (RobotParams.Preferences.useIntake)
+                {
+                    intake = new Intake().getIntake();
                 }
 
                 if (RobotParams.Preferences.useGrabber)
@@ -353,6 +361,11 @@ public class Robot
                         ",limitSw=" + auxClimber.isLowerLimitSwitchActive());
                 }
 
+                if (intake != null)
+                {
+                    dashboard.displayPrintf(lineNum++, "Intake: power=" + intake.getPower());
+                }
+
                 if (grabber != null)
                 {
                     if (RobotParams.GrabberParams.USE_REV_2M_SENSOR)
@@ -386,6 +399,7 @@ public class Robot
         if (extender != null) extender.cancel();
         if (wrist != null) wrist.cancel();
         if (auxClimber != null) auxClimber.cancel();
+        if (intake != null) intake.cancel();
         if (grabber != null) grabber.cancel();
         if (robotDrive != null) robotDrive.cancel();
     }   //cancelAll

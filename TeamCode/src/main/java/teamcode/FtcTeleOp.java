@@ -373,7 +373,17 @@ public class FtcTeleOp extends FtcOpMode
         switch (button)
         {
             case A:
+                if (robot.intake != null)
+                {
+                    robot.intake.setPower(pressed? RobotParams.IntakeParams.FORWARD_POWER: 0.0);
+                }
+                break;
+
             case B:
+                if (robot.intake != null)
+                {
+                    robot.intake.setPower(pressed? RobotParams.IntakeParams.REVERSE_POWER: 0.0);
+                }
                 break;
 
             case X:

@@ -164,15 +164,16 @@ public class RobotParams
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;
         // Drive Base
-        public static final boolean useDriveBase                = true;
+        public static final boolean useDriveBase                = false;
         public static final boolean usePinpointOdometry         = true;
         public static final boolean useSparkfunOTOS             = false;
         // Subsystems
-        public static final boolean useSubsystems               = false;
+        public static final boolean useSubsystems               = true;
         public static final boolean useElbow                    = false;
         public static final boolean useExtender                 = false;
         public static final boolean useWrist                    = false;
         public static final boolean useAuxClimber               = false;
+        public static final boolean useIntake                   = true;
         public static final boolean useGrabber                  = false;
     }   //class Preferences
 

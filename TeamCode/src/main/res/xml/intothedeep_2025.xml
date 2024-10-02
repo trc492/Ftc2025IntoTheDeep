@@ -32,6 +32,9 @@ SOFTWARE.
             <goBILDA5202SeriesMotor name="lbDriveMotor" port="2"/>
             <RevBlinkinLedDriver name="blinkin" port="5" />
             <goBILDAPinpoint name="pinpointOdo" port="0" bus="1"/>
+            <ContinuousRotationServo name="Intake.primary" port="0" />
+            <ContinuousRotationServo name="Intake.follower" port="1" />
+            <REV_VL53L0X_RANGE_SENSOR name="Intake.sensor" port="0" bus="1"/>
             <!--
             <SparkFunOTOS name="sparkfunOtos" port="0" bus="1"/>
             <OctoQuadFTC name="octoquad" port="0" bus="1"/>

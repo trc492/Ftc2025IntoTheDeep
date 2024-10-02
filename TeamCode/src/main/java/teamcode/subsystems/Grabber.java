@@ -44,10 +44,10 @@ public class Grabber
      */
     public Grabber()
     {
-        if (RobotParams.Grabber.USE_REV_2M_SENSOR)
+        if (RobotParams.GrabberParams.USE_REV_2M_SENSOR)
         {
             rev2mSensor = FtcOpMode.getInstance().hardwareMap.get(
-                Rev2mDistanceSensor.class, RobotParams.Grabber.REV_2M_SENSOR_NAME);
+                Rev2mDistanceSensor.class, RobotParams.GrabberParams.REV_2M_SENSOR_NAME);
         }
         else
         {
@@ -55,24 +55,29 @@ public class Grabber
         }
 
         FtcServoGrabber.Params grabberParams = new FtcServoGrabber.Params()
-            .setPrimaryServo(RobotParams.Grabber.PRIMARY_SERVO_NAME, RobotParams.Grabber.PRIMARY_SERVO_INVERTED)
-            .setFollowerServo(RobotParams.Grabber.FOLLOWER_SERVO_NAME, RobotParams.Grabber.FOLLOWER_SERVO_INVERTED)
-            .setOpenCloseParams(RobotParams.Grabber.OPEN_POS, RobotParams.Grabber.OPEN_TIME,
-                                RobotParams.Grabber.CLOSE_POS, RobotParams.Grabber.CLOSE_TIME);
+            .setPrimaryServo(
+                RobotParams.GrabberParams.PRIMARY_SERVO_NAME, RobotParams.GrabberParams.PRIMARY_SERVO_INVERTED)
+            .setFollowerServo(RobotParams.GrabberParams.FOLLOWER_SERVO_NAME,
+                              RobotParams.GrabberParams.FOLLOWER_SERVO_INVERTED)
+            .setOpenCloseParams(
+                RobotParams.GrabberParams.OPEN_POS, RobotParams.GrabberParams.OPEN_TIME,
+                RobotParams.GrabberParams.CLOSE_POS, RobotParams.GrabberParams.CLOSE_TIME);
 
         if (rev2mSensor != null)
         {
             grabberParams.setAnalogSensorTrigger(
-                this::getSensorData, RobotParams.Grabber.ANALOG_TRIGGER_INVERTED,
-                RobotParams.Grabber.SENSOR_TRIGGER_THRESHOLD, RobotParams.Grabber.HAS_OBJECT_THRESHOLD, null);
+                this::getSensorData, RobotParams.GrabberParams.ANALOG_TRIGGER_INVERTED,
+                RobotParams.GrabberParams.SENSOR_TRIGGER_THRESHOLD, RobotParams.GrabberParams.HAS_OBJECT_THRESHOLD,
+                null);
         }
-        else if (RobotParams.Grabber.USE_DIGITAL_SENSOR)
+        else if (RobotParams.GrabberParams.USE_DIGITAL_SENSOR)
         {
             grabberParams.setDigitalInputTrigger(
-                RobotParams.Grabber.DIGITAL_SENSOR_NAME, RobotParams.Grabber.DIGITAL_TRIGGER_INVERTED, null);
+                RobotParams.GrabberParams.DIGITAL_SENSOR_NAME, RobotParams.GrabberParams.DIGITAL_TRIGGER_INVERTED,
+                null);
         }
 
-        grabber = new FtcServoGrabber(RobotParams.Grabber.SUBSYSTEM_NAME, grabberParams).getGrabber();
+        grabber = new FtcServoGrabber(RobotParams.GrabberParams.SUBSYSTEM_NAME, grabberParams).getGrabber();
         grabber.open();
     }   //Grabber
 

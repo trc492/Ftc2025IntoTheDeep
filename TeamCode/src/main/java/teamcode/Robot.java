@@ -355,14 +355,14 @@ public class Robot
 
                 if (grabber != null)
                 {
-                    if (RobotParams.Grabber.USE_REV_2M_SENSOR)
+                    if (RobotParams.GrabberParams.USE_REV_2M_SENSOR)
                     {
                         dashboard.displayPrintf(
                             lineNum++, "Grabber: pos=%.3f, hasObject=%s, sensorValue=%.3f, autoActive=%s",
                             grabber.getPosition(), grabber.hasObject(), grabber.getSensorValue(),
                             grabber.isAutoAssistActive());
                     }
-                    else if (RobotParams.Grabber.USE_DIGITAL_SENSOR)
+                    else if (RobotParams.GrabberParams.USE_DIGITAL_SENSOR)
                     {
                         dashboard.displayPrintf(
                             lineNum++, "Grabber: pos=%.3f, hasObject=%s, sensorState=%s, autoActive=%s",

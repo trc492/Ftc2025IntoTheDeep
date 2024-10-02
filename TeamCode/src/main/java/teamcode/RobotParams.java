@@ -730,18 +730,17 @@ public class RobotParams
         public static final double POS_PRESET_TOLERANCE         = 1.0;
     }   //class ClimberParams
 
-    public static final class Intake
+    public static final class IntakeParams
     {
         public static final String SUBSYSTEM_NAME               = "Intake";
-        public static final boolean TWO_MOTOR_INTAKE            = true;
 
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.CRServo;
-        public static final boolean PRIMARY_MOTOR_INVERTED      = !TWO_MOTOR_INTAKE;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = false;
 
         public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
         public static final MotorType FOLLOWER_MOTOR_TYPE       = MotorType.CRServo;
-        public static final boolean FOLLOWER_MOTOR_INVERTED     = PRIMARY_MOTOR_INVERTED;
+        public static final boolean FOLLOWER_MOTOR_INVERTED     = !PRIMARY_MOTOR_INVERTED;
 
         public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
         public static final boolean SENSOR_INVERTED             = false;
@@ -751,9 +750,9 @@ public class RobotParams
         public static final double REVERSE_POWER                = -0.5;
         public static final double RETAIN_POWER                 = 0.0;
         public static final double FINISH_DELAY                 = 0.0;
-    }   //class Intake
+    }   //class IntakeParams
 
-    public static final class Grabber
+    public static final class GrabberParams
     {
         public static final String SUBSYSTEM_NAME               = "Grabber";
 
@@ -777,6 +776,6 @@ public class RobotParams
         public static final boolean USE_DIGITAL_SENSOR          = false;
         public static final String DIGITAL_SENSOR_NAME          = SUBSYSTEM_NAME + ".sensor";
         public static final boolean DIGITAL_TRIGGER_INVERTED    = false;
-    }   //class Grabber
+    }   //class GrabberParams
 
 }   //class RobotParams

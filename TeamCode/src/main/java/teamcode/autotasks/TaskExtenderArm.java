@@ -214,15 +214,35 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             //      move elbow to the set angle
             //      move extender to the set position
             case SET_POSITION:
-                break;
-
-            case RETRACT_EXTENDER:
+                if (taskParams.wristPosition != null) // if moving wrist
+                {
+                    robot.wrist.setPosition(currOwner, 0.0, taskParams.wristPosition, null, 0.0); // set wrist position
+                }
+                else if (taskParams.elbowAngle == null) // if not moving elbow
+                {
+                        if (taskParams.extenderPosition != null) // if moving extender
+                        {
+                            robot.extender.setPosition(currOwner, 0.0, taskParams.extenderPosition, true, RobotParams.ExtenderParams.POWER_LIMIT, extenderEvent, 0.0); // set extender position
+                        }
+                }
+                else if (Math.abs(robot.extender.getPosition()-taskParams.extenderPosition) < 0.05) // if extender is retracted
+                {
+                    robot.elbow.setPosition(currOwner, 0.0, taskParams.elbowAngle, true, RobotParams.ElbowParams.POWER_LIMIT, elbowEvent, 0.0); // set elbow angle
+                }
+                else{
+                    robot.extender.setPosition(currOwner, 0.0, 0.0, true, RobotParams.ExtenderParams.POWER_LIMIT, extenderEvent, 0.0); // retracting extender
+                    sm.setState(State.SET_ELBOW_ANGLE); // moving to set elbow angle state
+                }
                 break;
 
             case SET_ELBOW_ANGLE:
+                robot.elbow.setPosition(currOwner, 0.0, taskParams.elbowAngle, true, RobotParams.ElbowParams.POWER_LIMIT, elbowEvent, 0.0); // set elbow angle
+                sm.setState(State.SET_EXTENDER_POSITION); // moving to set extender position state
                 break;
 
             case SET_EXTENDER_POSITION:
+                robot.extender.setPosition(currOwner, 0.0, taskParams.extenderPosition, true, RobotParams.ExtenderParams.POWER_LIMIT, extenderEvent, 0.0); // set extender position
+                sm.setState(State.DONE); // moving to done state
                 break;
 
             default:

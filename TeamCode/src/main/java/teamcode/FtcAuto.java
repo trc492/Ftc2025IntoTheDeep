@@ -56,10 +56,10 @@ public class FtcAuto extends FtcOpMode
 
     public enum AutoStrategy
     {
+        FULL_AUTO,
         PID_DRIVE,
         TIMED_DRIVE,
-        DO_NOTHING,
-        FULL_AUTO
+        DO_NOTHING
     }   //enum AutoStrategy
 
     public enum StartPos
@@ -72,19 +72,19 @@ public class FtcAuto extends FtcOpMode
     {
         SPECIMEN,
         SAMPLE
-    }
+    }   //enum PreloadType
 
     public enum ScoreHeight
     {
         HIGH,
         LOW
-    }
+    }   //enum ScoreHeight
 
     public enum ParkOption
     {
         PARK,
         NO_PARK
-    }
+    }   //enum ParkOption
 
     /**
      * This class stores the autonomous menu choices.
@@ -95,7 +95,7 @@ public class FtcAuto extends FtcOpMode
         public Alliance alliance = Alliance.RED_ALLIANCE;
         public AutoStrategy strategy = AutoStrategy.FULL_AUTO;
         public StartPos startPos = StartPos.BASKET;
-        public PreloadType preload = PreloadType.SPECIMEN;
+        public PreloadType preloadType = PreloadType.SPECIMEN;
         public ScoreHeight scoreHeight = ScoreHeight.HIGH;
         public ParkOption parkOption = ParkOption.PARK;
         public double xTarget = 0.0;
@@ -122,7 +122,8 @@ public class FtcAuto extends FtcOpMode
                 "turnTarget=%.0f " +
                 "driveTime=%.0f " +
                 "drivePower=%.1f",
-                delay, alliance, startPos, strategy, preload, scoreHeight, parkOption, xTarget, yTarget, turnTarget, driveTime, drivePower);
+                delay, alliance, startPos, strategy, preloadType, scoreHeight, parkOption,
+                xTarget, yTarget, turnTarget, driveTime, drivePower);
         }   //toString
 
     }   //class AutoChoices
@@ -165,6 +166,20 @@ public class FtcAuto extends FtcOpMode
         //
         switch (autoChoices.strategy)
         {
+            case FULL_AUTO:
+                if (robot.robotDrive != null)
+                {
+                    if (autoChoices.startPos == StartPos.BASKET)
+                    {
+//                      autoCommand = new CmdAutoBasket();
+                    }
+                    else if (autoChoices.startPos == StartPos.OBSERVATION)
+                    {
+//                        autoCommand = new CmdAutoObservation();
+                    }
+                }
+                break;
+
             case PID_DRIVE:
                 if (robot.robotDrive != null)
                 {
@@ -364,13 +379,13 @@ public class FtcAuto extends FtcOpMode
         allianceMenu.addChoice("Red", Alliance.RED_ALLIANCE, true, strategyMenu);
         allianceMenu.addChoice("Blue", Alliance.BLUE_ALLIANCE, false, strategyMenu);
 
+        strategyMenu.addChoice("Full Auto", AutoStrategy.FULL_AUTO, true, startPosMenu);
         strategyMenu.addChoice("PID Drive", AutoStrategy.PID_DRIVE, false, xTargetMenu);
         strategyMenu.addChoice("Timed Drive", AutoStrategy.TIMED_DRIVE, false, driveTimeMenu);
-        strategyMenu.addChoice("Do nothing", AutoStrategy.DO_NOTHING, true);
-        strategyMenu.addChoice("Full Auto", AutoStrategy.FULL_AUTO, true, startPosMenu);
+        strategyMenu.addChoice("Do nothing", AutoStrategy.DO_NOTHING, false);
 
-        startPosMenu.addChoice("Start Position Basket Side", StartPos.BASKET, true, preloadTypeMenu);
-        startPosMenu.addChoice("Start Position Spec Side", StartPos.OBSERVATION, false, preloadTypeMenu);
+        startPosMenu.addChoice("Start Basket Side", StartPos.BASKET, true, preloadTypeMenu);
+        startPosMenu.addChoice("Start Observation Side", StartPos.OBSERVATION, false, preloadTypeMenu);
 
         preloadTypeMenu.addChoice("Preload Specimen", PreloadType.SPECIMEN, true, scoreHeightMenu);
         preloadTypeMenu.addChoice("Preload Sample", PreloadType.SAMPLE, false, scoreHeightMenu);
@@ -392,7 +407,7 @@ public class FtcAuto extends FtcOpMode
         autoChoices.alliance = allianceMenu.getCurrentChoiceObject();
         autoChoices.strategy = strategyMenu.getCurrentChoiceObject();
         autoChoices.startPos = startPosMenu.getCurrentChoiceObject();
-        autoChoices.preload = preloadTypeMenu.getCurrentChoiceObject();
+        autoChoices.preloadType = preloadTypeMenu.getCurrentChoiceObject();
         autoChoices.scoreHeight = scoreHeightMenu.getCurrentChoiceObject();
         autoChoices.parkOption = parkOptionMenu.getCurrentChoiceObject();
         autoChoices.xTarget = xTargetMenu.getCurrentValue();

@@ -54,18 +54,37 @@ public class FtcAuto extends FtcOpMode
         BLUE_ALLIANCE
     }   //enum Alliance
 
-    public enum StartPos
-    {
-        LEFT,
-        RIGHT
-    }   //enum StartPos
-
     public enum AutoStrategy
     {
         PID_DRIVE,
         TIMED_DRIVE,
-        DO_NOTHING
+        DO_NOTHING,
+        FULL_AUTO
     }   //enum AutoStrategy
+
+    public enum StartPos
+    {
+        BASKET,
+        OBSERVATION
+    }   //enum StartPos
+
+    public enum PreloadType
+    {
+        SPECIMEN,
+        SAMPLE
+    }
+
+    public enum ScoreHeight
+    {
+        HIGH,
+        LOW
+    }
+
+    public enum ParkOption
+    {
+        PARK,
+        NO_PARK
+    }
 
     /**
      * This class stores the autonomous menu choices.
@@ -74,8 +93,11 @@ public class FtcAuto extends FtcOpMode
     {
         public double delay = 0.0;
         public Alliance alliance = Alliance.RED_ALLIANCE;
-        public StartPos startPos = StartPos.LEFT;
-        public AutoStrategy strategy = AutoStrategy.DO_NOTHING;
+        public AutoStrategy strategy = AutoStrategy.FULL_AUTO;
+        public StartPos startPos = StartPos.BASKET;
+        public PreloadType preload = PreloadType.SPECIMEN;
+        public ScoreHeight scoreHeight = ScoreHeight.HIGH;
+        public ParkOption parkOption = ParkOption.PARK;
         public double xTarget = 0.0;
         public double yTarget = 0.0;
         public double turnTarget = 0.0;
@@ -90,14 +112,17 @@ public class FtcAuto extends FtcOpMode
                 Locale.US,
                 "delay=%.0f " +
                 "alliance=\"%s\" " +
-                "startPos=\"%s\" " +
                 "strategy=\"%s\" " +
+                "startPos=\"%s\" " +
+                "preload=\"%s\" " +
+                "scoreHeight=\"%s\" " +
+                "parkOption=\"%s\" " +
                 "xTarget=%.1f " +
                 "yTarget=%.1f " +
                 "turnTarget=%.0f " +
                 "driveTime=%.0f " +
                 "drivePower=%.1f",
-                delay, alliance, startPos, strategy, xTarget, yTarget, turnTarget, driveTime, drivePower);
+                delay, alliance, startPos, strategy, preload, scoreHeight, parkOption, xTarget, yTarget, turnTarget, driveTime, drivePower);
         }   //toString
 
     }   //class AutoChoices
@@ -310,11 +335,14 @@ public class FtcAuto extends FtcOpMode
         //
         FtcValueMenu delayMenu = new FtcValueMenu("Delay time:", null, 0.0, 30.0, 1.0, 0.0, " %.0f sec");
         FtcChoiceMenu<Alliance> allianceMenu = new FtcChoiceMenu<>("Alliance:", delayMenu);
-        FtcChoiceMenu<StartPos> startPosMenu = new FtcChoiceMenu<>("Start Position:", allianceMenu);
-        FtcChoiceMenu<AutoStrategy> strategyMenu = new FtcChoiceMenu<>("Auto Strategies:", startPosMenu);
+        FtcChoiceMenu<AutoStrategy> strategyMenu = new FtcChoiceMenu<>("Auto Strategies:", allianceMenu);
+        FtcChoiceMenu<StartPos> startPosMenu = new FtcChoiceMenu<>("Start Position:", strategyMenu);
+        FtcChoiceMenu<PreloadType> preloadTypeMenu = new FtcChoiceMenu<>("Preload Type:", startPosMenu);
+        FtcChoiceMenu<ScoreHeight> scoreHeightMenu = new FtcChoiceMenu<>("Score Height:", preloadTypeMenu);
+        FtcChoiceMenu<ParkOption> parkOptionMenu = new FtcChoiceMenu<>("Park Option:", scoreHeightMenu);
 
         FtcValueMenu xTargetMenu = new FtcValueMenu(
-            "xTarget:", strategyMenu, -12.0, 12.0, 0.5, 4.0, " %.1f ft");
+            "xTarget:", startPosMenu, -12.0, 12.0, 0.5, 4.0, " %.1f ft");
         FtcValueMenu yTargetMenu = new FtcValueMenu(
             "yTarget:", xTargetMenu, -12.0, 12.0, 0.5, 4.0, " %.1f ft");
         FtcValueMenu turnTargetMenu = new FtcValueMenu(
@@ -333,15 +361,26 @@ public class FtcAuto extends FtcOpMode
         //
         // Populate choice menus.
         //
-        allianceMenu.addChoice("Red", Alliance.RED_ALLIANCE, true, startPosMenu);
-        allianceMenu.addChoice("Blue", Alliance.BLUE_ALLIANCE, false, startPosMenu);
-
-        startPosMenu.addChoice("Start Position Left", StartPos.LEFT, true, strategyMenu);
-        startPosMenu.addChoice("Start Position Right", StartPos.RIGHT, false, strategyMenu);
+        allianceMenu.addChoice("Red", Alliance.RED_ALLIANCE, true, strategyMenu);
+        allianceMenu.addChoice("Blue", Alliance.BLUE_ALLIANCE, false, strategyMenu);
 
         strategyMenu.addChoice("PID Drive", AutoStrategy.PID_DRIVE, false, xTargetMenu);
         strategyMenu.addChoice("Timed Drive", AutoStrategy.TIMED_DRIVE, false, driveTimeMenu);
         strategyMenu.addChoice("Do nothing", AutoStrategy.DO_NOTHING, true);
+        strategyMenu.addChoice("Full Auto", AutoStrategy.FULL_AUTO, true, startPosMenu);
+
+        startPosMenu.addChoice("Start Position Basket Side", StartPos.BASKET, true, preloadTypeMenu);
+        startPosMenu.addChoice("Start Position Spec Side", StartPos.OBSERVATION, false, preloadTypeMenu);
+
+        preloadTypeMenu.addChoice("Preload Specimen", PreloadType.SPECIMEN, true, scoreHeightMenu);
+        preloadTypeMenu.addChoice("Preload Sample", PreloadType.SAMPLE, false, scoreHeightMenu);
+
+        scoreHeightMenu.addChoice("Score High", ScoreHeight.HIGH, true, parkOptionMenu);
+        scoreHeightMenu.addChoice("Score Low", ScoreHeight.LOW, false, parkOptionMenu);
+
+        parkOptionMenu.addChoice("Park", ParkOption.PARK, true);
+        parkOptionMenu.addChoice("Don't Park", ParkOption.NO_PARK, false);
+
         //
         // Traverse menus.
         //
@@ -351,8 +390,11 @@ public class FtcAuto extends FtcOpMode
         //
         autoChoices.delay = delayMenu.getCurrentValue();
         autoChoices.alliance = allianceMenu.getCurrentChoiceObject();
-        autoChoices.startPos = startPosMenu.getCurrentChoiceObject();
         autoChoices.strategy = strategyMenu.getCurrentChoiceObject();
+        autoChoices.startPos = startPosMenu.getCurrentChoiceObject();
+        autoChoices.preload = preloadTypeMenu.getCurrentChoiceObject();
+        autoChoices.scoreHeight = scoreHeightMenu.getCurrentChoiceObject();
+        autoChoices.parkOption = parkOptionMenu.getCurrentChoiceObject();
         autoChoices.xTarget = xTargetMenu.getCurrentValue();
         autoChoices.yTarget = yTargetMenu.getCurrentValue();
         autoChoices.turnTarget = turnTargetMenu.getCurrentValue();

@@ -95,6 +95,20 @@ public class RobotParams
             new TrcPose2D(0.0, APRILTAG_RED_ALLIANCE_WALL_Y, 180.0),                // TagId 15
             new TrcPose2D(APRILTAG_AUDIENCE_WALL_X, -APRILTAG_WALL_OFFSET_Y, -90.0) // TagId 16
         };
+
+        public static final TrcPose2D RED_BASKET_SCORE_POSE           = new TrcPose2D(-2*Field.FULL_TILE_INCHES, -2*Field.FULL_TILE_INCHES, 225);
+        public static final TrcPose2D BLUE_BASKET_SCORE_POSE          = new TrcPose2D(2*Field.FULL_TILE_INCHES, 2*Field.FULL_TILE_INCHES, 45);
+        public static final double BASKET_LOW_EXTENDER_POSE           = 40.0;
+        public static final double BASKET_HIGH_EXTENDER_POSE          = 80.0;
+        public static final double BASKET_LOW_ELBOW_ANGLE             = 15.0;
+        public static final double BASKET_HIGH_ELBOW_ANGLE            = 30.0;
+        public static final double BASKET_LOW_WRIST_POSE              = 5.0;
+        public static final double BASKET_HIGH_WRIST_POSE             = 10.0;
+        public static final String extenderArmEvent                   = "ExtenderArm";
+        public static final String scoreEvent                         = "Score";
+        public static final String retractEvent                       = "Retract";
+
+
     }   //class Game
 
     /**

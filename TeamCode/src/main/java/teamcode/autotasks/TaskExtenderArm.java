@@ -102,6 +102,18 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     }   //setPosition
 
     /**
+     * This method retracts everything.
+     *
+     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
+     */
+    public void retract(TrcEvent completionEvent)
+    {
+        setPosition(
+            RobotParams.ElbowParams.MIN_POS, RobotParams.ExtenderParams.MIN_POS, RobotParams.WristParams.MIN_POS,
+            completionEvent);
+    }   //retract
+
+    /**
      * This method cancels the ExtenderArm AutoTask.
      */
     public void cancel()

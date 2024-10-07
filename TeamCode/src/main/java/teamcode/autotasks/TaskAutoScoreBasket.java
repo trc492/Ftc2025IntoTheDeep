@@ -25,6 +25,7 @@ package teamcode.autotasks;
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
+import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
@@ -49,21 +50,19 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
     private static class TaskParams
     {
-        FtcAuto.ScoreHeight scoreHeight;
         FtcAuto.Alliance alliance;
+        FtcAuto.ScoreHeight scoreHeight;
 
-        TaskParams(FtcAuto.ScoreHeight scoreHeight, FtcAuto.Alliance alliance)
+        TaskParams(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight)
         {
-            this.scoreHeight = scoreHeight;
             this.alliance = alliance;
+            this.scoreHeight = scoreHeight;
         }   //TaskParams
     }   //class TaskParams
 
     private final String ownerName;
     private final Robot robot;
-    private final TrcEvent extenderArmEvent;
-    private final TrcEvent scoreEvent;
-    private final TrcEvent retractEvent;
+    private final TrcEvent event;
 
     private String currOwner = null;
 
@@ -78,30 +77,30 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         super(moduleName, ownerName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
         this.ownerName = ownerName;
         this.robot = robot;
-        this.extenderArmEvent = new TrcEvent(RobotParams.Game.extenderArmEvent);
-        this.scoreEvent = new TrcEvent(RobotParams.Game.scoreEvent);
-        this.retractEvent = new TrcEvent(RobotParams.Game.retractEvent);
+        this.event = new TrcEvent(moduleName);
     }   //TaskAuto
 
     /**
      * This method starts the auto-assist operation.
      *
+     * @param alliance specifies the alliance color.
+     * @param scoreHeight specifies the scoring height in inches.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoAssist(FtcAuto.ScoreHeight scoreHeight, FtcAuto.Alliance alliance, TrcEvent completionEvent)
+    public void autoScoreBasket(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "event=" + completionEvent);
-        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(scoreHeight, alliance), completionEvent);
+        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight), completionEvent);
     }   //autoAssist
 
     /**
      * This method cancels an in progress auto-assist operation if any.
      */
-    public void autoAssistCancel()
+    public void cancel()
     {
-        tracer.traceInfo(moduleName, "Canceling auto-assist.");
+        tracer.traceInfo(moduleName, "Canceling operation.");
         stopAutoTask(false);
-    }   //autoAssistCancel
+    }   //cancel
 
     //
     // Implement TrcAutoTask abstract methods.
@@ -165,6 +164,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
         robot.robotDrive.cancel(currOwner);
+        robot.extenderArm.cancel();
     }   //stopSubsystems
 
     /**
@@ -186,70 +186,39 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         switch (state)
         {
             case GO_TO_SCORE_POSITION:
-                if(taskParams.alliance != null)
-                {
-                    if(taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE)
-                    {
-                        robot.robotDrive.purePursuitDrive.start(robot.robotDrive.driveBase.getFieldPosition(), false, RobotParams.Game.RED_BASKET_SCORE_POSE);
-                    }
-                    else if(taskParams.alliance == FtcAuto.Alliance.BLUE_ALLIANCE)
-                    {
-                        robot.robotDrive.purePursuitDrive.start(robot.robotDrive.driveBase.getFieldPosition(), false, RobotParams.Game.BLUE_BASKET_SCORE_POSE);
-
-                    }
-                }
-                sm.setState(State.SET_EXTENDER_ARM);
+                TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
+                    RobotParams.Game.RED_BASKET_SCORE_POSE: RobotParams.Game.BLUE_BASKET_SCORE_POSE;
+                robot.robotDrive.purePursuitDrive.start(
+                    event, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
+                sm.waitForSingleEvent(event, State.SET_EXTENDER_ARM);
                 break;
 
             case SET_EXTENDER_ARM:
-                if(taskParams.scoreHeight != null)
+                double elbowAngle, extenderPos;
+                if (taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW)
                 {
-                    if(taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW)
-                    {
-                        robot.extenderArm.setPosition(RobotParams.Game.BASKET_LOW_ELBOW_ANGLE, RobotParams.Game.BASKET_LOW_EXTENDER_POSE,null, extenderArmEvent);
-                        sm.waitForSingleEvent(extenderArmEvent, State.SCORE_BASKET);
-                    }
-                    else if(taskParams.scoreHeight == FtcAuto.ScoreHeight.HIGH)
-                    {
-                        robot.extenderArm.setPosition(RobotParams.Game.BASKET_HIGH_ELBOW_ANGLE, RobotParams.Game.BASKET_HIGH_EXTENDER_POSE, null, extenderArmEvent);
-                        sm.waitForSingleEvent(extenderArmEvent, State.SCORE_BASKET);
-                    }
+                    elbowAngle = RobotParams.Game.BASKET_LOW_ELBOW_ANGLE;
+                    extenderPos = RobotParams.Game.BASKET_LOW_EXTENDER_POS;
                 }
-                else{
-                    sm.setState(State.SCORE_BASKET);
+                else
+                {
+                    elbowAngle = RobotParams.Game.BASKET_HIGH_ELBOW_ANGLE;
+                    extenderPos = RobotParams.Game.BASKET_HIGH_EXTENDER_POS;
                 }
+                robot.extenderArm.setPosition(elbowAngle, extenderPos, null, event);
+                sm.waitForSingleEvent(event, State.SCORE_BASKET);
                 break;
 
             case SCORE_BASKET:
-                if(taskParams.scoreHeight != null)
-                {
-                    if(taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW)
-                    {
-                        robot.extenderArm.setPosition(RobotParams.Game.BASKET_LOW_ELBOW_ANGLE, RobotParams.Game.BASKET_LOW_EXTENDER_POSE, RobotParams.Game.BASKET_LOW_WRIST_POSE, scoreEvent);
-                        sm.waitForSingleEvent(scoreEvent, State.RETRACT_EXTENDER_ARM);
-                    }
-                    else if(taskParams.scoreHeight == FtcAuto.ScoreHeight.HIGH)
-                    {
-                        robot.extenderArm.setPosition(RobotParams.Game.BASKET_HIGH_ELBOW_ANGLE, RobotParams.Game.BASKET_HIGH_EXTENDER_POSE, RobotParams.Game.BASKET_HIGH_WRIST_POSE, scoreEvent);
-                        sm.waitForSingleEvent(scoreEvent, State.RETRACT_EXTENDER_ARM);
-                    }
-                }
-                else
-                {
-                    sm.setState(State.RETRACT_EXTENDER_ARM);
-                }
+                double wristPos = taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW?
+                RobotParams.Game.BASKET_LOW_WRIST_SCORE_POS: RobotParams.Game.BASKET_HIGH_WRIST_SCORE_POS;
+                robot.wrist.setPosition(wristPos, event, RobotParams.WristParams.DUMP_TIME);
+                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
 
             case RETRACT_EXTENDER_ARM:
-                if(taskParams.scoreHeight != null)
-                {
-                    robot.extenderArm.setPosition(null, null, null, retractEvent);
-                    sm.waitForSingleEvent(retractEvent, State.DONE);
-                }
-                else
-                {
-                    sm.setState(State.DONE);
-                }
+                robot.extenderArm.retract(event);
+                sm.waitForSingleEvent(event, State.DONE);
                 break;
 
             default:

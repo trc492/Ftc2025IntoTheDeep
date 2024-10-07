@@ -96,18 +96,16 @@ public class RobotParams
             new TrcPose2D(APRILTAG_AUDIENCE_WALL_X, -APRILTAG_WALL_OFFSET_Y, -90.0) // TagId 16
         };
 
-        public static final TrcPose2D RED_BASKET_SCORE_POSE           = new TrcPose2D(-2*Field.FULL_TILE_INCHES, -2*Field.FULL_TILE_INCHES, 225);
-        public static final TrcPose2D BLUE_BASKET_SCORE_POSE          = new TrcPose2D(2*Field.FULL_TILE_INCHES, 2*Field.FULL_TILE_INCHES, 45);
-        public static final double BASKET_LOW_EXTENDER_POSE           = 40.0;
-        public static final double BASKET_HIGH_EXTENDER_POSE          = 80.0;
-        public static final double BASKET_LOW_ELBOW_ANGLE             = 15.0;
-        public static final double BASKET_HIGH_ELBOW_ANGLE            = 30.0;
-        public static final double BASKET_LOW_WRIST_POSE              = 5.0;
-        public static final double BASKET_HIGH_WRIST_POSE             = 10.0;
-        public static final String extenderArmEvent                   = "ExtenderArm";
-        public static final String scoreEvent                         = "Score";
-        public static final String retractEvent                       = "Retract";
-
+        public static final TrcPose2D RED_BASKET_SCORE_POSE         =
+            new TrcPose2D(-2.0*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES, 225.0);
+        public static final TrcPose2D BLUE_BASKET_SCORE_POSE        =
+            new TrcPose2D(2.0*Field.FULL_TILE_INCHES, 2.0*Field.FULL_TILE_INCHES, 45.0);
+        public static final double BASKET_LOW_EXTENDER_POS          = 40.0;
+        public static final double BASKET_HIGH_EXTENDER_POS         = 80.0;
+        public static final double BASKET_LOW_ELBOW_ANGLE           = 15.0;
+        public static final double BASKET_HIGH_ELBOW_ANGLE          = 30.0;
+        public static final double BASKET_LOW_WRIST_SCORE_POS       = 5.0;
+        public static final double BASKET_HIGH_WRIST_SCORE_POS      = 10.0;
 
     }   //class Game
 
@@ -683,6 +681,10 @@ public class RobotParams
         public static final boolean PRIMARY_SERVO_INVERTED      = false;
         public static final String FOLLOWER_SERVO_NAME          = SUBSYSTEM_NAME + ".follower";
         public static final boolean FOLLOWER_SERVO_INVERTED     = !PRIMARY_SERVO_INVERTED;
+
+        public static final double MIN_POS                      = 0.0;
+        public static final double MAX_POS                      = 90.0;
+        public static final double DUMP_TIME                    = 0.5;
     }   //class WristParams
 
     public static class ClimberParams

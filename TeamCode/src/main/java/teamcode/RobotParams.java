@@ -685,6 +685,7 @@ public class RobotParams
         public static final double MIN_POS                      = 0.0;
         public static final double MAX_POS                      = 90.0;
         public static final double DUMP_TIME                    = 0.5;
+        public static final double POWER_LIMIT                  = 1.0;
     }   //class WristParams
 
     public static class ClimberParams

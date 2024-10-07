@@ -52,9 +52,8 @@ public class FtcTeleOp extends FtcOpMode
     private boolean operatorAltFunc = false;
     private boolean relocalizing = false;
     private TrcPose2D robotFieldPose = null;
-    private double extenderPrevPower = 0.0;
     private double elbowPrevPower = 0.0;
-    private double wristPrevPower = 0.0;
+    private double extenderPrevPower = 0.0;
 
     //
     // Implements FtcOpMode abstract method.
@@ -207,41 +206,45 @@ public class FtcTeleOp extends FtcOpMode
             //
             if (RobotParams.Preferences.useSubsystems)
             {
+                // Analog control of subsystems.
+                //elbow subsystem
+                if (robot.elbow != null)
+                {
+                    double elbowPower = operatorGamepad.getRightStickY(true) * RobotParams.ElbowParams.POWER_LIMIT;
+                    if (elbowPower != elbowPrevPower)
+                    {
+                        if (operatorAltFunc)
+                        {
+                            robot.elbow.setPower(elbowPower);
+                        }
+                        else
+                        {
+                            robot.elbow.setPidPower(
+                                elbowPower, RobotParams.ElbowParams.MIN_POS, RobotParams.ElbowParams.MAX_POS, true);
+                        }
+                        elbowPrevPower = elbowPower;
+                    }
+                }
+
                 //extender arm subsystem
                 if (robot.extender != null)
                 {
                     double extenderPower = operatorGamepad.getLeftStickY(true) * RobotParams.ExtenderParams.POWER_LIMIT;
                     if (extenderPower != extenderPrevPower)
                     {
-                        robot.extender.setPower(extenderPower);
+                        if (operatorAltFunc)
+                        {
+                            robot.extender.setPower(extenderPower);
+                        }
+                        else
+                        {
+                            robot.extender.setPidPower(
+                                extenderPower, RobotParams.ExtenderParams.MIN_POS, RobotParams.ExtenderParams.MAX_POS,
+                                true);
+                        }
                         extenderPrevPower = extenderPower;
                     }
                 }
-
-                //elbow subsystem
-                if (robot.elbow != null)
-                {
-                    double elbowPower = operatorGamepad.getRightStickY(true) * RobotParams.ElbowParams.POWER_LIMIT;
-                        if (elbowPower != elbowPrevPower)
-                        {
-                            robot.elbow.setPower(elbowPower);
-                            elbowPrevPower = elbowPower;
-                        }
-
-                }
-
-                //wrist subsystem
-                if (robot.wrist != null)
-                {
-                    double wristPower = operatorGamepad.getLeftTrigger(true) * RobotParams.WristParams.POWER_LIMIT;
-                    if (wristPower != wristPrevPower)
-                    {
-                        robot.wrist.setPower(wristPower);
-                        wristPrevPower = wristPower;
-                    }
-                }
-
-                // Analog control of subsystems.
             }
             // Display subsystem status.
             if (RobotParams.Preferences.doStatusUpdate)
@@ -410,41 +413,49 @@ public class FtcTeleOp extends FtcOpMode
         switch (button)
         {
             case A:
-                break;
-
             case B:
-                break;
-
             case X:
-                break;
-
             case Y:
                 break;
 
             case LeftBumper:
+                robot.globalTracer.traceInfo(moduleName, ">>>>> OperatorAltFunc=" + pressed);
+                operatorAltFunc = pressed;
                 break;
 
             case RightBumper:
                 break;
+
             case DpadUp:
                 //auxiliary climber subsystem goes up
-                if (robot.auxClimber != null)
+                if (robot.auxClimber != null && pressed)
                 {
                     robot.auxClimber.setPosition(RobotParams.ClimberParams.MAX_POS);
                 }
                 break;
+
             case DpadDown:
                 //auxiliary climber subsystem goes down
-                if (robot.auxClimber != null)
+                if (robot.auxClimber != null && pressed)
                 {
                    robot.auxClimber.setPosition(RobotParams.ClimberParams.MIN_POS);
                 }
                 break;
+
             case DpadLeft:
                 //intake subsystem intakes, else grabber subsystem opens and closes
                 if (robot.intake != null)
                 {
-                    robot.intake.setPower(pressed? RobotParams.IntakeParams.FORWARD_POWER: 0.0);
+                    if (pressed)
+                    {
+                        robot.intake.autoIntakeForward(
+                            RobotParams.IntakeParams.FORWARD_POWER, RobotParams.IntakeParams.RETAIN_POWER,
+                            RobotParams.IntakeParams.FINISH_DELAY);
+                    }
+                    else
+                    {
+                        robot.intake.cancel();
+                    }
                 }
                 else if (robot.grabber != null)
                 {
@@ -474,11 +485,21 @@ public class FtcTeleOp extends FtcOpMode
                         }
                     }
                 }
+                break;
+
             case DpadRight:
                 //intake subsystem scores/rotates opposite direction
                 if (robot.intake != null)
                 {
-                    robot.intake.setPower(pressed? RobotParams.IntakeParams.REVERSE_POWER: 0.0);
+                    if (pressed)
+                    {
+                        robot.intake.autoEjectReverse(
+                            RobotParams.IntakeParams.REVERSE_POWER, RobotParams.IntakeParams.FINISH_DELAY);
+                    }
+                    else
+                    {
+                        robot.intake.cancel();
+                    }
                 }
                 break;
 

@@ -52,7 +52,7 @@ public class CmdAuto implements TrcRobot.RobotCommand
      * Constructor: Create an instance of the object.
      *
      * @param robot specifies the robot object for providing access to various global objects.
-     * @param autoChoices specifies the autoChoices object.
+     * @param autoChoices specifies the autoC   hoices object.
      */
     public CmdAuto(Robot robot, FtcAuto.AutoChoices autoChoices)
     {

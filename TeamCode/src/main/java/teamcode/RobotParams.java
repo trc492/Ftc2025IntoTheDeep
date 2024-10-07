@@ -683,6 +683,7 @@ public class RobotParams
         public static final boolean PRIMARY_SERVO_INVERTED      = false;
         public static final String FOLLOWER_SERVO_NAME          = SUBSYSTEM_NAME + ".follower";
         public static final boolean FOLLOWER_SERVO_INVERTED     = !PRIMARY_SERVO_INVERTED;
+        public static final double POWER_LIMIT                  = 1.0;
     }   //class WristParams
 
     public static class ClimberParams

@@ -52,6 +52,9 @@ public class FtcTeleOp extends FtcOpMode
     private boolean operatorAltFunc = false;
     private boolean relocalizing = false;
     private TrcPose2D robotFieldPose = null;
+    private double extenderPrevPower = 0.0;
+    private double elbowPrevPower = 0.0;
+    private double wristPrevPower = 0.0;
 
     //
     // Implements FtcOpMode abstract method.
@@ -204,6 +207,40 @@ public class FtcTeleOp extends FtcOpMode
             //
             if (RobotParams.Preferences.useSubsystems)
             {
+                //extender arm subsystem
+                if (robot.extender != null)
+                {
+                    double extenderPower = operatorGamepad.getLeftStickY(true) * RobotParams.ExtenderParams.POWER_LIMIT;
+                    if (extenderPower != extenderPrevPower)
+                    {
+                        robot.extender.setPower(extenderPower);
+                        extenderPrevPower = extenderPower;
+                    }
+                }
+
+                //elbow subsystem
+                if (robot.elbow != null)
+                {
+                    double elbowPower = operatorGamepad.getRightStickY(true) * RobotParams.ElbowParams.POWER_LIMIT;
+                        if (elbowPower != elbowPrevPower)
+                        {
+                            robot.elbow.setPower(elbowPower);
+                            elbowPrevPower = elbowPower;
+                        }
+
+                }
+
+                //wrist subsystem
+                if (robot.wrist != null)
+                {
+                    double wristPower = operatorGamepad.getLeftTrigger(true) * RobotParams.WristParams.POWER_LIMIT;
+                    if (wristPower != wristPrevPower)
+                    {
+                        robot.wrist.setPower(wristPower);
+                        wristPrevPower = wristPower;
+                    }
+                }
+
                 // Analog control of subsystems.
             }
             // Display subsystem status.
@@ -373,21 +410,43 @@ public class FtcTeleOp extends FtcOpMode
         switch (button)
         {
             case A:
+                break;
+
+            case B:
+                break;
+
+            case X:
+                break;
+
+            case Y:
+                break;
+
+            case LeftBumper:
+                break;
+
+            case RightBumper:
+                break;
+            case DpadUp:
+                //auxiliary climber subsystem goes up
+                if (robot.auxClimber != null)
+                {
+                    robot.auxClimber.setPosition(RobotParams.ClimberParams.MAX_POS);
+                }
+                break;
+            case DpadDown:
+                //auxiliary climber subsystem goes down
+                if (robot.auxClimber != null)
+                {
+                   robot.auxClimber.setPosition(RobotParams.ClimberParams.MIN_POS);
+                }
+                break;
+            case DpadLeft:
+                //intake subsystem intakes, else grabber subsystem opens and closes
                 if (robot.intake != null)
                 {
                     robot.intake.setPower(pressed? RobotParams.IntakeParams.FORWARD_POWER: 0.0);
                 }
-                break;
-
-            case B:
-                if (robot.intake != null)
-                {
-                    robot.intake.setPower(pressed? RobotParams.IntakeParams.REVERSE_POWER: 0.0);
-                }
-                break;
-
-            case X:
-                if (robot.grabber != null)
+                else if (robot.grabber != null)
                 {
                     if (operatorAltFunc)
                     {
@@ -415,21 +474,12 @@ public class FtcTeleOp extends FtcOpMode
                         }
                     }
                 }
-                break;
-
-            case Y:
-                break;
-
-            case LeftBumper:
-                robot.globalTracer.traceInfo(moduleName, ">>>>> OperatorAltFunc=" + pressed);
-                operatorAltFunc = pressed;
-                break;
-
-            case RightBumper:
-            case DpadUp:
-            case DpadDown:
-            case DpadLeft:
             case DpadRight:
+                //intake subsystem scores/rotates opposite direction
+                if (robot.intake != null)
+                {
+                    robot.intake.setPower(pressed? RobotParams.IntakeParams.REVERSE_POWER: 0.0);
+                }
                 break;
 
             case Back:

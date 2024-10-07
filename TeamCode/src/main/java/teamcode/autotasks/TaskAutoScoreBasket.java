@@ -189,7 +189,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
                     RobotParams.Game.RED_BASKET_SCORE_POSE: RobotParams.Game.BLUE_BASKET_SCORE_POSE;
                 robot.robotDrive.purePursuitDrive.start(
-                    event, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
+                    currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
                 sm.waitForSingleEvent(event, State.SET_EXTENDER_ARM);
                 break;
 

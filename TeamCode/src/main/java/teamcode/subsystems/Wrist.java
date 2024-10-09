@@ -40,9 +40,7 @@ public class Wrist
     {
         FtcServoActuator.Params wristParams = new FtcServoActuator.Params()
             .setPrimaryServo(
-                RobotParams.WristParams.PRIMARY_SERVO_NAME, RobotParams.WristParams.PRIMARY_SERVO_INVERTED)
-            .setFollowerServo(
-                RobotParams.WristParams.FOLLOWER_SERVO_NAME, RobotParams.WristParams.FOLLOWER_SERVO_INVERTED);
+                RobotParams.WristParams.PRIMARY_SERVO_NAME, RobotParams.WristParams.PRIMARY_SERVO_INVERTED);
 
         wrist = new FtcServoActuator(wristParams).getServo();
 //            wrist.tracer.setTraceLevel(TrcDbgTrace.MsgLevel.INFO);

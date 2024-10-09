@@ -42,8 +42,8 @@ public class AuxClimber
         // Create a FtcMotorActuator for the Climber.
         FtcMotorActuator.Params climberParams = new FtcMotorActuator.Params()
             .setPrimaryMotor(
-                RobotParams.ClimberParams.MOTOR_NAME, RobotParams.ClimberParams.MOTOR_TYPE,
-                RobotParams.ClimberParams.MOTOR_INVERTED)
+                RobotParams.ClimberParams.PRIMARY_MOTOR_NAME, RobotParams.ClimberParams.PRIMARY_MOTOR_TYPE,
+                RobotParams.ClimberParams.PRIMARY_MOTOR_INVERTED)
             .setLowerLimitSwitch(
                 RobotParams.ClimberParams.LOWER_LIMIT_NAME, RobotParams.ClimberParams.LOWER_LIMIT_INVERTED)
             .setPositionScaleAndOffset(

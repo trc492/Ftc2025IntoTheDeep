@@ -43,13 +43,8 @@ public class Elbow
             .setPrimaryMotor(
                 RobotParams.ElbowParams.PRIMARY_MOTOR_NAME, RobotParams.ElbowParams.PRIMARY_MOTOR_TYPE,
                 RobotParams.ElbowParams.PRIMARY_MOTOR_INVERTED)
-            .setFollowerMotor(
-                RobotParams.ElbowParams.FOLLOWER_MOTOR_NAME, RobotParams.ElbowParams.FOLLOWER_MOTOR_TYPE,
-                RobotParams.ElbowParams.FOLLOWER_MOTOR_INVERTED)
             .setLowerLimitSwitch(
                 RobotParams.ElbowParams.LOWER_LIMIT_NAME, RobotParams.ElbowParams.LOWER_LIMIT_INVERTED)
-            .setUpperLimitSwitch(
-                RobotParams.ElbowParams.UPPER_LIMIT_NAME, RobotParams.ElbowParams.UPPER_LIMIT_INVERTED)
             .setPositionScaleAndOffset(
                 RobotParams.ElbowParams.DEG_SCALE, RobotParams.ElbowParams.POS_OFFSET,
                 RobotParams.ElbowParams.ZERO_OFFSET)

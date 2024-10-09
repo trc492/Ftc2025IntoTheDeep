@@ -22,41 +22,31 @@ SOFTWARE.
 -->
 <Robot type="FirstInspires-FTC" name="IntoTheDeep2025">
     <Webcam name="Webcam 1" serialNumber="679ED7BF"/>
-<!--    <Webcam name="Webcam 2" serialNumber="5DCAD5AF"/> -->
     <EthernetDevice name="Limelight3a" serialNumber="EthernetOverUsb:eth0:172.29.0.21" port="0" ipAddress="172.29.0.1" />
     <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
         <LynxModule name="Control Hub" port="173">
-            <goBILDA5202SeriesMotor name="rfDriveMotor" port="0"/>
-            <goBILDA5202SeriesMotor name="rbDriveMotor" port="3"/>
-            <goBILDA5202SeriesMotor name="lfDriveMotor" port="1"/>
-            <goBILDA5202SeriesMotor name="lbDriveMotor" port="2"/>
-            <RevBlinkinLedDriver name="blinkin" port="5" />
-            <goBILDAPinpoint name="pinpointOdo" port="0" bus="1"/>
-            <ContinuousRotationServo name="Intake.primary" port="0" />
-            <ContinuousRotationServo name="Intake.follower" port="1" />
-            <REV_VL53L0X_RANGE_SENSOR name="Intake.sensor" port="0" bus="1"/>
+            <goBILDA5202SeriesMotor name="rfDriveMotor" port="1"/>
+            <goBILDA5202SeriesMotor name="rbDriveMotor" port="2"/>
+            <RevBlinkinLedDriver name="blinkin" port="0" />
             <!--
             <SparkFunOTOS name="sparkfunOtos" port="0" bus="1"/>
             <OctoQuadFTC name="octoquad" port="0" bus="1"/>
-            <REV_VL53L0X_RANGE_SENSOR name="intake.sensor" port="0" bus="1"/>
             -->
             <ControlHubImuBHI260AP name="imu" port="0" bus="0"/>
         </LynxModule>
-        <!--
-        <LynxModule name="Expansion Hub 3" port="3">
-            <goBILDA5202SeriesMotor name="lfDriveMotor" port="0"/>
-            <goBILDA5202SeriesMotor name="elevator.motor" port="1" />
-            <RevRoboticsCoreHexMotor name="intake.motor" port="2" />
-            <goBILDA5202SeriesMotor name="lbDriveMotor" port="3"/>
-            <ContinuousRotationServo name="arm.servo" port="2" />
-            <Servo name="pixelTray.upperGate" port="0" />
-            <Servo name="wrist.servo" port="4" />
-            <ContinuousRotationServo name="arm.followerServo" port="5" />
-            <AnalogInput name="arm.encoder" port="0" />
-            <DigitalDevice name="elevator.lowerLimit" port="0" />
+        <LynxModule name="Expansion Hub 2" port="2">
+            <goBILDA5202SeriesMotor name="Elbow.primary" port="0"/>
+            <goBILDA5202SeriesMotor name="lfDriveMotor" port="1"/>
+            <goBILDA5202SeriesMotor name="lbDriveMotor" port="2"/>
+            <goBILDA5202SeriesMotor name="Extender.primary" port="3"/>
+            <Servo name="Wrist.primary" port="0" />
+            <ContinuousRotationServo name="Intake.primary" port="5" />
+            <RevColorSensorV3 name="Intake.sensor" port="0" bus="1" />
+            <goBILDAPinpoint name="pinpointOdo" port="0" bus="3"/>
+            <DigitalDevice name="Elbow.lowerLimit" port="0" />
+            <!--
             <LynxEmbeddedIMU name="imu" port="0" bus="0"/>
-            <REV_VL53L0X_RANGE_SENSOR name="wrist.sensor" port="0" bus="1"/>
+            -->
         </LynxModule>
-        -->
     </LynxUsbDevice>
 </Robot>

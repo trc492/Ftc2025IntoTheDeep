@@ -41,8 +41,8 @@ public class Extender
     {
         FtcMotorActuator.Params extenderParams = new FtcMotorActuator.Params()
             .setPrimaryMotor(
-                RobotParams.ExtenderParams.MOTOR_NAME, RobotParams.ExtenderParams.MOTOR_TYPE,
-                RobotParams.ExtenderParams.MOTOR_INVERTED)
+                RobotParams.ExtenderParams.PRIMARY_MOTOR_NAME, RobotParams.ExtenderParams.PRIMARY_MOTOR_TYPE,
+                RobotParams.ExtenderParams.PRIMARY_MOTOR_INVERTED)
             .setLowerLimitSwitch(
                 RobotParams.ExtenderParams.LOWER_LIMIT_NAME, RobotParams.ExtenderParams.LOWER_LIMIT_INVERTED)
             .setPositionScaleAndOffset(

@@ -174,11 +174,11 @@ public class RobotParams
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;
         // Drive Base
-        public static final boolean useDriveBase                = false;
+        public static final boolean useDriveBase                = true;
         public static final boolean usePinpointOdometry         = true;
         public static final boolean useSparkfunOTOS             = false;
         // Subsystems
-        public static final boolean useSubsystems               = false;
+        public static final boolean useSubsystems               = true;
         public static final boolean useElbow                    = false;
         public static final boolean useExtender                 = false;
         public static final boolean useWrist                    = false;
@@ -299,19 +299,19 @@ public class RobotParams
         public IntoTheDeepRobotParams()
         {
             robotName = "IntoTheDeepRobot";
-            // Robot Dimensions (measured from CAD model)
-            robotLength = 456.0 * TrcUtil.INCHES_PER_MM;
-            robotWidth = 456.0 * TrcUtil.INCHES_PER_MM;
+            // Robot Dimensions (measured from CAD model if possible)
+            robotLength = 18.0;     // Measured in inches (CAD said 456 mm)
+            robotWidth = 18.0;      // Measured in inches (CAD said 456 mm)
             wheelBaseLength = 360.0 * TrcUtil.INCHES_PER_MM;
             wheelBaseWidth = (312.0 + 103.623) * TrcUtil.INCHES_PER_MM;
             // IMU (not used if using AbsoluteOdometry).
             imuName = null;
-            hubLogoDirection = LogoFacingDirection.UP;      //???
-            hubUsbDirection = UsbFacingDirection.FORWARD;   //???
+            hubLogoDirection = LogoFacingDirection.RIGHT;   // Control Hub orientation
+            hubUsbDirection = UsbFacingDirection.UP;        // Control Hub orientation
             // Drive Motors
             driveMotorType = MotorType.DcMotor;
             driveMotorNames = new String[] {"lfDriveMotor", "rfDriveMotor", "lbDriveMotor", "rbDriveMotor"};
-            driveMotorInverted = new boolean[] {false, false, false, false};    //??? Need to verify
+            driveMotorInverted = new boolean[] {true, false, true, false};
             odometryType = TrcDriveBase.OdometryType.AbsoluteOdometry;
             // Odometry Wheels
             odWheelXScale = odWheelYScale = Math.PI * ODWHEEL_DIAMETER / ODWHEEL_CPR;
@@ -609,14 +609,8 @@ public class RobotParams
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
         public static final boolean PRIMARY_MOTOR_INVERTED      = true;
 
-        public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
-        public static final MotorType FOLLOWER_MOTOR_TYPE       = MotorType.DcMotor;
-        public static final boolean FOLLOWER_MOTOR_INVERTED     = true;
-
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
-        public static final String UPPER_LIMIT_NAME             = SUBSYSTEM_NAME + ".upperLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = false;
-        public static final boolean UPPER_LIMIT_INVERTED        = false;
 
         public static final double GOBILDA312_CPR               = (((1.0 + (46.0/17.0))) * (1.0 + (46.0/11.0))) * 28.0;
         public static final double DEG_SCALE                    = 360.0 / GOBILDA312_CPR;
@@ -645,17 +639,17 @@ public class RobotParams
     {
         public static final String SUBSYSTEM_NAME               = "Extender";
 
-        public static final String MOTOR_NAME                   = SUBSYSTEM_NAME + ".motor";
-        public static final MotorType MOTOR_TYPE                = MotorType.DcMotor;
+        public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
 
-        public static final boolean MOTOR_INVERTED              = true;
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
+        public static final boolean LOWER_LIMIT_INVERTED        = false;
+
         public static final double INCHES_PER_COUNT             = 18.25/4941.0;
         public static final double POS_OFFSET                   = 10.875;
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.25;
-
-        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
-        public static final boolean LOWER_LIMIT_INVERTED        = false;
 
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 30.25;
@@ -679,8 +673,6 @@ public class RobotParams
 
         public static final String PRIMARY_SERVO_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final boolean PRIMARY_SERVO_INVERTED      = false;
-        public static final String FOLLOWER_SERVO_NAME          = SUBSYSTEM_NAME + ".follower";
-        public static final boolean FOLLOWER_SERVO_INVERTED     = !PRIMARY_SERVO_INVERTED;
 
         public static final double MIN_POS                      = 0.0;
         public static final double MAX_POS                      = 90.0;
@@ -691,17 +683,17 @@ public class RobotParams
     {
         public static final String SUBSYSTEM_NAME               = "Climber";
 
-        public static final String MOTOR_NAME                   = SUBSYSTEM_NAME + ".motor";
-        public static final MotorType MOTOR_TYPE                = MotorType.DcMotor;
-        public static final boolean MOTOR_INVERTED              = true;
+        public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
+
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
+        public static final boolean LOWER_LIMIT_INVERTED        = false;
 
         public static final double INCHES_PER_COUNT             = 18.25/4941.0;
         public static final double POS_OFFSET                   = 10.875;
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.25;
-
-        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
-        public static final boolean LOWER_LIMIT_INVERTED        = false;
 
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 30.25;
@@ -716,10 +708,6 @@ public class RobotParams
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.CRServo;
         public static final boolean PRIMARY_MOTOR_INVERTED      = false;
-
-        public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
-        public static final MotorType FOLLOWER_MOTOR_TYPE       = MotorType.CRServo;
-        public static final boolean FOLLOWER_MOTOR_INVERTED     = !PRIMARY_MOTOR_INVERTED;
 
         public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
         public static final boolean SENSOR_INVERTED             = false;

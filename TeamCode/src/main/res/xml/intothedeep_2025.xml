@@ -40,10 +40,11 @@ SOFTWARE.
             <goBILDA5202SeriesMotor name="lbDriveMotor" port="2"/>
             <goBILDA5202SeriesMotor name="Extender.primary" port="3"/>
             <Servo name="Wrist.primary" port="0" />
-            <ContinuousRotationServo name="Intake.primary" port="5" />
+            <ContinuousRotationServo name="Intake.primary" port="2" />
             <RevColorSensorV3 name="Intake.sensor" port="0" bus="1" />
             <goBILDAPinpoint name="pinpointOdo" port="0" bus="3"/>
             <DigitalDevice name="Elbow.lowerLimit" port="0" />
+            <DigitalDevice name="Extender.lowerLimit" port="2" />
             <!--
             <LynxEmbeddedIMU name="imu" port="0" bus="0"/>
             -->

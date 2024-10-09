@@ -179,11 +179,11 @@ public class RobotParams
         public static final boolean useSparkfunOTOS             = false;
         // Subsystems
         public static final boolean useSubsystems               = true;
-        public static final boolean useElbow                    = false;
-        public static final boolean useExtender                 = false;
-        public static final boolean useWrist                    = false;
+        public static final boolean useElbow                    = true;
+        public static final boolean useExtender                 = true;
+        public static final boolean useWrist                    = true;
         public static final boolean useAuxClimber               = false;
-        public static final boolean useIntake                   = false;
+        public static final boolean useIntake                   = true;
         public static final boolean useGrabber                  = false;
     }   //class Preferences
 
@@ -707,7 +707,7 @@ public class RobotParams
 
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.CRServo;
-        public static final boolean PRIMARY_MOTOR_INVERTED      = false;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
 
         public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
         public static final boolean SENSOR_INVERTED             = false;

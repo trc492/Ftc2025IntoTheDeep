@@ -29,6 +29,7 @@ import java.util.Locale;
 import ftclib.drivebase.FtcSwerveDrive;
 import ftclib.driverio.FtcGamepad;
 import ftclib.robotcore.FtcOpMode;
+import teamcode.subsystems.Intake;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
@@ -413,8 +414,26 @@ public class FtcTeleOp extends FtcOpMode
         switch (button)
         {
             case A:
+                if (robot.wrist != null) {
+                    if (pressed) {
+                        robot.wrist.setPosition(0.8);
+                    }
+                }
+                break;
             case B:
+                if (robot.wrist != null) {
+                    if (pressed) {
+                        robot.wrist.setPosition(.5);
+                    }
+                }
+                break;
             case X:
+                if (robot.wrist != null) {
+                    if (pressed) {
+                        robot.wrist.setPosition(.1);
+                    }
+                }
+                break;
             case Y:
                 break;
 
@@ -448,13 +467,15 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     if (pressed)
                     {
-                        robot.intake.autoIntakeForward(
-                            RobotParams.IntakeParams.FORWARD_POWER, RobotParams.IntakeParams.RETAIN_POWER,
-                            RobotParams.IntakeParams.FINISH_DELAY);
+                        robot.intake.setPower(RobotParams.IntakeParams.FORWARD_POWER);
+//                        robot.intake.autoIntakeForward(
+//                            RobotParams.IntakeParams.FORWARD_POWER, RobotParams.IntakeParams.RETAIN_POWER,
+//                            RobotParams.IntakeParams.FINISH_DELAY);
                     }
                     else
                     {
-                        robot.intake.cancel();
+//                        robot.intake.cancel();
+                        robot.intake.setPower(0.0);
                     }
                 }
                 else if (robot.grabber != null)
@@ -493,13 +514,16 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     if (pressed)
                     {
-                        robot.intake.autoEjectReverse(
-                            RobotParams.IntakeParams.REVERSE_POWER, RobotParams.IntakeParams.FINISH_DELAY);
+                        robot.intake.setPower(RobotParams.IntakeParams.REVERSE_POWER);
+//                        robot.intake.autoEjectReverse(
+//                            RobotParams.IntakeParams.REVERSE_POWER, RobotParams.IntakeParams.FINISH_DELAY);
                     }
                     else
                     {
-                        robot.intake.cancel();
+//                        robot.intake.cancel();
+                        robot.intake.setPower(0.0);
                     }
+
                 }
                 break;
 

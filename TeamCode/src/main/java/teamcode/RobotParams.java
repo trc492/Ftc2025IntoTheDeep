@@ -53,7 +53,13 @@ public class RobotParams
      */
     public static class Gobilda
     {
-        // https://www.gobilda.com/5203-series-yellow-jacket-planetary-gear-motor-19-2-1-ratio-24mm-length-8mm-rex-shaft-312-rpm-3-3-5v-encoder/
+        //https://www.gobilda.com/5203-series-yellow-jacket-planetary-gear-motor-71-2-1-ratio-24mm-length-8mm-rex-shaft-84-rpm-3-3-5v-encoder/
+        public static final double MOTOR_5203_84_ENC_PPR        =
+            (((1.0 + 46.0/17.0) * (1.0 + 46.0/17.0) * (1.0 + 46.0/11.0)) * 28.0);
+        public static final double MOTOR_5203_84_MAX_RPM        = 84.0;
+        public static final double MOTOR_5203_84_MAX_VEL_PPS    =
+            MOTOR_5203_84_ENC_PPR * MOTOR_5203_84_MAX_RPM / 60.0;     // 2789.661 pps
+        //https://www.gobilda.com/5203-series-yellow-jacket-planetary-gear-motor-19-2-1-ratio-24mm-length-8mm-rex-shaft-312-rpm-3-3-5v-encoder/
         public static final double MOTOR_5203_312_ENC_PPR       = (((1.0 + 46.0/17.0)*(1.0 + 46.0/11.0))*28.0);
         public static final double MOTOR_5203_312_MAX_RPM       = 312.0;
         public static final double MOTOR_5203_312_MAX_VEL_PPS   =
@@ -607,22 +613,23 @@ public class RobotParams
 
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
-        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = true; //???
 
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
-        public static final boolean LOWER_LIMIT_INVERTED        = false;
+        public static final boolean LOWER_LIMIT_INVERTED        = true;
 
-        public static final double GOBILDA312_CPR               = (((1.0 + (46.0/17.0))) * (1.0 + (46.0/11.0))) * 28.0;
-        public static final double DEG_SCALE                    = 360.0 / GOBILDA312_CPR;
-        public static final double POS_OFFSET                   = 39.0;
-        public static final double ZERO_OFFSET                  = 0.0;
-        public static final double POWER_LIMIT                  = 0.5;
-        public static final double ZERO_CAL_POWER               = -0.25;
+        public static final double ENCODER_CPR                  = Gobilda.MOTOR_5203_84_ENC_PPR;
+        public static final double GEAR_RATIO                   = 44.0 / 10.0;
+        public static final double DEG_SCALE                    = 360.0 / (ENCODER_CPR * GEAR_RATIO);
+        public static final double POS_OFFSET                   = 39.0; //???
+        public static final double ZERO_OFFSET                  = 0.0;  ///???
+        public static final double POWER_LIMIT                  = 0.5;  //???
+        public static final double ZERO_CAL_POWER               = -0.25;    //???
 
         public static final double MIN_POS                      = POS_OFFSET;
-        public static final double MAX_POS                      = 270.0;
+        public static final double MAX_POS                      = 270.0;    //???
         public static final double[] posPresets                 = {MIN_POS, 60.0, 90.0, 120.0, 150.0, 180.0, 210.0, 240.0, 270.0};
-        public static final double POS_PRESET_TOLERANCE         = 10.0;
+        public static final double POS_PRESET_TOLERANCE         = 10.0;     //???
 
         public static final boolean SOFTWARE_PID_ENABLED        = true;
         public static final TrcPidController.PidCoefficients posPidCoeffs =

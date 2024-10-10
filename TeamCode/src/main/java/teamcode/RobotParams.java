@@ -613,7 +613,7 @@ public class RobotParams
 
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
-        public static final boolean PRIMARY_MOTOR_INVERTED      = true; //???
+        public static final boolean PRIMARY_MOTOR_INVERTED      = false;
 
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = true;
@@ -621,9 +621,9 @@ public class RobotParams
         public static final double ENCODER_CPR                  = Gobilda.MOTOR_5203_84_ENC_PPR;
         public static final double GEAR_RATIO                   = 44.0 / 10.0;
         public static final double DEG_SCALE                    = 360.0 / (ENCODER_CPR * GEAR_RATIO);
-        public static final double POS_OFFSET                   = 39.0; //???
+        public static final double POS_OFFSET                   = 90.0; //???
         public static final double ZERO_OFFSET                  = 0.0;  ///???
-        public static final double POWER_LIMIT                  = 0.5;  //???
+        public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.25;    //???
 
         public static final double MIN_POS                      = POS_OFFSET;

@@ -93,7 +93,9 @@ public class Vision
     private final WebcamName webcam1, webcam2;
     private FtcRawEocvColorBlobPipeline rawColorBlobPipeline;
     public FtcRawEocvVision rawColorBlobVision;
+    public FtcLimelightVision limelightVision;
     public FtcVisionAprilTag aprilTagVision;
+    private CameraStreamProcessor cameraStreamProcessor;
     private AprilTagProcessor aprilTagProcessor;
     public FtcVisionEocvColorBlob redSampleVision;
     private FtcEocvColorBlobProcessor redSampleProcessor;
@@ -102,7 +104,6 @@ public class Vision
     public FtcVisionEocvColorBlob yellowSampleVision;
     private FtcEocvColorBlobProcessor yellowSampleProcessor;
     public FtcVision vision;
-    public FtcLimelightVision limelightVision;
 
     /**
      * Constructor: Create an instance of the object.
@@ -140,6 +141,11 @@ public class Vision
                 openCvCamera = OpenCvCameraFactory.getInstance().createWebcam(webcam1);
             }
 
+//            if (RobotParams.Preferences.useCameraStreamProcessor)
+//            {
+//                FtcDashboard.getInstance().startCameraStream(openCvCamera, 0);
+//            }
+
             tracer.traceInfo(moduleName, "Starting RawEocvColorBlobVision...");
             rawColorBlobPipeline = new FtcRawEocvColorBlobPipeline(
                 "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, sampleFilterContourParams, true);
@@ -162,6 +168,14 @@ public class Vision
             }
             // Creating Vision Processors for VisionPortal.
             ArrayList<VisionProcessor> visionProcessorsList = new ArrayList<>();
+
+            if (RobotParams.Preferences.useCameraStreamProcessor)
+            {
+                cameraStreamProcessor = new CameraStreamProcessor();
+                visionProcessorsList.add(cameraStreamProcessor);
+//                FtcDashboard.getInstance().startCameraStream(cameraStreamProcessor, 0);
+            }
+
             if (RobotParams.Preferences.useAprilTagVision)
             {
                 tracer.traceInfo(moduleName, "Starting AprilTagVision...");
@@ -381,16 +395,124 @@ public class Vision
     }   //getDetectedRawColorBlob
 
     /**
+     * This method enables/disables Limelight vision for the specified pipeline.
+     *
+     * @param pipelineIndex specifies the limelight pipeline index to be selected, ignore if disabled.
+     * @param enabled specifies true to enable, false to disable.
+     */
+    public void setLimelightVisionEnabled(int pipelineIndex, boolean enabled)
+    {
+        if (limelightVision != null)
+        {
+            if (enabled)
+            {
+                limelightVision.setPipeline(pipelineIndex);
+            }
+            limelightVision.setVisionEnabled(enabled);
+        }
+    }   //setLimelightVisionEnabled
+
+    /**
+     * This method checks if Limelight vision is enabled.
+     *
+     * @return true if enabled, false if disabled.
+     */
+    public boolean isLimelightVisionEnabled()
+    {
+        return limelightVision != null && limelightVision.isVisionEnabled();
+    }   //isLimelightVisionEnabled
+
+    /**
+     * This method calls Limelight vision to detect the object.
+     *
+     * @param resultType specifies the result type to look for.
+     * @param label specifies the detected object label, can be null to match any label.
+     * @param lineNum specifies the dashboard line number to display the detected object info, -1 to disable printing.
+     * @return detected Limelight object info.
+     */
+    public TrcVisionTargetInfo<FtcLimelightVision.DetectedObject> getLimelightDetectedObject(
+        FtcLimelightVision.ResultType resultType, String label, int lineNum)
+    {
+        TrcVisionTargetInfo<FtcLimelightVision.DetectedObject> limelightInfo = null;
+        String objectName = null;
+
+        if (limelightVision != null)
+        {
+            limelightInfo = limelightVision.getBestDetectedTargetInfo(resultType, label, null);
+            if (limelightInfo != null)
+            {
+                objectName = limelightInfo.detectedObj.label;
+                tracer.traceInfo("Limelight", resultType + ": info=" + limelightInfo);
+            }
+        }
+
+        if (objectName != null && robot.blinkin != null)
+        {
+            robot.blinkin.setDetectedPattern(objectName);
+        }
+
+        if (lineNum != -1)
+        {
+            robot.dashboard.displayPrintf(
+                lineNum, "%s: %s", objectName, limelightInfo != null? limelightInfo: "Not found.");
+        }
+
+        return limelightInfo;
+    }   //getLimelightDetectedObject
+
+    /**
+     * This method enables/disables the Vision Processor.
+     *
+     * @param processor specifies the vision processor to enable/disable.
+     * @param enabled specifies true to enable, false to disable.
+     */
+    public void setVisionProcessorEnabled(VisionProcessor processor, boolean enabled)
+    {
+        if (processor != null)
+        {
+            vision.setProcessorEnabled(processor, enabled);
+        }
+    }   //setVisionProcessorEnabled
+
+    /**
+     * This method checks if the Vision Processor is enabled.
+     *
+     * @param processor specifies the vision processor to enable/disable.
+     * @return true if enabled, false if disabled.
+     */
+    public boolean isVisionProcessorEnabled(VisionProcessor processor)
+    {
+        return processor != null && vision.isVisionProcessorEnabled(processor);
+    }   //isVisionProcessorEnabled
+
+    /**
+     * This method enables/disables the CameraStream processor.
+     *
+     * @param enabled specifies true to enable, false to disable.
+     */
+    public void setCameraStreamEnabled(boolean enabled)
+    {
+        setVisionProcessorEnabled(cameraStreamProcessor, enabled);
+    }   //setCameraStreamEnabled
+
+    /**
+     * This method checks if the CameraStream processor is enabled.
+     *
+     * @return true if enabled, false if disabled.
+     */
+    public boolean isCameraStreamEnabled()
+    {
+        return isVisionProcessorEnabled(cameraStreamProcessor);
+    }   //isAprilTagVisionEnabled
+
+    /**
      * This method enables/disables AprilTag vision.
      *
      * @param enabled specifies true to enable, false to disable.
      */
     public void setAprilTagVisionEnabled(boolean enabled)
     {
-        if (aprilTagProcessor != null)
-        {
-            vision.setProcessorEnabled(aprilTagProcessor, enabled);
-        }
+        setVisionProcessorEnabled(aprilTagProcessor, enabled);
     }   //setAprilTagVisionEnabled
 
     /**
@@ -400,7 +522,7 @@ public class Vision
      */
     public boolean isAprilTagVisionEnabled()
     {
-        return aprilTagProcessor != null && vision.isVisionProcessorEnabled(aprilTagProcessor);
+        return isVisionProcessorEnabled(aprilTagProcessor);
     }   //isAprilTagVisionEnabled
 
     /**
@@ -495,41 +617,29 @@ public class Vision
         switch (sampleType)
         {
             case RedSample:
-                if (redSampleProcessor != null)
-                {
-                    vision.setProcessorEnabled(redSampleProcessor, enabled);
-                }
+                setVisionProcessorEnabled(redSampleProcessor, enabled);
                 break;
 
             case BlueSample:
-                if (blueSampleProcessor != null)
-                {
-                    vision.setProcessorEnabled(blueSampleProcessor, enabled);
-                }
+                setVisionProcessorEnabled(blueSampleProcessor, enabled);
                 break;
 
             case YellowSample:
-                if (yellowSampleProcessor != null)
-                {
-                    vision.setProcessorEnabled(yellowSampleProcessor, enabled);
-                }
+                setVisionProcessorEnabled(yellowSampleProcessor, enabled);
                 break;
 
             case RedAllianceSamples:
             case BlueAllianceSamples:
             case AnySample:
-                if (sampleType != SampleType.BlueAllianceSamples && redSampleProcessor != null)
+                if (sampleType != SampleType.BlueAllianceSamples)
                 {
-                    vision.setProcessorEnabled(redSampleProcessor, enabled);
+                    setVisionProcessorEnabled(redSampleProcessor, enabled);
                 }
-                if (sampleType != SampleType.RedAllianceSamples && blueSampleProcessor != null)
+                if (sampleType != SampleType.RedAllianceSamples)
                 {
-                    vision.setProcessorEnabled(blueSampleProcessor, enabled);
+                    setVisionProcessorEnabled(blueSampleProcessor, enabled);
                 }
-                if (yellowSampleProcessor != null)
-                {
-                    vision.setProcessorEnabled(yellowSampleProcessor, enabled);
-                }
+                setVisionProcessorEnabled(yellowSampleProcessor, enabled);
                 break;
         }
     }   //setSampleVisionEnabled
@@ -547,26 +657,24 @@ public class Vision
         switch (sampleType)
         {
             case RedSample:
-                enabled = redSampleProcessor != null && vision.isVisionProcessorEnabled(redSampleProcessor);
+                enabled = isVisionProcessorEnabled(redSampleProcessor);
                 break;
 
             case BlueSample:
-                enabled = blueSampleProcessor != null && vision.isVisionProcessorEnabled(blueSampleProcessor);
+                enabled = isVisionProcessorEnabled(blueSampleProcessor);
                 break;
 
             case YellowSample:
-                enabled = yellowSampleProcessor != null && vision.isVisionProcessorEnabled(yellowSampleProcessor);
+                enabled = isVisionProcessorEnabled(yellowSampleProcessor);
                 break;
 
             case RedAllianceSamples:
             case BlueAllianceSamples:
             case AnySample:
                 enabled =
-                    sampleType != SampleType.BlueAllianceSamples &&
-                    redSampleProcessor != null && vision.isVisionProcessorEnabled(redSampleProcessor) ||
-                    sampleType != SampleType.RedAllianceSamples &&
-                    blueSampleProcessor != null && vision.isVisionProcessorEnabled(blueSampleProcessor) ||
-                    yellowSampleProcessor != null && vision.isVisionProcessorEnabled(yellowSampleProcessor);
+                    sampleType != SampleType.BlueAllianceSamples && isVisionProcessorEnabled(redSampleProcessor) ||
+                    sampleType != SampleType.RedAllianceSamples && isVisionProcessorEnabled(blueSampleProcessor) ||
+                    isVisionProcessorEnabled(yellowSampleProcessor);
                 break;
         }
 
@@ -660,76 +768,15 @@ public class Vision
         {
             robot.dashboard.displayPrintf(
                 lineNum, "%s: %s", sampleName, sampleInfo != null? sampleInfo: "Not found.");
+            if (sampleInfo != null)
+            {
+                robot.dashboard.displayPrintf(
+                    lineNum + 1, "%s: angle=%.3f", sampleName, sampleInfo.detectedObj.rotatedRect.angle);
+            }
         }
 
         return sampleInfo;
     }   //getDetectedSample
-
-    /**
-     * This method enables/disables Limelight vision for the specified pipeline.
-     *
-     * @param pipelineIndex specifies the limelight pipeline index to be selected, ignore if disabled.
-     * @param enabled specifies true to enable, false to disable.
-     */
-    public void setLimelightVisionEnabled(int pipelineIndex, boolean enabled)
-    {
-        if (limelightVision != null)
-        {
-            if (enabled)
-            {
-                limelightVision.setPipeline(pipelineIndex);
-            }
-            limelightVision.setVisionEnabled(enabled);
-        }
-    }   //setLimelightVisionEnabled
-
-    /**
-     * This method checks if Limelight vision is enabled.
-     *
-     * @return true if enabled, false if disabled.
-     */
-    public boolean isLimelightVisionEnabled()
-    {
-        return limelightVision != null && limelightVision.isVisionEnabled();
-    }   //isLimelightVisionEnabled
-
-    /**
-     * This method calls Limelight vision to detect the object.
-     *
-     * @param resultType specifies the result type to look for.
-     * @param label specifies the detected object label, can be null to match any label.
-     * @param lineNum specifies the dashboard line number to display the detected object info, -1 to disable printing.
-     * @return detected Limelight object info.
-     */
-    public TrcVisionTargetInfo<FtcLimelightVision.DetectedObject> getLimelightDetectedObject(
-        FtcLimelightVision.ResultType resultType, String label, int lineNum)
-    {
-        TrcVisionTargetInfo<FtcLimelightVision.DetectedObject> limelightInfo = null;
-        String objectName = null;
-
-        if (limelightVision != null)
-        {
-            limelightInfo = limelightVision.getBestDetectedTargetInfo(resultType, label, null);
-            if (limelightInfo != null)
-            {
-                objectName = limelightInfo.detectedObj.label;
-                tracer.traceInfo("Limelight", resultType + ": info=" + limelightInfo);
-            }
-        }
-
-        if (objectName != null && robot.blinkin != null)
-        {
-            robot.blinkin.setDetectedPattern(objectName);
-        }
-
-        if (lineNum != -1)
-        {
-            robot.dashboard.displayPrintf(
-                lineNum, "%s: %s", objectName, limelightInfo != null? limelightInfo: "Not found.");
-        }
-
-        return limelightInfo;
-    }   //getLimelightDetectedObject
 
     /**
      * This method returns the target Z offset from ground.

@@ -22,7 +22,7 @@
 
 package teamcode.subsystems;
 
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -36,7 +36,7 @@ import trclib.subsystem.TrcServoGrabber;
  */
 public class Grabber
 {
-    private final Rev2mDistanceSensor rev2mSensor;
+    private final RevColorSensorV3 analogSensor;
     private final TrcServoGrabber grabber;
 
     /**
@@ -44,14 +44,14 @@ public class Grabber
      */
     public Grabber()
     {
-        if (RobotParams.GrabberParams.USE_REV_2M_SENSOR)
+        if (RobotParams.GrabberParams.USE_ANALOG_SENSOR)
         {
-            rev2mSensor = FtcOpMode.getInstance().hardwareMap.get(
-                Rev2mDistanceSensor.class, RobotParams.GrabberParams.REV_2M_SENSOR_NAME);
+            analogSensor = FtcOpMode.getInstance().hardwareMap.get(
+                RevColorSensorV3.class, RobotParams.GrabberParams.ANALOG_SENSOR_NAME);
         }
         else
         {
-            rev2mSensor = null;
+            analogSensor = null;
         }
 
         FtcServoGrabber.Params grabberParams = new FtcServoGrabber.Params()
@@ -63,18 +63,16 @@ public class Grabber
                 RobotParams.GrabberParams.OPEN_POS, RobotParams.GrabberParams.OPEN_TIME,
                 RobotParams.GrabberParams.CLOSE_POS, RobotParams.GrabberParams.CLOSE_TIME);
 
-        if (rev2mSensor != null)
+        if (analogSensor != null)
         {
             grabberParams.setAnalogSensorTrigger(
                 this::getSensorData, RobotParams.GrabberParams.ANALOG_TRIGGER_INVERTED,
-                RobotParams.GrabberParams.SENSOR_TRIGGER_THRESHOLD, RobotParams.GrabberParams.HAS_OBJECT_THRESHOLD,
-                null, null, false);
+                RobotParams.GrabberParams.SENSOR_TRIGGER_THRESHOLD, RobotParams.GrabberParams.HAS_OBJECT_THRESHOLD);
         }
         else if (RobotParams.GrabberParams.USE_DIGITAL_SENSOR)
         {
             grabberParams.setDigitalInputTrigger(
-                RobotParams.GrabberParams.DIGITAL_SENSOR_NAME, RobotParams.GrabberParams.DIGITAL_TRIGGER_INVERTED,
-                null, null, false);
+                RobotParams.GrabberParams.DIGITAL_SENSOR_NAME, RobotParams.GrabberParams.DIGITAL_TRIGGER_INVERTED);
         }
 
         grabber = new FtcServoGrabber(RobotParams.GrabberParams.SUBSYSTEM_NAME, grabberParams).getGrabber();
@@ -98,9 +96,9 @@ public class Grabber
      */
     private double getSensorData()
     {
-        if (rev2mSensor != null)
+        if (analogSensor != null)
         {
-            return rev2mSensor.getDistance(DistanceUnit.INCH);
+            return analogSensor.getDistance(DistanceUnit.INCH);
         }
         else
         {

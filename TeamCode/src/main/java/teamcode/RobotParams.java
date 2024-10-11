@@ -174,9 +174,10 @@ public class RobotParams
         public static final boolean useWebCam                   = true;     // false to use Android phone camera.
         public static final boolean useBuiltinCamBack           = false;    // For Android Phone as Robot Controller.
         public static final boolean tuneColorBlobVision         = false;
+        public static final boolean useLimelightVision          = false;
+        public static final boolean useCameraStreamProcessor    = false;
         public static final boolean useAprilTagVision           = true;
         public static final boolean useColorBlobVision          = true;
-        public static final boolean useLimelightVision          = false;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;
         // Drive Base
@@ -622,14 +623,14 @@ public class RobotParams
         public static final double GEAR_RATIO                   = 44.0 / 10.0;
         public static final double DEG_SCALE                    = 360.0 / (ENCODER_CPR * GEAR_RATIO);
         public static final double POS_OFFSET                   = 39.0; //???
-        public static final double ZERO_OFFSET                  = 0.0;  ///???
+        public static final double ZERO_OFFSET                  = 0.0;  //???
         public static final double POWER_LIMIT                  = 0.5;  //???
-        public static final double ZERO_CAL_POWER               = -0.25;    //???
+        public static final double ZERO_CAL_POWER               = -0.25;//???
 
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 270.0;    //???
         public static final double[] posPresets                 = {MIN_POS, 60.0, 90.0, 120.0, 150.0, 180.0, 210.0, 240.0, 270.0};
-        public static final double POS_PRESET_TOLERANCE         = 10.0;     //???
+        public static final double POS_PRESET_TOLERANCE         = 10.0; //???
 
         public static final boolean SOFTWARE_PID_ENABLED        = true;
         public static final TrcPidController.PidCoefficients posPidCoeffs =
@@ -741,8 +742,8 @@ public class RobotParams
         public static final double CLOSE_POS                    = 0.55;
         public static final double CLOSE_TIME                   = 0.5;
 
-        public static final boolean USE_REV_2M_SENSOR           = false;
-        public static final String REV_2M_SENSOR_NAME           = SUBSYSTEM_NAME + ".sensor";
+        public static final boolean USE_ANALOG_SENSOR           = false;
+        public static final String ANALOG_SENSOR_NAME           = SUBSYSTEM_NAME + ".sensor";
         public static final double SENSOR_TRIGGER_THRESHOLD     = 2.0;
         public static final double HAS_OBJECT_THRESHOLD         = 2.0;
         public static final boolean ANALOG_TRIGGER_INVERTED     = true;

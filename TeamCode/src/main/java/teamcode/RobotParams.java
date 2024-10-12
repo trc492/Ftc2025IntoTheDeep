@@ -629,6 +629,7 @@ public class RobotParams
 
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 270.0;    //???
+        public static final double PICKUP_GROUND_POS            = MIN_POS;
         public static final double[] posPresets                 = {MIN_POS, 60.0, 90.0, 120.0, 150.0, 180.0, 210.0, 240.0, 270.0};
         public static final double POS_PRESET_TOLERANCE         = 10.0; //???
 
@@ -661,6 +662,7 @@ public class RobotParams
 
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 30.25;
+        public static final double PICKUP_GROUND_POS            = MIN_POS;
         public static final double[] posPresets                 = {MIN_POS, 15.0, 20.0, 25.0, 30.0};
         public static final double POS_PRESET_TOLERANCE         = 1.0;
 
@@ -684,6 +686,7 @@ public class RobotParams
 
         public static final double MIN_POS                      = 0.0;
         public static final double MAX_POS                      = 90.0;
+        public static final double PICKUP_GROUND_POS            = MIN_POS;
         public static final double DUMP_TIME                    = 0.5;
     }   //class WristParams
 

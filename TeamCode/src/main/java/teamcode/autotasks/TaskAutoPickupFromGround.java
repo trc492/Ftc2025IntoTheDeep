@@ -191,12 +191,13 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 samplePose = null;
                 if (robot.vision != null)
                 {
-                    robot.vision.setActiveWebcam(robot.vision.getActiveWebcam());
+                    robot.vision.setActiveWebcam(robot.vision.getFrontWebcam());
                     robot.vision.setSampleVisionEnabled(taskParams.sampleType, true);
                     if (robot.extenderArm != null)
                     {
-                        robot.extenderArm.setPosition(RobotParams.ElbowParams.MIN_POS,
-                                RobotParams.ExtenderParams.MIN_POS, RobotParams.WristParams.MIN_POS, event);
+                        robot.extenderArm.setPosition(
+                            RobotParams.ElbowParams.PICKUP_GROUND_POS, RobotParams.ExtenderParams.PICKUP_GROUND_POS,
+                            RobotParams.WristParams.PICKUP_GROUND_POS, event);
                         sm.waitForSingleEvent(event, State.FIND_SAMPLE);
                     }
                     else
@@ -215,14 +216,15 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 if (robot.vision.isSampleVisionEnabled(taskParams.sampleType))
                 {
                     TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo =
-                            robot.vision.getDetectedSample(taskParams.sampleType, -1);
+                        robot.vision.getDetectedSample(taskParams.sampleType, -1);
                     if (sampleInfo != null)
                     {
                         samplePose = new TrcPose2D(
-                                sampleInfo.objPose.x, sampleInfo.objPose.y, sampleInfo.objPose.angle);
+                            sampleInfo.objPose.x, sampleInfo.objPose.y, sampleInfo.objPose.angle);
                         String msg = String.format(
-                                Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
-                                taskParams.sampleType, sampleInfo.objPose.x, sampleInfo.objPose.y, sampleInfo.objPose.angle);
+                            Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
+                            taskParams.sampleType, sampleInfo.objPose.x, sampleInfo.objPose.y,
+                            sampleInfo.objPose.angle);
                         tracer.traceInfo(moduleName, msg);
                         robot.speak(msg);
                         sm.setState(State.GO_TO_SAMPLE);
@@ -252,14 +254,17 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case GO_TO_SAMPLE:
                 if (samplePose != null)
                 {
+                    // TODO: Need to adjust offset of the pickup.
                     robot.robotDrive.purePursuitDrive.start(
-                            event, robot.robotDrive.driveBase.getFieldPosition(), true, samplePose);
+                        event, robot.robotDrive.driveBase.getFieldPosition(), true, samplePose);
                     sm.waitForSingleEvent(event, State.PICK_UP_SAMPLE);
                 }
                 break;
 
             case PICK_UP_SAMPLE:
                 // intake design not confirmed
+                // TODO: There will be a color sensor on the intke.
+                // We need to check for correct color before picking up.
                 robot.intake.setPower(0.0, RobotParams.IntakeParams.FORWARD_POWER, 4.0, event);  // change duration based on tuning
                 sm.waitForSingleEvent(event, State.DONE);
                 break;

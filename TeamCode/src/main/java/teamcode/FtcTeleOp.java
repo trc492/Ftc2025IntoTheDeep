@@ -422,7 +422,7 @@ public class FtcTeleOp extends FtcOpMode
             case B:
                 if (robot.wrist != null) {
                     if (pressed) {
-                        robot.wrist.setPosition(.5);
+                        robot.wrist.setPosition(.575);
                     }
                 }
                 break;

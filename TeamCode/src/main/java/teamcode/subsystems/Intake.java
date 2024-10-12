@@ -41,7 +41,10 @@ public class Intake
         FtcIntake.Params intakeParams = new FtcIntake.Params()
             .setPrimaryMotor(
                 RobotParams.IntakeParams.PRIMARY_MOTOR_NAME, RobotParams.IntakeParams.PRIMARY_MOTOR_TYPE,
-                RobotParams.IntakeParams.PRIMARY_MOTOR_INVERTED);
+                RobotParams.IntakeParams.PRIMARY_MOTOR_INVERTED)
+            .setFollowerMotor(
+                RobotParams.IntakeParams.FOLLOWER_MOTOR_NAME, RobotParams.IntakeParams.FOLLOWER_MOTOR_TYPE,
+                RobotParams.IntakeParams.FOLLOWER_MOTOR_INVERTED);
         intake = new FtcIntake(RobotParams.IntakeParams.SUBSYSTEM_NAME, intakeParams).getIntake();
     }
 

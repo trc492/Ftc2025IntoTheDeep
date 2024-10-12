@@ -623,12 +623,13 @@ public class RobotParams
         public static final double GEAR_RATIO                   = 44.0 / 10.0;
         public static final double DEG_SCALE                    = 360.0 / (ENCODER_CPR * GEAR_RATIO);
         public static final double POS_OFFSET                   = 39.0; //???
-        public static final double ZERO_OFFSET                  = 0.0;  ///???
-        public static final double POWER_LIMIT                  = 0.5;  //???
-        public static final double ZERO_CAL_POWER               = -0.25;    //???
+        public static final double ZERO_OFFSET                  = 0.0;  //???
+        public static final double POWER_LIMIT                  = 1.0;  //???
+        public static final double ZERO_CAL_POWER               = -0.25;//???
 
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 270.0;    //???
+        public static final double GROUND_PICKUP_POS            = MIN_POS;
         public static final double[] posPresets                 = {MIN_POS, 60.0, 90.0, 120.0, 150.0, 180.0, 210.0, 240.0, 270.0};
         public static final double POS_PRESET_TOLERANCE         = 10.0;     //???
 
@@ -661,6 +662,7 @@ public class RobotParams
 
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 30.25;
+        public static final double GROUND_PICKUP_POS            = MIN_POS;
         public static final double[] posPresets                 = {MIN_POS, 15.0, 20.0, 25.0, 30.0};
         public static final double POS_PRESET_TOLERANCE         = 1.0;
 
@@ -684,6 +686,7 @@ public class RobotParams
 
         public static final double MIN_POS                      = 0.0;
         public static final double MAX_POS                      = 90.0;
+        public static final double GROUND_PICKUP_POS            = MIN_POS;
         public static final double DUMP_TIME                    = 0.5;
     }   //class WristParams
 
@@ -716,6 +719,9 @@ public class RobotParams
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.CRServo;
         public static final boolean PRIMARY_MOTOR_INVERTED      = true;
+        public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
+        public static final MotorType FOLLOWER_MOTOR_TYPE       = MotorType.CRServo;
+        public static final boolean FOLLOWER_MOTOR_INVERTED     = !PRIMARY_MOTOR_INVERTED;
 
         public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
         public static final boolean SENSOR_INVERTED             = false;
@@ -742,8 +748,8 @@ public class RobotParams
         public static final double CLOSE_POS                    = 0.55;
         public static final double CLOSE_TIME                   = 0.5;
 
-        public static final boolean USE_REV_2M_SENSOR           = false;
-        public static final String REV_2M_SENSOR_NAME           = SUBSYSTEM_NAME + ".sensor";
+        public static final boolean USE_ANALOG_SENSOR           = false;
+        public static final String ANALOG_SENSOR_NAME           = SUBSYSTEM_NAME + ".sensor";
         public static final double SENSOR_TRIGGER_THRESHOLD     = 2.0;
         public static final double HAS_OBJECT_THRESHOLD         = 2.0;
         public static final boolean ANALOG_TRIGGER_INVERTED     = true;

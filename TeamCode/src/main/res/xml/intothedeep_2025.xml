@@ -45,6 +45,7 @@ SOFTWARE.
             <goBILDA5202SeriesMotor name="lbDriveMotor" port="2"/>
             <Servo name="Wrist.primary" port="0" />
             <ContinuousRotationServo name="Intake.primary" port="2" />
+            <ContinuousRotationServo name="Intake.follower" port="3" />
             <!--
             <LynxEmbeddedIMU name="imu" port="0" bus="0"/>
             -->

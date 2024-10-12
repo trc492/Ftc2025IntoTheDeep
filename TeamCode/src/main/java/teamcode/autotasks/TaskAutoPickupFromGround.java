@@ -196,8 +196,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                     if (robot.extenderArm != null)
                     {
                         robot.extenderArm.setPosition(
-                            RobotParams.ElbowParams.PICKUP_GROUND_POS, RobotParams.ExtenderParams.PICKUP_GROUND_POS,
-                            RobotParams.WristParams.PICKUP_GROUND_POS, event);
+                            RobotParams.ElbowParams.GROUND_PICKUP_POS, RobotParams.ExtenderParams.GROUND_PICKUP_POS,
+                            RobotParams.WristParams.GROUND_PICKUP_POS, event);
                         sm.waitForSingleEvent(event, State.FIND_SAMPLE);
                     }
                     else

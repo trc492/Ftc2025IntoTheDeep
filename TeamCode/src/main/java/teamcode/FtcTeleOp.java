@@ -29,7 +29,6 @@ import java.util.Locale;
 import ftclib.drivebase.FtcSwerveDrive;
 import ftclib.driverio.FtcGamepad;
 import ftclib.robotcore.FtcOpMode;
-import teamcode.subsystems.Intake;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;

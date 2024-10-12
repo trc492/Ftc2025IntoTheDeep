@@ -368,7 +368,7 @@ public class Robot
 
                 if (grabber != null)
                 {
-                    if (RobotParams.GrabberParams.USE_REV_2M_SENSOR)
+                    if (RobotParams.GrabberParams.USE_ANALOG_SENSOR)
                     {
                         dashboard.displayPrintf(
                             lineNum++, "Grabber: pos=%.3f, hasObject=%s, sensorValue=%.3f, autoActive=%s",

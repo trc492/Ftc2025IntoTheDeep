@@ -94,8 +94,8 @@ public class Vision
     private FtcRawEocvColorBlobPipeline rawColorBlobPipeline;
     public FtcRawEocvVision rawColorBlobVision;
     public FtcLimelightVision limelightVision;
-    public FtcVisionAprilTag aprilTagVision;
     private CameraStreamProcessor cameraStreamProcessor;
+    public FtcVisionAprilTag aprilTagVision;
     private AprilTagProcessor aprilTagProcessor;
     public FtcVisionEocvColorBlob redSampleVision;
     private FtcEocvColorBlobProcessor redSampleProcessor;

@@ -39,10 +39,10 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private enum State
     {
         START,
+        DRIVE_TO_CHAMBER,
         SCORE_PRELOAD_SPECIMEN,
         PICKUP_FROM_SUBMERSIBLE,
-        DRIVE_TO_BASKET,
-        SCORE_SAMPLE,
+        SCORE_SAMPLE_BASKET,
         PICKUP_FLOOR_SAMPLE,
         DRIVE_TO_SUBMERSIBLE,
         DONE
@@ -130,24 +130,23 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     }
                     break;
 
+                case DRIVE_TO_CHAMBER:
+
+                    //Drive to Chamber
+                    break;
+
                 case SCORE_PRELOAD_SPECIMEN:
 
-                    //Drive close to Chamber
                     //Auto-Score Specimen
                     break;
                 case PICKUP_FROM_SUBMERSIBLE:
 
                     //Auto-Pickup Sample from Submersible
                     break;
-                case DRIVE_TO_BASKET:
+                case SCORE_SAMPLE_BASKET:
 
-                    //if scoring high, drive to basket scoring position for high and extend arm in good posiitiopn
-                    //else if scoring low, drive to basket scoring position for low and extend arm in good position
-                    break;
-                case SCORE_SAMPLE:
-
-                    //release sample
-                    //retract arm
+                    //Drive to Basket
+                    //Auto-score sample in basket
 
                     break;
                 case PICKUP_FLOOR_SAMPLE:

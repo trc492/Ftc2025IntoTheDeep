@@ -39,6 +39,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
     private enum State
     {
         START,
+        DRIVE_TO_CHAMBER,
         SCORE_PRELOAD_SPECIMEN,
         PICKUP_FROM_SUBMERSIBLE,
         DRIVE_TO_OBSERVATION,
@@ -132,22 +133,22 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     }
                     break;
 
-                case SCORE_PRELOAD_SPECIMEN:
+                case DRIVE_TO_CHAMBER:
+                    //Drive to Chamber
+                    break;
 
-                    //Drive close to Chamber
+                case SCORE_PRELOAD_SPECIMEN:
                     //Auto-Score Specimen
                     break;
                 case PICKUP_FROM_SUBMERSIBLE:
-
                     //Auto-Pickup Sample from Submersible
                     break;
 
                 case DRIVE_TO_OBSERVATION:
-
                     //drive to observation
                     break;
-                case CONVERT_SAMPLE:
 
+                case CONVERT_SAMPLE:
                     //release sample
                     //back out from zone
 

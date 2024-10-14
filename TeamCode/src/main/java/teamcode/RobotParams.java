@@ -625,30 +625,29 @@ public class RobotParams
 
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
-        public static final boolean PRIMARY_MOTOR_INVERTED      = true; //???
-
+        public static final boolean PRIMARY_MOTOR_INVERTED      = false;
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = true;
 
         public static final double ENCODER_CPR                  = Gobilda.MOTOR_5203_84_ENC_PPR;
         public static final double GEAR_RATIO                   = 44.0 / 10.0;
         public static final double DEG_SCALE                    = 360.0 / (ENCODER_CPR * GEAR_RATIO);
-        public static final double POS_OFFSET                   = 39.0; //???
-        public static final double ZERO_OFFSET                  = 0.0;  //???
-        public static final double POWER_LIMIT                  = 1.0;  //???
-        public static final double ZERO_CAL_POWER               = -0.25;//???
+        public static final double POS_OFFSET                   = 0.0;
+        public static final double ZERO_OFFSET                  = 0.0;
+        public static final double POWER_LIMIT                  = 1.0;
+        public static final double ZERO_CAL_POWER               = -0.2;
 
         public static final double MIN_POS                      = POS_OFFSET;
-        public static final double MAX_POS                      = 270.0;    //???
+        public static final double MAX_POS                      = 120.0;
         public static final double GROUND_PICKUP_POS            = MIN_POS;
-        public static final double[] posPresets                 = {MIN_POS, 60.0, 90.0, 120.0, 150.0, 180.0, 210.0, 240.0, 270.0};
-        public static final double POS_PRESET_TOLERANCE         = 10.0;     //???
+        public static final double[] posPresets                 = {MIN_POS, 30.0, 60.0, 90.0, MAX_POS};
+        public static final double POS_PRESET_TOLERANCE         = 10.0;
 
         public static final boolean SOFTWARE_PID_ENABLED        = true;
         public static final TrcPidController.PidCoefficients posPidCoeffs =
-            new TrcPidController.PidCoefficients(0.018, 0.1, 0.001, 0.0, 2.0);
-        public static final double POS_PID_TOLERANCE            = 1.0;
-        public static final double GRAVITY_COMP_MAX_POWER       = 0.158;
+            new TrcPidController.PidCoefficients(5.0, 0.0, 0.000, 0.0, 0.0);
+        public static final double POS_PID_TOLERANCE            = 0.5;
+        public static final double GRAVITY_COMP_MAX_POWER       = 0.3;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
         public static final double STALL_TOLERANCE              = 0.1;
         public static final double STALL_TIMEOUT                = 0.1;

@@ -54,7 +54,7 @@ import trclib.timer.TrcTimer;
  * testing purposes. It provides numerous tests for diagnosing problems with the robot. It also provides tools
  * for tuning and calibration.
  */
-@TeleOp(name="FtcTest", group="Ftcxxxx")
+@TeleOp(name="FtcTest", group="Ftc3543")
 public class FtcTest extends FtcTeleOp
 {
     private final String moduleName = getClass().getSimpleName();
@@ -223,6 +223,7 @@ public class FtcTest extends FtcTeleOp
             case VISION_TEST:
                 if (robot.vision != null)
                 {
+                    robot.vision.setCameraStreamEnabled(true);
                     if (robot.vision.vision != null)
                     {
                         exposure = robot.vision.vision.getCurrentExposure();
@@ -264,6 +265,7 @@ public class FtcTest extends FtcTeleOp
                 if (robot.vision != null && robot.vision.rawColorBlobVision != null)
                 {
                     robot.globalTracer.traceInfo(moduleName, "Enabling FtcRawEocvVision.");
+                    robot.vision.setCameraStreamEnabled(true);
                     robot.vision.setRawColorBlobVisionEnabled(true);
                     colorThresholds = robot.vision.getRawColorBlobThresholds();
                     colorThresholdIndex = 0;
@@ -773,10 +775,52 @@ public class FtcTest extends FtcTeleOp
             case Y:
             case LeftBumper:
             case RightBumper:
+                break;
+
             case DpadUp:
+                if (robot.elbow != null)
+                {
+                    if (pressed)
+                    {
+                        robot.elbow.presetPositionUp(moduleName, RobotParams.ElbowParams.POWER_LIMIT);
+                    }
+                    passToTeleOp = false;
+                }
+                break;
+
             case DpadDown:
+                if (robot.elbow != null)
+                {
+                    if (pressed)
+                    {
+                        robot.elbow.presetPositionDown(moduleName, RobotParams.ElbowParams.POWER_LIMIT);
+                    }
+                    passToTeleOp = false;
+                }
+                break;
+
             case DpadLeft:
+                if (robot.extender != null)
+                {
+                    if (pressed)
+                    {
+                        robot.extender.presetPositionDown(moduleName, RobotParams.ExtenderParams.POWER_LIMIT);
+                    }
+                    passToTeleOp = false;
+                }
+                break;
+
             case DpadRight:
+                if (robot.extender != null)
+                {
+                    if (pressed)
+                    {
+                        robot.extender.presetPositionUp(moduleName, RobotParams.ExtenderParams.POWER_LIMIT);
+                    }
+                    passToTeleOp = false;
+                }
+                break;
+
             case Back:
             case Start:
                 break;

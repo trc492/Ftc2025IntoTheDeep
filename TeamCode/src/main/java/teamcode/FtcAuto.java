@@ -43,7 +43,7 @@ import trclib.timer.TrcTimer;
 /**
  * This class contains the Autonomous Mode program.
  */
-@Autonomous(name="FtcAutonomous", group="Ftcxxxx")
+@Autonomous(name="FtcAutonomous", group="Ftc3543")
 public class FtcAuto extends FtcOpMode
 {
     private final String moduleName = getClass().getSimpleName();

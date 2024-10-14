@@ -53,9 +53,10 @@ public class Elbow
         elbow.setPositionPidParameters(
             RobotParams.ElbowParams.posPidCoeffs, RobotParams.ElbowParams.POS_PID_TOLERANCE);
         elbow.setPositionPidPowerComp(this::getElbowPowerComp);
-        elbow.setPidStallDetectionEnabled(
-            RobotParams.ElbowParams.STALL_RESET_TIMEOUT, RobotParams.ElbowParams.STALL_TIMEOUT,
-            RobotParams.ElbowParams.STALL_TOLERANCE);
+        // Elbow has a large gear ratio,so unlikely to have PID hang. No need to do PID stall detection.
+//        elbow.setPidStallDetectionEnabled(
+//            RobotParams.ElbowParams.STALL_RESET_TIMEOUT, RobotParams.ElbowParams.STALL_TIMEOUT,
+//            RobotParams.ElbowParams.STALL_TOLERANCE);
         elbow.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
     }   //Elbow
 

@@ -247,6 +247,7 @@ public class Robot
         //
         if (vision != null)
         {
+            vision.setCameraStreamEnabled(false);
             if (vision.rawColorBlobVision != null)
             {
                 globalTracer.traceInfo(moduleName, "Disabling RawColorBlobVision.");

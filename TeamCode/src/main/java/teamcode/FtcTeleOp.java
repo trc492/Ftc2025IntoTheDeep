@@ -38,7 +38,7 @@ import trclib.timer.TrcTimer;
 /**
  * This class contains the TeleOp Mode program.
  */
-@TeleOp(name="FtcTeleOp", group="Ftcxxxx")
+@TeleOp(name="FtcTeleOp", group="Ftc3543")
 public class FtcTeleOp extends FtcOpMode
 {
     private final String moduleName = getClass().getSimpleName();
@@ -497,7 +497,7 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         if (pressed)
                         {
-                            robot.grabber.enableAutoAssist(null, 0.0, null, 0.0);
+                            robot.grabber.autoAssistGrab(null, 0.0, null, 0.0);
                         }
                         else
                         {

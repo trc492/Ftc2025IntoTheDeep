@@ -23,6 +23,7 @@
 package teamcode.subsystems;
 
 import ftclib.motor.FtcMotorActuator;
+import teamcode.Robot;
 import teamcode.RobotParams;
 import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;
@@ -32,13 +33,15 @@ import trclib.robotcore.TrcDbgTrace;
  */
 public class Elbow
 {
+    private final Robot robot;
     public final TrcMotor elbow;
 
     /**
      * Constructor: Creates an instance of the object.
      */
-    public Elbow()
+    public Elbow(Robot robot)
     {
+        this.robot = robot;
         FtcMotorActuator.Params elbowParams = new FtcMotorActuator.Params()
             .setPrimaryMotor(
                 RobotParams.ElbowParams.PRIMARY_MOTOR_NAME, RobotParams.ElbowParams.PRIMARY_MOTOR_TYPE,
@@ -50,6 +53,7 @@ public class Elbow
                 RobotParams.ElbowParams.ZERO_OFFSET)
             .setPositionPresets(RobotParams.ElbowParams.POS_PRESET_TOLERANCE, RobotParams.ElbowParams.posPresets);
         elbow = new FtcMotorActuator(elbowParams).getMotor();
+        elbow.setSoftwarePidEnabled(true);
         elbow.setPositionPidParameters(
             RobotParams.ElbowParams.posPidCoeffs, RobotParams.ElbowParams.POS_PID_TOLERANCE);
         elbow.setPositionPidPowerComp(this::getElbowPowerComp);
@@ -78,8 +82,15 @@ public class Elbow
      */
     private double getElbowPowerComp(double currPower)
     {
+        double extenderPos = robot.extender != null? robot.extender.getPosition(): 1.0;
+        double extenderAngleRadian = Math.toRadians(elbow.getPosition());
+
+        if (extenderPos != 1.0)
+        {
+            extenderAngleRadian -= Math.atan(4.1695/extenderPos);
+        }
         // Elbow angle is zero horizontal.
-        return RobotParams.ElbowParams.GRAVITY_COMP_MAX_POWER * Math.cos(Math.toRadians(elbow.getPosition()));
+        return RobotParams.ElbowParams.GRAVITY_COMP_MAX_POWER * extenderPos * Math.cos(extenderAngleRadian);
     }   //getElbowPowerComp
 
 }   //class Elbow

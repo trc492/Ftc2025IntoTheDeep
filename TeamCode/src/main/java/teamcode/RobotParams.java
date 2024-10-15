@@ -342,7 +342,7 @@ public class RobotParams
                 if (RobotParams.Preferences.usePinpointOdometry)
                 {
                     FtcPinpointOdometry.Config ppOdoConfig = new FtcPinpointOdometry.Config()
-                        .setPodOffsets(0.0, 0.0)    // ???
+                        .setPodOffsets(-156.0, -168.0)
                         .setEncoderResolution(ODWHEEL_CPR / Math.PI * ODWHEEL_DIAMETER)
                         .setEncodersInverted(false, false); //???
                     absoluteOdometry = new FtcPinpointOdometry("pinpointOdo", ppOdoConfig);
@@ -513,9 +513,9 @@ public class RobotParams
 
         public static final boolean SOFTWARE_PID_ENABLED        = true;
         public static final TrcPidController.PidCoefficients posPidCoeffs =
-            new TrcPidController.PidCoefficients(5.0, 0.0, 0.000, 0.0, 0.0);
+            new TrcPidController.PidCoefficients(0.12, 0.0, 0.0, 0.0, 0.0);
         public static final double POS_PID_TOLERANCE            = 0.5;
-        public static final double GRAVITY_COMP_MAX_POWER       = 0.3;
+        public static final double GRAVITY_COMP_MAX_POWER       = 0.2 / ExtenderParams.POS_OFFSET;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
         public static final double STALL_TOLERANCE              = 0.1;
         public static final double STALL_TIMEOUT                = 0.1;

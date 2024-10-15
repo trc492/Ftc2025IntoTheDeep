@@ -93,7 +93,7 @@ public class FtcTeleOp extends FtcOpMode
         driverGamepad.setLeftStickInverted(false, true);
         driverGamepad.setRightStickInverted(false, true);
         operatorGamepad.setLeftStickInverted(false, true);
-        operatorGamepad.setRightStickInverted(false, true);
+        operatorGamepad.setRightStickInverted(false, false);
         setDriveOrientation(RobotParams.Robot.DRIVE_ORIENTATION);
     }   //robotInit
 

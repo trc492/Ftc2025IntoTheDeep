@@ -127,7 +127,7 @@ public class Robot
             {
                 if (RobotParams.Preferences.useElbow)
                 {
-                    elbow = new Elbow().getMotor();
+                    elbow = new Elbow(this).getMotor();
                 }
 
                 if (RobotParams.Preferences.useExtender)
@@ -334,37 +334,36 @@ public class Robot
                 {
                     dashboard.displayPrintf(
                         lineNum++,
-                        "Elbow: power=" + elbow.getPower() +
-                        ",pos=" + elbow.getPosition() + "/" + elbow.getPidTarget() +
-                        ",limitSW=" + elbow.isLowerLimitSwitchActive());
+                        "Elbow: power=%.3f,pos=%.1f/%.1f,limitSw=%s",
+                        elbow.getPower(), elbow.getPosition(), elbow.getPidTarget(), elbow.isLowerLimitSwitchActive());
                 }
 
                 if (extender != null)
                 {
                     dashboard.displayPrintf(
                         lineNum++,
-                        "Extender: power=" + extender.getPower() +
-                        ",pos=" + extender.getPosition() + "/" + extender.getPidTarget() +
-                        ",limitSw=" + extender.isLowerLimitSwitchActive());
+                        "Extender: power=%.3f,pos=%.1f/%.1f,limitSw=%s",
+                        extender.getPower(), extender.getPosition(), extender.getPidTarget(),
+                        extender.isLowerLimitSwitchActive());
                 }
 
                 if (wrist != null)
                 {
-                    dashboard.displayPrintf(lineNum++, "Wrist: pos=" + wrist.getPosition());
+                    dashboard.displayPrintf(lineNum++, "Wrist: pos=%.3f", wrist.getPosition());
                 }
 
                 if (auxClimber != null)
                 {
                     dashboard.displayPrintf(
                         lineNum++,
-                        "AuxClimber: power=" + auxClimber.getPower() +
-                        ",pos=" + auxClimber.getPosition() + "/" + auxClimber.getPidTarget() +
-                        ",limitSw=" + auxClimber.isLowerLimitSwitchActive());
+                        "AuxClimber: power=%.3f,pos=%.1f/%.1f,limitSw=%s",
+                        auxClimber.getPower(), auxClimber.getPosition(), auxClimber.getPidTarget(),
+                        auxClimber.isLowerLimitSwitchActive());
                 }
 
                 if (intake != null)
                 {
-                    dashboard.displayPrintf(lineNum++, "Intake: power=" + intake.getPower());
+                    dashboard.displayPrintf(lineNum++, "Intake: power=%.3f", intake.getPower());
                 }
 
                 if (grabber != null)
@@ -372,14 +371,14 @@ public class Robot
                     if (RobotParams.GrabberParams.USE_ANALOG_SENSOR)
                     {
                         dashboard.displayPrintf(
-                            lineNum++, "Grabber: pos=%.3f, hasObject=%s, sensorValue=%.3f, autoActive=%s",
+                            lineNum++, "Grabber: pos=%.3f,hasObject=%s,sensorValue=%.3f,autoActive=%s",
                             grabber.getPosition(), grabber.hasObject(), grabber.getSensorValue(),
                             grabber.isAutoAssistActive());
                     }
                     else if (RobotParams.GrabberParams.USE_DIGITAL_SENSOR)
                     {
                         dashboard.displayPrintf(
-                            lineNum++, "Grabber: pos=%.3f, hasObject=%s, sensorState=%s, autoActive=%s",
+                            lineNum++, "Grabber: pos=%.3f,hasObject=%s,sensorState=%s,autoActive=%s",
                             grabber.getPosition(), grabber.hasObject(), grabber.getSensorState(),
                             grabber.isAutoAssistActive());
                     }

@@ -78,7 +78,8 @@ public class Elbow
      */
     private double getElbowPowerComp(double currPower)
     {
-        return RobotParams.ElbowParams.GRAVITY_COMP_MAX_POWER * Math.sin(Math.toRadians(elbow.getPosition()));
+        // Elbow angle is zero horizontal.
+        return RobotParams.ElbowParams.GRAVITY_COMP_MAX_POWER * Math.cos(Math.toRadians(elbow.getPosition()));
     }   //getElbowPowerComp
 
 }   //class Elbow

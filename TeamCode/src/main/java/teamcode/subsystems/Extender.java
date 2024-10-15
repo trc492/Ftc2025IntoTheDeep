@@ -43,8 +43,8 @@ public class Extender
             .setPrimaryMotor(
                 RobotParams.ExtenderParams.PRIMARY_MOTOR_NAME, RobotParams.ExtenderParams.PRIMARY_MOTOR_TYPE,
                 RobotParams.ExtenderParams.PRIMARY_MOTOR_INVERTED)
-            .setLowerLimitSwitch(
-                RobotParams.ExtenderParams.LOWER_LIMIT_NAME, RobotParams.ExtenderParams.LOWER_LIMIT_INVERTED)
+//            .setLowerLimitSwitch(
+//                RobotParams.ExtenderParams.LOWER_LIMIT_NAME, RobotParams.ExtenderParams.LOWER_LIMIT_INVERTED)
             .setPositionScaleAndOffset(
                 RobotParams.ExtenderParams.INCHES_PER_COUNT, RobotParams.ExtenderParams.POS_OFFSET)
             .setPositionPresets(
@@ -53,9 +53,13 @@ public class Extender
         extender.setSoftwarePidEnabled(true);
         extender.setPositionPidParameters(
             RobotParams.ExtenderParams.posPidCoeffs, RobotParams.ExtenderParams.POS_PID_TOLERANCE);
-        extender.setPidStallDetectionEnabled(
-            RobotParams.ExtenderParams.STALL_RESET_TIMEOUT, RobotParams.ExtenderParams.STALL_TIMEOUT,
-            RobotParams.ExtenderParams.STALL_TOLERANCE);
+        // Lower limit switch is not installed yet, so we use zero calibration by motor stall.
+        extender.setStallProtection(
+            RobotParams.ExtenderParams.STALL_MIN_POWER, RobotParams.ExtenderParams.STALL_TOLERANCE,
+            RobotParams.ExtenderParams.STALL_TIMEOUT, RobotParams.ExtenderParams.STALL_RESET_TIMEOUT);
+//        extender.setPidStallDetectionEnabled(
+//            RobotParams.ExtenderParams.STALL_RESET_TIMEOUT, RobotParams.ExtenderParams.STALL_TIMEOUT,
+//            RobotParams.ExtenderParams.STALL_TOLERANCE);
         extender.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
 //            extender.resetPositionOnLowerLimitSwitch();
     }   //Extender

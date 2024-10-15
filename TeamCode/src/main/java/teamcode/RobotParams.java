@@ -661,24 +661,23 @@ public class RobotParams
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
         public static final boolean PRIMARY_MOTOR_INVERTED      = true;
-
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = false;
 
-        public static final double INCHES_PER_COUNT             = 18.25/4941.0;
-        public static final double POS_OFFSET                   = 10.875;
+        public static final double INCHES_PER_COUNT             = 0.0020825894713429496;
+        public static final double POS_OFFSET                   = 16.25;
         public static final double POWER_LIMIT                  = 1.0;
-        public static final double ZERO_CAL_POWER               = -0.25;
+        public static final double ZERO_CAL_POWER               = -0.75;
 
         public static final double MIN_POS                      = POS_OFFSET;
-        public static final double MAX_POS                      = 30.25;
+        public static final double MAX_POS                      = 35.0;
         public static final double GROUND_PICKUP_POS            = MIN_POS;
-        public static final double[] posPresets                 = {MIN_POS, 15.0, 20.0, 25.0, 30.0};
-        public static final double POS_PRESET_TOLERANCE         = 1.0;
+        public static final double[] posPresets                 = {MIN_POS, 20.0, 25.0, 30.0, 35.0};
+        public static final double POS_PRESET_TOLERANCE         = 3.0;
 
         public static final boolean SOFTWARE_PID_ENABLED        = true;
         public static final TrcPidController.PidCoefficients posPidCoeffs =
-            new TrcPidController.PidCoefficients(1.0, 0.0, 0.0, 0.0, 0.0);
+            new TrcPidController.PidCoefficients(5.0, 0.0, 0.0, 0.0, 0.0);
         public static final double POS_PID_TOLERANCE            = 0.1;
         public static final double GRAVITY_COMP_POWER           = 0.0;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);

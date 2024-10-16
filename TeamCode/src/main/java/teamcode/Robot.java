@@ -34,6 +34,7 @@ import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.BlinkinLEDs;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.GobildaLED;
 import teamcode.subsystems.Intake;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Grabber;
@@ -69,6 +70,7 @@ public class Robot
     public Vision vision;
     // Sensors and indicators.
     public BlinkinLEDs blinkin;
+    public GobildaLED gobildaLED;
     public FtcRobotBattery battery;
     // Subsystems.
     public TrcMotor elbow;
@@ -114,6 +116,11 @@ public class Robot
             if (robotInfo.blinkinName != null)
             {
                 blinkin = new BlinkinLEDs(robotInfo.blinkinName);
+            }
+
+            if (robotInfo.gobildaLEDName != null)
+            {
+                gobildaLED = new GobildaLED(robotInfo.gobildaLEDName);
             }
 
             if (RobotParams.Preferences.useBatteryMonitor)

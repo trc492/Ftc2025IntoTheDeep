@@ -394,6 +394,7 @@ public class RobotParams
             limelight = null;   //new LimelightParams();
             // Miscellaneous
             blinkinName = "blinkin";
+            gobildaLEDName = "gobildaLED";
         }   //IntoTheDeepRobotParams
     }   //class IntoTheDeepRobotParams
 

@@ -30,6 +30,7 @@ SOFTWARE.
             <goBILDA5202SeriesMotor name="rbDriveMotor" port="2"/>
             <goBILDA5202SeriesMotor name="Elbow.primary" port="3"/>
             <RevBlinkinLedDriver name="blinkin" port="0" />
+            <Servo name="gobildaLED" port="1" />
             <goBILDAPinpoint name="pinpointOdo" port="0" bus="1"/>
             <RevColorSensorV3 name="Intake.sensor" port="0" bus="2" />
             <DigitalDevice name="Elbow.lowerLimit" port="1" />

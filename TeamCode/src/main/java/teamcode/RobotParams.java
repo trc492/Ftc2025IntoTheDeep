@@ -306,7 +306,8 @@ public class RobotParams
     public static class IntoTheDeepRobotParams extends FtcRobotDrive.RobotInfo
     {
         // Optii Odometry Wheel
-        private static final double ODWHEEL_DIAMETER = 35.0 * TrcUtil.INCHES_PER_MM;
+        private static final double ODWHEEL_DIAMETER_MM = 35.0;
+        private static final double ODWHEEL_DIAMETER = ODWHEEL_DIAMETER_MM * TrcUtil.INCHES_PER_MM;
         private static final double ODWHEEL_CPR = 4096.0;
 
         public IntoTheDeepRobotParams()
@@ -326,12 +327,12 @@ public class RobotParams
             driveMotorNames = new String[] {"lfDriveMotor", "rfDriveMotor", "lbDriveMotor", "rbDriveMotor"};
             driveMotorInverted = new boolean[] {true, false, true, false};
             odometryType = TrcDriveBase.OdometryType.AbsoluteOdometry;
-            // Odometry Wheels
+            // Odometry Wheels (Offset from wheel base center)
             odWheelXScale = odWheelYScale = Math.PI * ODWHEEL_DIAMETER / ODWHEEL_CPR;
             xOdWheelSensorNames = new String[] {"xOdWheelSensor"};  // Used by OctoQuad only
             xOdWheelIndices = new int[] {0};    // Either motor port or OctoQuad port, not used by AbsoluteOdometry.
             xOdWheelXOffsets = new double[] {4.0 * TrcUtil.INCHES_PER_MM};
-            xOdWheelYOffsets = new double[] {-168.0 * TrcUtil.INCHES_PER_MM};   //???
+            xOdWheelYOffsets = new double[] {-132.0 * TrcUtil.INCHES_PER_MM};
             yOdWheelSensorNames = new String[] {"yLeftOdWheelSensor", "yRightOdWheelSensor"};   // Used by OctoQuad only
             yOdWheelIndices = new int[] {1, 2}; // Either motor port or OctoQuad port, not used by AbsoluteOdometry.
             yOdWheelXOffsets = new double[] {-156.0 * TrcUtil.INCHES_PER_MM, 156.0 * TrcUtil.INCHES_PER_MM};
@@ -342,16 +343,16 @@ public class RobotParams
                 if (RobotParams.Preferences.usePinpointOdometry)
                 {
                     FtcPinpointOdometry.Config ppOdoConfig = new FtcPinpointOdometry.Config()
-                        .setPodOffsets(-156.0, -168.0)
-                        .setEncoderResolution(ODWHEEL_CPR / Math.PI * ODWHEEL_DIAMETER)
-                        .setEncodersInverted(false, false); //???
+                        .setPodOffsets(156.0, -144.0)   // Offsets from robot center
+                        .setEncoderResolution(ODWHEEL_CPR / (Math.PI * ODWHEEL_DIAMETER_MM))
+                        .setEncodersInverted(false, false);
                     absoluteOdometry = new FtcPinpointOdometry("pinpointOdo", ppOdoConfig);
                 }
                 else if (RobotParams.Preferences.useSparkfunOTOS)
                 {
                     FtcSparkFunOtos.Config otosConfig = new FtcSparkFunOtos.Config()
-                        .setOffset(0.0, 0.0, 0.0)   //???
-                        .setScale(1.0, 1.0);        //???
+                        .setOffset(-4.0 * TrcUtil.INCHES_PER_MM, 24.0 * TrcUtil.INCHES_PER_MM, 0.0)
+                        .setScale(1.0, 1.0);    //???
                     absoluteOdometry = new FtcSparkFunOtos("sparkfunOtos", otosConfig);
                 }
             }

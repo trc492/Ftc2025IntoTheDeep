@@ -48,7 +48,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     {
         START,
         FIND_SAMPLE,
-        GO_TO_SAMPLE,
+        TURN_ROBOT_TO_SAMPLE,
         PICK_UP_SAMPLE,
         DONE
     }   //enum State
@@ -227,7 +227,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                             sampleInfo.objPose.angle);
                         tracer.traceInfo(moduleName, msg);
                         robot.speak(msg);
-                        sm.setState(State.GO_TO_SAMPLE);
+                        sm.setState(State.TURN_ROBOT_TO_SAMPLE);
                     }
                     else if (visionExpiredTime == null)
                     {
@@ -251,19 +251,22 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 }
                 break;
 
-            case GO_TO_SAMPLE:
+            case TURN_ROBOT_TO_SAMPLE:
                 if (samplePose != null)
                 {
+                    TrcPose2D currPose = robot.robotDrive.driveBase.getFieldPosition();
+                    double angle = Math.toDegrees(Math.atan2(currPose.y-samplePose.y, currPose.x-samplePose.x));
+                    currPose.rotatePose(angle);
                     // TODO: Need to adjust offset of the pickup.
                     robot.robotDrive.purePursuitDrive.start(
-                        event, robot.robotDrive.driveBase.getFieldPosition(), true, samplePose);
+                        event, robot.robotDrive.driveBase.getFieldPosition(), true, currPose);
                     sm.waitForSingleEvent(event, State.PICK_UP_SAMPLE);
                 }
                 break;
 
             case PICK_UP_SAMPLE:
                 // intake design not confirmed
-                // TODO: There will be a color sensor on the intke.
+                // TODO: There will be a color sensor on the intake.
                 // We need to check for correct color before picking up.
                 robot.intake.setPower(0.0, RobotParams.IntakeParams.FORWARD_POWER, 4.0, event);  // change duration based on tuning
                 sm.waitForSingleEvent(event, State.DONE);

@@ -25,6 +25,7 @@ package teamcode.subsystems;
 import ftclib.motor.FtcMotorActuator;
 import teamcode.Robot;
 import teamcode.RobotParams;
+import trclib.dataprocessor.TrcUtil;
 import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;
 
@@ -82,15 +83,22 @@ public class Elbow
      */
     private double getElbowPowerComp(double currPower)
     {
-        double extenderPos = robot.extender != null? robot.extender.getPosition(): 1.0;
-        double extenderAngleRadian = Math.toRadians(elbow.getPosition());
-
-        if (extenderPos != 1.0)
+        if (robot.extender != null)
         {
-            extenderAngleRadian -= Math.atan(4.1695/extenderPos);
+            final double elbowLength = 4.1695;  // from CAD model.
+            double extenderLength = robot.extender.getPosition();
+            double extenderAngleRadian = Math.toRadians(elbow.getPosition()) - Math.atan(elbowLength/extenderLength);
+            // Adjust extender length to be the length to the pivot point instead of the base point.
+            extenderLength = TrcUtil.magnitude(elbowLength, extenderLength);
+            // Extender angle is zero horizontal.
+            return RobotParams.ElbowParams.GRAVITY_COMP_MAX_POWER*extenderLength*Math.cos(extenderAngleRadian);
         }
-        // Elbow angle is zero horizontal.
-        return RobotParams.ElbowParams.GRAVITY_COMP_MAX_POWER * extenderPos * Math.cos(extenderAngleRadian);
+        else
+        {
+            // We should not be calling gravity comp if extender has not been created.
+            // But to avoid NullPointerException just in case, return 0.0 gravity comp power.
+            return 0.0;
+        }
     }   //getElbowPowerComp
 
 }   //class Elbow

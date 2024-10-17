@@ -347,6 +347,8 @@ public class RobotParams
                         .setEncoderResolution(ODWHEEL_CPR / (Math.PI * ODWHEEL_DIAMETER_MM))
                         .setEncodersInverted(false, false);
                     absoluteOdometry = new FtcPinpointOdometry("pinpointOdo", ppOdoConfig);
+                    headingWrapRangeLow = -180.0;
+                    headingWrapRangeHigh = 180.0;
                 }
                 else if (RobotParams.Preferences.useSparkfunOTOS)
                 {
@@ -374,13 +376,13 @@ public class RobotParams
             // DriveBase PID Parameters
             drivePidTolerance = 1.0;
             turnPidTolerance = 1.0;
-            xDrivePidCoeffs = new PidCoefficients(0.95, 0.0, 0.001, 0.0, 0.0);
+            xDrivePidCoeffs = new PidCoefficients(0.01, 0.0, 0.0, 0.0, 0.0);
             xDrivePidPowerLimit = 1.0;
             xDriveMaxPidRampRate = null;
-            yDrivePidCoeffs = new PidCoefficients(0.06, 0.0, 0.002, 0.0, 0.0);
+            yDrivePidCoeffs = new PidCoefficients(0.01, 0.0, 0.0, 0.0, 0.0);
             yDrivePidPowerLimit = 1.0;
             yDriveMaxPidRampRate = null;
-            turnPidCoeffs = new PidCoefficients(0.02, 0.0, 0.002, 0.0, 0.0);
+            turnPidCoeffs = new PidCoefficients(0.025, 0.0, 0.0, 0.0, 0.0);
             turnPidPowerLimit = 0.5;
             turnMaxPidRampRate = null;
             // PID Stall Detection
@@ -530,7 +532,7 @@ public class RobotParams
 
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final MotorType PRIMARY_MOTOR_TYPE        = MotorType.DcMotor;
-        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = false;
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = false;
 

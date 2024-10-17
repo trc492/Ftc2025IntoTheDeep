@@ -24,6 +24,8 @@ package teamcode.autocommands;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
+import teamcode.autotasks.TaskAutoScoreChamber;
+import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcStateMachine;
@@ -45,9 +47,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
         DRIVE_TO_OBSERVATION,
         CONVERT_SAMPLE,
         PICKUP_FROM_OBSERVATION,
-        PICKUP_FLOOR_SAMPLE,
         DRIVE_TO_SUBMERSIBLE,
         SCORE_SPECIMEN,
+        PARK,
         DONE
     }   //enum State
 
@@ -56,6 +58,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
     private final TrcTimer timer;
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
+    //counting number of scoring cycles to know when to stop
+    private int scoreCycleCount;
 
     /**
      * Constructor: Create an instance of the object.
@@ -116,57 +120,84 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
         }
         else
         {
+            TrcPose2D targetPoseTile, targetPose;
+            TrcPose2D intermediate1, intermediate2, intermediate3, intermediate4, intermediate5;
+
             robot.dashboard.displayPrintf(8, "State: " + state);
             robot.globalTracer.tracePreStateInfo(sm.toString(), state);
             switch (state)
             {
                 case START:
+                    scoreCycleCount = 0;
                     if (autoChoices.delay > 0.0)
                     {
                         robot.globalTracer.traceInfo(moduleName, "***** Do delay " + autoChoices.delay + "s.");
                         timer.set(autoChoices.delay, event);
-                        sm.waitForSingleEvent(event, State.DONE);
-                    }
-                    else
-                    {
-                        sm.setState(State.DONE);
+                        //depending on preload go to different states
+                        if (autoChoices.preloadType == FtcAuto.PreloadType.SPECIMEN)
+                        {
+                            sm.waitForSingleEvent(event, State.DRIVE_TO_SUBMERSIBLE);
+                        }
+                        else if (autoChoices.preloadType == FtcAuto.PreloadType.SAMPLE)
+                        {
+                            sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
+                        }
                     }
                     break;
 
                 case DRIVE_TO_CHAMBER:
                     //Drive to Chamber
+                    sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
                     break;
 
                 case SCORE_PRELOAD_SPECIMEN:
                     //Auto-Score Specimen
+                    sm.waitForSingleEvent(event, State.PICKUP_FROM_SUBMERSIBLE);
                     break;
+
                 case PICKUP_FROM_SUBMERSIBLE:
                     //Auto-Pickup Sample from Submersible
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
                     break;
 
                 case DRIVE_TO_OBSERVATION:
                     //drive to observation
+                    //check cycle count to see if park or continue picking up from submersible
+                    scoreCycleCount += 1;
+                    if (scoreCycleCount <= 3)
+                    {
+                        sm.waitForSingleEvent(event, State.CONVERT_SAMPLE);
+                    }
+                    else
+                    {
+                        sm.waitForSingleEvent(event, State.PARK);
+                    }
                     break;
 
                 case CONVERT_SAMPLE:
                     //release sample
                     //back out from zone
-
+                    sm.waitForSingleEvent(event, State.PICKUP_FROM_OBSERVATION);
                     break;
+
                 case PICKUP_FROM_OBSERVATION:
                     //Auto-pickup specimen from observation
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_SUBMERSIBLE);
                     break;
-                case PICKUP_FLOOR_SAMPLE:
 
-                    //Drive near floor samples
-                    //Auto-pickup sample from floor
-                    break;
                 case DRIVE_TO_SUBMERSIBLE:
                     //Drive to submersible
+                    sm.waitForSingleEvent(event, State.SCORE_SPECIMEN);
                     break;
 
                 case SCORE_SPECIMEN:
                     //Auto-score specimen
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
+                    break;
+
+                case PARK:
+                    //Auto-score specimen
+                    break;
 
                 default:
                 case DONE:

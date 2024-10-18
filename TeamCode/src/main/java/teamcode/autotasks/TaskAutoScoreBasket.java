@@ -33,7 +33,7 @@ import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
 
 /**
- * This class implements auto-assist task.
+ * This class implements auto-assist scoring basket.
  */
 public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 {
@@ -50,8 +50,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
     private static class TaskParams
     {
-        FtcAuto.Alliance alliance;
-        FtcAuto.ScoreHeight scoreHeight;
+        final FtcAuto.Alliance alliance;
+        final FtcAuto.ScoreHeight scoreHeight;
 
         TaskParams(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight)
         {
@@ -78,7 +78,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         this.ownerName = ownerName;
         this.robot = robot;
         this.event = new TrcEvent(moduleName);
-    }   //TaskAuto
+    }   //TaskAutoScoreBasket
 
     /**
      * This method starts the auto-assist operation.
@@ -211,7 +211,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
             case SCORE_BASKET:
                 double wristPos = taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW?
-                RobotParams.Game.BASKET_LOW_WRIST_SCORE_POS: RobotParams.Game.BASKET_HIGH_WRIST_SCORE_POS;
+                    RobotParams.Game.BASKET_LOW_WRIST_SCORE_POS: RobotParams.Game.BASKET_HIGH_WRIST_SCORE_POS;
                 robot.wrist.setPosition(wristPos, event, RobotParams.WristParams.DUMP_TIME);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
@@ -229,4 +229,4 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         }
     }   //runTaskState
  
-}   //class TaskAuto
+}   //class TaskAutoScoreBasket

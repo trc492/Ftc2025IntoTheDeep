@@ -82,7 +82,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         this.ownerName = ownerName;
         this.robot = robot;
         event = new TrcEvent(moduleName);
-    }   //TaskAuto
+    }   //TaskAutoPickupFromGround
 
     /**
      * This method starts the auto-assist operation.

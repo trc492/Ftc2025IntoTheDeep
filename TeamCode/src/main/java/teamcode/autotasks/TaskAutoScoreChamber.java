@@ -33,7 +33,7 @@ import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
 
 /**
- * This class implements auto-assist task.
+ * This class implements auto-assist scoring specimen on the chamber.
  */
 public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State>
 {
@@ -51,8 +51,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 
     private static class TaskParams
     {
-        FtcAuto.Alliance alliance;
-        FtcAuto.ScoreHeight scoreHeight;
+        final FtcAuto.Alliance alliance;
+        final FtcAuto.ScoreHeight scoreHeight;
 
         TaskParams(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight)
         {
@@ -79,18 +79,21 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         this.ownerName = ownerName;
         this.robot = robot;
         this.event = new TrcEvent(moduleName);
-    }   //TaskAuto
+    }   //TaskAutoScoreChamber
 
     /**
      * This method starts the auto-assist operation.
      *
+     * @param alliance specifies the alliance color.
+     * @param scoreHeight specifies the scoring height.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
     public void autoScoreChamber(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, TrcEvent completionEvent)
     {
-        tracer.traceInfo(moduleName, "event=" + completionEvent);
+        tracer.traceInfo(
+            moduleName, "alliance=" + alliance + ",scoreHeight=" + scoreHeight + ",event=" + completionEvent);
         startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight), completionEvent);
-    }   //autoAssist
+    }   //autoScoreChamber
 
     /**
      * This method cancels an in progress auto-assist operation if any.
@@ -185,7 +188,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         {
             case GO_TO_SCORE_POSITION:
                 TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                        RobotParams.Game.RED_CHAMBER_SCORE_POSE: RobotParams.Game.BLUE_CHAMBER_SCORE_POSE;
+                    RobotParams.Game.RED_CHAMBER_SCORE_POSE: RobotParams.Game.BLUE_CHAMBER_SCORE_POSE;
                 robot.robotDrive.purePursuitDrive.start(
                         currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
                 sm.waitForSingleEvent(event, State.SET_ELBOW);
@@ -239,4 +242,4 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         }
     }   //runTaskState
  
-}   //class TaskAuto
+}   //class TaskAutoScoreChamber

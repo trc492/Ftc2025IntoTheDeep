@@ -31,10 +31,9 @@ import ftclib.robotcore.FtcOpMode;
 import ftclib.sensor.FtcRobotBattery;
 import teamcode.autotasks.TaskExtenderArm;
 import teamcode.subsystems.AuxClimber;
-import teamcode.subsystems.BlinkinLEDs;
+import teamcode.subsystems.LEDIndicator;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.GobildaLED;
 import teamcode.subsystems.Intake;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Grabber;
@@ -69,8 +68,7 @@ public class Robot
     // Vision subsystems.
     public Vision vision;
     // Sensors and indicators.
-    public BlinkinLEDs blinkin;
-    public GobildaLED gobildaLED;
+    public LEDIndicator ledIndicator;
     public FtcRobotBattery battery;
     // Subsystems.
     public TrcMotor elbow;
@@ -113,14 +111,9 @@ public class Robot
         if (RobotParams.Preferences.robotType != RobotParams.RobotType.VisionOnly)
         {
             // Create and initialize sensors and indicators.
-            if (robotInfo.blinkinName != null)
+            if (robotInfo.indicatorName != null)
             {
-                blinkin = new BlinkinLEDs(robotInfo.blinkinName);
-            }
-
-            if (robotInfo.gobildaLEDName != null)
-            {
-                gobildaLED = new GobildaLED(robotInfo.gobildaLEDName);
+                ledIndicator = new LEDIndicator(robotInfo.indicatorName);
             }
 
             if (RobotParams.Preferences.useBatteryMonitor)

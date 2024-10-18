@@ -45,7 +45,7 @@ import ftclib.vision.FtcVisionAprilTag;
 import ftclib.vision.FtcVisionEocvColorBlob;
 import teamcode.Robot;
 import teamcode.RobotParams;
-import teamcode.subsystems.BlinkinLEDs;
+import teamcode.subsystems.LEDIndicator;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.vision.TrcOpenCvColorBlobPipeline;
@@ -196,19 +196,19 @@ public class Vision
                 tracer.traceInfo(moduleName, "Starting SampleVision...");
 
                 redSampleVision = new FtcVisionEocvColorBlob(
-                    BlinkinLEDs.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams,
+                    LEDIndicator.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams,
                     true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 redSampleProcessor = redSampleVision.getVisionProcessor();
                 visionProcessorsList.add(redSampleProcessor);
 
                 blueSampleVision = new FtcVisionEocvColorBlob(
-                    BlinkinLEDs.BLUE_SAMPLE, colorConversion, blueSampleColorThresholds, sampleFilterContourParams,
+                    LEDIndicator.BLUE_SAMPLE, colorConversion, blueSampleColorThresholds, sampleFilterContourParams,
                     true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 blueSampleProcessor = blueSampleVision.getVisionProcessor();
                 visionProcessorsList.add(blueSampleProcessor);
 
                 yellowSampleVision = new FtcVisionEocvColorBlob(
-                    BlinkinLEDs.YELLOW_SAMPLE, colorConversion, yellowSampleColorThresholds, sampleFilterContourParams,
+                    LEDIndicator.YELLOW_SAMPLE, colorConversion, yellowSampleColorThresholds, sampleFilterContourParams,
                     true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 yellowSampleProcessor = yellowSampleVision.getVisionProcessor();
                 visionProcessorsList.add(yellowSampleProcessor);
@@ -449,13 +449,12 @@ public class Vision
             if (limelightInfo != null)
             {
                 objectName = limelightInfo.detectedObj.label;
-                tracer.traceInfo("Limelight", resultType + ": info=" + limelightInfo);
             }
         }
 
-        if (objectName != null && robot.blinkin != null)
+        if (objectName != null && robot.ledIndicator != null)
         {
-            robot.blinkin.setDetectedPattern(objectName);
+            robot.ledIndicator.setDetectedPattern(objectName);
         }
 
         if (lineNum != -1)
@@ -554,16 +553,15 @@ public class Vision
                 aprilTagInfo.detectedObj.getRotatedRectVertices());
         }
 
-        if (aprilTagInfo != null && robot.blinkin != null)
+        if (aprilTagInfo != null && robot.ledIndicator != null)
         {
-            robot.blinkin.setDetectedPattern(BlinkinLEDs.APRIL_TAG);
+            robot.ledIndicator.setDetectedPattern(LEDIndicator.APRIL_TAG);
         }
 
         if (lineNum != -1)
         {
             robot.dashboard.displayPrintf(
-                lineNum, "%s: %s", BlinkinLEDs.APRIL_TAG, aprilTagInfo != null? aprilTagInfo : "Not found.");
-            tracer.traceInfo(BlinkinLEDs.APRIL_TAG, "aprilTagInfo=" + aprilTagInfo);
+                lineNum, "%s: %s", LEDIndicator.APRIL_TAG, aprilTagInfo != null? aprilTagInfo : "Not found.");
         }
 
         return aprilTagInfo;
@@ -716,19 +714,19 @@ public class Vision
             case RedSample:
                 sampleInfo = redSampleVision != null? redSampleVision.getBestDetectedTargetInfo(
                     null, this::compareDistance, 0.0, 0.0): null;
-                sampleName = BlinkinLEDs.RED_SAMPLE;
+                sampleName = LEDIndicator.RED_SAMPLE;
                 break;
 
             case BlueSample:
                 sampleInfo = blueSampleVision != null? blueSampleVision.getBestDetectedTargetInfo(
                     null, this::compareDistance, 0.0, 0.0): null;
-                sampleName = BlinkinLEDs.BLUE_SAMPLE;
+                sampleName = LEDIndicator.BLUE_SAMPLE;
                 break;
 
             case YellowSample:
                 sampleInfo = yellowSampleVision != null? yellowSampleVision.getBestDetectedTargetInfo(
                     null, this::compareDistance, 0.0, 0.0): null;
-                sampleName = BlinkinLEDs.YELLOW_SAMPLE;
+                sampleName = LEDIndicator.YELLOW_SAMPLE;
                 break;
 
             case RedAllianceSamples:
@@ -782,9 +780,9 @@ public class Vision
                 sampleInfo.detectedObj.label, sampleInfo.detectedObj.getRotatedRectVertices());
         }
 
-        if (sampleInfo != null && robot.blinkin != null)
+        if (sampleInfo != null && robot.ledIndicator != null)
         {
-            robot.blinkin.setDetectedPattern(sampleName);
+            robot.ledIndicator.setDetectedPattern(sampleName);
         }
 
         if (lineNum != -1)

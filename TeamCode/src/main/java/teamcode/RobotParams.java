@@ -172,9 +172,12 @@ public class RobotParams
         public static final boolean useTraceLog                 = true;
         public static final boolean useLoopPerformanceMonitor   = true;
         public static final boolean useBatteryMonitor           = false;
+        // User feedback
         // Status Update: Status Update may affect robot loop time, don't do it when in competition.
         public static final boolean doStatusUpdate              = !inCompetition;
         public static final boolean showSubsystems              = true;
+        public static final boolean useBlinkinLED               = false;
+        public static final boolean useGobildaLED               = true;
         // Vision
         public static final boolean useVision                   = true;
         public static final boolean useWebCam                   = true;     // false to use Android phone camera.
@@ -182,7 +185,7 @@ public class RobotParams
         public static final boolean tuneColorBlobVision         = false;
         public static final boolean useLimelightVision          = false;
         public static final boolean useCameraStreamProcessor    = false;
-        public static final boolean useAprilTagVision           = true;
+        public static final boolean useAprilTagVision           = false;
         public static final boolean useColorBlobVision          = true;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = true;
@@ -374,15 +377,15 @@ public class RobotParams
             profiledMaxAcceleration = robotMaxAcceleration;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
-            drivePidTolerance = 1.0;
-            turnPidTolerance = 1.0;
-            xDrivePidCoeffs = new PidCoefficients(0.01, 0.0, 0.0, 0.0, 0.0);
+            drivePidTolerance = 0.5;
+            turnPidTolerance = 0.5;
+            xDrivePidCoeffs = new PidCoefficients(0.055, 0.0, 0.00001, 0.0, 0.0);
             xDrivePidPowerLimit = 1.0;
             xDriveMaxPidRampRate = null;
-            yDrivePidCoeffs = new PidCoefficients(0.01, 0.0, 0.0, 0.0, 0.0);
+            yDrivePidCoeffs = new PidCoefficients(0.015, 0.0, 0.0005, 0.0, 0.0);
             yDrivePidPowerLimit = 1.0;
             yDriveMaxPidRampRate = null;
-            turnPidCoeffs = new PidCoefficients(0.025, 0.0, 0.0, 0.0, 0.0);
+            turnPidCoeffs = new PidCoefficients(0.028, 0.1, 0.0025, 0.0, 5.0);
             turnPidPowerLimit = 0.5;
             turnMaxPidRampRate = null;
             // PID Stall Detection
@@ -395,8 +398,7 @@ public class RobotParams
             webCam2 = null;     //new BackCamParams();
             limelight = null;   //new LimelightParams();
             // Miscellaneous
-            blinkinName = "blinkin";
-            gobildaLEDName = "gobildaLED";
+            indicatorName = "gobildaLED";
         }   //IntoTheDeepRobotParams
     }   //class IntoTheDeepRobotParams
 
@@ -470,7 +472,7 @@ public class RobotParams
             webCam2 = new BackCamParams();
             limelight = null;
             // Miscellaneous
-            blinkinName = "blinkin";
+            indicatorName = "blinkin";
         }   //CenterStageRobotParams
     }   //class CenterStageRobotParams
 

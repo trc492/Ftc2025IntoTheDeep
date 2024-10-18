@@ -36,7 +36,6 @@ import ftclib.driverio.FtcGamepad;
 import ftclib.driverio.FtcMenu;
 import ftclib.driverio.FtcValueMenu;
 import ftclib.robotcore.FtcPidCoeffCache;
-import ftclib.vision.FtcLimelightVision;
 import teamcode.vision.Vision;
 import trclib.command.CmdDriveMotorsTest;
 import trclib.command.CmdPidDrive;
@@ -1121,24 +1120,9 @@ public class FtcTest extends FtcTeleOp
                 robot.vision.getDetectedAprilTag(null, lineNum++);
             }
 
-            if (robot.vision.redSampleVision != null)
+            if (robot.vision.isSampleVisionEnabled(Vision.SampleType.AnySample))
             {
-                robot.vision.getDetectedSample(Vision.SampleType.RedSample, lineNum++);
-            }
-
-            if (robot.vision.blueSampleVision != null)
-            {
-                robot.vision.getDetectedSample(Vision.SampleType.BlueSample, lineNum++);
-            }
-
-            if (robot.vision.yellowSampleVision != null)
-            {
-                robot.vision.getDetectedSample(Vision.SampleType.YellowSample, lineNum++);
-            }
-
-            if (robot.vision.limelightVision != null)
-            {
-                robot.vision.getLimelightDetectedObject(FtcLimelightVision.ResultType.Fiducial, null, lineNum++);
+                robot.vision.getDetectedSample(Vision.SampleType.AnySample, lineNum++);
             }
         }
     }   //doVisionTest

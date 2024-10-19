@@ -829,7 +829,7 @@ public class Vision
         TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> a,
         TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> b)
     {
-        return (int)((b.objPose.y - a.objPose.y)*100);
+        return (int)((a.objPose.y - b.objPose.y)*100);
     }   //compareDistance
 
 }   //class Vision

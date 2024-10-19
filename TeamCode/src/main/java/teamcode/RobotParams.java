@@ -114,14 +114,14 @@ public class RobotParams
 
         public static final TrcPose2D RED_CHAMBER_SCORE_POSE        =
             new TrcPose2D(2.0*Field.FULL_TILE_INCHES, 0.0, 90.0);
-        public static final TrcPose2D BLUE_CHAMBER_SCORE_POSE        =
+        public static final TrcPose2D BLUE_CHAMBER_SCORE_POSE       =
             new TrcPose2D(-2.0*Field.FULL_TILE_INCHES, 0.0, 270.0);
-        public static final double CHAMBER_LOW_EXTENDER_POS          = 40.0;
-        public static final double CHAMBER_HIGH_EXTENDER_POS         = 80.0;
-        public static final double CHAMBER_LOW_ELBOW_ANGLE           = 15.0;
-        public static final double CHAMBER_HIGH_ELBOW_ANGLE          = 30.0;
-        public static final double CHAMBER_LOW_WRIST_SCORE_POS       = 5.0; // intake not final
-        public static final double CHAMBER_HIGH_WRIST_SCORE_POS      = 10.0; // intake not final
+        public static final double CHAMBER_LOW_EXTENDER_POS         = 40.0;
+        public static final double CHAMBER_HIGH_EXTENDER_POS        = 80.0;
+        public static final double CHAMBER_LOW_ELBOW_ANGLE          = 15.0;
+        public static final double CHAMBER_HIGH_ELBOW_ANGLE         = 30.0;
+        public static final double CHAMBER_LOW_WRIST_SCORE_POS      = 5.0; // intake not final
+        public static final double CHAMBER_HIGH_WRIST_SCORE_POS     = 10.0; // intake not final
 
         //Field Dimensions
         public static final double FULL_FIELD_INCHES                = 141.24;
@@ -391,12 +391,12 @@ public class RobotParams
             yDrivePosScale = 1.0;   // in/count
             // TODO: Tune everything below here.
             // Robot Drive Characteristics
-            robotMaxVelocity = 23.0;        // inches/sec
-            robotMaxAcceleration  = 500.0;  // inches/sec2
-            robotMaxTurnRate = 100.0;       // degrees/sec
-            profiledMaxVelocity = robotMaxVelocity;
-            profiledMaxAcceleration = robotMaxAcceleration;
-            profiledMaxTurnRate = robotMaxTurnRate;
+            robotMaxVelocity = 23.0;        // inches/sec   TODO: tune this
+            robotMaxAcceleration  = 500.0;  // inches/sec2  TODO: tune this
+            robotMaxTurnRate = 100.0;       // degrees/sec  TODO: tune this
+            profiledMaxVelocity = robotMaxVelocity;         // TODO: tune this
+            profiledMaxAcceleration = robotMaxAcceleration; // TODO: tune this
+            profiledMaxTurnRate = robotMaxTurnRate;         // TODO: tune this
             // DriveBase PID Parameters
             drivePidTolerance = 0.5;
             turnPidTolerance = 0.5;
@@ -410,10 +410,10 @@ public class RobotParams
             turnPidPowerLimit = 0.5;
             turnMaxPidRampRate = null;
             // PID Stall Detection
-            pidStallDetectionEnabled = true;
+            pidStallDetectionEnabled = true;    // TODO: check this
             // PurePursuit Parameters
             ppdFollowingDistance = 6.0;
-            velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);
+            velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);  // TODO: check this
             // Vision
             webCam1 = new FrontCamParams();
             webCam2 = null;     //new BackCamParams();

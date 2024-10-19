@@ -442,12 +442,83 @@ public class Robot
      */
     public void setRobotStartPosition(FtcAuto.AutoChoices autoChoices)
     {
-//        robotDrive.driveBase.setFieldPosition(
-//                adjustPoseByAlliance(
-//                        autoChoices.startPos == FtcAuto.StartPos.BASKET?
-//                                RobotParams.STARTPOS_BASKET: RobotParams.STARTPOS_BLUE_BACKSTAGE,
-//                        autoChoices.alliance, false));
+        robotDrive.driveBase.setFieldPosition(
+            adjustPoseByAlliance(
+                autoChoices.startPos == FtcAuto.StartPos.NET_ZONE?
+                    RobotParams.Game.STARTPOSE_RED_NET_ZONE: RobotParams.Game.STARTPOSE_RED_OBSERVATION_ZONE,
+                autoChoices.alliance, false));
     }   //setRobotStartPosition
+
+    /**
+     * This method adjusts the given pose in the red alliance to be the specified alliance.
+     *
+     * @param x specifies x position in the red alliance in the specified unit.
+     * @param y specifies y position in the red alliance in the specified unit.
+     * @param heading specifies heading in the red alliance in degrees.
+     * @param alliance specifies the alliance to be converted to.
+     * @param isTileUnit specifies true if x and y are in tile unit, false if in inches.
+     * @return pose adjusted to be in the specified alliance in inches.
+     */
+    public TrcPose2D adjustPoseByAlliance(
+            double x, double y, double heading, FtcAuto.Alliance alliance, boolean isTileUnit)
+    {
+        TrcPose2D newPose = new TrcPose2D(x, y, heading);
+
+        if (alliance == FtcAuto.Alliance.BLUE_ALLIANCE)
+        {
+            // Translate Red Alliance pose to Blue Alliance pose.
+            newPose.x = -newPose.x;
+            newPose.y = -newPose.y;
+            newPose.angle = (newPose.angle + 180.0) % 360.0;
+        }
+
+        if (isTileUnit)
+        {
+            newPose.x *= RobotParams.Field.FULL_TILE_INCHES;
+            newPose.y *= RobotParams.Field.FULL_TILE_INCHES;
+        }
+
+        return newPose;
+    }   //adjustPoseByAlliance
+
+    /**
+     * This method adjusts the given pose in the red alliance to be the specified alliance.
+     *
+     * @param x specifies x position in the red alliance in tile unit.
+     * @param y specifies y position in the red alliance in tile unit.
+     * @param heading specifies heading in the red alliance in degrees.
+     * @param alliance specifies the alliance to be converted to.
+     * @return pose adjusted to be in the specified alliance in inches.
+     */
+    public TrcPose2D adjustPoseByAlliance(double x, double y, double heading, FtcAuto.Alliance alliance)
+    {
+        return adjustPoseByAlliance(x, y, heading, alliance, true);
+    }   //adjustPoseByAlliance
+
+    /**
+     * This method adjusts the given pose in the red alliance to be the specified alliance.
+     *
+     * @param pose specifies pose in the red alliance in the specified unit.
+     * @param alliance specifies the alliance to be converted to.
+     * @param isTileUnit specifies true if pose is in tile units, false in inches.
+     * @return pose adjusted to be in the specified alliance in inches.
+     */
+    public TrcPose2D adjustPoseByAlliance(TrcPose2D pose, FtcAuto.Alliance alliance, boolean isTileUnit)
+    {
+        return adjustPoseByAlliance(pose.x, pose.y, pose.angle, alliance, isTileUnit);
+    }   //adjustPoseByAlliance
+
+    /**
+     * This method adjusts the given pose in the red alliance to be the specified alliance.
+     *
+     * @param pose specifies pose in the blue alliance in tile unit.
+     * @param alliance specifies the alliance to be converted to.
+     * @return pose adjusted to be in the specified alliance in inches.
+     */
+    public TrcPose2D adjustPoseByAlliance(TrcPose2D pose, FtcAuto.Alliance alliance)
+    {
+        return adjustPoseByAlliance(pose, alliance, true);
+    }   //adjustPoseByAlliance
 
     /**
      * This method sends the text string to the Driver Station to be spoken using text to speech.
@@ -459,24 +530,4 @@ public class Robot
         opMode.telemetry.speak(sentence);
     }   //speak
 
-    public TrcPose2D adjustPoseByAlliance(
-            double x, double y, double heading, FtcAuto.Alliance alliance, boolean isTileUnit)
-    {
-        TrcPose2D newPose = new TrcPose2D(x, y, heading);
-
-        if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
-        {
-            double angleDelta = (newPose.angle - 90.0) * 2.0;
-            newPose.angle -= angleDelta;
-            newPose.y = -newPose.y;
-        }
-
-        if (isTileUnit)
-        {
-            newPose.x *= RobotParams.Game.FULL_TILE_INCHES;
-            newPose.y *= RobotParams.Game.FULL_TILE_INCHES;
-        }
-
-        return newPose;
-    }   //adjustPoseByAlliance
 }   //class Robot

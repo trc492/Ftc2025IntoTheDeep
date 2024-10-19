@@ -64,8 +64,8 @@ public class FtcAuto extends FtcOpMode
 
     public enum StartPos
     {
-        BASKET,
-        OBSERVATION
+        NET_ZONE,
+        OBSERVATION_ZONE
     }   //enum StartPos
 
     public enum PreloadType
@@ -94,7 +94,7 @@ public class FtcAuto extends FtcOpMode
         public double delay = 0.0;
         public Alliance alliance = Alliance.RED_ALLIANCE;
         public AutoStrategy strategy = AutoStrategy.FULL_AUTO;
-        public StartPos startPos = StartPos.BASKET;
+        public StartPos startPos = StartPos.NET_ZONE;
         public PreloadType preloadType = PreloadType.SPECIMEN;
         public ScoreHeight scoreHeight = ScoreHeight.HIGH;
         public ParkOption parkOption = ParkOption.PARK;
@@ -169,11 +169,11 @@ public class FtcAuto extends FtcOpMode
             case FULL_AUTO:
                 if (robot.robotDrive != null)
                 {
-                    if (autoChoices.startPos == StartPos.BASKET)
+                    if (autoChoices.startPos == StartPos.NET_ZONE)
                     {
 //                      autoCommand = new CmdAutoBasket();
                     }
-                    else if (autoChoices.startPos == StartPos.OBSERVATION)
+                    else if (autoChoices.startPos == StartPos.OBSERVATION_ZONE)
                     {
 //                        autoCommand = new CmdAutoObservation();
                     }
@@ -384,8 +384,8 @@ public class FtcAuto extends FtcOpMode
         strategyMenu.addChoice("Timed Drive", AutoStrategy.TIMED_DRIVE, false, driveTimeMenu);
         strategyMenu.addChoice("Do nothing", AutoStrategy.DO_NOTHING, false);
 
-        startPosMenu.addChoice("Start Basket Side", StartPos.BASKET, true, preloadTypeMenu);
-        startPosMenu.addChoice("Start Observation Side", StartPos.OBSERVATION, false, preloadTypeMenu);
+        startPosMenu.addChoice("Start Net Zone", StartPos.NET_ZONE, true, preloadTypeMenu);
+        startPosMenu.addChoice("Start Observation Zone", StartPos.OBSERVATION_ZONE, false, preloadTypeMenu);
 
         preloadTypeMenu.addChoice("Preload Specimen", PreloadType.SPECIMEN, true, scoreHeightMenu);
         preloadTypeMenu.addChoice("Preload Sample", PreloadType.SAMPLE, false, scoreHeightMenu);

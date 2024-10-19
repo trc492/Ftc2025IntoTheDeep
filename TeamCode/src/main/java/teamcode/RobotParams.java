@@ -140,7 +140,7 @@ public class RobotParams
             Environment.getExternalStorageDirectory().getPath() + "/FIRST/ftc3543";
         public static final String LOG_FOLDER_PATH              = TEAM_FOLDER_PATH + "/tracelogs";
         public static final String STEER_ZERO_CAL_FILE          = TEAM_FOLDER_PATH + "/SteerZeroCalibration.txt";
-        public static final double DASHBOARD_UPDATE_INTERVAL    = 0.1;      // in msec
+        public static final double DASHBOARD_UPDATE_INTERVAL    = 0.2;      // in msec
         public static final String ROBOT_CODEBASE               = "Robot2025";
         // Robot Drive Parameters.
         public static final DriveMode DRIVE_MODE                = DriveMode.ArcadeMode;

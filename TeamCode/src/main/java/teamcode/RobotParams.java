@@ -180,7 +180,7 @@ public class RobotParams
         public static final boolean useTraceLog                 = true;
         public static final boolean useLoopPerformanceMonitor   = true;
         public static final boolean useBatteryMonitor           = false;
-        // User feedback
+        // Driver feedback
         // Status Update: Status Update may affect robot loop time, don't do it when in competition.
         public static final boolean doStatusUpdate              = !inCompetition;
         public static final boolean showSubsystems              = true;
@@ -344,14 +344,13 @@ public class RobotParams
             // Drive Motor Odometry only (not used).
             xDrivePosScale = 1.0;   // in/count
             yDrivePosScale = 1.0;   // in/count
-            // TODO: Tune everything below here.
             // Robot Drive Characteristics
-            robotMaxVelocity = 23.0;        // inches/sec   TODO: tune this
-            robotMaxAcceleration  = 500.0;  // inches/sec2  TODO: tune this
-            robotMaxTurnRate = 100.0;       // degrees/sec  TODO: tune this
-            profiledMaxVelocity = robotMaxVelocity;         // TODO: tune this
-            profiledMaxAcceleration = robotMaxAcceleration; // TODO: tune this
-            profiledMaxTurnRate = robotMaxTurnRate;         // TODO: tune this
+            robotMaxVelocity = 80.0;        // inches/sec
+            robotMaxAcceleration  = 350.0;  // inches/sec2
+            robotMaxTurnRate = 80.0;        // degrees/sec
+            profiledMaxVelocity = robotMaxVelocity;
+            profiledMaxAcceleration = robotMaxAcceleration;
+            profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
             drivePidTolerance = 0.5;
             turnPidTolerance = 0.5;
@@ -365,10 +364,10 @@ public class RobotParams
             turnPidPowerLimit = 0.5;
             turnMaxPidRampRate = null;
             // PID Stall Detection
-            pidStallDetectionEnabled = true;    // TODO: check this
+            pidStallDetectionEnabled = true;
             // PurePursuit Parameters
             ppdFollowingDistance = 6.0;
-            velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);  // TODO: check this
+            velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);
             // Vision
             webCam1 = new SampleCamParams();
             webCam2 = null;

@@ -190,7 +190,6 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 samplePose = null;
                 if (robot.vision != null)
                 {
-                    robot.vision.setActiveWebcam(robot.vision.getFrontWebcam());
                     robot.vision.setSampleVisionEnabled(taskParams.sampleType, true);
                     if (robot.extenderArm != null)
                     {

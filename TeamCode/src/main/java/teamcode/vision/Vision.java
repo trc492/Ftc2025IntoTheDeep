@@ -273,46 +273,6 @@ public class Vision
     }   //setFpsMeterEnabled
 
     /**
-     * This method returns the front webcam.
-     *
-     * @return front webcam.
-     */
-    public WebcamName getFrontWebcam()
-    {
-        return webcam1;
-    }   //getFrontWebcam
-
-    /**
-     * This method returns the rear webcam.
-     *
-     * @return rear webcam.
-     */
-    public WebcamName getRearWebcam()
-    {
-        return webcam2;
-    }   //getRearWebcam
-
-    /**
-     * This method returns the active camera if we have two webcams.
-     *
-     * @return active camera.
-     */
-    public WebcamName getActiveWebcam()
-    {
-        return vision.getActiveWebcam();
-    }   //getActiveWebcam
-
-    /**
-     * This method sets the active webcam.
-     *
-     * @param webcam specifies the webcam to be set as active.
-     */
-    public void setActiveWebcam(WebcamName webcam)
-    {
-        vision.setActiveWebcam(webcam);
-    }   //setActiveWebcam
-
-    /**
      * This method displays the exposure settings on the dashboard. This helps tuning camera exposure.
      *
      * @param lineNum specifies the dashboard line number to display the info.

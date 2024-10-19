@@ -204,7 +204,7 @@ public class RobotParams
         public static final boolean useWebCam                   = true;     // false to use Android phone camera.
         public static final boolean useBuiltinCamBack           = false;    // For Android Phone as Robot Controller.
         public static final boolean tuneColorBlobVision         = false;
-        public static final boolean useLimelightVision          = false;
+        public static final boolean useLimelightVision          = true;
         public static final boolean useCameraStreamProcessor    = false;
         public static final boolean useAprilTagVision           = false;
         public static final boolean useColorBlobVision          = true;
@@ -231,9 +231,9 @@ public class RobotParams
     /**
      * This class contains the parameters of the front camera.
      */
-    public static class FrontCamParams extends FtcRobotDrive.VisionInfo
+    public static class SampleCamParams extends FtcRobotDrive.VisionInfo
     {
-        public FrontCamParams()
+        public SampleCamParams()
         {
             camName = "Webcam 1";
             camImageWidth = 640;
@@ -257,40 +257,8 @@ public class RobotParams
                 11.4375, 44.75 - 9.0 - camYOffset,   // World Top Right
                 -2.5625, 21.0 - 9.0 - camYOffset,    // World Bottom Left
                 2.5626, 21.0 - 9.0 - camYOffset);    // World Bottom Right
-        }   //FrontCamParams
-    }   //class FrontCamParams
-
-    /**
-     * This class contains the parameters of the back camera.
-     */
-    public static class BackCamParams extends FtcRobotDrive.VisionInfo
-    {
-        public BackCamParams()
-        {
-            camName = "Webcam 2";
-            camImageWidth = 640;
-            camImageHeight = 480;
-            camXOffset = 0.0;                   // Inches to the right from robot center
-            camYOffset = 2.0;                   // Inches forward from robot center
-            camZOffset = 9.75;                  // Inches up from the floor
-            camPitch = 15.0;                    // degrees down from horizontal
-            camYaw = 0.0;                       // degrees clockwise from robot front
-            camRoll = 0.0;
-            camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
-            camOrientation = OpenCvCameraRotation.UPRIGHT;
-            // Homography: cameraRect in pixels, worldRect in inches
-            cameraRect = new TrcHomographyMapper.Rectangle(
-                0.0, 120.0,                                             // Camera Top Left
-                camImageWidth -1, 120.0,                                // Camera Top Right
-                0.0, camImageHeight - 1,                                // Camera Bottom Left
-                camImageWidth - 1, camImageHeight - 1);                 // Camera Bottom Right
-            worldRect = new TrcHomographyMapper.Rectangle(
-                -12.5626, 48.0 - 9.0 - camYOffset,   // World Top Left
-                11.4375, 44.75 - 9.0 - camYOffset,   // World Top Right
-                -2.5625, 21.0 - 9.0 - camYOffset,    // World Bottom Left
-                2.5626, 21.0 - 9.0 - camYOffset);    // World Bottom Right
-        }   //BackCamParams
-    }   //class BackCamParams
+        }   //SampleCamParams
+    }   //class SampleCamParams
 
     /**
      * This class contains the parameters of the Limelight vision processor.
@@ -415,9 +383,9 @@ public class RobotParams
             ppdFollowingDistance = 6.0;
             velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);  // TODO: check this
             // Vision
-            webCam1 = new FrontCamParams();
-            webCam2 = null;     //new BackCamParams();
-            limelight = null;   //new LimelightParams();
+            webCam1 = new SampleCamParams();
+            webCam2 = null;
+            limelight = new LimelightParams();
             // Miscellaneous
             indicatorName = "gobildaLED";
         }   //IntoTheDeepRobotParams
@@ -489,8 +457,8 @@ public class RobotParams
             ppdFollowingDistance = 6.0;
             velPidCoeffs = new PidCoefficients(0.0, 0.0, 0.0, 1.0 / profiledMaxVelocity, 0.0);
             // Vision
-            webCam1 = new FrontCamParams();
-            webCam2 = new BackCamParams();
+            webCam1 = new SampleCamParams();
+            webCam2 = null;
             limelight = null;
             // Miscellaneous
             indicatorName = "blinkin";
@@ -502,10 +470,8 @@ public class RobotParams
         public VisionOnlyParams()
         {
             robotName = "VisionOnly";
-            // Front Camera
-            webCam1 = new FrontCamParams();
-            // Back Camera
-            webCam2 = new BackCamParams();
+            webCam1 = new SampleCamParams();
+            webCam2 = null;
             limelight = new LimelightParams();
         }   //VisionOnlyParams
     }   //class VisionOnlyParams

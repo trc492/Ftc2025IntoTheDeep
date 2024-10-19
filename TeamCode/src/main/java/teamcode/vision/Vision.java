@@ -166,6 +166,7 @@ public class Vision
             {
                 limelightVision = new FtcLimelightVision(
                     robot.robotInfo.limelight.camName, robot.robotInfo.limelight.camPose, this::getTargetGroundOffset);
+                limelightVision.setPipeline(0);
             }
             // Creating Vision Processors for VisionPortal.
             ArrayList<VisionProcessor> visionProcessorsList = new ArrayList<>();

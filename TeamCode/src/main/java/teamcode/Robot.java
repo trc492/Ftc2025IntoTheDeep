@@ -442,6 +442,11 @@ public class Robot
      */
     public void setRobotStartPosition(FtcAuto.AutoChoices autoChoices)
     {
+//        robotDrive.driveBase.setFieldPosition(
+//                adjustPoseByAlliance(
+//                        autoChoices.startPos == FtcAuto.StartPos.BASKET?
+//                                RobotParams.STARTPOS_BASKET: RobotParams.STARTPOS_BLUE_BACKSTAGE,
+//                        autoChoices.alliance, false));
     }   //setRobotStartPosition
 
     /**
@@ -454,4 +459,24 @@ public class Robot
         opMode.telemetry.speak(sentence);
     }   //speak
 
+    public TrcPose2D adjustPoseByAlliance(
+            double x, double y, double heading, FtcAuto.Alliance alliance, boolean isTileUnit)
+    {
+        TrcPose2D newPose = new TrcPose2D(x, y, heading);
+
+        if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
+        {
+            double angleDelta = (newPose.angle - 90.0) * 2.0;
+            newPose.angle -= angleDelta;
+            newPose.y = -newPose.y;
+        }
+
+        if (isTileUnit)
+        {
+            newPose.x *= RobotParams.Game.FULL_TILE_INCHES;
+            newPose.y *= RobotParams.Game.FULL_TILE_INCHES;
+        }
+
+        return newPose;
+    }   //adjustPoseByAlliance
 }   //class Robot

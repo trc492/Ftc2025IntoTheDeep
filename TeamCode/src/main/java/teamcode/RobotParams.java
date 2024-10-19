@@ -123,6 +123,27 @@ public class RobotParams
         public static final double CHAMBER_LOW_WRIST_SCORE_POS       = 5.0; // intake not final
         public static final double CHAMBER_HIGH_WRIST_SCORE_POS      = 10.0; // intake not final
 
+        //Field Dimensions
+        public static final double FULL_FIELD_INCHES                = 141.24;
+        public static final double HALF_FIELD_INCHES                = FULL_FIELD_INCHES/2.0;
+        public static final double FULL_TILE_INCHES                 = FULL_FIELD_INCHES/6.0;
+
+        // Robot dimensions.
+        //
+        public static final double ROBOT_LENGTH                     = 18.00;
+        public static final double ROBOT_WIDTH                      = 17.25;
+        public static final double DRIVE_BASE_LENGTH                = (24.0 * 15)*TrcUtil.INCHES_PER_MM;
+        public static final double DRIVE_BASE_WIDTH                 = 390.0 * TrcUtil.INCHES_PER_MM;
+
+        // Robot start locations in inches.
+//        public static final double STARTPOS_BASKET_X              = -1.5 * FULL_TILE_INCHES;
+//        public static final double STARTPOS_BASKET_X             = 0.5 * FULL_TILE_INCHES;
+//        public static final double STARTPOS_BLUE_Y                  = HALF_FIELD_INCHES - ROBOT_LENGTH / 2.0;
+//        public static final TrcPose2D STARTPOS_BLUE_AUDIENCE        = new TrcPose2D(
+//                STARTPOS_AUDIENCE_X, STARTPOS_BLUE_Y, 180.0);
+//        public static final TrcPose2D STARTPOS_BLUE_BACKSTAGE       = new TrcPose2D(
+//                STARTPOS_BACKSTAGE_X, STARTPOS_BLUE_Y, 180.0);
+
     }   //class Game
 
     /**

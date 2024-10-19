@@ -40,6 +40,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private enum State
     {
         START,
+        DO_DELAY,
         DRIVE_TO_CHAMBER,
         SCORE_PRELOAD_SPECIMEN,
         PICKUP_FROM_SUBMERSIBLE,
@@ -123,6 +124,20 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
             switch (state)
             {
                 case START:
+//                    set robot location according to auto choices
+                    robot.setRobotStartPosition(autoChoices);
+                    // if necessary, move extender arm into position for travelling
+
+                    robot.robotDrive.purePursuitDrive.start(
+                            event, robot.robotDrive.driveBase.getFieldPosition(), false);
+
+                    sm.waitForSingleEvent(event, State.DO_DELAY);
+
+
+                    break;
+
+                case DO_DELAY:
+
                     if (autoChoices.delay > 0.0)
                     {
                         robot.globalTracer.traceInfo(moduleName, "***** Do delay " + autoChoices.delay + "s.");
@@ -131,28 +146,23 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     }
                     else
                     {
-                        sm.setState(State.DONE);
+                        //doing different things based on preload
+                        if (autoChoices.preloadType == FtcAuto.PreloadType.SPECIMEN)
+                        {
+                            //starting the preload specimen scoring process
+                            sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER);
+                        }
+                        else if (autoChoices.preloadType == FtcAuto.PreloadType.SAMPLE)
+                        {
+                            //if you select a preload sample, you will just start the sample basket sample scoring cycle
+                            sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
+                        }
+                        else
+                        {
+                            //in case something terrible happens
+                            sm.waitForSingleEvent(event, State.DONE);
+                        }
                     }
-                    robot.robotDrive.purePursuitDrive.start(
-                            event, robot.robotDrive.driveBase.getFieldPosition(), false);
-
-                    //doing different things based on preload
-                    if (autoChoices.preloadType == FtcAuto.PreloadType.SPECIMEN)
-                    {
-                        //starting the preload specimen scoring process
-                        sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER);
-                    }
-                    else if (autoChoices.preloadType == FtcAuto.PreloadType.SAMPLE)
-                    {
-                        //if you select a preload sample, you will just start the sample basket sample scoring cycle
-                        sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
-                    }
-                    else
-                    {
-                        //in case something terrible happens
-                        sm.waitForSingleEvent(event, State.DONE);
-                    }
-
                     break;
 
                 case DRIVE_TO_CHAMBER:

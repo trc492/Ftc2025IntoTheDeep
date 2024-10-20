@@ -30,6 +30,7 @@ import ftclib.driverio.FtcMatchInfo;
 import ftclib.robotcore.FtcOpMode;
 import ftclib.sensor.FtcRobotBattery;
 import teamcode.autotasks.TaskAutoPickupFromGround;
+import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.autotasks.TaskAutoScoreBasket;
 import teamcode.autotasks.TaskAutoScoreChamber;
 import teamcode.autotasks.TaskExtenderArm;
@@ -85,6 +86,7 @@ public class Robot
     public TaskAutoPickupFromGround pickupFromGroundTask;
     public TaskAutoScoreBasket scoreBasketTask;
     public TaskAutoScoreChamber scoreChamberTask;
+    public TaskAutoPickupSpecimen pickupSpecimenTask;
 
     /**
      * Constructor: Create an instance of the object.
@@ -173,6 +175,7 @@ public class Robot
                 pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
                 scoreBasketTask = new TaskAutoScoreBasket("scoreBasketTask", this);
                 scoreChamberTask = new TaskAutoScoreChamber("scoreChamberTask", this);
+                pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);
             }
         }
 

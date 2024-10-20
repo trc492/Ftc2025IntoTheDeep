@@ -48,6 +48,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
         DRIVE_TO_OBSERVATION,
         PICKUP_FROM_SPIKEMARK,
         CONVERT_SAMPLE,
+        DRIVE_TO_OBSERVATION2,
         PICKUP_FROM_OBSERVATION,
         DRIVE_TO_SUBMERSIBLE,
         SCORE_SPECIMEN,
@@ -61,7 +62,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
     //counting number of scoring cycles to know when to stop
-    private int scoreCycleCount;
+    private int cycleCount;
 
     /**
      * Constructor: Create an instance of the object.
@@ -130,7 +131,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
             switch (state)
             {
                 case START:
-                    scoreCycleCount = 0;
+                    cycleCount = 0;
                     if (autoChoices.delay > 0.0)
                     {
                         robot.globalTracer.traceInfo(moduleName, "***** Do delay " + autoChoices.delay + "s.");
@@ -152,7 +153,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     if (robot.scoreChamberTask != null)
                     {
                         robot.scoreChamberTask.autoScoreChamber(
-                                autoChoices.alliance, autoChoices.scoreHeight, true, event
+                                autoChoices.alliance, autoChoices.scoreHeight, autoChoices.startPos, true, event
                         );
                         sm.waitForSingleEvent(event, State.PICKUP_FROM_SUBMERSIBLE);
                     } else
@@ -180,24 +181,65 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case DRIVE_TO_OBSERVATION:
                     //Drive to observation
-                    targetPose = robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
+                    targetPose = robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_CONVERT, autoChoices.alliance);
                     robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
                     if (robot.intake.hasObject())
                     {
                         sm.waitForSingleEvent(event, State.CONVERT_SAMPLE);
-                    } else 
+                    } else
                     {
                         sm.waitForSingleEvent(event, State.PICKUP_FROM_SPIKEMARK);
                     }
                     break;
 
                 case PICKUP_FROM_SPIKEMARK:
-                    //check cycle count to see if park or continue picking up from submersible
-                    scoreCycleCount += 1;
-                    if (scoreCycleCount <= 3)
+                    //check cycle count to see if continue convert sample or pick up from observation
+                    cycleCount += 1;
+                    if (cycleCount <= 3)
                     {
                         sm.waitForSingleEvent(event, State.CONVERT_SAMPLE);
+                    }
+                    else
+                    {
+                        sm.waitForSingleEvent(event, State.PICKUP_FROM_OBSERVATION);
+                    }
+                    break;
+
+                case CONVERT_SAMPLE:
+                    //release sample
+                    //back out from zone
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION2);
+                    break;
+
+                case DRIVE_TO_OBSERVATION2:
+                    //rotate and drive to pickup up specimen in correct orientation
+                    targetPose = robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
+                    robot.robotDrive.purePursuitDrive.start(
+                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
+                    sm.waitForSingleEvent(event, State.PICKUP_FROM_OBSERVATION);
+                    break;
+
+                case PICKUP_FROM_OBSERVATION:
+                    cycleCount = 0;
+                    //Auto-pickup specimen from observation
+                    sm.waitForSingleEvent(event, State.SCORE_SPECIMEN);
+                    break;
+
+                case SCORE_SPECIMEN:
+                    //Auto-score specimen
+                    if (robot.scoreChamberTask != null)
+                    {
+                        robot.scoreChamberTask.autoScoreChamber(
+                                autoChoices.alliance, autoChoices.scoreHeight, autoChoices.startPos, true, event
+                        );
+                    }
+
+                    //check cycle count to see if park or continue picking up from submersible
+                    cycleCount += 1;
+                    if (cycleCount <= 3)
+                    {
+                        sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION2);
                     }
                     else
                     {
@@ -205,29 +247,12 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     }
                     break;
 
-                case CONVERT_SAMPLE:
-                    //release sample
-                    //back out from zone
-                    sm.waitForSingleEvent(event, State.PICKUP_FROM_OBSERVATION);
-                    break;
-
-                case PICKUP_FROM_OBSERVATION:
-                    //Auto-pickup specimen from observation
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_SUBMERSIBLE);
-                    break;
-
-                case DRIVE_TO_SUBMERSIBLE:
-                    //Drive to submersible
-                    sm.waitForSingleEvent(event, State.SCORE_SPECIMEN);
-                    break;
-
-                case SCORE_SPECIMEN:
-                    //Auto-score specimen
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
-                    break;
-
                 case PARK:
-                    //Auto-score specimen
+                    //Park in observation zone
+                    targetPose = robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
+                    robot.robotDrive.purePursuitDrive.start(
+                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
+                    sm.waitForSingleEvent(event, State.DONE);
                     break;
 
                 default:

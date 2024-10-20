@@ -53,12 +53,14 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
     {
         final FtcAuto.Alliance alliance;
         final FtcAuto.ScoreHeight scoreHeight;
+        final FtcAuto.StartPos startPos;
         final boolean doDrive;
 
-        TaskParams(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, boolean doDrive)
+        TaskParams(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, FtcAuto.StartPos startPos, boolean doDrive)
         {
             this.alliance = alliance;
             this.scoreHeight = scoreHeight;
+            this.startPos = startPos;
             this.doDrive = doDrive;
         }  //TaskParams
     }   //class TaskParams
@@ -90,11 +92,11 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
      * @param scoreHeight specifies the scoring height.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoScoreChamber(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, boolean doDrive, TrcEvent completionEvent)
+    public void autoScoreChamber(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, FtcAuto.StartPos startPos, boolean doDrive, TrcEvent completionEvent)
     {
         tracer.traceInfo(
             moduleName, "alliance=" + alliance + ",scoreHeight=" + scoreHeight + ",event=" + completionEvent);
-        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight, doDrive), completionEvent);
+        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight, startPos, doDrive), completionEvent);
     }   //autoScoreChamber
 
     /**
@@ -191,8 +193,31 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
             case GO_TO_SCORE_POSITION:
                 if (taskParams.doDrive)
                 {
-                    TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                            RobotParams.Game.RED_CHAMBER_SCORE_POSE: RobotParams.Game.BLUE_CHAMBER_SCORE_POSE;
+//                    TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
+//                            RobotParams.Game.RED_CHAMBER_SCORE_POSE: RobotParams.Game.BLUE_CHAMBER_SCORE_POSE;
+                    TrcPose2D scorePose;
+                    if (taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE)
+                    {
+                        if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
+                        {
+                            scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+                        }
+                        else
+                        {
+                            scorePose = RobotParams.Game.RED_BASKET_CHAMBER_SCORE_POSE;
+                        }
+                    }
+                    else
+                    {
+                        if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
+                        {
+                            scorePose = RobotParams.Game.BLUE_OBSERVATION_CHAMBER_SCORE_POSE;
+                        }
+                        else
+                        {
+                            scorePose = RobotParams.Game.BLUE_BASKET_CHAMBER_SCORE_POSE;
+                        }
+                    }
                     robot.robotDrive.purePursuitDrive.start(
                             currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
                     sm.waitForSingleEvent(event, State.SET_ELBOW);

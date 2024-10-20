@@ -194,6 +194,19 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     break;
 
                 case PICKUP_FROM_SPIKEMARK:
+                    //auto pickup from spike mark
+                    if (robot.pickupFromGroundTask != null)
+                    {
+                        robot.pickupFromGroundTask.autoPickupFromGround(
+                                autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
+                                        Vision.SampleType.RedSample :
+                                        Vision.SampleType.BlueSample,
+                                event
+                        );
+                    } else
+                    {
+                        sm.setState(State.PARK);
+                    }
                     //check cycle count to see if continue convert sample or pick up from observation
                     cycleCount += 1;
                     if (cycleCount <= 3)
@@ -208,8 +221,17 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case CONVERT_SAMPLE:
                     //release sample
-                    //back out from zone
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION2);
+                    if(robot.extenderArm != null)
+                    {
+                        robot.extenderArm.setPosition(
+                                RobotParams.ElbowParams.MAX_POS, RobotParams.ExtenderParams.MIN_POS,
+                                RobotParams.WristParams.MAX_POS, event);
+                        sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION2);
+                    }
+                    else
+                    {
+                        sm.waitForSingleEvent(event, State.PARK);
+                    }
                     break;
 
                 case DRIVE_TO_OBSERVATION2:
@@ -223,6 +245,11 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                 case PICKUP_FROM_OBSERVATION:
                     cycleCount = 0;
                     //Auto-pickup specimen from observation
+                    if (robot.pickupSpecimenTask != null)
+                    {
+                        robot.pickupSpecimenTask.autoPickupSpecimen(
+                                autoChoices.alliance, event);
+                    }
                     sm.waitForSingleEvent(event, State.SCORE_SPECIMEN);
                     break;
 

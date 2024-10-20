@@ -29,6 +29,9 @@ import ftclib.driverio.FtcDashboard;
 import ftclib.driverio.FtcMatchInfo;
 import ftclib.robotcore.FtcOpMode;
 import ftclib.sensor.FtcRobotBattery;
+import teamcode.autotasks.TaskAutoPickupFromGround;
+import teamcode.autotasks.TaskAutoScoreBasket;
+import teamcode.autotasks.TaskAutoScoreChamber;
 import teamcode.autotasks.TaskExtenderArm;
 import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.LEDIndicator;
@@ -78,6 +81,10 @@ public class Robot
     public TrcMotor auxClimber;
     public TrcIntake intake;
     public TrcServoGrabber grabber;
+    // Autotasks.
+    public TaskAutoPickupFromGround pickupFromGroundTask;
+    public TaskAutoScoreBasket scoreBasketTask;
+    public TaskAutoScoreChamber scoreChamberTask;
 
     /**
      * Constructor: Create an instance of the object.
@@ -161,6 +168,11 @@ public class Robot
                 {
                     grabber = new Grabber().getGrabber();
                 }
+
+                // Creating autotasks
+                pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
+                scoreBasketTask = new TaskAutoScoreBasket("scoreBasketTask", this);
+                scoreChamberTask = new TaskAutoScoreChamber("scoreChamberTask", this);
             }
         }
 

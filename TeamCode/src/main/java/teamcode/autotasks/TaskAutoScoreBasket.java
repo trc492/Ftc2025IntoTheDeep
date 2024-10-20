@@ -52,11 +52,13 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     {
         final FtcAuto.Alliance alliance;
         final FtcAuto.ScoreHeight scoreHeight;
+        final boolean doDrive;
 
-        TaskParams(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight)
+        TaskParams(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, boolean doDrive)
         {
             this.alliance = alliance;
             this.scoreHeight = scoreHeight;
+            this.doDrive = doDrive;
         }   //TaskParams
     }   //class TaskParams
 
@@ -87,10 +89,10 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
      * @param scoreHeight specifies the scoring height in inches.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoScoreBasket(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, TrcEvent completionEvent)
+    public void autoScoreBasket(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, boolean doDrive, TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "event=" + completionEvent);
-        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight), completionEvent);
+        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight, doDrive), completionEvent);
     }   //autoAssist
 
     /**
@@ -186,11 +188,18 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         switch (state)
         {
             case GO_TO_SCORE_POSITION:
-                TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                    RobotParams.Game.RED_BASKET_SCORE_POSE: RobotParams.Game.BLUE_BASKET_SCORE_POSE;
-                robot.robotDrive.purePursuitDrive.start(
-                    currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
-                sm.waitForSingleEvent(event, State.SET_EXTENDER_ARM);
+                if (taskParams.doDrive)
+                {
+                    TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
+                            RobotParams.Game.RED_BASKET_SCORE_POSE: RobotParams.Game.BLUE_BASKET_SCORE_POSE;
+                    robot.robotDrive.purePursuitDrive.start(
+                            currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
+                    sm.waitForSingleEvent(event, State.SET_EXTENDER_ARM);
+                }
+                else
+                {
+                    sm.setState(State.SET_EXTENDER_ARM);
+                }
                 break;
 
             case SET_EXTENDER_ARM:

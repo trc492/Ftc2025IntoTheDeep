@@ -24,6 +24,7 @@ package teamcode.autocommands;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
+import teamcode.vision.Vision;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
@@ -56,6 +57,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private final TrcTimer timer;
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
+
+    private int scoreSampleCount;
 
     /**
      * Constructor: Create an instance of the object.
@@ -167,24 +170,19 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case DRIVE_TO_CHAMBER:
                     //Drive to Chamber
-                    //Numbers are placeholders
-                    robot.robotDrive.purePursuitDrive.setMoveOutputLimit(0.5);
-//                    intermediate1 = robot.adjustPoseByAlliance(-2.5, 0.35, -125.0, autoChoices.alliance, true);
-//                    intermediate2 = robot.adjustPoseByAlliance(-2.0, 0.6, -90.0, autoChoices.alliance, true);
-//                   intermediate3 = robot.adjustPoseByAlliance(-2.5, 0.6, -90.0, autoChoices.alliance, true);
-//                   targetPose = robot.adjustPoseByAlliance(-2.7, 0.4, -90.0, autoChoices.alliance, true);
-//                   robot.robotDrive.purePursuitDrive.start(
-//                            null, robot.robotDrive.driveBase.getFieldPosition(), false,
-//                            intermediate1, intermediate2, targetPose);
-
-                    sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
-
+                   robot.robotDrive.purePursuitDrive.setMoveOutputLimit(0.5);
+                   targetPose = robot.adjustPoseByAlliance(-0.5, -1.5, -90.0, autoChoices.alliance, true);
+                   robot.robotDrive.purePursuitDrive.start(
+                   null, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
+                   sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
 
                     break;
 
                 case SCORE_PRELOAD_SPECIMEN:
 
-                    //Auto-Score Specimen
+                    robot.scoreChamberTask.autoScoreChamber(
+                            autoChoices.alliance, autoChoices.scoreHeight, autoChoices.startPos,true, event
+                    );
                     sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     break;
                 case PICKUP_FROM_SUBMERSIBLE:
@@ -197,46 +195,73 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case SCORE_SAMPLE_BASKET:
 
                     robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
-//                   intermediate1 = robot.adjustPoseByAlliance(-2.5, 0.35, -125.0, autoChoices.alliance);
-//                   intermediate2 = robot.adjustPoseByAlliance(-2.0, 0.6, -90.0, autoChoices.alliance);
-//                   intermediate3 = robot.adjustPoseByAlliance(-2.5, 0.6, -90.0, autoChoices.alliance);
-//                   targetPose = robot.adjustPoseByAlliance(-2.7, 0.4, -90.0, autoChoices.alliance);
-//                   robot.robotDrive.purePursuitDrive.start(
-//                            null, robot.robotDrive.driveBase.getFieldPosition(), false,
-//                            intermediate1, intermediate2, targetPose);
-//                    sm.waitForSingleEvent(event, State.DO_DELAY, 5.0);
+                   intermediate1 = robot.adjustPoseByAlliance(-2.5, 0.35, -125.0, autoChoices.alliance);
+                   intermediate2 = robot.adjustPoseByAlliance(-2.0, 0.6, -90.0, autoChoices.alliance);
+                   intermediate3 = robot.adjustPoseByAlliance(-2.5, 0.6, -90.0, autoChoices.alliance);
+                   targetPose = robot.adjustPoseByAlliance(-2.7, 0.4, -90.0, autoChoices.alliance);
+                   robot.robotDrive.purePursuitDrive.start(
+                            null, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            intermediate1, intermediate2, targetPose);
+                    sm.waitForSingleEvent(event, State.DO_DELAY, 5.0);
 
                     //Auto-score sample in basket
+                    robot.scoreBasketTask.autoScoreBasket(
+                            autoChoices.alliance, autoChoices.scoreHeight, true, event
+                    );
 
                     break;
                 case PICKUP_FLOOR_SAMPLE:
 
-                    //look at where the floor samples should be. if there are any, do the pickup code,
-                    //if there aren't any, skip and go to drive to submersible
-                     robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
-//                   intermediate1 = robot.adjustPoseByAlliance(-2.5, 0.35, -125.0, autoChoices.alliance);
-//                   intermediate2 = robot.adjustPoseByAlliance(-2.0, 0.6, -90.0, autoChoices.alliance);
-//                   intermediate3 = robot.adjustPoseByAlliance(-2.5, 0.6, -90.0, autoChoices.alliance);
-//                   targetPose = robot.adjustPoseByAlliance(-2.7, 0.4, -90.0, autoChoices.alliance);
-//                   robot.robotDrive.purePursuitDrive.start(
-//                            null, robot.robotDrive.driveBase.getFieldPosition(), false,
-//                            intermediate1, intermediate2, targetPose);
-//                    sm.waitForSingleEvent(event, State.DO_DELAY, 5.0);
-                    //Auto-pickup sample from floor
+
+                    if (scoreSampleCount < 3) {
+
+                        robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
+                        intermediate1 = robot.adjustPoseByAlliance(-2.5, 0.35, -125.0, autoChoices.alliance);
+                        intermediate2 = robot.adjustPoseByAlliance(-2.0, 0.6, -90.0, autoChoices.alliance);
+                        intermediate3 = robot.adjustPoseByAlliance(-2.5, 0.6, -90.0, autoChoices.alliance);
+                        targetPose = robot.adjustPoseByAlliance(-2.7, 0.4, -90.0, autoChoices.alliance);
+                        robot.robotDrive.purePursuitDrive.start(
+                                null, robot.robotDrive.driveBase.getFieldPosition(), false,
+                                intermediate1, intermediate2, targetPose);
+
+                        robot.pickupFromGroundTask.autoPickupFromGround(
+                                autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
+                                        Vision.SampleType.RedAllianceSamples :
+                                        Vision.SampleType.BlueAllianceSamples
+                                , event
+                        );
+                        scoreSampleCount++;
+                        sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET, 5.0);
+                    }
+                    else
+                    {
+                        sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER);
+                    }
                     break;
                 case DRIVE_TO_SUBMERSIBLE:
                     robot.robotDrive.purePursuitDrive.setMoveOutputLimit(0.5);
-       //            intermediate1 = robot.adjustPoseByAlliance(-2.5, 0.35, -125.0, autoChoices.alliance);
-//                   intermediate2 = robot.adjustPoseByAlliance(-2.0, 0.6, -90.0, autoChoices.alliance);
-//                   intermediate3 = robot.adjustPoseByAlliance(-2.5, 0.6, -90.0, autoChoices.alliance);
-//                   targetPose = robot.adjustPoseByAlliance(-2.7, 0.4, -90.0, autoChoices.alliance);
-//                   robot.robotDrive.purePursuitDrive.start(
-//                            null, robot.robotDrive.driveBase.getFieldPosition(), false,
-//                            intermediate1, intermediate2, targetPose);
-//                    sm.waitForSingleEvent(event, State.DO_DELAY, 5.0);
+                   intermediate1 = robot.adjustPoseByAlliance(-2.5, 0.35, -125.0, autoChoices.alliance);
+                   intermediate2 = robot.adjustPoseByAlliance(-2.0, 0.6, -90.0, autoChoices.alliance);
+                   intermediate3 = robot.adjustPoseByAlliance(-2.5, 0.6, -90.0, autoChoices.alliance);
+                   targetPose = robot.adjustPoseByAlliance(-2.7, 0.4, -90.0, autoChoices.alliance);
+                   robot.robotDrive.purePursuitDrive.start(
+                            null, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            intermediate1, intermediate2, targetPose);
+                    sm.waitForSingleEvent(event, State.DO_DELAY, 5.0);
                     break;
 
                 case PARK:
+                    //Move to parking space level 1 ascent
+                    robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
+                    intermediate1 = robot.adjustPoseByAlliance(-2.5, 0.35, -125.0, autoChoices.alliance);
+                    intermediate2 = robot.adjustPoseByAlliance(-2.0, 0.6, -90.0, autoChoices.alliance);
+                    intermediate3 = robot.adjustPoseByAlliance(-2.5, 0.6, -90.0, autoChoices.alliance);
+                    targetPose = robot.adjustPoseByAlliance(-2.7, 0.4, -90.0, autoChoices.alliance);
+                    robot.robotDrive.purePursuitDrive.start(
+                            null, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            intermediate1, intermediate2, targetPose);
+                    sm.waitForSingleEvent(event, State.DO_DELAY, 5.0);
+                    break;
 
 
                 default:

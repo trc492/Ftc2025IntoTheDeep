@@ -24,7 +24,9 @@ package teamcode.autocommands;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
+import teamcode.RobotParams;
 import teamcode.autotasks.TaskAutoScoreChamber;
+import teamcode.vision.Vision;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
@@ -41,10 +43,10 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
     private enum State
     {
         START,
-        DRIVE_TO_CHAMBER,
         SCORE_PRELOAD_SPECIMEN,
         PICKUP_FROM_SUBMERSIBLE,
         DRIVE_TO_OBSERVATION,
+        PICKUP_FROM_SPIKEMARK,
         CONVERT_SAMPLE,
         PICKUP_FROM_OBSERVATION,
         DRIVE_TO_SUBMERSIBLE,
@@ -134,34 +136,63 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         robot.globalTracer.traceInfo(moduleName, "***** Do delay " + autoChoices.delay + "s.");
                         timer.set(autoChoices.delay, event);
                         //depending on preload go to different states
-                        if (autoChoices.preloadType == FtcAuto.PreloadType.SPECIMEN)
-                        {
-                            sm.waitForSingleEvent(event, State.DRIVE_TO_SUBMERSIBLE);
-                        }
-                        else if (autoChoices.preloadType == FtcAuto.PreloadType.SAMPLE)
-                        {
-                            sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
-                        }
+//                        if (autoChoices.preloadType == FtcAuto.PreloadType.SPECIMEN)
+//                        {
+                        sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
+//                        }
+//                        else if (autoChoices.preloadType == FtcAuto.PreloadType.SAMPLE)
+//                        {
+//                            sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
+//                        }
                     }
-                    break;
-
-                case DRIVE_TO_CHAMBER:
-                    //Drive to Chamber
-                    sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
                     break;
 
                 case SCORE_PRELOAD_SPECIMEN:
                     //Auto-Score Specimen
-                    sm.waitForSingleEvent(event, State.PICKUP_FROM_SUBMERSIBLE);
+                    if (robot.scoreChamberTask != null)
+                    {
+                        robot.scoreChamberTask.autoScoreChamber(
+                                autoChoices.alliance, autoChoices.scoreHeight, true, event
+                        );
+                        sm.waitForSingleEvent(event, State.PICKUP_FROM_SUBMERSIBLE);
+                    } else
+                    {
+                        sm.setState(State.PICKUP_FROM_SUBMERSIBLE);
+                    }
                     break;
 
                 case PICKUP_FROM_SUBMERSIBLE:
                     //Auto-Pickup Sample from Submersible
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
+                    if (robot.pickupFromGroundTask != null)
+                    {
+                        robot.pickupFromGroundTask.autoPickupFromGround(
+                                autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
+                                        Vision.SampleType.RedSample :
+                                        Vision.SampleType.BlueSample,
+                                event
+                        );
+                        sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
+                    } else
+                    {
+                        sm.setState(State.DRIVE_TO_OBSERVATION);
+                    }
                     break;
 
                 case DRIVE_TO_OBSERVATION:
-                    //drive to observation
+                    //Drive to observation
+                    targetPose = robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
+                    robot.robotDrive.purePursuitDrive.start(
+                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
+                    if (robot.intake.hasObject())
+                    {
+                        sm.waitForSingleEvent(event, State.CONVERT_SAMPLE);
+                    } else 
+                    {
+                        sm.waitForSingleEvent(event, State.PICKUP_FROM_SPIKEMARK);
+                    }
+                    break;
+
+                case PICKUP_FROM_SPIKEMARK:
                     //check cycle count to see if park or continue picking up from submersible
                     scoreCycleCount += 1;
                     if (scoreCycleCount <= 3)

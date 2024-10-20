@@ -113,9 +113,9 @@ public class RobotParams
         public static final double BASKET_HIGH_WRIST_SCORE_POS      = 10.0;
 
         public static final TrcPose2D RED_CHAMBER_SCORE_POSE        =
-            new TrcPose2D(2.0*Field.FULL_TILE_INCHES, 0.0, 90.0);
+            new TrcPose2D(0.0, -1.5*Field.FULL_TILE_INCHES, 270.0);
         public static final TrcPose2D BLUE_CHAMBER_SCORE_POSE       =
-            new TrcPose2D(-2.0*Field.FULL_TILE_INCHES, 0.0, 270.0);
+            new TrcPose2D(0.0, 1.5*Field.FULL_TILE_INCHES, 90.0);
         public static final double CHAMBER_LOW_EXTENDER_POS         = 40.0;
         public static final double CHAMBER_HIGH_EXTENDER_POS        = 80.0;
         public static final double CHAMBER_LOW_ELBOW_ANGLE          = 15.0;

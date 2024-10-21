@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Titan Robotics Club (http://www.titanrobotics.com)
+ * Copyright (c) 2024 Titan Robotics Club (http://www.titanrobotics.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,8 @@ import ftclib.vision.FtcVision;
 import ftclib.vision.FtcVisionAprilTag;
 import ftclib.vision.FtcVisionEocvColorBlob;
 import teamcode.Robot;
-import teamcode.RobotParams;
+import teamcode.params.GameParams;
+import teamcode.params.RobotParams;
 import teamcode.subsystems.LEDIndicator;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
@@ -91,7 +92,6 @@ public class Vision
 
     private final TrcDbgTrace tracer;
     private final Robot robot;
-    private final WebcamName webcam1, webcam2;
     private FtcRawEocvColorBlobPipeline rawColorBlobPipeline;
     public FtcRawEocvVision rawColorBlobVision;
     public FtcLimelightVision limelightVision;
@@ -114,6 +114,7 @@ public class Vision
     public Vision(Robot robot)
     {
         FtcOpMode opMode = FtcOpMode.getInstance();
+        WebcamName webcam1, webcam2;
 
         if (robot.robotInfo.webCam1 == null &&
             (RobotParams.Preferences.useWebCam || RobotParams.Preferences.tuneColorBlobVision))
@@ -123,9 +124,9 @@ public class Vision
 
         this.tracer = new TrcDbgTrace();
         this.robot = robot;
-        this.webcam1 = robot.robotInfo.webCam1 != null?
+        webcam1 = robot.robotInfo.webCam1 != null?
             opMode.hardwareMap.get(WebcamName.class, robot.robotInfo.webCam1.camName): null;
-        this.webcam2 = robot.robotInfo.webCam2 != null?
+        webcam2 = robot.robotInfo.webCam2 != null?
             opMode.hardwareMap.get(WebcamName.class, robot.robotInfo.webCam2.camName): null;
         if (RobotParams.Preferences.tuneColorBlobVision && webcam1 != null)
         {
@@ -541,7 +542,7 @@ public class Vision
         if (aprilTagInfo != null)
         {
             TrcPose2D aprilTagPose =
-                RobotParams.Game.APRILTAG_POSES[aprilTagInfo.detectedObj.aprilTagDetection.id - 1];
+                GameParams.APRILTAG_POSES[aprilTagInfo.detectedObj.aprilTagDetection.id - 1];
             TrcPose2D cameraPose = aprilTagPose.subtractRelativePose(aprilTagInfo.objPose);
             robotPose = cameraPose.subtractRelativePose(
                 new TrcPose2D(robot.robotInfo.webCam1.camXOffset, robot.robotInfo.webCam1.camYOffset,

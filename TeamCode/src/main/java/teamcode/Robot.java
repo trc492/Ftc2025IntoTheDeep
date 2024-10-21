@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Titan Robotics Club (http://www.titanrobotics.com)
+ * Copyright (c) 2024 Titan Robotics Club (http://www.titanrobotics.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,8 @@ import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.autotasks.TaskAutoScoreBasket;
 import teamcode.autotasks.TaskAutoScoreChamber;
 import teamcode.autotasks.TaskExtenderArm;
+import teamcode.params.GameParams;
+import teamcode.params.RobotParams;
 import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.LEDIndicator;
 import teamcode.subsystems.Elbow;
@@ -117,7 +119,7 @@ public class Robot
         }
         // If robotType is VisionOnly, the robot controller is disconnected from the robot for testing vision.
         // In this case, we should not instantiate any robot hardware.
-        if (RobotParams.Preferences.robotType != RobotParams.RobotType.VisionOnly)
+        if (RobotParams.Preferences.robotType != RobotBase.RobotType.VisionOnly)
         {
             // Create and initialize sensors and indicators.
             if (robotInfo.indicatorName != null)
@@ -383,14 +385,14 @@ public class Robot
 
                 if (grabber != null)
                 {
-                    if (RobotParams.GrabberParams.USE_ANALOG_SENSOR)
+                    if (Grabber.Params.USE_ANALOG_SENSOR)
                     {
                         dashboard.displayPrintf(
                             lineNum++, "Grabber: pos=%.3f,hasObject=%s,sensorValue=%.3f,autoActive=%s",
                             grabber.getPosition(), grabber.hasObject(), grabber.getSensorValue(),
                             grabber.isAutoAssistActive());
                     }
-                    else if (RobotParams.GrabberParams.USE_DIGITAL_SENSOR)
+                    else if (Grabber.Params.USE_DIGITAL_SENSOR)
                     {
                         dashboard.displayPrintf(
                             lineNum++, "Grabber: pos=%.3f,hasObject=%s,sensorState=%s,autoActive=%s",
@@ -428,17 +430,17 @@ public class Robot
     {
         if (elbow != null)
         {
-            elbow.zeroCalibrate(owner, RobotParams.ElbowParams.ZERO_CAL_POWER);
+            elbow.zeroCalibrate(owner, Elbow.Params.ZERO_CAL_POWER);
         }
 
         if (extender != null)
         {
-            extender.zeroCalibrate(owner, RobotParams.ExtenderParams.ZERO_CAL_POWER);
+            extender.zeroCalibrate(owner, Extender.Params.ZERO_CAL_POWER);
         }
 
         if (auxClimber != null)
         {
-            auxClimber.zeroCalibrate(owner, RobotParams.ClimberParams.ZERO_CAL_POWER);
+            auxClimber.zeroCalibrate(owner, AuxClimber.Params.ZERO_CAL_POWER);
         }
     }   //zeroCalibrate
 
@@ -460,7 +462,7 @@ public class Robot
         robotDrive.driveBase.setFieldPosition(
             adjustPoseByAlliance(
                 autoChoices.startPos == FtcAuto.StartPos.NET_ZONE?
-                    RobotParams.Game.STARTPOSE_RED_NET_ZONE: RobotParams.Game.STARTPOSE_RED_OBSERVATION_ZONE,
+                    GameParams.STARTPOSE_RED_NET_ZONE: GameParams.STARTPOSE_RED_OBSERVATION_ZONE,
                 autoChoices.alliance, false));
     }   //setRobotStartPosition
 

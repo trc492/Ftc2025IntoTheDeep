@@ -23,15 +23,46 @@
 package teamcode.subsystems;
 
 import ftclib.motor.FtcMotorActuator;
-import teamcode.RobotParams;
 import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;
+import trclib.robotcore.TrcPidController;
 
 /**
  * This class creates the Extender subsystem of the Extender Arm.
  */
 public class Extender
 {
+    public static class Params
+    {
+        public static final String SUBSYSTEM_NAME               = "Extender";
+
+        public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final FtcMotorActuator.MotorType PRIMARY_MOTOR_TYPE = FtcMotorActuator.MotorType.DcMotor;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = false;
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
+        public static final boolean LOWER_LIMIT_INVERTED        = false;
+
+        public static final double INCHES_PER_COUNT             = 0.0020825894713429496;
+        public static final double POS_OFFSET                   = 16.25;
+        public static final double POWER_LIMIT                  = 1.0;
+        public static final double ZERO_CAL_POWER               = -0.75;
+
+        public static final double MIN_POS                      = POS_OFFSET;
+        public static final double MAX_POS                      = 35.0;
+        public static final double GROUND_PICKUP_POS            = MIN_POS;
+        public static final double SPECIMEN_PICKUP_POS          = 30; // TODO: NEEDS TUNING
+        public static final double[] posPresets                 = {MIN_POS, 20.0, 25.0, 30.0, 35.0};
+        public static final double POS_PRESET_TOLERANCE         = 3.0;
+
+        public static final TrcPidController.PidCoefficients posPidCoeffs =
+            new TrcPidController.PidCoefficients(5.0, 0.0, 0.0, 0.0, 0.0);
+        public static final double POS_PID_TOLERANCE            = 0.1;
+        public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
+        public static final double STALL_TOLERANCE              = 0.1;
+        public static final double STALL_TIMEOUT                = 0.1;
+        public static final double STALL_RESET_TIMEOUT          = 0.0;
+    }   //class Params
+
     public final TrcMotor extender;
 
     /**
@@ -40,28 +71,18 @@ public class Extender
     public Extender()
     {
         FtcMotorActuator.Params extenderParams = new FtcMotorActuator.Params()
-            .setPrimaryMotor(
-                RobotParams.ExtenderParams.PRIMARY_MOTOR_NAME, RobotParams.ExtenderParams.PRIMARY_MOTOR_TYPE,
-                RobotParams.ExtenderParams.PRIMARY_MOTOR_INVERTED)
-//            .setLowerLimitSwitch(
-//                RobotParams.ExtenderParams.LOWER_LIMIT_NAME, RobotParams.ExtenderParams.LOWER_LIMIT_INVERTED)
-            .setPositionScaleAndOffset(
-                RobotParams.ExtenderParams.INCHES_PER_COUNT, RobotParams.ExtenderParams.POS_OFFSET)
-            .setPositionPresets(
-                RobotParams.ExtenderParams.POS_PRESET_TOLERANCE, RobotParams.ExtenderParams.posPresets);
+            .setPrimaryMotor(Params.PRIMARY_MOTOR_NAME, Params.PRIMARY_MOTOR_TYPE, Params.PRIMARY_MOTOR_INVERTED)
+//            .setLowerLimitSwitch(Params.LOWER_LIMIT_NAME, Params.LOWER_LIMIT_INVERTED)
+            .setPositionScaleAndOffset(Params.INCHES_PER_COUNT, Params.POS_OFFSET)
+            .setPositionPresets(Params.POS_PRESET_TOLERANCE, Params.posPresets);
         extender = new FtcMotorActuator(extenderParams).getMotor();
         extender.setSoftwarePidEnabled(true);
-        extender.setPositionPidParameters(
-            RobotParams.ExtenderParams.posPidCoeffs, RobotParams.ExtenderParams.POS_PID_TOLERANCE);
+        extender.setPositionPidParameters(Params.posPidCoeffs, Params.POS_PID_TOLERANCE);
         // Lower limit switch is not installed yet, so we use zero calibration by motor stall.
         extender.setStallProtection(
-            RobotParams.ExtenderParams.STALL_MIN_POWER, RobotParams.ExtenderParams.STALL_TOLERANCE,
-            RobotParams.ExtenderParams.STALL_TIMEOUT, RobotParams.ExtenderParams.STALL_RESET_TIMEOUT);
-//        extender.setPidStallDetectionEnabled(
-//            RobotParams.ExtenderParams.STALL_RESET_TIMEOUT, RobotParams.ExtenderParams.STALL_TIMEOUT,
-//            RobotParams.ExtenderParams.STALL_TOLERANCE);
+            Params.STALL_MIN_POWER, Params.STALL_TOLERANCE, Params.STALL_TIMEOUT, Params.STALL_RESET_TIMEOUT);
+        extender.setPidStallDetectionEnabled(Params.STALL_RESET_TIMEOUT, Params.STALL_TIMEOUT, Params.STALL_TOLERANCE);
         extender.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
-//            extender.resetPositionOnLowerLimitSwitch();
     }   //Extender
 
     /**

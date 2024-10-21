@@ -24,7 +24,8 @@ package teamcode.autotasks;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
-import teamcode.RobotParams;
+import teamcode.params.GameParams;
+import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
@@ -191,7 +192,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 if (taskParams.doDrive)
                 {
                     TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                            RobotParams.Game.RED_BASKET_SCORE_POSE: RobotParams.Game.BLUE_BASKET_SCORE_POSE;
+                            GameParams.RED_BASKET_SCORE_POSE: GameParams.BLUE_BASKET_SCORE_POSE;
                     robot.robotDrive.purePursuitDrive.start(
                             currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
                     sm.waitForSingleEvent(event, State.SET_EXTENDER_ARM);
@@ -206,13 +207,13 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 double elbowAngle, extenderPos;
                 if (taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW)
                 {
-                    elbowAngle = RobotParams.Game.BASKET_LOW_ELBOW_ANGLE;
-                    extenderPos = RobotParams.Game.BASKET_LOW_EXTENDER_POS;
+                    elbowAngle = GameParams.BASKET_LOW_ELBOW_ANGLE;
+                    extenderPos = GameParams.BASKET_LOW_EXTENDER_POS;
                 }
                 else
                 {
-                    elbowAngle = RobotParams.Game.BASKET_HIGH_ELBOW_ANGLE;
-                    extenderPos = RobotParams.Game.BASKET_HIGH_EXTENDER_POS;
+                    elbowAngle = GameParams.BASKET_HIGH_ELBOW_ANGLE;
+                    extenderPos = GameParams.BASKET_HIGH_EXTENDER_POS;
                 }
                 robot.extenderArm.setPosition(elbowAngle, extenderPos, null, event);
                 sm.waitForSingleEvent(event, State.SCORE_BASKET);
@@ -220,8 +221,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
             case SCORE_BASKET:
                 double wristPos = taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW?
-                    RobotParams.Game.BASKET_LOW_WRIST_SCORE_POS: RobotParams.Game.BASKET_HIGH_WRIST_SCORE_POS;
-                robot.wrist.setPosition(wristPos, event, RobotParams.WristParams.DUMP_TIME);
+                    GameParams.BASKET_LOW_WRIST_SCORE_POS: GameParams.BASKET_HIGH_WRIST_SCORE_POS;
+                robot.wrist.setPosition(wristPos, event, Wrist.Params.DUMP_TIME);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
 

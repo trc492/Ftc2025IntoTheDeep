@@ -22,8 +22,8 @@
 
 package teamcode.subsystems;
 
+import ftclib.motor.FtcMotorActuator;
 import ftclib.subsystem.FtcIntake;
-import teamcode.RobotParams;
 import trclib.subsystem.TrcIntake;
 
 /**
@@ -31,6 +31,27 @@ import trclib.subsystem.TrcIntake;
  */
 public class Intake
 {
+    public static final class Params
+    {
+        public static final String SUBSYSTEM_NAME               = "Intake";
+
+        public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final FtcMotorActuator.MotorType PRIMARY_MOTOR_TYPE = FtcMotorActuator.MotorType.CRServo;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
+        public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
+        public static final FtcMotorActuator.MotorType FOLLOWER_MOTOR_TYPE = FtcMotorActuator.MotorType.CRServo;
+        public static final boolean FOLLOWER_MOTOR_INVERTED     = !PRIMARY_MOTOR_INVERTED;
+
+        public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
+        public static final boolean SENSOR_INVERTED             = false;
+        public static final double[] SENSOR_THRESHOLDS          = new double[] {1.3};
+
+        public static final double FORWARD_POWER                = 1.0;
+        public static final double REVERSE_POWER                = -0.5;
+        public static final double RETAIN_POWER                 = 0.0;
+        public static final double FINISH_DELAY                 = 0.0;
+    }   //class Params
+
     private final TrcIntake intake;
 
     /**
@@ -39,13 +60,9 @@ public class Intake
     public Intake()
     {
         FtcIntake.Params intakeParams = new FtcIntake.Params()
-            .setPrimaryMotor(
-                RobotParams.IntakeParams.PRIMARY_MOTOR_NAME, RobotParams.IntakeParams.PRIMARY_MOTOR_TYPE,
-                RobotParams.IntakeParams.PRIMARY_MOTOR_INVERTED)
-            .setFollowerMotor(
-                RobotParams.IntakeParams.FOLLOWER_MOTOR_NAME, RobotParams.IntakeParams.FOLLOWER_MOTOR_TYPE,
-                RobotParams.IntakeParams.FOLLOWER_MOTOR_INVERTED);
-        intake = new FtcIntake(RobotParams.IntakeParams.SUBSYSTEM_NAME, intakeParams).getIntake();
+            .setPrimaryMotor(Params.PRIMARY_MOTOR_NAME, Params.PRIMARY_MOTOR_TYPE, Params.PRIMARY_MOTOR_INVERTED)
+            .setFollowerMotor(Params.FOLLOWER_MOTOR_NAME, Params.FOLLOWER_MOTOR_TYPE, Params.FOLLOWER_MOTOR_INVERTED);
+        intake = new FtcIntake(Params.SUBSYSTEM_NAME, intakeParams).getIntake();
     }
 
     public TrcIntake getIntake()

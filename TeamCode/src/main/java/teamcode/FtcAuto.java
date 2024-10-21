@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Titan Robotics Club (http://www.titanrobotics.com)
+ * Copyright (c) 2024 Titan Robotics Club (http://www.titanrobotics.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import ftclib.driverio.FtcMatchInfo;
 import ftclib.driverio.FtcMenu;
 import ftclib.driverio.FtcValueMenu;
 import ftclib.robotcore.FtcOpMode;
+import teamcode.params.RobotParams;
 import trclib.command.CmdPidDrive;
 import trclib.command.CmdTimedDrive;
 import trclib.pathdrive.TrcPose2D;

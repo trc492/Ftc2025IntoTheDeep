@@ -25,7 +25,10 @@ package teamcode.autotasks;
 import java.util.Locale;
 
 import teamcode.Robot;
-import teamcode.RobotParams;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
+import teamcode.subsystems.Intake;
+import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
@@ -194,8 +197,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                     if (robot.extenderArm != null)
                     {
                         robot.extenderArm.setPosition(
-                            RobotParams.ElbowParams.GROUND_PICKUP_POS, RobotParams.ExtenderParams.GROUND_PICKUP_POS,
-                            RobotParams.WristParams.GROUND_PICKUP_POS, event);
+                            Elbow.Params.GROUND_PICKUP_POS, Extender.Params.GROUND_PICKUP_POS,
+                            Wrist.Params.GROUND_PICKUP_POS, event);
                         sm.waitForSingleEvent(event, State.FIND_SAMPLE);
                     }
                     else
@@ -261,7 +264,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 // intake design not confirmed
                 // TODO: There will be a color sensor on the intake.
                 // We need to check for correct color before picking up.
-                robot.intake.setPower(0.0, RobotParams.IntakeParams.FORWARD_POWER, 4.0, event);  // change duration based on tuning
+                robot.intake.setPower(0.0, Intake.Params.FORWARD_POWER, 4.0, event);  // change duration based on tuning
                 sm.waitForSingleEvent(event, State.DONE);
                 break;
 

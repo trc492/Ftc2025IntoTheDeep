@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Titan Robotics Club (http://www.titanrobotics.com)
+ * Copyright (c) 2024 Titan Robotics Club (http://www.titanrobotics.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,11 @@ import java.util.Locale;
 import ftclib.drivebase.FtcSwerveDrive;
 import ftclib.driverio.FtcGamepad;
 import ftclib.robotcore.FtcOpMode;
+import teamcode.params.RobotParams;
+import teamcode.subsystems.AuxClimber;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
+import teamcode.subsystems.Intake;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
@@ -212,7 +217,7 @@ public class FtcTeleOp extends FtcOpMode
                 //elbow subsystem
                 if (robot.elbow != null)
                 {
-                    double elbowPower = operatorGamepad.getRightStickY(true) * RobotParams.ElbowParams.POWER_LIMIT;
+                    double elbowPower = operatorGamepad.getRightStickY(true) * Elbow.Params.POWER_LIMIT;
                     if (elbowPower != elbowPrevPower)
                     {
                         if (operatorAltFunc)
@@ -221,8 +226,7 @@ public class FtcTeleOp extends FtcOpMode
                         }
                         else
                         {
-                            robot.elbow.setPidPower(
-                                elbowPower, RobotParams.ElbowParams.MIN_POS, RobotParams.ElbowParams.MAX_POS, true);
+                            robot.elbow.setPidPower(elbowPower, Elbow.Params.MIN_POS, Elbow.Params.MAX_POS, true);
                         }
                         elbowPrevPower = elbowPower;
                     }
@@ -231,7 +235,7 @@ public class FtcTeleOp extends FtcOpMode
                 //extender arm subsystem
                 if (robot.extender != null)
                 {
-                    double extenderPower = operatorGamepad.getLeftStickY(true) * RobotParams.ExtenderParams.POWER_LIMIT;
+                    double extenderPower = operatorGamepad.getLeftStickY(true) * Extender.Params.POWER_LIMIT;
                     if (extenderPower != extenderPrevPower)
                     {
                         if (operatorAltFunc)
@@ -241,8 +245,7 @@ public class FtcTeleOp extends FtcOpMode
                         else
                         {
                             robot.extender.setPidPower(
-                                extenderPower, RobotParams.ExtenderParams.MIN_POS, RobotParams.ExtenderParams.MAX_POS,
-                                true);
+                                extenderPower, Extender.Params.MIN_POS, Extender.Params.MAX_POS, true);
                         }
                         extenderPrevPower = extenderPower;
                     }
@@ -450,7 +453,7 @@ public class FtcTeleOp extends FtcOpMode
                 //auxiliary climber subsystem goes up
                 if (robot.auxClimber != null && pressed)
                 {
-                    robot.auxClimber.setPosition(RobotParams.ClimberParams.MAX_POS);
+                    robot.auxClimber.setPosition(AuxClimber.Params.MAX_POS);
                 }
                 break;
 
@@ -458,7 +461,7 @@ public class FtcTeleOp extends FtcOpMode
                 //auxiliary climber subsystem goes down
                 if (robot.auxClimber != null && pressed)
                 {
-                   robot.auxClimber.setPosition(RobotParams.ClimberParams.MIN_POS);
+                   robot.auxClimber.setPosition(AuxClimber.Params.MIN_POS);
                 }
                 break;
 
@@ -468,7 +471,7 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     if (pressed)
                     {
-                        robot.intake.setPower(RobotParams.IntakeParams.FORWARD_POWER);
+                        robot.intake.setPower(Intake.Params.FORWARD_POWER);
 //                        robot.intake.autoIntakeForward(
 //                            RobotParams.IntakeParams.FORWARD_POWER, RobotParams.IntakeParams.RETAIN_POWER,
 //                            RobotParams.IntakeParams.FINISH_DELAY);
@@ -515,7 +518,7 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     if (pressed)
                     {
-                        robot.intake.setPower(RobotParams.IntakeParams.REVERSE_POWER);
+                        robot.intake.setPower(Intake.Params.REVERSE_POWER);
 //                        robot.intake.autoEjectReverse(
 //                            RobotParams.IntakeParams.REVERSE_POWER, RobotParams.IntakeParams.FINISH_DELAY);
                     }

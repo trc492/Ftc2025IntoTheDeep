@@ -23,7 +23,6 @@
 package teamcode.subsystems;
 
 import ftclib.motor.FtcServoActuator;
-import teamcode.RobotParams;
 import trclib.motor.TrcServo;
 
 /**
@@ -31,6 +30,19 @@ import trclib.motor.TrcServo;
  */
 public class Wrist
 {
+    public static class Params
+    {
+        public static final String SUBSYSTEM_NAME               = "Wrist";
+
+        public static final String PRIMARY_SERVO_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final boolean PRIMARY_SERVO_INVERTED      = false;
+
+        public static final double MIN_POS                      = 0.0;
+        public static final double MAX_POS                      = 90.0;
+        public static final double GROUND_PICKUP_POS            = MIN_POS;
+        public static final double DUMP_TIME                    = 0.5;
+    }   //class Params
+
     public final TrcServo wrist;
 
     /**
@@ -39,8 +51,7 @@ public class Wrist
     public Wrist()
     {
         FtcServoActuator.Params wristParams = new FtcServoActuator.Params()
-            .setPrimaryServo(
-                RobotParams.WristParams.PRIMARY_SERVO_NAME, RobotParams.WristParams.PRIMARY_SERVO_INVERTED);
+            .setPrimaryServo(Params.PRIMARY_SERVO_NAME, Params.PRIMARY_SERVO_INVERTED);
 
         wrist = new FtcServoActuator(wristParams).getServo();
 //            wrist.tracer.setTraceLevel(TrcDbgTrace.MsgLevel.INFO);

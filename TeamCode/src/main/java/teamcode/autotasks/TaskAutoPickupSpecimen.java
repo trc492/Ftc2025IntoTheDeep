@@ -22,21 +22,18 @@
 
 package teamcode.autotasks;
 
-import java.util.Locale;
-
 import teamcode.FtcAuto;
 import teamcode.Robot;
-import teamcode.RobotParams;
-import teamcode.vision.Vision;
-import trclib.pathdrive.TrcPose2D;
+import teamcode.params.GameParams;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
+import teamcode.subsystems.Intake;
+import teamcode.subsystems.Wrist;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
-import trclib.timer.TrcTimer;
-import trclib.vision.TrcOpenCvColorBlobPipeline;
-import trclib.vision.TrcVisionTargetInfo;
 
 /**
  * This class implements auto-assist task to pick up a sample from ground.
@@ -186,8 +183,8 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             case START:
                 if (robot.extenderArm != null) {
                     robot.extenderArm.setPosition(
-                            RobotParams.ElbowParams.SPECIMEN_PICKUP_POS, RobotParams.ExtenderParams.SPECIMEN_PICKUP_POS,
-                            RobotParams.WristParams.GROUND_PICKUP_POS, event);
+                        Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS,
+                        Wrist.Params.GROUND_PICKUP_POS, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
                 } else {
                     sm.setState(State.DONE);
@@ -198,14 +195,14 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 // Drive to the observation zone
                 robot.robotDrive.purePursuitDrive.start(
                         currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
-                        robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
+                        robot.adjustPoseByAlliance(GameParams.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                 sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
 
             case PICKUP_SPECIMEN:
                 // intake design not confirmed
                 // TODO: There will be a color sensor on the intake.
 
-                robot.intake.setPower(0.0, RobotParams.IntakeParams.FORWARD_POWER, 4.0, event);  // change duration based on tuning
+                robot.intake.setPower(0.0, Intake.Params.FORWARD_POWER, 4.0, event);  // change duration based on tuning
                 robot.robotDrive.driveBase.holonomicDrive(0.0, 0.1, 0.0);
                 sm.waitForSingleEvent(event, State.DONE, 4.0);
                 break;
@@ -216,9 +213,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 if (robot.extenderArm != null)
                 {
                     robot.extenderArm.setPosition(
-                            RobotParams.ElbowParams.SPECIMEN_PICKUP_POS + 10.0,
-                            RobotParams.ExtenderParams.MIN_POS,
-                            RobotParams.WristParams.GROUND_PICKUP_POS,
+                            Elbow.Params.SPECIMEN_PICKUP_POS + 10.0,
+                            Extender.Params.MIN_POS,
+                            Wrist.Params.GROUND_PICKUP_POS,
                             null
                             );
                 }

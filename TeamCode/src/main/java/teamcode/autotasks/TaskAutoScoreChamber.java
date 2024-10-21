@@ -24,7 +24,8 @@ package teamcode.autotasks;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
-import teamcode.RobotParams;
+import teamcode.params.GameParams;
+import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
@@ -200,22 +201,22 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                     {
                         if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
                         {
-                            scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+                            scorePose = GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
                         }
                         else
                         {
-                            scorePose = RobotParams.Game.RED_BASKET_CHAMBER_SCORE_POSE;
+                            scorePose = GameParams.RED_BASKET_CHAMBER_SCORE_POSE;
                         }
                     }
                     else
                     {
                         if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
                         {
-                            scorePose = RobotParams.Game.BLUE_OBSERVATION_CHAMBER_SCORE_POSE;
+                            scorePose = GameParams.BLUE_OBSERVATION_CHAMBER_SCORE_POSE;
                         }
                         else
                         {
-                            scorePose = RobotParams.Game.BLUE_BASKET_CHAMBER_SCORE_POSE;
+                            scorePose = GameParams.BLUE_BASKET_CHAMBER_SCORE_POSE;
                         }
                     }
                     robot.robotDrive.purePursuitDrive.start(
@@ -232,11 +233,11 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 double elbowAngle;
                 if (taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW)
                 {
-                    elbowAngle = RobotParams.Game.CHAMBER_LOW_ELBOW_ANGLE;
+                    elbowAngle = GameParams.CHAMBER_LOW_ELBOW_ANGLE;
                 }
                 else
                 {
-                    elbowAngle = RobotParams.Game.CHAMBER_HIGH_ELBOW_ANGLE;
+                    elbowAngle = GameParams.CHAMBER_HIGH_ELBOW_ANGLE;
                 }
                 robot.extenderArm.setPosition(elbowAngle, null, null, event);
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);
@@ -246,11 +247,11 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 double extenderPos;
                 if (taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW)
                 {
-                    extenderPos = RobotParams.Game.CHAMBER_LOW_EXTENDER_POS;
+                    extenderPos = GameParams.CHAMBER_LOW_EXTENDER_POS;
                 }
                 else
                 {
-                    extenderPos = RobotParams.Game.CHAMBER_HIGH_EXTENDER_POS;
+                    extenderPos = GameParams.CHAMBER_HIGH_EXTENDER_POS;
                 }
                 robot.extenderArm.setPosition(null, extenderPos, null, event);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER);
@@ -258,8 +259,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 
             case SCORE_CHAMBER:
                 double wristPos = taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW?
-                        RobotParams.Game.CHAMBER_LOW_WRIST_SCORE_POS: RobotParams.Game.CHAMBER_HIGH_WRIST_SCORE_POS;
-                robot.wrist.setPosition(wristPos, event, RobotParams.WristParams.DUMP_TIME);
+                        GameParams.CHAMBER_LOW_WRIST_SCORE_POS: GameParams.CHAMBER_HIGH_WRIST_SCORE_POS;
+                robot.wrist.setPosition(wristPos, event, Wrist.Params.DUMP_TIME);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
 

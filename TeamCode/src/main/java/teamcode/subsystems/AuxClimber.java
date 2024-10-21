@@ -22,7 +22,6 @@
 
 package teamcode.subsystems;
 
-import teamcode.RobotParams;
 import trclib.motor.TrcMotor;
 import ftclib.motor.FtcMotorActuator;
 
@@ -30,8 +29,29 @@ import ftclib.motor.FtcMotorActuator;
  * This class creates the AuxClimber subsystem which consists of a climber motor actuator.
  */
 public class AuxClimber
-
 {
+    public static class Params
+    {
+        public static final String SUBSYSTEM_NAME               = "Climber";
+
+        public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final FtcMotorActuator.MotorType PRIMARY_MOTOR_TYPE = FtcMotorActuator.MotorType.DcMotor;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
+
+        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
+        public static final boolean LOWER_LIMIT_INVERTED        = false;
+
+        public static final double INCHES_PER_COUNT             = 18.25/4941.0;
+        public static final double POS_OFFSET                   = 10.875;
+        public static final double POWER_LIMIT                  = 1.0;
+        public static final double ZERO_CAL_POWER               = -0.25;
+
+        public static final double MIN_POS                      = POS_OFFSET;
+        public static final double MAX_POS                      = 30.25;
+        public static final double[] posPresets                 = {MIN_POS, MAX_POS};
+        public static final double POS_PRESET_TOLERANCE         = 1.0;
+    }   //class Params
+
     public final TrcMotor climber;
 
     /**
@@ -41,15 +61,10 @@ public class AuxClimber
     {
         // Create a FtcMotorActuator for the Climber.
         FtcMotorActuator.Params climberParams = new FtcMotorActuator.Params()
-            .setPrimaryMotor(
-                RobotParams.ClimberParams.PRIMARY_MOTOR_NAME, RobotParams.ClimberParams.PRIMARY_MOTOR_TYPE,
-                RobotParams.ClimberParams.PRIMARY_MOTOR_INVERTED)
-            .setLowerLimitSwitch(
-                RobotParams.ClimberParams.LOWER_LIMIT_NAME, RobotParams.ClimberParams.LOWER_LIMIT_INVERTED)
-            .setPositionScaleAndOffset(
-                RobotParams.ClimberParams.INCHES_PER_COUNT, RobotParams.ClimberParams.POS_OFFSET)
-            .setPositionPresets(
-                RobotParams.ClimberParams.POS_PRESET_TOLERANCE, RobotParams.ClimberParams.posPresets);
+            .setPrimaryMotor(Params.PRIMARY_MOTOR_NAME, Params.PRIMARY_MOTOR_TYPE, Params.PRIMARY_MOTOR_INVERTED)
+            .setLowerLimitSwitch(Params.LOWER_LIMIT_NAME, Params.LOWER_LIMIT_INVERTED)
+            .setPositionScaleAndOffset(Params.INCHES_PER_COUNT, Params.POS_OFFSET)
+            .setPositionPresets(Params.POS_PRESET_TOLERANCE, Params.posPresets);
         climber = new FtcMotorActuator(climberParams).getMotor();
     }   //AuxClimber
 

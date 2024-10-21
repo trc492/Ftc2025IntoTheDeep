@@ -24,8 +24,10 @@ package teamcode.autocommands;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
-import teamcode.RobotParams;
-import teamcode.autotasks.TaskAutoScoreChamber;
+import teamcode.params.GameParams;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
+import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
@@ -181,7 +183,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case DRIVE_TO_OBSERVATION:
                     //Drive to observation
-                    targetPose = robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_CONVERT, autoChoices.alliance);
+                    targetPose = robot.adjustPoseByAlliance(
+                        GameParams.RED_OBSERVATION_ZONE_CONVERT, autoChoices.alliance);
                     robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
                     if (robot.intake.hasObject())
@@ -224,8 +227,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     if(robot.extenderArm != null)
                     {
                         robot.extenderArm.setPosition(
-                                RobotParams.ElbowParams.MAX_POS, RobotParams.ExtenderParams.MIN_POS,
-                                RobotParams.WristParams.MAX_POS, event);
+                            Elbow.Params.MAX_POS, Extender.Params.MIN_POS, Wrist.Params.MAX_POS, event);
                         sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION2);
                     }
                     else
@@ -236,7 +238,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case DRIVE_TO_OBSERVATION2:
                     //rotate and drive to pickup up specimen in correct orientation
-                    targetPose = robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
+                    targetPose = robot.adjustPoseByAlliance(
+                        GameParams.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
                     robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
                     sm.waitForSingleEvent(event, State.PICKUP_FROM_OBSERVATION);
@@ -276,7 +279,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case PARK:
                     //Park in observation zone
-                    targetPose = robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
+                    targetPose = robot.adjustPoseByAlliance(
+                        GameParams.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
                     robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
                     sm.waitForSingleEvent(event, State.DONE);

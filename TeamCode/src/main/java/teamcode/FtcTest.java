@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Titan Robotics Club (http://www.titanrobotics.com)
+ * Copyright (c) 2024 Titan Robotics Club (http://www.titanrobotics.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,9 @@ import ftclib.driverio.FtcGamepad;
 import ftclib.driverio.FtcMenu;
 import ftclib.driverio.FtcValueMenu;
 import ftclib.robotcore.FtcPidCoeffCache;
+import teamcode.params.RobotParams;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
 import teamcode.vision.Vision;
 import trclib.command.CmdDriveMotorsTest;
 import trclib.command.CmdPidDrive;
@@ -789,7 +792,7 @@ public class FtcTest extends FtcTeleOp
                 {
                     if (pressed)
                     {
-                        robot.elbow.presetPositionUp(null, RobotParams.ElbowParams.POWER_LIMIT);
+                        robot.elbow.presetPositionUp(null, Elbow.Params.POWER_LIMIT);
                     }
                     passToTeleOp = false;
                 }
@@ -800,7 +803,7 @@ public class FtcTest extends FtcTeleOp
                 {
                     if (pressed)
                     {
-                        robot.elbow.presetPositionDown(null, RobotParams.ElbowParams.POWER_LIMIT);
+                        robot.elbow.presetPositionDown(null, Elbow.Params.POWER_LIMIT);
                     }
                     passToTeleOp = false;
                 }
@@ -811,7 +814,7 @@ public class FtcTest extends FtcTeleOp
                 {
                     if (pressed)
                     {
-                        robot.extender.presetPositionDown(moduleName, RobotParams.ExtenderParams.POWER_LIMIT);
+                        robot.extender.presetPositionDown(moduleName, Extender.Params.POWER_LIMIT);
                     }
                     passToTeleOp = false;
                 }
@@ -822,7 +825,7 @@ public class FtcTest extends FtcTeleOp
                 {
                     if (pressed)
                     {
-                        robot.extender.presetPositionUp(moduleName, RobotParams.ExtenderParams.POWER_LIMIT);
+                        robot.extender.presetPositionUp(moduleName, Extender.Params.POWER_LIMIT);
                     }
                     passToTeleOp = false;
                 }

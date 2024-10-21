@@ -24,7 +24,7 @@ package teamcode.subsystems;
 
 import ftclib.driverio.FtcGobildaIndicatorLight;
 import ftclib.driverio.FtcRevBlinkin;
-import teamcode.RobotParams;
+import teamcode.params.RobotParams;
 import teamcode.vision.Vision;
 import trclib.drivebase.TrcDriveBase;
 import trclib.driverio.TrcGobildaIndicatorLight;

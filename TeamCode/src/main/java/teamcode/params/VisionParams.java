@@ -25,6 +25,7 @@ package teamcode.params;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import ftclib.drivebase.FtcRobotDrive;
+import trclib.dataprocessor.TrcUtil;
 import trclib.pathdrive.TrcPose3D;
 import trclib.vision.TrcHomographyMapper;
 
@@ -72,17 +73,15 @@ public class VisionParams
             camName = "Limelight3a";
             camImageWidth = 640;
             camImageHeight = 480;
-            camXOffset = 5.3335;                // Inches to the right from robot center
-            camYOffset = 2.0;                   // Inches forward from robot center
-            camZOffset = 10.758;                // Inches up from the floor
-            camPitch = 0.0;                     // degrees down from horizontal
-            camYaw = 0.0;                       // degrees clockwise from robot front
+            camHFov = 54.5;                             // in degrees
+            camVFov = 42.0;                             // in degrees
+            camXOffset = 135.47*TrcUtil.INCHES_PER_MM;  // Inches to the right from robot center
+            camYOffset = 2.073;                         // Inches forward from robot center
+            camZOffset = 10.758;                        // Inches up from the floor
+            camPitch = 0.0;                             // degrees down from horizontal
+            camYaw = 0.0;                               // degrees clockwise from robot front
             camRoll = 0.0;
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
-            camOrientation = OpenCvCameraRotation.UPRIGHT;
-            // Homography: cameraRect in pixels, worldRect in inches
-            cameraRect = null;
-            worldRect = null;
         }   //Limelight
     }   //class Limelight
 

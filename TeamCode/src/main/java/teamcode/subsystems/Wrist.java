@@ -37,9 +37,9 @@ public class Wrist
         public static final String PRIMARY_SERVO_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final boolean PRIMARY_SERVO_INVERTED      = false;
 
-        public static final double MIN_POS                      = 0.0;
-        public static final double MAX_POS                      = 90.0;
-        public static final double GROUND_PICKUP_POS            = MIN_POS;
+        public static final double MIN_POS                      = 0.1;
+        public static final double MAX_POS                      = 0.75;
+        public static final double GROUND_PICKUP_POS            = 0.575;
         public static final double DUMP_TIME                    = 0.5;
     }   //class Params
 

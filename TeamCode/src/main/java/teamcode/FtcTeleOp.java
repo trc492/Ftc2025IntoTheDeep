@@ -34,6 +34,7 @@ import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Intake;
+import teamcode.vision.Vision;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
@@ -57,6 +58,7 @@ public class FtcTeleOp extends FtcOpMode
     private boolean operatorAltFunc = false;
     private boolean relocalizing = false;
     private TrcPose2D robotFieldPose = null;
+    private FtcAuto.ScoreHeight scoreHeight = FtcAuto.ScoreHeight.HIGH;
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
 
@@ -333,8 +335,61 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case B:
+                if (robot.extenderArm != null && pressed)
+                {
+                    robot.extenderArm.retract(null);
+                }
+                break;
+
             case X:
+                if (robot.extenderArm != null && robot.pickupFromGroundTask != null && pressed)
+                {
+                    if (!robot.pickupFromGroundTask.isActive())
+                    {
+                        robot.pickupFromGroundTask.autoPickupFromGround(
+                                Vision.SampleType.AnySample, // Logic to decide which one later
+                                null);
+                    } else
+                    {
+                        robot.pickupFromGroundTask.cancel();
+                    }
+                }
+                break;
+
             case Y:
+                if (robot.extenderArm != null && pressed)
+                {
+                    // Due to the geometry of the intake,
+                    // a sample will not be detected by the color,
+                    // but a specimen will be
+                    if (robot.intake.hasObject())
+                    {
+                        if (robot.scoreChamberTask != null)
+                        {
+                            if (!robot.scoreChamberTask.isActive())
+                            {
+                                robot.scoreChamberTask.autoScoreChamber(null, scoreHeight, null, !driverAltFunc, null);
+                            }
+                            else
+                            {
+                                robot.scoreChamberTask.cancel();
+                            }
+                        }
+                    } else
+                    {
+                        if (robot.scoreBasketTask != null)
+                        {
+                            if (!robot.scoreBasketTask.isActive())
+                            {
+                                robot.scoreBasketTask.autoScoreBasket(null, scoreHeight, !driverAltFunc, null);
+                            }
+                            else
+                            {
+                                robot.scoreChamberTask.cancel();
+                            }
+                        }
+                    }
+                }
                 break;
 
             case LeftBumper:
@@ -359,9 +414,47 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadUp:
+                if (pressed)
+                {
+                    if (scoreHeight == FtcAuto.ScoreHeight.HIGH)
+                    {
+                        scoreHeight = FtcAuto.ScoreHeight.LOW;
+                    } else
+                    {
+                        scoreHeight = FtcAuto.ScoreHeight.HIGH;
+                    }
+                }
+                break;
+
             case DpadDown:
+                break;
+
             case DpadLeft:
+                if (pressed && robot.intake != null)
+                {
+                    if (!robot.intake.isAutoActive())
+                    {
+                        robot.intake.autoIntakeForward(Intake.Params.FORWARD_POWER, Intake.Params.RETAIN_POWER,Intake.Params.FINISH_DELAY);
+                    }
+                    else
+                    {
+                        robot.intake.cancel();
+                    }
+                }
+                break;
+
             case DpadRight:
+                if (pressed && robot.intake != null)
+                {
+                    if (!robot.intake.isAutoActive())
+                    {
+                        robot.intake.autoEjectReverse(Intake.Params.REVERSE_POWER, Intake.Params.FINISH_DELAY);
+                    }
+                    else
+                    {
+                        robot.intake.cancel();
+                    }
+                }
                 break;
 
             case Back:
@@ -447,6 +540,10 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case RightBumper:
+                if (robot.extenderArm != null)
+                {
+                    robot.extenderArm.retract(null);
+                }
                 break;
 
             case DpadUp:

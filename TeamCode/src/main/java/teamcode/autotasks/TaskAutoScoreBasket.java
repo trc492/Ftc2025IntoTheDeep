@@ -191,8 +191,17 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             case GO_TO_SCORE_POSITION:
                 if (taskParams.doDrive)
                 {
-                    TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                            GameParams.RED_BASKET_SCORE_POSE: GameParams.BLUE_BASKET_SCORE_POSE;
+                    TrcPose2D scorePose;
+                    if (taskParams.alliance != null)
+                    {
+                        scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
+                                GameParams.RED_BASKET_SCORE_POSE : GameParams.BLUE_BASKET_SCORE_POSE;
+                    }
+                    else
+                    {
+                        scorePose = robot.robotDrive.driveBase.getFieldPosition().x <= 0 ?
+                                GameParams.RED_BASKET_SCORE_POSE : GameParams.BLUE_BASKET_SCORE_POSE;
+                    }
                     robot.robotDrive.purePursuitDrive.start(
                             currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
                     sm.waitForSingleEvent(event, State.SET_EXTENDER_ARM);
@@ -238,5 +247,5 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 break;
         }
     }   //runTaskState
- 
+
 }   //class TaskAutoScoreBasket

@@ -25,6 +25,7 @@ package teamcode.autotasks;
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.params.GameParams;
+import teamcode.subsystems.Intake;
 import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
@@ -195,28 +196,53 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 if (taskParams.doDrive)
                 {
 //                    TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-//                            RobotParams.Game.RED_CHAMBER_SCORE_POSE: RobotParams.Game.BLUE_CHAMBER_SCORE_POSE;
+//                            GameParams.RED_CHAMBER_SCORE_POSE: GameParams.BLUE_CHAMBER_SCORE_POSE;
                     TrcPose2D scorePose;
-                    if (taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE)
+                    if (taskParams.alliance != null)
                     {
-                        if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
+                        if (taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE)
                         {
-                            scorePose = GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+                            if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
+                            {
+                                scorePose = GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+                            } else
+                            {
+                                scorePose = GameParams.RED_BASKET_CHAMBER_SCORE_POSE;
+                            }
                         }
                         else
                         {
-                            scorePose = GameParams.RED_BASKET_CHAMBER_SCORE_POSE;
+                            if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
+                            {
+                                scorePose = GameParams.BLUE_OBSERVATION_CHAMBER_SCORE_POSE;
+                            }
+                            else
+                            {
+                                scorePose = GameParams.BLUE_BASKET_CHAMBER_SCORE_POSE;
+                            }
                         }
-                    }
-                    else
+                    } else
                     {
-                        if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
+                        if (robot.robotDrive.driveBase.getFieldPosition().y < 0)
+                        // Red Alliance
                         {
-                            scorePose = GameParams.BLUE_OBSERVATION_CHAMBER_SCORE_POSE;
-                        }
-                        else
+                            if (robot.robotDrive.driveBase.getFieldPosition().x >= 0)
+                            {
+                                scorePose = GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+                            } else
+                            {
+                                scorePose = GameParams.RED_BASKET_CHAMBER_SCORE_POSE;
+                            }
+                        } else
+                        // Blue Alliance
                         {
-                            scorePose = GameParams.BLUE_BASKET_CHAMBER_SCORE_POSE;
+                            if (robot.robotDrive.driveBase.getFieldPosition().x >= 0)
+                            {
+                                scorePose = GameParams.BLUE_OBSERVATION_CHAMBER_SCORE_POSE;
+                            } else
+                            {
+                                scorePose = GameParams.BLUE_BASKET_CHAMBER_SCORE_POSE;
+                            }
                         }
                     }
                     robot.robotDrive.purePursuitDrive.start(
@@ -265,6 +291,9 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 break;
 
             case RETRACT_EXTENDER_ARM:
+                robot.intake.autoEjectReverse(
+                        0.0,Intake.Params.REVERSE_POWER,
+                       Intake.Params.FINISH_DELAY, null, 4.0);
                 robot.extenderArm.retract(event);
                 sm.waitForSingleEvent(event, State.DONE);
                 break;

@@ -72,25 +72,17 @@ public class VisionParams
             camName = "Limelight3a";
             camImageWidth = 640;
             camImageHeight = 480;
-            camXOffset = 0.0;                   // Inches to the right from robot center
-            camYOffset = 0.0;                   // Inches forward from robot center
-            camZOffset = 0.0;                   // Inches up from the floor
+            camXOffset = 5.3335;                // Inches to the right from robot center
+            camYOffset = 2.0;                   // Inches forward from robot center
+            camZOffset = 10.758;                // Inches up from the floor
             camPitch = 0.0;                     // degrees down from horizontal
             camYaw = 0.0;                       // degrees clockwise from robot front
             camRoll = 0.0;
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
             camOrientation = OpenCvCameraRotation.UPRIGHT;
             // Homography: cameraRect in pixels, worldRect in inches
-            cameraRect = new TrcHomographyMapper.Rectangle(
-                0.0, 120.0,                                             // Camera Top Left
-                camImageWidth - 1, 120.0,                                // Camera Top Right
-                0.0, camImageHeight - 1,                                // Camera Bottom Left
-                camImageWidth - 1, camImageHeight - 1);                 // Camera Bottom Right
-            worldRect = new TrcHomographyMapper.Rectangle(
-                -12.5626, 48.0 - 9.0 - camYOffset,   // World Top Left
-                11.4375, 44.75 - 9.0 - camYOffset,   // World Top Right
-                -2.5625, 21.0 - 9.0 - camYOffset,    // World Bottom Left
-                2.5626, 21.0 - 9.0 - camYOffset);    // World Bottom Right
+            cameraRect = null;
+            worldRect = null;
         }   //Limelight
     }   //class Limelight
 

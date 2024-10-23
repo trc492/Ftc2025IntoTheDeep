@@ -232,7 +232,8 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                     // We are setting the elbow angle and the extender is extended, retract it first.
                     robot.extender.setPosition(
                         currOwner, 0.0, Extender.Params.MIN_POS, true, Extender.Params.POWER_LIMIT, extenderEvent, 0.0);
-                    sm.waitForSingleEvent(extenderEvent, State.SET_ELBOW_ANGLE);
+                    //sm.waitForSingleEvent(extenderEvent, State.SET_ELBOW_ANGLE);
+                    sm.setState(State.SET_ELBOW_ANGLE);
                 }
                 else
                 {
@@ -247,7 +248,8 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                     // We are setting elbow angle, go do it.
                     robot.elbow.setPosition(
                         currOwner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 0.0);
-                    sm.waitForSingleEvent(elbowEvent, State.SET_EXTENDER_POSITION);
+//                    sm.waitForSingleEvent(elbowEvent, State.SET_EXTENDER_POSITION);
+                    sm.setState(State.SET_EXTENDER_POSITION);
                 }
                 else
                 {

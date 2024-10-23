@@ -44,7 +44,7 @@ public class Elbow
 
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final FtcMotorActuator.MotorType PRIMARY_MOTOR_TYPE = FtcMotorActuator.MotorType.DcMotor;
-        public static final boolean PRIMARY_MOTOR_INVERTED      = false;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = true;
 

@@ -150,7 +150,8 @@ public class Vision
 
             tracer.traceInfo(moduleName, "Starting RawEocvColorBlobVision...");
             rawColorBlobPipeline = new FtcRawEocvColorBlobPipeline(
-                "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, sampleFilterContourParams, true);
+                "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, sampleFilterContourParams, true,
+                true);
             // By default, display original Mat.
             rawColorBlobPipeline.setVideoOutput(0);
             rawColorBlobPipeline.setAnnotateEnabled(true);
@@ -199,19 +200,19 @@ public class Vision
 
                 redSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams,
-                    true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    true, true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 redSampleProcessor = redSampleVision.getVisionProcessor();
                 visionProcessorsList.add(redSampleProcessor);
 
                 blueSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.BLUE_SAMPLE, colorConversion, blueSampleColorThresholds, sampleFilterContourParams,
-                    true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    true, true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 blueSampleProcessor = blueSampleVision.getVisionProcessor();
                 visionProcessorsList.add(blueSampleProcessor);
 
                 yellowSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.YELLOW_SAMPLE, colorConversion, yellowSampleColorThresholds, sampleFilterContourParams,
-                    true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    true, true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 yellowSampleProcessor = yellowSampleVision.getVisionProcessor();
                 visionProcessorsList.add(yellowSampleProcessor);
             }

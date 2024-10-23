@@ -286,10 +286,12 @@ public class Vision
         int[] gainSetting = vision.getGainSetting();
         int currGain = vision.getCurrentGain();
 
-        robot.dashboard.displayPrintf(
-            lineNum, "Exp: %d (%d:%d), Gain: %d (%d:%d)",
-            currExposure, exposureSetting[0], exposureSetting[1],
-            currGain, gainSetting != null? gainSetting[0]: 0, gainSetting != null? gainSetting[1]: 0);
+        if (exposureSetting != null && gainSetting != null)
+        {
+            robot.dashboard.displayPrintf(
+                lineNum, "Exp: %d (%d:%d), Gain: %d (%d:%d)",
+                currExposure, exposureSetting[0], exposureSetting[1], currGain, gainSetting[0], gainSetting[1]);
+        }
     }   //displayExposureSettings
 
     /**

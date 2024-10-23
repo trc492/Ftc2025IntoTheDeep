@@ -36,6 +36,7 @@ import ftclib.driverio.FtcGamepad;
 import ftclib.driverio.FtcMenu;
 import ftclib.driverio.FtcValueMenu;
 import ftclib.robotcore.FtcPidCoeffCache;
+import ftclib.vision.FtcLimelightVision;
 import teamcode.params.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
@@ -232,6 +233,12 @@ public class FtcTest extends FtcTeleOp
                         exposure = robot.vision.vision.getCurrentExposure();
                     }
                     // Vision generally will impact performance, so we only enable it if it's needed.
+                    if (robot.vision.limelightVision != null)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, "Enabling LimelightVision.");
+                        robot.vision.setLimelightVisionEnabled(0, true);
+                    }
+
                     if (robot.vision.aprilTagVision != null)
                     {
                         robot.globalTracer.traceInfo(moduleName, "Enabling AprilTagVision.");
@@ -254,12 +261,6 @@ public class FtcTest extends FtcTeleOp
                     {
                         robot.globalTracer.traceInfo(moduleName, "Enabling YellowSampleVision.");
                         robot.vision.setSampleVisionEnabled(Vision.SampleType.YellowSample, true);
-                    }
-
-                    if (robot.vision.limelightVision != null)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, "Enabling LimelightVision.");
-                        robot.vision.setLimelightVisionEnabled(0, true);
                     }
                 }
                 break;
@@ -1119,6 +1120,11 @@ public class FtcTest extends FtcTeleOp
             {
                 // displayExposureSettings is only available for VisionPortal.
                 robot.vision.displayExposureSettings(lineNum++);
+            }
+
+            if (robot.vision.limelightVision != null)
+            {
+                robot.vision.getLimelightDetectedObject(FtcLimelightVision.ResultType.Fiducial, null, lineNum++);
             }
 
             if (robot.vision.rawColorBlobVision != null)

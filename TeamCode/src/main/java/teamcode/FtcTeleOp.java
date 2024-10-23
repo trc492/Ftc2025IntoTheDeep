@@ -59,6 +59,7 @@ public class FtcTeleOp extends FtcOpMode
     private boolean relocalizing = false;
     private TrcPose2D robotFieldPose = null;
     private FtcAuto.ScoreHeight scoreHeight = FtcAuto.ScoreHeight.HIGH;
+    private FtcAuto.PreloadType objectType;
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
 
@@ -342,16 +343,36 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case X:
-                if (robot.extenderArm != null && robot.pickupFromGroundTask != null && pressed)
+                if (robot.extenderArm != null &&
+                        robot.pickupFromGroundTask != null &&
+                        robot.pickupSpecimenTask != null &&
+                        pressed)
                 {
-                    if (!robot.pickupFromGroundTask.isActive())
+                    if (!driverAltFunc)
                     {
-                        robot.pickupFromGroundTask.autoPickupFromGround(
-                                Vision.SampleType.AnySample, // Logic to decide which one later
-                                null);
-                    } else
+                        if (!robot.pickupFromGroundTask.isActive())
+                        {
+                            objectType = FtcAuto.PreloadType.SAMPLE;
+                            robot.pickupFromGroundTask.autoPickupFromGround(
+                                    Vision.SampleType.AnySample, // Logic to decide which one later
+                                    null);
+                        }
+                        else
+                        {
+                            robot.pickupFromGroundTask.cancel();
+                        }
+                    }
+                    else
                     {
-                        robot.pickupFromGroundTask.cancel();
+                        if (!robot.pickupSpecimenTask.isActive())
+                        {
+                            objectType = FtcAuto.PreloadType.SPECIMEN;
+                            robot.pickupSpecimenTask.autoPickupSpecimen(null, null);
+                        }
+                        else
+                        {
+                            robot.pickupSpecimenTask.cancel();
+                        }
                     }
                 }
                 break;
@@ -362,7 +383,7 @@ public class FtcTeleOp extends FtcOpMode
                     // Due to the geometry of the intake,
                     // a sample will not be detected by the color,
                     // but a specimen will be
-                    if (robot.intake.hasObject())
+                    if (objectType == FtcAuto.PreloadType.SPECIMEN)
                     {
                         if (robot.scoreChamberTask != null)
                         {

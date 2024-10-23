@@ -46,15 +46,15 @@ public class GameParams
     };
 
     public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-        new TrcPose2D(-2.0*RobotParams.Field.FULL_TILE_INCHES, -2.0*RobotParams.Field.FULL_TILE_INCHES, 225.0);
+        new TrcPose2D(-2.25*RobotParams.Field.FULL_TILE_INCHES, -2.25*RobotParams.Field.FULL_TILE_INCHES, 225.0);
     public static final TrcPose2D BLUE_BASKET_SCORE_POSE        =
         new TrcPose2D(2.0*RobotParams.Field.FULL_TILE_INCHES, 2.0*RobotParams.Field.FULL_TILE_INCHES, 45.0);
-    public static final double BASKET_LOW_EXTENDER_POS          = 40.0;
-    public static final double BASKET_HIGH_EXTENDER_POS         = 80.0;
-    public static final double BASKET_LOW_ELBOW_ANGLE           = 15.0;
-    public static final double BASKET_HIGH_ELBOW_ANGLE          = 30.0;
+    public static final double BASKET_LOW_EXTENDER_POS          = 23.0;
+    public static final double BASKET_HIGH_EXTENDER_POS         = 35.0;
+    public static final double BASKET_LOW_ELBOW_ANGLE           = 115.0;
+    public static final double BASKET_HIGH_ELBOW_ANGLE          = 105.0;
     public static final double BASKET_LOW_WRIST_SCORE_POS       = 0.575;
-    public static final double BASKET_HIGH_WRIST_SCORE_POS      = 0.4; // To Tune
+    public static final double BASKET_HIGH_WRIST_SCORE_POS      = 0.575; // To Tune
 
     public static final TrcPose2D RED_BASKET_CHAMBER_SCORE_POSE        =
         new TrcPose2D(-0.5*RobotParams.Field.FULL_TILE_INCHES, -1.5*RobotParams.Field.FULL_TILE_INCHES, 225.0);
@@ -65,11 +65,11 @@ public class GameParams
     public static final TrcPose2D BLUE_OBSERVATION_CHAMBER_SCORE_POSE       =
         new TrcPose2D(-0.5*RobotParams.Field.FULL_TILE_INCHES, 1.5*RobotParams.Field.FULL_TILE_INCHES, 315.0);
     public static final double CHAMBER_LOW_EXTENDER_POS         = 40.0;
-    public static final double CHAMBER_HIGH_EXTENDER_POS        = 80.0;
+    public static final double CHAMBER_HIGH_EXTENDER_POS        = 20.0;
     public static final double CHAMBER_LOW_ELBOW_ANGLE          = 15.0;
-    public static final double CHAMBER_HIGH_ELBOW_ANGLE         = 30.0;
-    public static final double CHAMBER_LOW_WRIST_SCORE_POS      = 0.575; // intake not final
-    public static final double CHAMBER_HIGH_WRIST_SCORE_POS     = 0.575; // intake not final
+    public static final double CHAMBER_HIGH_ELBOW_ANGLE         = 72.0;
+    public static final double CHAMBER_LOW_WRIST_SCORE_POS      = 0.1; // intake not final
+    public static final double CHAMBER_HIGH_WRIST_SCORE_POS     = 0.1; // intake not final
 
     // Robot start locations in inches.
     public static final double STARTPOS_X                       = 0.5*RobotParams.Field.FULL_TILE_INCHES;

@@ -155,7 +155,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     if (robot.scoreChamberTask != null)
                     {
                         robot.scoreChamberTask.autoScoreChamber(
-                                autoChoices.alliance, autoChoices.scoreHeight, autoChoices.startPos, true, event
+                                autoChoices.alliance, autoChoices.startPos, autoChoices.scoreHeight, true, event
                         );
                         sm.waitForSingleEvent(event, State.PICKUP_FROM_SUBMERSIBLE);
                     } else
@@ -261,8 +261,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     if (robot.scoreChamberTask != null)
                     {
                         robot.scoreChamberTask.autoScoreChamber(
-                                autoChoices.alliance, autoChoices.scoreHeight, autoChoices.startPos, true, event
-                        );
+                                autoChoices.alliance, autoChoices.startPos, autoChoices.scoreHeight, true, event);
                     }
 
                     //check cycle count to see if park or continue picking up from submersible

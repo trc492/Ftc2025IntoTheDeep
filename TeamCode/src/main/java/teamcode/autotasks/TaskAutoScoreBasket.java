@@ -52,10 +52,10 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     private static class TaskParams
     {
         final FtcAuto.Alliance alliance;
-        final FtcAuto.ScoreHeight scoreHeight;
+        final Robot.ScoreHeight scoreHeight;
         final boolean doDrive;
 
-        TaskParams(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, boolean doDrive)
+        TaskParams(FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive)
         {
             this.alliance = alliance;
             this.scoreHeight = scoreHeight;
@@ -88,22 +88,27 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
      *
      * @param alliance specifies the alliance color.
      * @param scoreHeight specifies the scoring height in inches.
+     * @param doDrive specifies true to drive to scoring location, false to stay at current location.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoScoreBasket(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, boolean doDrive, TrcEvent completionEvent)
+    public void autoScoreBasket(
+        FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive, TrcEvent completionEvent)
     {
-        tracer.traceInfo(moduleName, "event=" + completionEvent);
-        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight, doDrive), completionEvent);
-    }   //autoAssist
+        if (alliance == null)
+        {
+            // Caller is TeleOp, let's determine the alliance color by robot's location.
+            alliance = robot.robotDrive.driveBase.getFieldPosition().x < 0.0?
+                FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
+        }
 
-    /**
-     * This method cancels an in progress auto-assist operation if any.
-     */
-    public void cancel()
-    {
-        tracer.traceInfo(moduleName, "Canceling operation.");
-        stopAutoTask(false);
-    }   //cancel
+        tracer.traceInfo(
+            moduleName,
+            "alliance=" + alliance +
+            ",scoreHeight=" + scoreHeight +
+            ",doDrive=" + doDrive +
+            ",event=" + completionEvent);
+        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight, doDrive), completionEvent);
+    }   //autoScoreBasket
 
     //
     // Implement TrcAutoTask abstract methods.
@@ -189,21 +194,14 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         switch (state)
         {
             case GO_TO_SCORE_POSITION:
+                // Code Review: Is it really realistic to not drive??? If you don't drive, who guarantee the robot
+                // is at the correct scoring location?
                 if (taskParams.doDrive)
                 {
-                    TrcPose2D scorePose;
-                    if (taskParams.alliance != null)
-                    {
-                        scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
-                                GameParams.RED_BASKET_SCORE_POSE : GameParams.BLUE_BASKET_SCORE_POSE;
-                    }
-                    else
-                    {
-                        scorePose = robot.robotDrive.driveBase.getFieldPosition().x <= 0 ?
-                                GameParams.RED_BASKET_SCORE_POSE : GameParams.BLUE_BASKET_SCORE_POSE;
-                    }
                     robot.robotDrive.purePursuitDrive.start(
-                            currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
+                        currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        robot.adjustPoseByAlliance(GameParams.RED_BASKET_SCORE_POSE, taskParams.alliance, false));
                     sm.waitForSingleEvent(event, State.SET_EXTENDER_ARM);
                 }
                 else
@@ -214,7 +212,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
             case SET_EXTENDER_ARM:
                 double elbowAngle, extenderPos;
-                if (taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW)
+                if (taskParams.scoreHeight == Robot.ScoreHeight.LOW)
                 {
                     elbowAngle = GameParams.BASKET_LOW_ELBOW_ANGLE;
                     extenderPos = GameParams.BASKET_LOW_EXTENDER_POS;
@@ -229,7 +227,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 break;
 
             case SCORE_BASKET:
-                double wristPos = taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW?
+                double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     GameParams.BASKET_LOW_WRIST_SCORE_POS: GameParams.BASKET_HIGH_WRIST_SCORE_POS;
                 robot.wrist.setPosition(wristPos, event, Wrist.Params.DUMP_TIME);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);

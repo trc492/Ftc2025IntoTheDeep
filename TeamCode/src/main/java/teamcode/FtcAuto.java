@@ -33,6 +33,8 @@ import ftclib.driverio.FtcMatchInfo;
 import ftclib.driverio.FtcMenu;
 import ftclib.driverio.FtcValueMenu;
 import ftclib.robotcore.FtcOpMode;
+import teamcode.autocommands.CmdAutoNetZone;
+import teamcode.autocommands.CmdAutoObservationZone;
 import teamcode.params.RobotParams;
 import trclib.command.CmdPidDrive;
 import trclib.command.CmdTimedDrive;
@@ -69,18 +71,6 @@ public class FtcAuto extends FtcOpMode
         OBSERVATION_ZONE
     }   //enum StartPos
 
-    public enum PreloadType
-    {
-        SPECIMEN,
-        SAMPLE
-    }   //enum PreloadType
-
-    public enum ScoreHeight
-    {
-        HIGH,
-        LOW
-    }   //enum ScoreHeight
-
     public enum ParkOption
     {
         PARK,
@@ -96,8 +86,8 @@ public class FtcAuto extends FtcOpMode
         public Alliance alliance = Alliance.RED_ALLIANCE;
         public AutoStrategy strategy = AutoStrategy.FULL_AUTO;
         public StartPos startPos = StartPos.NET_ZONE;
-        public PreloadType preloadType = PreloadType.SPECIMEN;
-        public ScoreHeight scoreHeight = ScoreHeight.HIGH;
+        public Robot.GamePieceType preloadType = Robot.GamePieceType.SPECIMEN;
+        public Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
         public ParkOption parkOption = ParkOption.PARK;
         public double xTarget = 0.0;
         public double yTarget = 0.0;
@@ -123,7 +113,7 @@ public class FtcAuto extends FtcOpMode
                 "turnTarget=%.0f " +
                 "driveTime=%.0f " +
                 "drivePower=%.1f",
-                delay, alliance, startPos, strategy, preloadType, scoreHeight, parkOption,
+                delay, alliance, strategy, startPos, preloadType, scoreHeight, parkOption,
                 xTarget, yTarget, turnTarget, driveTime, drivePower);
         }   //toString
 
@@ -172,11 +162,11 @@ public class FtcAuto extends FtcOpMode
                 {
                     if (autoChoices.startPos == StartPos.NET_ZONE)
                     {
-//                      autoCommand = new CmdAutoBasket();
+                        autoCommand = new CmdAutoNetZone(robot, autoChoices);
                     }
                     else if (autoChoices.startPos == StartPos.OBSERVATION_ZONE)
                     {
-//                        autoCommand = new CmdAutoObservation();
+                        autoCommand = new CmdAutoObservationZone(robot, autoChoices);
                     }
                 }
                 break;
@@ -202,30 +192,6 @@ public class FtcAuto extends FtcOpMode
                 autoCommand = null;
                 break;
         }
-
-        if (robot.vision != null)
-        {
-            // Enabling vision early so we can detect target before match starts if necessary.
-            // Only enable the necessary vision for that purpose.
-//            if (robot.vision.aprilTagVision != null)
-//            {
-//                robot.globalTracer.traceInfo(moduleName, "Enabling AprilTagVision.");
-//                robot.vision.setAprilTagVisionEnabled(true);
-//            }
-//
-//            if (robot.vision.redBlobVision != null)
-//            {
-//                robot.globalTracer.traceInfo(moduleName, "Enabling RedBlobVision.");
-//                robot.vision.setRedBlobVisionEnabled(true);
-//            }
-//
-//            if (robot.vision.blueBlobVision != null)
-//            {
-//                robot.globalTracer.traceInfo(moduleName, "Enabling BlueBlobVision.");
-//                robot.vision.setBlueBlobVisionEnabled(true);
-//            }
-        }
-
         robot.zeroCalibrate();
     }   //robotInit
 
@@ -353,8 +319,8 @@ public class FtcAuto extends FtcOpMode
         FtcChoiceMenu<Alliance> allianceMenu = new FtcChoiceMenu<>("Alliance:", delayMenu);
         FtcChoiceMenu<AutoStrategy> strategyMenu = new FtcChoiceMenu<>("Auto Strategies:", allianceMenu);
         FtcChoiceMenu<StartPos> startPosMenu = new FtcChoiceMenu<>("Start Position:", strategyMenu);
-        FtcChoiceMenu<PreloadType> preloadTypeMenu = new FtcChoiceMenu<>("Preload Type:", startPosMenu);
-        FtcChoiceMenu<ScoreHeight> scoreHeightMenu = new FtcChoiceMenu<>("Score Height:", preloadTypeMenu);
+        FtcChoiceMenu<Robot.GamePieceType> preloadTypeMenu = new FtcChoiceMenu<>("Preload Type:", startPosMenu);
+        FtcChoiceMenu<Robot.ScoreHeight> scoreHeightMenu = new FtcChoiceMenu<>("Score Height:", preloadTypeMenu);
         FtcChoiceMenu<ParkOption> parkOptionMenu = new FtcChoiceMenu<>("Park Option:", scoreHeightMenu);
 
         FtcValueMenu xTargetMenu = new FtcValueMenu(
@@ -388,11 +354,11 @@ public class FtcAuto extends FtcOpMode
         startPosMenu.addChoice("Start Net Zone", StartPos.NET_ZONE, true, preloadTypeMenu);
         startPosMenu.addChoice("Start Observation Zone", StartPos.OBSERVATION_ZONE, false, preloadTypeMenu);
 
-        preloadTypeMenu.addChoice("Preload Specimen", PreloadType.SPECIMEN, true, scoreHeightMenu);
-        preloadTypeMenu.addChoice("Preload Sample", PreloadType.SAMPLE, false, scoreHeightMenu);
+        preloadTypeMenu.addChoice("Preload Specimen", Robot.GamePieceType.SPECIMEN, true, scoreHeightMenu);
+        preloadTypeMenu.addChoice("Preload Sample", Robot.GamePieceType.SAMPLE, false, scoreHeightMenu);
 
-        scoreHeightMenu.addChoice("Score High", ScoreHeight.HIGH, true, parkOptionMenu);
-        scoreHeightMenu.addChoice("Score Low", ScoreHeight.LOW, false, parkOptionMenu);
+        scoreHeightMenu.addChoice("Score High", Robot.ScoreHeight.HIGH, true, parkOptionMenu);
+        scoreHeightMenu.addChoice("Score Low", Robot.ScoreHeight.LOW, false, parkOptionMenu);
 
         parkOptionMenu.addChoice("Park", ParkOption.PARK, true);
         parkOptionMenu.addChoice("Don't Park", ParkOption.NO_PARK, false);

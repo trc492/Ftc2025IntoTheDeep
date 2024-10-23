@@ -45,6 +45,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         RETRACT_EXTENDER,
         SET_ELBOW_ANGLE,
         SET_EXTENDER_POSITION,
+        CHECK_COMPLETION,
         DONE
     }   //enum State
 
@@ -68,6 +69,9 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     private final TrcEvent extenderEvent;
 
     private String currOwner = null;
+    private boolean safeSequence = false;
+    private boolean elbowCompleted = false;
+    private boolean extenderCompleted = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -87,6 +91,31 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     /**
      * This method sets the Elbow, Extender and Wrist to their specifies positions.
      *
+     * @param safeSequence specifies true to perform safe sequence so that robot won't tip over, false to do parallel.
+     * @param elbowAngle specifies the elbow angle, null if not moving elbow.
+     * @param extenderPosition specifies the extender position, null if not moving extender.
+     * @param wristPosition specifies the wrist position, null if not moving wrist.
+     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
+     */
+    public void setPosition(
+        boolean safeSequence, Double elbowAngle, Double extenderPosition, Double wristPosition,
+        TrcEvent completionEvent)
+    {
+        tracer.traceInfo(
+            moduleName,
+            "safeSequence=" + safeSequence +
+            "elbowAngle=" + elbowAngle +
+            ", extenderPos=" + extenderPosition +
+            ", wristPosition=" + wristPosition +
+            ", event=" + completionEvent);
+        this.safeSequence = safeSequence;
+        startAutoTask(
+            State.SET_POSITION, new TaskParams(elbowAngle, extenderPosition, wristPosition), completionEvent);
+    }   //setPosition
+
+    /**
+     * This method sets the Elbow, Extender and Wrist to their specifies positions.
+     *
      * @param elbowAngle specifies the elbow angle, null if not moving elbow.
      * @param extenderPosition specifies the extender position, null if not moving extender.
      * @param wristPosition specifies the wrist position, null if not moving wrist.
@@ -94,14 +123,20 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     public void setPosition(Double elbowAngle, Double extenderPosition, Double wristPosition, TrcEvent completionEvent)
     {
-        tracer.traceInfo(
-            moduleName,
-            "elbowAngle=" + elbowAngle +
-            ", extenderPos=" + extenderPosition +
-            ", wristPosition=" + wristPosition +
-            ", event=" + completionEvent);
-        startAutoTask(State.SET_POSITION, new TaskParams(elbowAngle, extenderPosition, wristPosition), completionEvent);
+        setPosition(false, elbowAngle, extenderPosition, wristPosition, completionEvent);
     }   //setPosition
+
+    /**
+     * This method retracts everything.
+     *
+     * @param safeSequence specifies true to perform safe sequence so that robot won't tip over, false to do parallel.
+     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
+     */
+    public void retract(boolean safeSequence, TrcEvent completionEvent)
+    {
+        setPosition(
+            safeSequence, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.MIN_POS, completionEvent);
+    }   //retract
 
     /**
      * This method retracts everything.
@@ -110,8 +145,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     public void retract(TrcEvent completionEvent)
     {
-        setPosition(
-            Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.MIN_POS, completionEvent);
+        setPosition(false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.MIN_POS, completionEvent);
     }   //retract
 
     /**
@@ -216,12 +250,14 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         switch (state)
         {
             case SET_POSITION:
+                elbowCompleted = false;
+                extenderCompleted = false;
                 if (taskParams.wristPosition != null)
                 {
                     // Caller provided wrist position, go set it (fire and forget).
                     robot.wrist.setPosition(currOwner, 0.0, taskParams.wristPosition, null, 0.0);
                 }
-                sm.setState(State.RETRACT_EXTENDER);
+                sm.setState(safeSequence? State.RETRACT_EXTENDER: State.SET_ELBOW_ANGLE);
                 break;
 
             case RETRACT_EXTENDER:
@@ -232,8 +268,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                     // We are setting the elbow angle and the extender is extended, retract it first.
                     robot.extender.setPosition(
                         currOwner, 0.0, Extender.Params.MIN_POS, true, Extender.Params.POWER_LIMIT, extenderEvent, 0.0);
-                    //sm.waitForSingleEvent(extenderEvent, State.SET_ELBOW_ANGLE);
-                    sm.setState(State.SET_ELBOW_ANGLE);
+                    sm.waitForSingleEvent(extenderEvent, State.SET_ELBOW_ANGLE);
                 }
                 else
                 {
@@ -245,15 +280,26 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             case SET_ELBOW_ANGLE:
                 if (taskParams.elbowAngle != null)
                 {
+                    elbowEvent.setCallback((c)->{elbowCompleted = true;}, null);
                     // We are setting elbow angle, go do it.
                     robot.elbow.setPosition(
                         currOwner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 0.0);
-//                    sm.waitForSingleEvent(elbowEvent, State.SET_EXTENDER_POSITION);
-                    sm.setState(State.SET_EXTENDER_POSITION);
+                    if (safeSequence)
+                    {
+                        // Don't need a callback if we are waiting for its completion.
+                        elbowEvent.setCallback(null, null);
+                        elbowCompleted = true;
+                        sm.waitForSingleEvent(elbowEvent, State.SET_EXTENDER_POSITION);
+                    }
+                    else
+                    {
+                        sm.setState(State.SET_EXTENDER_POSITION);
+                    }
                 }
                 else
                 {
                     // Caller did not provide elbow angle, skip this state.
+                    elbowCompleted = true;
                     sm.setState(State.SET_EXTENDER_POSITION);
                 }
                 break;
@@ -261,15 +307,34 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             case SET_EXTENDER_POSITION:
                 if (taskParams.extenderPosition != null)
                 {
+                    extenderEvent.setCallback((c)->{extenderCompleted = true;}, null);
                     // We are setting extender position, go do it.
                     robot.extender.setPosition(
                         currOwner, 0.0, taskParams.extenderPosition, true, Extender.Params.POWER_LIMIT, extenderEvent,
                         0.0);
-                    sm.waitForSingleEvent(extenderEvent, State.DONE);
+                    if (safeSequence)
+                    {
+                        // Don't need a callback if we are wait for its completion.
+                        extenderEvent.setCallback(null, null);
+                        extenderCompleted = true;
+                        sm.waitForSingleEvent(extenderEvent, State.CHECK_COMPLETION);
+                    }
+                    else
+                    {
+                        sm.setState(State.CHECK_COMPLETION);
+                    }
                 }
                 else
                 {
                     // We are not setting extender position, we are done.
+                    extenderCompleted = true;
+                    sm.setState(State.CHECK_COMPLETION);
+                }
+                break;
+
+            case CHECK_COMPLETION:
+                if (elbowCompleted && extenderCompleted)
+                {
                     sm.setState(State.DONE);
                 }
                 break;

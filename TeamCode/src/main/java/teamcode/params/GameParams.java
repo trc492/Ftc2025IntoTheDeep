@@ -56,13 +56,13 @@ public class GameParams
     public static final double BASKET_LOW_WRIST_SCORE_POS       = 0.575;
     public static final double BASKET_HIGH_WRIST_SCORE_POS      = 0.575; // To Tune
 
-    public static final TrcPose2D RED_BASKET_CHAMBER_SCORE_POSE        =
+    public static final TrcPose2D RED_BASKET_CHAMBER_SCORE_POSE =
         new TrcPose2D(-0.5*RobotParams.Field.FULL_TILE_INCHES, -1.5*RobotParams.Field.FULL_TILE_INCHES, 225.0);
-    public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE        =
+    public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
         new TrcPose2D(0.5*RobotParams.Field.FULL_TILE_INCHES, -1.5*RobotParams.Field.FULL_TILE_INCHES, 135.0);
-    public static final TrcPose2D BLUE_BASKET_CHAMBER_SCORE_POSE       =
+    public static final TrcPose2D BLUE_BASKET_CHAMBER_SCORE_POSE=
         new TrcPose2D(0.5*RobotParams.Field.FULL_TILE_INCHES, 1.5*RobotParams.Field.FULL_TILE_INCHES, 45.0);
-    public static final TrcPose2D BLUE_OBSERVATION_CHAMBER_SCORE_POSE       =
+    public static final TrcPose2D BLUE_OBSERVATION_CHAMBER_SCORE_POSE =
         new TrcPose2D(-0.5*RobotParams.Field.FULL_TILE_INCHES, 1.5*RobotParams.Field.FULL_TILE_INCHES, 315.0);
     public static final double CHAMBER_LOW_EXTENDER_POS         = 40.0;
     public static final double CHAMBER_HIGH_EXTENDER_POS        = 20.0;
@@ -78,9 +78,9 @@ public class GameParams
     public static final TrcPose2D STARTPOSE_RED_NET_ZONE        = new TrcPose2D(-STARTPOS_X, -STARTPOS_Y, 0.0);
     public static final TrcPose2D STARTPOSE_RED_OBSERVATION_ZONE= new TrcPose2D(STARTPOS_X, -STARTPOS_Y, 0.0);
 
-    public static final TrcPose2D RED_OBSERVATION_ZONE_CONVERT   = new TrcPose2D(2.5, -2, 0.0);
-    public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP    = new TrcPose2D(1.75, -2.5, 180.0);
+    public static final TrcPose2D RED_OBSERVATION_ZONE_CONVERT  = new TrcPose2D(2.5, -2, 0.0);
+    public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   = new TrcPose2D(1.75, -2.5, 180.0);
 
-    public static final TrcPose2D RED_NET_SPIKEMARK_PICKUP = new TrcPose2D(-2, -3, 180.0);
+    public static final TrcPose2D RED_NET_SPIKEMARK_PICKUP      = new TrcPose2D(-2, -3, 180.0);
 
 }   //class GameParams

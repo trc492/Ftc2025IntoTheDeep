@@ -34,6 +34,7 @@ import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Intake;
+import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
@@ -58,10 +59,11 @@ public class FtcTeleOp extends FtcOpMode
     private boolean operatorAltFunc = false;
     private boolean relocalizing = false;
     private TrcPose2D robotFieldPose = null;
-    private FtcAuto.ScoreHeight scoreHeight = FtcAuto.ScoreHeight.HIGH;
-    private FtcAuto.PreloadType objectType;
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
+
+    private Robot.GamePieceType objectType;
+    private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
 
     //
     // Implements FtcOpMode abstract method.
@@ -78,9 +80,6 @@ public class FtcTeleOp extends FtcOpMode
         // Create and initialize robot object.
         //
         robot = new Robot(TrcRobot.getRunMode());
-        drivePowerScale = RobotParams.Robot.DRIVE_NORMAL_SCALE;
-        turnPowerScale = RobotParams.Robot.TURN_NORMAL_SCALE;
-
         //
         // Open trace log.
         //
@@ -102,6 +101,8 @@ public class FtcTeleOp extends FtcOpMode
         driverGamepad.setRightStickInverted(false, true);
         operatorGamepad.setLeftStickInverted(false, true);
         operatorGamepad.setRightStickInverted(false, false);
+        drivePowerScale = RobotParams.Robot.DRIVE_NORMAL_SCALE;
+        turnPowerScale = RobotParams.Robot.TURN_NORMAL_SCALE;
         setDriveOrientation(RobotParams.Robot.DRIVE_ORIENTATION);
     }   //robotInit
 
@@ -134,10 +135,18 @@ public class FtcTeleOp extends FtcOpMode
         //
         // Enable AprilTag vision for re-localization.
         //
-        if (robot.vision != null && robot.vision.aprilTagVision != null)
+        if (robot.vision != null)
         {
-            robot.globalTracer.traceInfo(moduleName, "Enabling AprilTagVision.");
-            robot.vision.setAprilTagVisionEnabled(true);
+            if (robot.vision.limelightVision != null)
+            {
+                robot.globalTracer.traceInfo(moduleName, "Enabling Limelight AprilTagVision.");
+                robot.vision.setLimelightVisionEnabled(0, true);
+            }
+            else if (robot.vision.aprilTagVision != null)
+            {
+                robot.globalTracer.traceInfo(moduleName, "Enabling WebCam AprilTagVision.");
+                robot.vision.setAprilTagVisionEnabled(true);
+            }
         }
     }   //startMode
 
@@ -343,19 +352,17 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case X:
-                if (robot.extenderArm != null &&
-                        robot.pickupFromGroundTask != null &&
-                        robot.pickupSpecimenTask != null &&
-                        pressed)
+                if (robot.extenderArm != null && pressed &&
+                    robot.pickupFromGroundTask != null && robot.pickupSpecimenTask != null)
                 {
                     if (!driverAltFunc)
                     {
                         if (!robot.pickupFromGroundTask.isActive())
                         {
-                            objectType = FtcAuto.PreloadType.SAMPLE;
+                            objectType = Robot.GamePieceType.SAMPLE;
                             robot.pickupFromGroundTask.autoPickupFromGround(
-                                    Vision.SampleType.AnySample, // Logic to decide which one later
-                                    null);
+                                Vision.SampleType.AnySample, // Logic to decide which one later
+                                null);
                         }
                         else
                         {
@@ -366,7 +373,7 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         if (!robot.pickupSpecimenTask.isActive())
                         {
-                            objectType = FtcAuto.PreloadType.SPECIMEN;
+                            objectType = Robot.GamePieceType.SPECIMEN;
                             robot.pickupSpecimenTask.autoPickupSpecimen(null, null);
                         }
                         else
@@ -383,20 +390,21 @@ public class FtcTeleOp extends FtcOpMode
                     // Due to the geometry of the intake,
                     // a sample will not be detected by the color,
                     // but a specimen will be
-                    if (objectType == FtcAuto.PreloadType.SPECIMEN)
+                    if (objectType == Robot.GamePieceType.SPECIMEN)
                     {
                         if (robot.scoreChamberTask != null)
                         {
                             if (!robot.scoreChamberTask.isActive())
                             {
-                                robot.scoreChamberTask.autoScoreChamber(null, scoreHeight, null, !driverAltFunc, null);
+                                robot.scoreChamberTask.autoScoreChamber(null, null, scoreHeight, !driverAltFunc, null);
                             }
                             else
                             {
                                 robot.scoreChamberTask.cancel();
                             }
                         }
-                    } else
+                    }
+                    else
                     {
                         if (robot.scoreBasketTask != null)
                         {
@@ -437,12 +445,13 @@ public class FtcTeleOp extends FtcOpMode
             case DpadUp:
                 if (pressed)
                 {
-                    if (scoreHeight == FtcAuto.ScoreHeight.HIGH)
+                    if (scoreHeight == Robot.ScoreHeight.HIGH)
                     {
-                        scoreHeight = FtcAuto.ScoreHeight.LOW;
-                    } else
+                        scoreHeight = Robot.ScoreHeight.LOW;
+                    }
+                    else
                     {
-                        scoreHeight = FtcAuto.ScoreHeight.HIGH;
+                        scoreHeight = Robot.ScoreHeight.HIGH;
                     }
                 }
                 break;
@@ -451,11 +460,12 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadLeft:
-                if (pressed && robot.intake != null)
+                if (robot.intake != null && pressed)
                 {
                     if (!robot.intake.isAutoActive())
                     {
-                        robot.intake.autoIntakeForward(Intake.Params.FORWARD_POWER, Intake.Params.RETAIN_POWER,Intake.Params.FINISH_DELAY);
+                        robot.intake.autoIntakeForward(
+                            Intake.Params.FORWARD_POWER, Intake.Params.RETAIN_POWER,Intake.Params.FINISH_DELAY);
                     }
                     else
                     {
@@ -465,7 +475,7 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadRight:
-                if (pressed && robot.intake != null)
+                if (robot.intake != null && pressed)
                 {
                     if (!robot.intake.isAutoActive())
                     {
@@ -532,26 +542,26 @@ public class FtcTeleOp extends FtcOpMode
         switch (button)
         {
             case A:
-                if (robot.wrist != null) {
-                    if (pressed) {
-                        robot.wrist.setPosition(0.75);
-                    }
+                if (robot.wrist != null && pressed)
+                {
+                    robot.wrist.setPosition(Wrist.Params.MAX_POS);
                 }
                 break;
+
             case B:
-                if (robot.wrist != null) {
-                    if (pressed) {
-                        robot.wrist.setPosition(.575);
-                    }
+                if (robot.wrist != null && pressed)
+                {
+                    robot.wrist.setPosition(0.575); // ??? What is this position???
                 }
                 break;
+
             case X:
-                if (robot.wrist != null) {
-                    if (pressed) {
-                        robot.wrist.setPosition(.1);
-                    }
+                if (robot.wrist != null && pressed)
+                {
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
                 }
                 break;
+
             case Y:
                 break;
 
@@ -561,7 +571,7 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case RightBumper:
-                if (robot.extenderArm != null)
+                if (robot.extenderArm != null && pressed)
                 {
                     robot.extenderArm.retract(null);
                 }
@@ -645,7 +655,6 @@ public class FtcTeleOp extends FtcOpMode
 //                        robot.intake.cancel();
                         robot.intake.setPower(0.0);
                     }
-
                 }
                 break;
 

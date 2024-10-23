@@ -77,27 +77,26 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         this.ownerName = ownerName;
         this.robot = robot;
         event = new TrcEvent(moduleName);
-    }   //TaskAutoPickupFromGround
+    }   //TaskAutoPickupSpecimen
 
     /**
      * This method starts the auto-assist operation.
      *
+     * @param alliance specifies the alliance color, can be null if caller is TeleOp.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
     public void autoPickupSpecimen(FtcAuto.Alliance alliance, TrcEvent completionEvent)
     {
+        if (alliance == null)
+        {
+            // Caller is TeleOp, let's determine the alliance color by robot's location.
+            alliance = robot.robotDrive.driveBase.getFieldPosition().x < 0.0?
+                FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
+        }
+
         tracer.traceInfo(moduleName, "alliance=" + alliance + ",event=" + completionEvent);
         startAutoTask(State.START, new TaskParams(alliance), completionEvent);
-    }   //autoPickupFromGround
-
-    /**
-     * This method cancels an in progress auto-assist operation if any.
-     */
-    public void cancel()
-    {
-        tracer.traceInfo(moduleName, "Canceling operation.");
-        stopAutoTask(false);
-    }   //cancel
+    }   //autoPickupSpecimen
 
     //
     // Implement TrcAutoTask abstract methods.
@@ -179,24 +178,31 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     {
         TaskParams taskParams = (TaskParams) params;
 
-        switch (state) {
+        switch (state)
+        {
             case START:
-                if (robot.extenderArm != null) {
+                if (robot.extenderArm != null)
+                {
                     robot.extenderArm.setPosition(
                         Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS,
                         Wrist.Params.GROUND_PICKUP_POS, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
-                } else {
+                }
+                else
+                {
                     sm.setState(State.DONE);
                 }
                 break;
 
             case DRIVE_TO_PICKUP:
+                // Code Review: Can you really do a blink pick up???
                 // Drive to the observation zone
                 robot.robotDrive.purePursuitDrive.start(
-                        currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
-                        robot.adjustPoseByAlliance(GameParams.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
+                    currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
+                    robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                    robot.adjustPoseByAlliance(GameParams.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                 sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
+                break;
 
             case PICKUP_SPECIMEN:
                 // intake design not confirmed
@@ -213,12 +219,12 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 if (robot.extenderArm != null)
                 {
                     robot.extenderArm.setPosition(
-                            Elbow.Params.SPECIMEN_PICKUP_POS + 10.0,
-                            Extender.Params.MIN_POS,
-                            Wrist.Params.GROUND_PICKUP_POS,
-                            null
-                            );
+                        Elbow.Params.SPECIMEN_PICKUP_POS + 10.0,
+                        Extender.Params.MIN_POS,
+                        Wrist.Params.GROUND_PICKUP_POS,
+                        null);
                 }
+
                 if (robot.grabber != null && robot.ledIndicator != null)
                 {
 //                    robot.ledIndicator.setDetectedSample(robot.grabber.getObjectType();
@@ -228,4 +234,4 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         }
     }   //runTaskState
  
-}   //class TaskAutoPickupFromGround
+}   //class TaskAutoPickupSpecimen

@@ -86,9 +86,21 @@ public class Robot
     public TrcServoGrabber grabber;
     // Autotasks.
     public TaskAutoPickupFromGround pickupFromGroundTask;
+    public TaskAutoPickupSpecimen pickupSpecimenTask;
     public TaskAutoScoreBasket scoreBasketTask;
     public TaskAutoScoreChamber scoreChamberTask;
-    public TaskAutoPickupSpecimen pickupSpecimenTask;
+
+    public enum GamePieceType
+    {
+        SPECIMEN,
+        SAMPLE
+    }   //enum GamePieceType
+
+    public enum ScoreHeight
+    {
+        HIGH,
+        LOW
+    }   //enum ScoreHeight
 
     /**
      * Constructor: Create an instance of the object.
@@ -175,9 +187,9 @@ public class Robot
 
                 // Creating autotasks
                 pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
+                pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);
                 scoreBasketTask = new TaskAutoScoreBasket("scoreBasketTask", this);
                 scoreChamberTask = new TaskAutoScoreChamber("scoreChamberTask", this);
-                pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);
             }
         }
 

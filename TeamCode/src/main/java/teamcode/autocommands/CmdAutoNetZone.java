@@ -130,7 +130,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
             switch (state)
             {
                 case START:
-//                    set robot location according to auto choices
+                    // Set robot location according to auto choices.
                     robot.setRobotStartPosition(autoChoices);
                     // if necessary, move extender arm into position for travelling
 //                    if (robot.extenderArm != null)
@@ -156,12 +156,12 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     else
                     {
                         //doing different things based on preload
-                        if (autoChoices.preloadType == FtcAuto.PreloadType.SPECIMEN)
+                        if (autoChoices.preloadType == Robot.GamePieceType.SPECIMEN)
                         {
                             //starting the preload specimen scoring process
                             sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
                         }
-                        else if (autoChoices.preloadType == FtcAuto.PreloadType.SAMPLE)
+                        else if (autoChoices.preloadType == Robot.GamePieceType.SAMPLE)
                         {
                             //if you select a preload sample, you will just start the sample basket sample scoring cycle
                             sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
@@ -188,8 +188,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case SCORE_PRELOAD_SPECIMEN:
 
                     robot.scoreChamberTask.autoScoreChamber(
-                            autoChoices.alliance, autoChoices.scoreHeight, autoChoices.startPos,true, event
-                    );
+                            autoChoices.alliance, autoChoices.startPos, autoChoices.scoreHeight, true, event);
                     sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     break;
 

@@ -54,15 +54,21 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
     private static class TaskParams
     {
         final FtcAuto.Alliance alliance;
-        final FtcAuto.ScoreHeight scoreHeight;
-        final FtcAuto.StartPos startPos;
+        final TrcPose2D scorePose;
+        final double elbowAngle;
+        final double extenderPos;
+        final double wristPos;
         final boolean doDrive;
 
-        TaskParams(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, FtcAuto.StartPos startPos, boolean doDrive)
+        TaskParams(
+            FtcAuto.Alliance alliance, TrcPose2D scorePose, double elbowAngle, double extenderPos, double wristPos,
+            boolean doDrive)
         {
             this.alliance = alliance;
-            this.scoreHeight = scoreHeight;
-            this.startPos = startPos;
+            this.scorePose = scorePose;
+            this.elbowAngle = elbowAngle;
+            this.extenderPos = extenderPos;
+            this.wristPos = wristPos;
             this.doDrive = doDrive;
         }  //TaskParams
     }   //class TaskParams
@@ -90,25 +96,64 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
     /**
      * This method starts the auto-assist operation.
      *
-     * @param alliance specifies the alliance color.
+     * @param alliance specifies the alliance color, can be null if caller is TeleOp.
+     * @param startPos specifies the autoonomous robot start position, can be null if caller is TeleOp.
      * @param scoreHeight specifies the scoring height.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoScoreChamber(FtcAuto.Alliance alliance, FtcAuto.ScoreHeight scoreHeight, FtcAuto.StartPos startPos, boolean doDrive, TrcEvent completionEvent)
+    public void autoScoreChamber(
+        FtcAuto.Alliance alliance, FtcAuto.StartPos startPos, Robot.ScoreHeight scoreHeight, boolean doDrive,
+        TrcEvent completionEvent)
     {
-        tracer.traceInfo(
-            moduleName, "alliance=" + alliance + ",scoreHeight=" + scoreHeight + ",event=" + completionEvent);
-        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight, startPos, doDrive), completionEvent);
-    }   //autoScoreChamber
+        TrcPose2D robotPose = robot.robotDrive.driveBase.getFieldPosition();
+        TrcPose2D scorePose;
+        double elbowAngle, extenderPos, wristPos;
 
-    /**
-     * This method cancels an in progress auto-assist operation if any.
-     */
-    public void cancel()
-    {
-        tracer.traceInfo(moduleName, "Canceling operation.");
-        stopAutoTask(false);
-    }   //cancel
+        if (alliance == null)
+        {
+            // Caller is TeleOp, let's determine the alliance color by robot's location.
+            alliance = robotPose.y < 0.0? FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
+        }
+
+        if (startPos == null)
+        {
+            // Caller is TeleOp, let's determine the score position by robot's current location.
+            scorePose = robotPose.x < 0.0?
+                GameParams.RED_BASKET_CHAMBER_SCORE_POSE: GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+        }
+        else
+        {
+            // Caller is Auto, let's determine the score position by robot's start position.
+            scorePose = startPos == FtcAuto.StartPos.NET_ZONE?
+                GameParams.RED_BASKET_CHAMBER_SCORE_POSE: GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+        }
+
+        if (scoreHeight == Robot.ScoreHeight.LOW)
+        {
+            elbowAngle = GameParams.CHAMBER_LOW_ELBOW_ANGLE;
+            extenderPos = GameParams.CHAMBER_LOW_EXTENDER_POS;
+            wristPos = GameParams.CHAMBER_LOW_WRIST_SCORE_POS;
+        }
+        else
+        {
+            elbowAngle = GameParams.CHAMBER_HIGH_ELBOW_ANGLE;
+            extenderPos = GameParams.CHAMBER_HIGH_EXTENDER_POS;
+            wristPos = GameParams.CHAMBER_HIGH_WRIST_SCORE_POS;
+        }
+
+        tracer.traceInfo(
+            moduleName,
+            "alliance=" + alliance +
+            ",scorePose=" + scorePose +
+            ",elbowAngle=" + elbowAngle +
+            ",extenderPos=" + extenderPos +
+            ",wristPos=" + wristPos +
+            ",doDrive=" + doDrive +
+            ",event=" + completionEvent);
+        startAutoTask(
+            State.GO_TO_SCORE_POSITION,
+            new TaskParams(alliance, scorePose, elbowAngle, extenderPos, wristPos, doDrive), completionEvent);
+    }   //autoScoreChamber
 
     //
     // Implement TrcAutoTask abstract methods.
@@ -193,60 +238,14 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         switch (state)
         {
             case GO_TO_SCORE_POSITION:
+                // Code Review: Is it really realistic to not drive??? If you don't drive, who guarantee the robot
+                // is at the correct scoring location?
                 if (taskParams.doDrive)
                 {
-//                    TrcPose2D scorePose = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-//                            GameParams.RED_CHAMBER_SCORE_POSE: GameParams.BLUE_CHAMBER_SCORE_POSE;
-                    TrcPose2D scorePose;
-                    if (taskParams.alliance != null)
-                    {
-                        if (taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE)
-                        {
-                            if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
-                            {
-                                scorePose = GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
-                            } else
-                            {
-                                scorePose = GameParams.RED_BASKET_CHAMBER_SCORE_POSE;
-                            }
-                        }
-                        else
-                        {
-                            if (taskParams.startPos == FtcAuto.StartPos.OBSERVATION_ZONE)
-                            {
-                                scorePose = GameParams.BLUE_OBSERVATION_CHAMBER_SCORE_POSE;
-                            }
-                            else
-                            {
-                                scorePose = GameParams.BLUE_BASKET_CHAMBER_SCORE_POSE;
-                            }
-                        }
-                    } else
-                    {
-                        if (robot.robotDrive.driveBase.getFieldPosition().y < 0)
-                        // Red Alliance
-                        {
-                            if (robot.robotDrive.driveBase.getFieldPosition().x >= 0)
-                            {
-                                scorePose = GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
-                            } else
-                            {
-                                scorePose = GameParams.RED_BASKET_CHAMBER_SCORE_POSE;
-                            }
-                        } else
-                        // Blue Alliance
-                        {
-                            if (robot.robotDrive.driveBase.getFieldPosition().x >= 0)
-                            {
-                                scorePose = GameParams.BLUE_OBSERVATION_CHAMBER_SCORE_POSE;
-                            } else
-                            {
-                                scorePose = GameParams.BLUE_BASKET_CHAMBER_SCORE_POSE;
-                            }
-                        }
-                    }
                     robot.robotDrive.purePursuitDrive.start(
-                            currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, scorePose);
+                        currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance, false));
                     sm.waitForSingleEvent(event, State.SET_ELBOW);
                 }
                 else
@@ -256,44 +255,23 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 break;
 
             case SET_ELBOW:
-                double elbowAngle;
-                if (taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW)
-                {
-                    elbowAngle = GameParams.CHAMBER_LOW_ELBOW_ANGLE;
-                }
-                else
-                {
-                    elbowAngle = GameParams.CHAMBER_HIGH_ELBOW_ANGLE;
-                }
-                robot.extenderArm.setPosition(elbowAngle, null, null, event);
+                robot.extenderArm.setPosition(taskParams.elbowAngle, null, null, event);
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);
                 break;
 
             case SET_EXTENDER:
-                double extenderPos;
-                if (taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW)
-                {
-                    extenderPos = GameParams.CHAMBER_LOW_EXTENDER_POS;
-                }
-                else
-                {
-                    extenderPos = GameParams.CHAMBER_HIGH_EXTENDER_POS;
-                }
-                robot.extenderArm.setPosition(null, extenderPos, null, event);
+                robot.extenderArm.setPosition(null, taskParams.extenderPos, null, event);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER);
                 break;
 
             case SCORE_CHAMBER:
-                double wristPos = taskParams.scoreHeight == FtcAuto.ScoreHeight.LOW?
-                        GameParams.CHAMBER_LOW_WRIST_SCORE_POS: GameParams.CHAMBER_HIGH_WRIST_SCORE_POS;
-                robot.wrist.setPosition(wristPos, event, Wrist.Params.DUMP_TIME);
+                robot.wrist.setPosition(taskParams.wristPos, event, Wrist.Params.DUMP_TIME);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
 
             case RETRACT_EXTENDER_ARM:
                 robot.intake.autoEjectReverse(
-                        0.0,Intake.Params.REVERSE_POWER,
-                       Intake.Params.FINISH_DELAY, null, 4.0);
+                    0.0, Intake.Params.REVERSE_POWER, Intake.Params.FINISH_DELAY, null, 4.0);
                 robot.extenderArm.retract(event);
                 sm.waitForSingleEvent(event, State.DONE);
                 break;

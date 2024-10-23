@@ -27,7 +27,7 @@ import java.util.Locale;
 import teamcode.Robot;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Intake;
+import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.pathdrive.TrcPose2D;
@@ -68,6 +68,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
+    private final TrcEvent grabberEvent;
 
     private String currOwner = null;
     private TrcPose2D samplePose = null;
@@ -85,6 +86,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         this.ownerName = ownerName;
         this.robot = robot;
         event = new TrcEvent(moduleName);
+        grabberEvent = new TrcEvent(Grabber.Params.SUBSYSTEM_NAME);
     }   //TaskAutoPickupFromGround
 
     /**
@@ -97,15 +99,6 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         tracer.traceInfo(moduleName, "sampleType=" + sampleType + ",event=" + completionEvent);
         startAutoTask(State.START, new TaskParams(sampleType), completionEvent);
     }   //autoPickupFromGround
-
-    /**
-     * This method cancels an in progress auto-assist operation if any.
-     */
-    public void cancel()
-    {
-        tracer.traceInfo(moduleName, "Canceling operation.");
-        stopAutoTask(false);
-    }   //cancel
 
     //
     // Implement TrcAutoTask abstract methods.
@@ -169,6 +162,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
         robot.robotDrive.cancel(currOwner);
+        robot.extenderArm.cancel();
+        robot.grabber.cancel();
     }   //stopSubsystems
 
     /**
@@ -193,12 +188,13 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 samplePose = null;
                 if (robot.vision != null)
                 {
+                    // Prep for pickup.
                     robot.vision.setSampleVisionEnabled(taskParams.sampleType, true);
                     if (robot.extenderArm != null)
                     {
                         robot.extenderArm.setPosition(
-                            Elbow.Params.GROUND_PICKUP_POS, Extender.Params.GROUND_PICKUP_POS,
-                            Wrist.Params.GROUND_PICKUP_POS, event);
+                            Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, Wrist.Params.GROUND_PICKUP_POS,
+                            event);
                         sm.waitForSingleEvent(event, State.FIND_SAMPLE);
                     }
                     else
@@ -223,7 +219,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         samplePose = sampleInfo.objPose;
                         String msg = String.format(
                             Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
-                            taskParams.sampleType, sampleInfo.objPose.x, sampleInfo.objPose.y,
+                            sampleInfo.detectedObj.label, sampleInfo.objPose.x, sampleInfo.objPose.y,
                             sampleInfo.objPose.angle);
                         tracer.traceInfo(moduleName, msg);
                         robot.speak(msg);
@@ -251,6 +247,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 {
                     robot.robotDrive.purePursuitDrive.start(
                         currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
+                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         new TrcPose2D(0.0, 0.0, samplePose.angle));
                     sm.waitForSingleEvent(event, State.PICK_UP_SAMPLE);
                 }
@@ -261,11 +258,23 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 break;
 
             case PICK_UP_SAMPLE:
-                // intake design not confirmed
-                // TODO: There will be a color sensor on the intake.
-                // We need to check for correct color before picking up.
-                robot.intake.setPower(0.0, Intake.Params.FORWARD_POWER, 4.0, event);  // change duration based on tuning
-                sm.waitForSingleEvent(event, State.DONE);
+                if (robot.extenderArm != null && robot.grabber != null)
+                {
+                    robot.grabber.autoAssistGrab(currOwner, 0.0, grabberEvent, 0.0);
+                    sm.addEvent(grabberEvent);
+                    robot.extenderArm.setPosition(null, samplePose.y, null, event);
+                    sm.addEvent(event);
+                    sm.waitForEvents(State.DONE, false);
+                }
+                else
+                {
+                    sm.setState(State.DONE);
+                }
+//                // intake design not confirmed
+//                // TODO: There will be a color sensor on the intake.
+//                // We need to check for correct color before picking up.
+//                robot.intake.setPower(0.0, Intake.Params.FORWARD_POWER, 4.0, event);  // change duration based on tuning
+//                sm.waitForSingleEvent(event, State.DONE);
                 break;
 
             default:
@@ -273,7 +282,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 // Stop task.
                 if (robot.grabber != null && robot.ledIndicator != null)
                 {
-//                    robot.ledIndicator.setDetectedSample(robot.grabber.getObjectType();
+//                    robot.ledIndicator.setDetectedSample(robot.grabber.getObjectType());
                 }
                 stopAutoTask(true);
                 break;

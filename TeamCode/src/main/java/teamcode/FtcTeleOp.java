@@ -29,11 +29,13 @@ import java.util.Locale;
 import ftclib.drivebase.FtcSwerveDrive;
 import ftclib.driverio.FtcGamepad;
 import ftclib.robotcore.FtcOpMode;
+import teamcode.params.GameParams;
 import teamcode.params.RobotParams;
 import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Intake;
+import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
@@ -342,18 +344,33 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case X:
-                if (robot.extenderArm != null && robot.pickupFromGroundTask != null && pressed)
+                if (robot.extenderArm != null)
                 {
-                    if (!robot.pickupFromGroundTask.isActive())
-                    {
-                        robot.pickupFromGroundTask.autoPickupFromGround(
-                                Vision.SampleType.AnySample, // Logic to decide which one later
-                                null);
-                    } else
-                    {
-                        robot.pickupFromGroundTask.cancel();
+                    if (scoreHeight == FtcAuto.ScoreHeight.HIGH) {
+                        robot.extenderArm.setPosition(
+                                Elbow.Params.GROUND_PICKUP_POS,
+                                Extender.Params.GROUND_PICKUP_POS,
+                                Wrist.Params.GROUND_PICKUP_POS, null);
+                    }
+                    else {
+                        robot.extenderArm.setPosition(
+                                Elbow.Params.SPECIMEN_PICKUP_POS,
+                                Extender.Params.SPECIMEN_PICKUP_POS,
+                                Wrist.Params.GROUND_PICKUP_POS, null);
                     }
                 }
+//                if (robot.extenderArm != null && robot.pickupFromGroundTask != null && pressed)
+//                {
+//                    if (!robot.pickupFromGroundTask.isActive())
+//                    {
+//                        robot.pickupFromGroundTask.autoPickupFromGround(
+//                                Vision.SampleType.AnySample, // Logic to decide which one later
+//                                null);
+//                    } else
+//                    {
+//                        robot.pickupFromGroundTask.cancel();
+//                    }
+//                }
                 break;
 
             case Y:
@@ -362,33 +379,49 @@ public class FtcTeleOp extends FtcOpMode
                     // Due to the geometry of the intake,
                     // a sample will not be detected by the color,
                     // but a specimen will be
-                    if (robot.intake.hasObject())
+                    if (scoreHeight == FtcAuto.ScoreHeight.HIGH)
                     {
-                        if (robot.scoreChamberTask != null)
-                        {
-                            if (!robot.scoreChamberTask.isActive())
-                            {
-                                robot.scoreChamberTask.autoScoreChamber(null, scoreHeight, null, !driverAltFunc, null);
-                            }
-                            else
-                            {
-                                robot.scoreChamberTask.cancel();
-                            }
-                        }
-                    } else
-                    {
-                        if (robot.scoreBasketTask != null)
-                        {
-                            if (!robot.scoreBasketTask.isActive())
-                            {
-                                robot.scoreBasketTask.autoScoreBasket(null, scoreHeight, !driverAltFunc, null);
-                            }
-                            else
-                            {
-                                robot.scoreChamberTask.cancel();
-                            }
-                        }
+                        robot.extenderArm.setPosition(
+                                GameParams.BASKET_HIGH_ELBOW_ANGLE,
+                                GameParams.BASKET_HIGH_EXTENDER_POS,
+                                GameParams.BASKET_HIGH_WRIST_SCORE_POS,
+                                null
+                        );
+                    } else  {
+                        robot.extenderArm.setPosition(
+                                GameParams.CHAMBER_HIGH_ELBOW_ANGLE,
+                                GameParams.CHAMBER_HIGH_EXTENDER_POS,
+                                GameParams.CHAMBER_HIGH_WRIST_SCORE_POS,
+                                null
+                        );
                     }
+//                    if (robot.intake.hasObject())
+//                    {
+//                        if (robot.scoreChamberTask != null)
+//                        {
+//                            if (!robot.scoreChamberTask.isActive())
+//                            {
+//                                robot.scoreChamberTask.autoScoreChamber(null, scoreHeight, null, !driverAltFunc, null);
+//                            }
+//                            else
+//                            {
+//                                robot.scoreChamberTask.cancel();
+//                            }
+//                        }
+//                    } else
+//                    {
+//                        if (robot.scoreBasketTask != null)
+//                        {
+//                            if (!robot.scoreBasketTask.isActive())
+//                            {
+//                                robot.scoreBasketTask.autoScoreBasket(null, scoreHeight, !driverAltFunc, null);
+//                            }
+//                            else
+//                            {
+//                                robot.scoreChamberTask.cancel();
+//                            }
+//                        }
+//                    }
                 }
                 break;
 
@@ -432,28 +465,34 @@ public class FtcTeleOp extends FtcOpMode
             case DpadLeft:
                 if (pressed && robot.intake != null)
                 {
-                    if (!robot.intake.isAutoActive())
-                    {
-                        robot.intake.autoIntakeForward(Intake.Params.FORWARD_POWER, Intake.Params.RETAIN_POWER,Intake.Params.FINISH_DELAY);
-                    }
-                    else
-                    {
-                        robot.intake.cancel();
-                    }
+                    robot.intake.setPower(Intake.Params.FORWARD_POWER);
+//                    if (!robot.intake.isAutoActive())
+//                    {
+//                        robot.intake.autoIntakeForward(Intake.Params.FORWARD_POWER, Intake.Params.RETAIN_POWER,Intake.Params.FINISH_DELAY);
+//                    }
+//                    else
+//                    {
+//                        robot.intake.cancel();
+//                    }
+                } else {
+                    robot.intake.setPower(0.0);
                 }
                 break;
 
             case DpadRight:
                 if (pressed && robot.intake != null)
                 {
-                    if (!robot.intake.isAutoActive())
-                    {
-                        robot.intake.autoEjectReverse(Intake.Params.REVERSE_POWER, Intake.Params.FINISH_DELAY);
-                    }
-                    else
-                    {
-                        robot.intake.cancel();
-                    }
+                    robot.intake.setPower(Intake.Params.REVERSE_POWER);
+//                    if (!robot.intake.isAutoActive())
+//                    {
+//                        robot.intake.autoEjectReverse(Intake.Params.REVERSE_POWER, Intake.Params.FINISH_DELAY);
+//                    }
+//                    else
+//                    {
+//                        robot.intake.cancel();
+//                    }
+                } else {
+                    robot.intake.setPower(0.0);
                 }
                 break;
 
@@ -473,27 +512,30 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case Start:
-                if (robot.vision != null && robot.vision.aprilTagVision != null && robot.robotDrive != null)
-                {
-                    // On press of the button, we will start looking for AprilTag for re-localization.
-                    // On release of the button, we will set the robot's field location if we found the AprilTag.
-                    relocalizing = pressed;
-                    if (!pressed)
-                    {
-                        if (robotFieldPose != null)
-                        {
-                            // Vision found an AprilTag, set the new robot field location.
-                            robot.globalTracer.traceInfo(
-                                moduleName, ">>>>> Finish re-localizing: pose=" + robotFieldPose);
-                            robot.robotDrive.driveBase.setFieldPosition(robotFieldPose, false);
-                            robotFieldPose = null;
-                        }
-                    }
-                    else
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Start re-localizing ...");
-                    }
+                if (pressed) {
+                    robot.robotDrive.driveBase.setFieldPosition(GameParams.STARTPOSE_RED_NET_ZONE);
                 }
+//                if (robot.vision != null && robot.vision.aprilTagVision != null && robot.robotDrive != null)
+//                {
+//                    // On press of the button, we will start looking for AprilTag for re-localization.
+//                    // On release of the button, we will set the robot's field location if we found the AprilTag.
+//                    relocalizing = pressed;
+//                    if (!pressed)
+//                    {
+//                        if (robotFieldPose != null)
+//                        {
+//                            // Vision found an AprilTag, set the new robot field location.
+//                            robot.globalTracer.traceInfo(
+//                                moduleName, ">>>>> Finish re-localizing: pose=" + robotFieldPose);
+//                            robot.robotDrive.driveBase.setFieldPosition(robotFieldPose, false);
+//                            robotFieldPose = null;
+//                        }
+//                    }
+//                    else
+//                    {
+//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Start re-localizing ...");
+//                    }
+//                }
                 break;
         }
     }   //driverButtonEvent
@@ -520,14 +562,14 @@ public class FtcTeleOp extends FtcOpMode
             case B:
                 if (robot.wrist != null) {
                     if (pressed) {
-                        robot.wrist.setPosition(.575);
+                        robot.wrist.setPosition(-0.2);
                     }
                 }
                 break;
             case X:
                 if (robot.wrist != null) {
                     if (pressed) {
-                        robot.wrist.setPosition(.1);
+                        robot.wrist.setPosition(0.0);
                     }
                 }
                 break;

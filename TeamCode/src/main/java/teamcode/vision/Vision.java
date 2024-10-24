@@ -572,7 +572,17 @@ public class Vision
     {
         TrcPose2D robotPose = null;
 
-        if (aprilTagVision != null)
+        if (isLimelightVisionEnabled())
+        {
+            TrcVisionTargetInfo<FtcLimelightVision.DetectedObject> aprilTagInfo =
+                getLimelightDetectedObject(FtcLimelightVision.ResultType.Fiducial, null, -1);
+
+            if (aprilTagInfo != null)
+            {
+                robotPose = aprilTagInfo.detectedObj.robotPose;
+            }
+        }
+        else if (isAprilTagVisionEnabled())
         {
             // Find any AprilTag in view.
             TrcVisionTargetInfo<FtcVisionAprilTag.DetectedObject> aprilTagInfo = getDetectedAprilTag(null, -1);

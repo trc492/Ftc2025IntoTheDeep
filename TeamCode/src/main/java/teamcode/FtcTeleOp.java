@@ -133,6 +133,8 @@ public class FtcTeleOp extends FtcOpMode
         //
         robot.startMode(nextMode);
         //
+
+
         // Enable AprilTag vision for re-localization.
         //
         if (robot.vision != null)
@@ -504,7 +506,9 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case Start:
-                if (robot.vision != null && robot.vision.aprilTagVision != null && robot.robotDrive != null)
+                if (robot.vision != null &&
+                    (robot.vision.isLimelightVisionEnabled() || robot.vision.isAprilTagVisionEnabled()) &&
+                    robot.robotDrive != null)
                 {
                     // On press of the button, we will start looking for AprilTag for re-localization.
                     // On release of the button, we will set the robot's field location if we found the AprilTag.

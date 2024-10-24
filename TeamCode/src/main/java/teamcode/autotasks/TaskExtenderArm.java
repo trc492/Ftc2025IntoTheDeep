@@ -145,7 +145,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     public void retract(TrcEvent completionEvent)
     {
-        setPosition(false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.MIN_POS, completionEvent);
+        setPosition(false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.GROUND_PICKUP_POS, completionEvent);
     }   //retract
 
     /**
@@ -283,7 +283,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                     elbowEvent.setCallback((c)->{elbowCompleted = true;}, null);
                     // We are setting elbow angle, go do it.
                     robot.elbow.setPosition(
-                        currOwner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 0.0);
+                        currOwner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 4.0);
                     if (safeSequence)
                     {
                         // Don't need a callback if we are waiting for its completion.
@@ -311,7 +311,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                     // We are setting extender position, go do it.
                     robot.extender.setPosition(
                         currOwner, 0.0, taskParams.extenderPosition, true, Extender.Params.POWER_LIMIT, extenderEvent,
-                        0.0);
+                        4.0);
                     if (safeSequence)
                     {
                         // Don't need a callback if we are wait for its completion.

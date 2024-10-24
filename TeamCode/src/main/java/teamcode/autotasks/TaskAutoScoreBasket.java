@@ -25,6 +25,7 @@ package teamcode.autotasks;
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.params.GameParams;
+import teamcode.subsystems.Intake;
 import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
@@ -229,8 +230,10 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             case SCORE_BASKET:
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     GameParams.BASKET_LOW_WRIST_SCORE_POS: GameParams.BASKET_HIGH_WRIST_SCORE_POS;
-                robot.wrist.setPosition(wristPos, event, Wrist.Params.DUMP_TIME);
-                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
+                robot.wrist.setPosition(wristPos, null, Wrist.Params.DUMP_TIME);
+//                robot.intake.autoEjectReverse(0.0, Intake.Params.REVERSE_POWER, Intake.Params.FINISH_DELAY, event, 4.0);
+                robot.intake.setPower(Intake.Params.REVERSE_POWER, 2.0);
+                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM, 2.0);
                 break;
 
             case RETRACT_EXTENDER_ARM:

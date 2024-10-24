@@ -29,6 +29,7 @@ import java.util.Locale;
 import ftclib.drivebase.FtcSwerveDrive;
 import ftclib.driverio.FtcGamepad;
 import ftclib.robotcore.FtcOpMode;
+import teamcode.params.GameParams;
 import teamcode.params.RobotParams;
 import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.Elbow;
@@ -506,28 +507,34 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case Start:
-                if (robot.vision != null &&
-                    (robot.vision.isLimelightVisionEnabled() || robot.vision.isAprilTagVisionEnabled()) &&
-                    robot.robotDrive != null)
-                {
-                    // On press of the button, we will start looking for AprilTag for re-localization.
-                    // On release of the button, we will set the robot's field location if we found the AprilTag.
-                    relocalizing = pressed;
-                    if (!pressed)
-                    {
-                        if (robotFieldPose != null)
-                        {
-                            // Vision found an AprilTag, set the new robot field location.
-                            robot.globalTracer.traceInfo(
-                                moduleName, ">>>>> Finish re-localizing: pose=" + robotFieldPose);
-                            robot.robotDrive.driveBase.setFieldPosition(robotFieldPose, false);
-                            robotFieldPose = null;
-                        }
-                    }
-                    else
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Start re-localizing ...");
-                    }
+//                if (robot.vision != null &&
+//                    (robot.vision.isLimelightVisionEnabled() || robot.vision.isAprilTagVisionEnabled()) &&
+//                    robot.robotDrive != null)
+//                {
+//                    // On press of the button, we will start looking for AprilTag for re-localization.
+//                    // On release of the button, we will set the robot's field location if we found the AprilTag.
+//                    relocalizing = pressed;
+//                    if (!pressed)
+//                    {
+//                        if (robotFieldPose != null)
+//                        {
+//                            // Vision found an AprilTag, set the new robot field location.
+//                            robot.globalTracer.traceInfo(
+//                                moduleName, ">>>>> Finish re-localizing: pose=" + robotFieldPose);
+//                            robot.robotDrive.driveBase.setFieldPosition(robotFieldPose, false);
+//                            robotFieldPose = null;
+//                        }
+//                    }
+//                    else
+//                    {
+//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Start re-localizing ...");
+//                    }
+//                }
+                if (pressed) {
+                    robot.robotDrive.driveBase.setFieldPosition(GameParams.STARTPOSE_RED_NET_ZONE);
+                    robot.globalTracer.traceInfo(
+                            moduleName, "Confirm robot pose=%s",
+                            robot.robotDrive.driveBase.getFieldPosition());
                 }
                 break;
         }

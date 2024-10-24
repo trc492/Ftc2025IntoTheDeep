@@ -46,9 +46,9 @@ public class GameParams
     };
 
     public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-        new TrcPose2D(-2.25*RobotParams.Field.FULL_TILE_INCHES, -2.25*RobotParams.Field.FULL_TILE_INCHES, 225.0);
+        new TrcPose2D(-2.0*RobotParams.Field.FULL_TILE_INCHES, -2.0*RobotParams.Field.FULL_TILE_INCHES, 45.0);
     public static final TrcPose2D BLUE_BASKET_SCORE_POSE        =
-        new TrcPose2D(2.0*RobotParams.Field.FULL_TILE_INCHES, 2.0*RobotParams.Field.FULL_TILE_INCHES, 45.0);
+        new TrcPose2D(2.0*RobotParams.Field.FULL_TILE_INCHES, 2.0*RobotParams.Field.FULL_TILE_INCHES, -135.0);
     public static final double BASKET_LOW_EXTENDER_POS          = 23.0;
     public static final double BASKET_HIGH_EXTENDER_POS         = 35.0;
     public static final double BASKET_LOW_ELBOW_ANGLE           = 115.0;

@@ -27,7 +27,7 @@ import java.util.Locale;
 import teamcode.Robot;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Grabber;
+import teamcode.subsystems.Intake;
 import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.pathdrive.TrcPose2D;
@@ -68,7 +68,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
-    private final TrcEvent grabberEvent;
+    private final TrcEvent intakeEvent;
 
     private String currOwner = null;
     private TrcPose2D samplePose = null;
@@ -86,7 +86,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         this.ownerName = ownerName;
         this.robot = robot;
         event = new TrcEvent(moduleName);
-        grabberEvent = new TrcEvent(Grabber.Params.SUBSYSTEM_NAME);
+        intakeEvent = new TrcEvent(Intake.Params.SUBSYSTEM_NAME);
     }   //TaskAutoPickupFromGround
 
     /**
@@ -163,7 +163,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         tracer.traceInfo(moduleName, "Stopping subsystems.");
         robot.robotDrive.cancel(currOwner);
         robot.extenderArm.cancel();
-        robot.grabber.cancel();
+        robot.intake.cancel();
     }   //stopSubsystems
 
     /**
@@ -260,8 +260,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case PICK_UP_SAMPLE:
                 if (robot.extenderArm != null && robot.grabber != null)
                 {
-                    robot.grabber.autoAssistGrab(currOwner, 0.0, grabberEvent, 0.0);
-                    sm.addEvent(grabberEvent);
+                    robot.grabber.autoAssistGrab(currOwner, 0.0, intakeEvent, 0.0);
+                    sm.addEvent(intakeEvent);
                     robot.extenderArm.setPosition(null, samplePose.y, null, event);
                     sm.addEvent(event);
                     sm.waitForEvents(State.DONE, false);

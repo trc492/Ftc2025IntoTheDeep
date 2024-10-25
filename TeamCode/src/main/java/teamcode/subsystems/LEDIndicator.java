@@ -123,6 +123,10 @@ public class LEDIndicator
     {
         if (indicator != null)
         {
+            // Turn all previous sample patterns off.
+            indicator.setPatternState(RED_SAMPLE, false);
+            indicator.setPatternState(BLUE_SAMPLE, false);
+            indicator.setPatternState(YELLOW_SAMPLE, false);
             if (sampleType != null)
             {
                 indicator.setPatternState(
@@ -130,13 +134,6 @@ public class LEDIndicator
                         sampleType == Vision.SampleType.BlueSample ? BLUE_SAMPLE :
                             sampleType == Vision.SampleType.YellowSample ? YELLOW_SAMPLE : NO_SAMPLE,
                     true, flash ? 0.5 : 0.0);
-            }
-            else
-            {
-                // No detected sample, turn all sample patterns off.
-                indicator.setPatternState(RED_SAMPLE, false);
-                indicator.setPatternState(BLUE_SAMPLE, false);
-                indicator.setPatternState(YELLOW_SAMPLE, false);
             }
         }
     }   //setDetectedSample

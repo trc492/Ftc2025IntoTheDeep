@@ -137,8 +137,8 @@ public class Grabber
     {
         if (colorSensor != null)
         {
+            float[] hsvValues = {0.0f, 0.0f, 0.0f};
             NormalizedRGBA normalizedColors = colorSensor.getNormalizedColors();
-            float[] hsvValues = {0F,0F,0F};
             Color.RGBToHSV((int) (normalizedColors.red * 255),
                            (int) (normalizedColors.green * 255),
                            (int) (normalizedColors.blue * 255),

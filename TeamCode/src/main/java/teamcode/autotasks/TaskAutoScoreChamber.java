@@ -265,7 +265,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 break;
 
             case SCORE_CHAMBER:
-                robot.wrist.setPosition(taskParams.wristPos, event, Wrist.Params.DUMP_TIME);
+                robot.extenderArm.setPosition(taskParams.elbowAngle - 10.0, null, null, event);
+//                robot.wrist.setPosition(taskParams.wristPos, event, Wrist.Params.DUMP_TIME);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
 

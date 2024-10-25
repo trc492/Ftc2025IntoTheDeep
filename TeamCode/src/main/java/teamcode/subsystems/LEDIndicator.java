@@ -64,12 +64,12 @@ public class LEDIndicator
                 new TrcGobildaIndicatorLight.Pattern(RED_SAMPLE, TrcGobildaIndicatorLight.Color.Red),
                 new TrcGobildaIndicatorLight.Pattern(BLUE_SAMPLE, TrcGobildaIndicatorLight.Color.Blue),
                 new TrcGobildaIndicatorLight.Pattern(YELLOW_SAMPLE, TrcGobildaIndicatorLight.Color.Yellow),
-                new TrcGobildaIndicatorLight.Pattern(NO_SAMPLE, TrcGobildaIndicatorLight.Color.Azure),
+                new TrcGobildaIndicatorLight.Pattern(NO_SAMPLE, TrcGobildaIndicatorLight.Color.Cyan),
                 new TrcGobildaIndicatorLight.Pattern(APRIL_TAG, TrcGobildaIndicatorLight.Color.Green),
                 new TrcGobildaIndicatorLight.Pattern(DRIVE_ORIENTATION_FIELD, TrcGobildaIndicatorLight.Color.Violet),
                 new TrcGobildaIndicatorLight.Pattern(DRIVE_ORIENTATION_ROBOT, TrcGobildaIndicatorLight.Color.White),
                 new TrcGobildaIndicatorLight.Pattern(DRIVE_ORIENTATION_INVERTED, TrcGobildaIndicatorLight.Color.Orange),
-                new TrcGobildaIndicatorLight.Pattern(OFF_PATTERN, TrcGobildaIndicatorLight.Color.Off)
+                new TrcGobildaIndicatorLight.Pattern(OFF_PATTERN, TrcGobildaIndicatorLight.Color.Black)
                 // Lowest priority.
             };
             indicator = new FtcGobildaIndicatorLight(indicatorName);
@@ -100,6 +100,22 @@ public class LEDIndicator
         }
     }   //LEDIndicator
 
+//    public void setColor(double value)
+//    {
+//        if (indicator instanceof FtcGobildaIndicatorLight)
+//        {
+//            ((FtcGobildaIndicatorLight) indicator).setColor(value);
+//        }
+//    }   //setColor
+//
+//    public void setColor(int red, int green, int blue)
+//    {
+//        if (indicator instanceof FtcGobildaIndicatorLight)
+//        {
+//            ((FtcGobildaIndicatorLight) indicator).setColor(red, green, blue);
+//        }
+//    }   //setColor
+//
     /**
      * This method sets the pattern ON for a period of time and turns off automatically afterwards.
      *

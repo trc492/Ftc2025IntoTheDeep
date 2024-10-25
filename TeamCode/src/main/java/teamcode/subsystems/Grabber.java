@@ -22,80 +22,83 @@
 
 package teamcode.subsystems;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+import ftclib.motor.FtcMotorActuator;
 import ftclib.robotcore.FtcOpMode;
-import ftclib.subsystem.FtcServoGrabber;
-import trclib.subsystem.TrcServoGrabber;
+import ftclib.subsystem.FtcMotorGrabber;
+import teamcode.Robot;
+import teamcode.vision.Vision;
+import trclib.sensor.TrcTrigger;
+import trclib.sensor.TrcTriggerThresholdZones;
+import trclib.subsystem.TrcMotorGrabber;
 
 /**
  * This class implements the Grabber Subsystem.
  */
 public class Grabber
 {
+
     public static final class Params
     {
         public static final String SUBSYSTEM_NAME               = "Grabber";
 
-        public static final String PRIMARY_SERVO_NAME           = SUBSYSTEM_NAME + ".primary";
-        public static final boolean PRIMARY_SERVO_INVERTED      = false;
+        public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
+        public static final FtcMotorActuator.MotorType PRIMARY_MOTOR_TYPE = FtcMotorActuator.MotorType.CRServo;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = false;
+        public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
+        public static final FtcMotorActuator.MotorType FOLLOWER_MOTOR_TYPE = FtcMotorActuator.MotorType.CRServo;
+        public static final boolean FOLLOWER_MOTOR_INVERTED     = !PRIMARY_MOTOR_INVERTED;
 
-        public static final String FOLLOWER_SERVO_NAME          = SUBSYSTEM_NAME + ".follower";
-        public static final boolean FOLLOWER_SERVO_INVERTED     = !PRIMARY_SERVO_INVERTED;
+        public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
+        public static final boolean SENSOR_TRIGGER_INVERTED     = true;
+        public static final double SENSOR_TRIGGER_THRESHOLD     = 0.8;
+        public static final double RED_THRESHOLD_LOW            = 20.0;
+        public static final double RED_THRESHOLD_HIGH           = 30.0;
+        public static final double YELLOW_THRESHOLD_LOW         = 60.0;
+        public static final double YELLOW_THRESHOLD_HIGH        = 80.0;
+        public static final double BLUE_THRESHOLD_LOW           = 220.0;
+        public static final double BLUE_THRESHOLD_HIGH          = 240.0;
+        public static final double[] COLOR_THRESHOLDS           = new double[] {
+            RED_THRESHOLD_LOW, RED_THRESHOLD_HIGH,
+            YELLOW_THRESHOLD_LOW, YELLOW_THRESHOLD_HIGH,
+            BLUE_THRESHOLD_LOW, BLUE_THRESHOLD_HIGH};
 
-        public static final double OPEN_POS                     = 0.4;
-        public static final double OPEN_TIME                    = 0.6;
-        public static final double CLOSE_POS                    = 0.55;
-        public static final double CLOSE_TIME                   = 0.5;
-
-        public static final boolean USE_ANALOG_SENSOR           = false;
-        public static final String ANALOG_SENSOR_NAME           = SUBSYSTEM_NAME + ".sensor";
-        public static final double SENSOR_TRIGGER_THRESHOLD     = 2.0;
-        public static final double HAS_OBJECT_THRESHOLD         = 2.0;
-        public static final boolean ANALOG_TRIGGER_INVERTED     = true;
-
-        public static final boolean USE_DIGITAL_SENSOR          = false;
-        public static final String DIGITAL_SENSOR_NAME          = SUBSYSTEM_NAME + ".sensor";
-        public static final boolean DIGITAL_TRIGGER_INVERTED    = false;
+        public static final double INTAKE_POWER                 = 1.0;
+        public static final double EJECT_POWER                  = -0.5;
+        public static final double RETAIN_POWER                 = 0.0;
     }   //class Params
 
-    private final RevColorSensorV3 analogSensor;
-    private final TrcServoGrabber grabber;
+    private final Robot robot;
+    private final RevColorSensorV3 colorSensor;
+    private final TrcMotorGrabber grabber;
+    private Vision.SampleType sampleType;
 
     /**
      * Constructor: Creates an instance of the object.
+     *
+     * @param robot specifies the robot object.
      */
-    public Grabber()
+    public Grabber(Robot robot)
     {
-        if (Params.USE_ANALOG_SENSOR)
-        {
-            analogSensor = FtcOpMode.getInstance().hardwareMap.get(RevColorSensorV3.class, Params.ANALOG_SENSOR_NAME);
-        }
-        else
-        {
-            analogSensor = null;
-        }
+        this.robot = robot;
+        colorSensor = FtcOpMode.getInstance().hardwareMap.get(RevColorSensorV3.class, Params.SENSOR_NAME);
+        TrcTriggerThresholdZones colorTrigger = new TrcTriggerThresholdZones(
+            Params.SUBSYSTEM_NAME + ".colorTrigger", this::getSensorHue, Params.COLOR_THRESHOLDS, false);
+        colorTrigger.enableTrigger(TrcTrigger.TriggerMode.OnBoth, this::colorTriggerCallback);
+        FtcMotorGrabber.Params grabberParams = new FtcMotorGrabber.Params()
+            .setPrimaryMotor(Params.PRIMARY_MOTOR_NAME, Params.PRIMARY_MOTOR_TYPE, Params.PRIMARY_MOTOR_INVERTED)
+            .setFollowerMotor(Params.FOLLOWER_MOTOR_NAME, Params.FOLLOWER_MOTOR_TYPE, Params.FOLLOWER_MOTOR_INVERTED)
+            .setPowerParams(Params.INTAKE_POWER, Params.EJECT_POWER, Params.RETAIN_POWER)
+            .setAnalogSensorTrigger(
+                this::getSensorDistance, Params.SENSOR_TRIGGER_INVERTED, Params.SENSOR_TRIGGER_THRESHOLD);
 
-        FtcServoGrabber.Params grabberParams = new FtcServoGrabber.Params()
-            .setPrimaryServo(Params.PRIMARY_SERVO_NAME, Params.PRIMARY_SERVO_INVERTED)
-            .setFollowerServo(Params.FOLLOWER_SERVO_NAME, Params.FOLLOWER_SERVO_INVERTED)
-            .setOpenCloseParams(Params.OPEN_POS, Params.OPEN_TIME, Params.CLOSE_POS, Params.CLOSE_TIME);
-
-        if (analogSensor != null)
-        {
-            grabberParams.setAnalogSensorTrigger(
-                this::getSensorData, Params.ANALOG_TRIGGER_INVERTED, Params.SENSOR_TRIGGER_THRESHOLD,
-                Params.HAS_OBJECT_THRESHOLD);
-        }
-        else if (Params.USE_DIGITAL_SENSOR)
-        {
-            grabberParams.setDigitalInputTrigger(Params.DIGITAL_SENSOR_NAME, Params.DIGITAL_TRIGGER_INVERTED);
-        }
-
-        grabber = new FtcServoGrabber(Params.SUBSYSTEM_NAME, grabberParams).getGrabber();
-        grabber.open();
+        grabber = new FtcMotorGrabber(Params.SUBSYSTEM_NAME, grabberParams).getGrabber();
     }   //Grabber
 
     /**
@@ -103,26 +106,91 @@ public class Grabber
      *
      * @return created grabber object.
      */
-    public TrcServoGrabber getGrabber()
+    public TrcMotorGrabber getGrabber()
     {
         return grabber;
     }   //getGrabber
 
     /**
-     * This method reads the analog sensor and returns its value.
+     * This method reads the analog sensor and returns the distance value.
      *
      * @return analog sensor value, returns zero if no analog sensor.
      */
-    private double getSensorData()
+    public double getSensorDistance()
     {
-        if (analogSensor != null)
+        if (colorSensor != null)
         {
-            return analogSensor.getDistance(DistanceUnit.INCH);
+            return colorSensor.getDistance(DistanceUnit.INCH);
         }
         else
         {
             return 0.0;
         }
-    }   //getSensorData
+    }   //getSensorDistance
+
+    /**
+     * This method reads the analog sensor and returns the Hue of the HSV value.
+     *
+     * @return analog sensor value, returns zero if no analog sensor.
+     */
+    public double getSensorHue()
+    {
+        if (colorSensor != null)
+        {
+            NormalizedRGBA normalizedColors = colorSensor.getNormalizedColors();
+            float[] hsvValues = {0F,0F,0F};
+            Color.RGBToHSV((int) (normalizedColors.red * 255),
+                           (int) (normalizedColors.green * 255),
+                           (int) (normalizedColors.blue * 255),
+                           hsvValues);
+            return hsvValues[0];
+        }
+        else
+        {
+            return 0.0;
+        }
+    }   //getSensorHue
+
+    /**
+     * This method returns the sample type in the grabber.
+     *
+     * @return sample type in the grabber, null if no sample.
+     */
+    public Vision.SampleType getSampleType()
+    {
+        return sampleType;
+    }   //getSampleType
+
+    /**
+     * This method is called when the grabber detected a change of color.
+     *
+     * @param context specifies the trigger callback context.
+     */
+    private void colorTriggerCallback(Object context)
+    {
+        double hue = ((TrcTriggerThresholdZones.CallbackContext) context).sensorValue;
+
+        if (hue >= Params.RED_THRESHOLD_LOW && hue <= Params.RED_THRESHOLD_HIGH)
+        {
+            sampleType = Vision.SampleType.RedSample;
+        }
+        else if (hue >= Params.YELLOW_THRESHOLD_LOW && hue <= Params.YELLOW_THRESHOLD_HIGH)
+        {
+            sampleType = Vision.SampleType.YellowSample;
+        }
+        else if (hue >= Params.BLUE_THRESHOLD_LOW && hue <= Params.BLUE_THRESHOLD_HIGH)
+        {
+            sampleType = Vision.SampleType.BlueSample;
+        }
+        else
+        {
+            sampleType = null;
+        }
+
+        if (robot.ledIndicator != null)
+        {
+            robot.ledIndicator.setDetectedSample(sampleType, false);
+        }
+    }   //colorTriggerCallback
 
 }   //class Grabber

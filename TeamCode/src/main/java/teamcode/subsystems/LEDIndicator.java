@@ -117,16 +117,27 @@ public class LEDIndicator
      * This method sets the LED to indicate the grabber detected sample type.
      *
      * @param sampleType specifies the detected sample type.
+     * @param flash specifies true to flash the LED for half a second, false for LED to remain ON.
      */
-    public void setDetectedSample(Vision.SampleType sampleType)
+    public void setDetectedSample(Vision.SampleType sampleType, boolean flash)
     {
         if (indicator != null)
         {
-            indicator.setPatternState(
-                sampleType == Vision.SampleType.RedSample ? RED_SAMPLE :
-                    sampleType == Vision.SampleType.BlueSample ? BLUE_SAMPLE :
-                        sampleType == Vision.SampleType.YellowSample ? YELLOW_SAMPLE : NO_SAMPLE,
-                true, 0.5);
+            if (sampleType != null)
+            {
+                indicator.setPatternState(
+                    sampleType == Vision.SampleType.RedSample ? RED_SAMPLE :
+                        sampleType == Vision.SampleType.BlueSample ? BLUE_SAMPLE :
+                            sampleType == Vision.SampleType.YellowSample ? YELLOW_SAMPLE : NO_SAMPLE,
+                    true, flash ? 0.5 : 0.0);
+            }
+            else
+            {
+                // No detected sample, turn all sample patterns off.
+                indicator.setPatternState(RED_SAMPLE, false);
+                indicator.setPatternState(BLUE_SAMPLE, false);
+                indicator.setPatternState(YELLOW_SAMPLE, false);
+            }
         }
     }   //setDetectedSample
 

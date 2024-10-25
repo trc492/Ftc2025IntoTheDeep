@@ -129,8 +129,7 @@ public class RobotParams
         public static final boolean useExtender                 = true;
         public static final boolean useWrist                    = true;
         public static final boolean useAuxClimber               = false;
-        public static final boolean useIntake                   = true;
-        public static final boolean useGrabber                  = false;
+        public static final boolean useGrabber                  = true;
     }   //class Preferences
 
 }   //class RobotParams

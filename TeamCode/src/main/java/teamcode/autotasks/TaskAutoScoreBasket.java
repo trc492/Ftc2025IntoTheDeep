@@ -25,9 +25,6 @@ package teamcode.autotasks;
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.params.GameParams;
-import teamcode.subsystems.Intake;
-import teamcode.subsystems.Wrist;
-import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
@@ -126,7 +123,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     protected boolean acquireSubsystemsOwnership()
     {
         boolean success = ownerName == null ||
-                          (robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName));
+                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName) &&
+                          robot.grabber.acquireExclusiveAccess(ownerName);
 
         if (success)
         {
@@ -139,7 +137,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             tracer.traceWarn(
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
+                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -159,8 +158,10 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             tracer.traceInfo(
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
+                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
+            robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
         }
     }   //releaseSubsystemsOwnership
@@ -173,6 +174,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
         robot.robotDrive.cancel(currOwner);
+        robot.grabber.cancel();
         robot.extenderArm.cancel();
     }   //stopSubsystems
 
@@ -230,9 +232,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             case SCORE_BASKET:
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     GameParams.BASKET_LOW_WRIST_SCORE_POS: GameParams.BASKET_HIGH_WRIST_SCORE_POS;
-                robot.wrist.setPosition(wristPos, null, Wrist.Params.DUMP_TIME);
-//                robot.intake.autoEjectReverse(0.0, Intake.Params.REVERSE_POWER, Intake.Params.FINISH_DELAY, event, 4.0);
-                robot.intake.setPower(Intake.Params.REVERSE_POWER, 2.0);
+                robot.extenderArm.setPosition(null, null, wristPos, null);
+                robot.grabber.autoEject(currOwner, 0.5, event, 0.0);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM, 2.0);
                 break;
 

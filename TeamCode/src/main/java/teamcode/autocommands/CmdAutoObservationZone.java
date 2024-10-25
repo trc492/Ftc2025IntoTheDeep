@@ -187,7 +187,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         GameParams.RED_OBSERVATION_ZONE_CONVERT, autoChoices.alliance);
                     robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
-                    if (robot.intake.hasObject())
+                    if (robot.grabber.hasObject())
                     {
                         sm.waitForSingleEvent(event, State.CONVERT_SAMPLE);
                     } else

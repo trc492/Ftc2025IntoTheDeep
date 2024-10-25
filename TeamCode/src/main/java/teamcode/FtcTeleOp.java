@@ -34,7 +34,6 @@ import teamcode.params.RobotParams;
 import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Intake;
 import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.drivebase.TrcDriveBase;
@@ -463,30 +462,29 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadLeft:
-                if (robot.intake != null && pressed)
+                if (robot.grabber != null && pressed)
                 {
-                    if (!robot.intake.isAutoActive())
+                    if (!robot.grabber.isAutoActive())
                     {
-                        robot.intake.autoIntakeForward(
-                            Intake.Params.FORWARD_POWER, Intake.Params.RETAIN_POWER,Intake.Params.FINISH_DELAY);
+                        robot.grabber.autoIntake(null);
                     }
                     else
                     {
-                        robot.intake.cancel();
+                        robot.grabber.cancel();
                     }
                 }
                 break;
 
             case DpadRight:
-                if (robot.intake != null && pressed)
+                if (robot.grabber != null && pressed)
                 {
-                    if (!robot.intake.isAutoActive())
+                    if (!robot.grabber.isAutoActive())
                     {
-                        robot.intake.autoEjectReverse(Intake.Params.REVERSE_POWER, Intake.Params.FINISH_DELAY);
+                        robot.grabber.autoEject(null);
                     }
                     else
                     {
-                        robot.intake.cancel();
+                        robot.grabber.cancel();
                     }
                 }
                 break;
@@ -605,66 +603,61 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadLeft:
-                //intake subsystem intakes, else grabber subsystem opens and closes
-                if (robot.intake != null)
+                if (robot.grabber != null)
                 {
                     if (pressed)
                     {
-                        robot.intake.setPower(Intake.Params.FORWARD_POWER);
-//                        robot.intake.autoIntakeForward(
-//                            RobotParams.IntakeParams.FORWARD_POWER, RobotParams.IntakeParams.RETAIN_POWER,
-//                            RobotParams.IntakeParams.FINISH_DELAY);
-                    }
-                    else
-                    {
-//                        robot.intake.cancel();
-                        robot.intake.setPower(0.0);
-                    }
-                }
-                else if (robot.grabber != null)
-                {
-                    if (operatorAltFunc)
-                    {
-                        if (pressed)
+                        if (operatorAltFunc)
                         {
-                            if (robot.grabber.isClosed())
-                            {
-                                robot.grabber.open();
-                            }
-                            else
-                            {
-                                robot.grabber.close();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (pressed)
-                        {
-                            robot.grabber.autoAssistGrab(null, 0.0, null, 0.0);
+                            // This is manual override in case the sensor is not working, just turn it ON.
+                            robot.grabber.intake();
                         }
                         else
                         {
+                            robot.grabber.autoIntake(null);
+                        }
+                    }
+                    else
+                    {
+                        if (robot.grabber.isAutoActive())
+                        {
                             robot.grabber.cancel();
+                        }
+                        else
+                        {
+                            // This is manual override in case the sensor is not working, just turn it OFF.
+                            robot.grabber.stop();
                         }
                     }
                 }
                 break;
 
             case DpadRight:
-                //intake subsystem scores/rotates opposite direction
-                if (robot.intake != null)
+                if (robot.grabber != null)
                 {
                     if (pressed)
                     {
-                        robot.intake.setPower(Intake.Params.REVERSE_POWER);
-//                        robot.intake.autoEjectReverse(
-//                            RobotParams.IntakeParams.REVERSE_POWER, RobotParams.IntakeParams.FINISH_DELAY);
+                        if (operatorAltFunc)
+                        {
+                            // This is manual override in case the sensor is not working, just turn it ON.
+                            robot.grabber.eject();
+                        }
+                        else
+                        {
+                            robot.grabber.autoEject(null);
+                        }
                     }
                     else
                     {
-//                        robot.intake.cancel();
-                        robot.intake.setPower(0.0);
+                        if (robot.grabber.isAutoActive())
+                        {
+                            robot.grabber.cancel();
+                        }
+                        else
+                        {
+                            // This is manual override in case the sensor is not working, just turn it OFF.
+                            robot.grabber.stop();
+                        }
                     }
                 }
                 break;

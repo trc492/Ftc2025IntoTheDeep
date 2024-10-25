@@ -40,7 +40,6 @@ import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.LEDIndicator;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Intake;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
@@ -51,8 +50,7 @@ import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcRobot;
 import trclib.sensor.TrcDigitalInput;
-import trclib.subsystem.TrcIntake;
-import trclib.subsystem.TrcServoGrabber;
+import trclib.subsystem.TrcMotorGrabber;
 import trclib.timer.TrcTimer;
 
 /**
@@ -82,8 +80,8 @@ public class Robot
     public TrcServo wrist;
     public TaskExtenderArm extenderArm;
     public TrcMotor auxClimber;
-    public TrcIntake intake;
-    public TrcServoGrabber grabber;
+    public Grabber grabberSubsystem;
+    public TrcMotorGrabber grabber;
     // Autotasks.
     public TaskAutoPickupFromGround pickupFromGroundTask;
     public TaskAutoPickupSpecimen pickupSpecimenTask;
@@ -175,14 +173,10 @@ public class Robot
                     auxClimber = new AuxClimber().getClimber();
                 }
 
-                if (RobotParams.Preferences.useIntake)
-                {
-                    intake = new Intake().getIntake();
-                }
-
                 if (RobotParams.Preferences.useGrabber)
                 {
-                    grabber = new Grabber().getGrabber();
+                    grabberSubsystem = new Grabber(this);
+                    grabber = grabberSubsystem.getGrabber();
                 }
 
                 // Creating autotasks
@@ -390,27 +384,13 @@ public class Robot
                         auxClimber.isLowerLimitSwitchActive());
                 }
 
-                if (intake != null)
-                {
-                    dashboard.displayPrintf(lineNum++, "Intake: power=%.3f", intake.getPower());
-                }
-
                 if (grabber != null)
                 {
-                    if (Grabber.Params.USE_ANALOG_SENSOR)
-                    {
-                        dashboard.displayPrintf(
-                            lineNum++, "Grabber: pos=%.3f,hasObject=%s,sensorValue=%.3f,autoActive=%s",
-                            grabber.getPosition(), grabber.hasObject(), grabber.getSensorValue(),
-                            grabber.isAutoAssistActive());
-                    }
-                    else if (Grabber.Params.USE_DIGITAL_SENSOR)
-                    {
-                        dashboard.displayPrintf(
-                            lineNum++, "Grabber: pos=%.3f,hasObject=%s,sensorState=%s,autoActive=%s",
-                            grabber.getPosition(), grabber.hasObject(), grabber.getSensorState(),
-                            grabber.isAutoAssistActive());
-                    }
+                    dashboard.displayPrintf(
+                        lineNum++,
+                        "Grabber: power=%.3f,hasObject=%s,sensorDist=%.3f,sensorHue=%.3f,sample=%s,autoActive=%s",
+                        grabber.getPower(), grabber.hasObject(), grabberSubsystem.getSensorDistance(),
+                        grabberSubsystem.getSensorHue(), grabberSubsystem.getSampleType(), grabber.isAutoActive());
                 }
             }
         }
@@ -428,7 +408,6 @@ public class Robot
         if (extender != null) extender.cancel();
         if (wrist != null) wrist.cancel();
         if (auxClimber != null) auxClimber.cancel();
-        if (intake != null) intake.cancel();
         if (grabber != null) grabber.cancel();
         if (robotDrive != null) robotDrive.cancel();
     }   //cancelAll

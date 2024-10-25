@@ -27,7 +27,7 @@ import java.util.Locale;
 import teamcode.Robot;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Intake;
+import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.pathdrive.TrcPose2D;
@@ -68,7 +68,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
-    private final TrcEvent intakeEvent;
+    private final TrcEvent grabberEvent;
 
     private String currOwner = null;
     private TrcPose2D samplePose = null;
@@ -86,7 +86,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         this.ownerName = ownerName;
         this.robot = robot;
         event = new TrcEvent(moduleName);
-        intakeEvent = new TrcEvent(Intake.Params.SUBSYSTEM_NAME);
+        grabberEvent = new TrcEvent(Grabber.Params.SUBSYSTEM_NAME);
     }   //TaskAutoPickupFromGround
 
     /**
@@ -114,8 +114,10 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     @Override
     protected boolean acquireSubsystemsOwnership()
     {
+        // ExtenderArm is an AutoTask and is not an ExclusiveSubsystem.
         boolean success = ownerName == null ||
-                          (robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName));
+                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName) &&
+                          robot.grabber.acquireExclusiveAccess(ownerName);
 
         if (success)
         {
@@ -128,7 +130,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             tracer.traceWarn(
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
+                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -148,8 +151,10 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             tracer.traceInfo(
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
+                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
+            robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
         }
     }   //releaseSubsystemsOwnership
@@ -162,8 +167,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
         robot.robotDrive.cancel(currOwner);
+        robot.grabber.cancel();
         robot.extenderArm.cancel();
-        robot.intake.cancel();
     }   //stopSubsystems
 
     /**
@@ -260,8 +265,10 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case PICK_UP_SAMPLE:
                 if (robot.extenderArm != null && robot.grabber != null)
                 {
-                    robot.grabber.autoAssistGrab(currOwner, 0.0, intakeEvent, 0.0);
-                    sm.addEvent(intakeEvent);
+                    // We only care about sample color if we pick up from submersible.
+                    // We assume the driver would drive up to the correct sample color for picking up from ground.
+                    robot.grabber.autoIntake(currOwner, 0.0, grabberEvent, 0.0);
+                    sm.addEvent(grabberEvent);
                     robot.extenderArm.setPosition(null, samplePose.y, null, event);
                     sm.addEvent(event);
                     sm.waitForEvents(State.DONE, false);
@@ -270,19 +277,17 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 {
                     sm.setState(State.DONE);
                 }
-//                // intake design not confirmed
-//                // TODO: There will be a color sensor on the intake.
-//                // We need to check for correct color before picking up.
-//                robot.intake.setPower(0.0, Intake.Params.FORWARD_POWER, 4.0, event);  // change duration based on tuning
-//                sm.waitForSingleEvent(event, State.DONE);
                 break;
 
             default:
             case DONE:
                 // Stop task.
-                if (robot.grabber != null && robot.ledIndicator != null)
+                if (robot.grabber != null)
                 {
-//                    robot.ledIndicator.setDetectedSample(robot.grabber.getObjectType());
+                    if (robot.ledIndicator != null)
+                    {
+                        robot.ledIndicator.setDetectedSample(robot.grabberSubsystem.getSampleType(), false);
+                    }
                 }
                 stopAutoTask(true);
                 break;

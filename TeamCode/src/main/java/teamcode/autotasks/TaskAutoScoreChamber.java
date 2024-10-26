@@ -42,7 +42,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
     public enum State
     {
         GO_TO_SCORE_POSITION,
-        SET_ELBOW,
+//        SET_ELBOW,
         SET_EXTENDER,
         LOWER_ELBOW,
         SCORE_CHAMBER,
@@ -251,18 +251,20 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                         currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance, false));
-                    sm.waitForSingleEvent(event, State.SET_ELBOW);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, null, null);
+                    sm.waitForSingleEvent(event, State.SET_EXTENDER);
                 }
                 else
                 {
-                    sm.setState(State.SET_ELBOW);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, null, null);
+                    sm.setState(State.SET_EXTENDER);
                 }
                 break;
 
-            case SET_ELBOW:
-                robot.extenderArm.setPosition(taskParams.elbowAngle, null, null, event);
-                sm.waitForSingleEvent(event, State.SET_EXTENDER);
-                break;
+//            case SET_ELBOW:
+//                robot.extenderArm.setPosition(taskParams.elbowAngle, null, null, event);
+//                sm.waitForSingleEvent(event, State.SET_EXTENDER);
+//                break;
 
             case SET_EXTENDER:
                 robot.extenderArm.setPosition(null, taskParams.extenderPos, null, event);

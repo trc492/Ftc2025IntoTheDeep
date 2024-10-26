@@ -22,7 +22,9 @@
 
 package teamcode.params;
 
+import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
+
 
 /**
  * This class contains season specific game element information.
@@ -53,8 +55,8 @@ public class GameParams
     public static final double BASKET_HIGH_EXTENDER_POS         = 35.0;
     public static final double BASKET_LOW_ELBOW_ANGLE           = 115.0;
     public static final double BASKET_HIGH_ELBOW_ANGLE          = 105.0;
-    public static final double BASKET_LOW_WRIST_SCORE_POS       = 0.575;
-    public static final double BASKET_HIGH_WRIST_SCORE_POS      = 0.575; // To Tune
+    public static final double BASKET_LOW_WRIST_SCORE_POS       = Wrist.Params.BASKET_SCORE_POS;
+    public static final double BASKET_HIGH_WRIST_SCORE_POS      = Wrist.Params.BASKET_SCORE_POS;
 
     public static final TrcPose2D RED_BASKET_CHAMBER_SCORE_POSE =
         new TrcPose2D(-0.3*RobotParams.Field.FULL_TILE_INCHES, -1.7*RobotParams.Field.FULL_TILE_INCHES, 0.0);
@@ -68,8 +70,8 @@ public class GameParams
     public static final double CHAMBER_HIGH_EXTENDER_POS        = 25.0;
     public static final double CHAMBER_LOW_ELBOW_ANGLE          = 45.0;
     public static final double CHAMBER_HIGH_ELBOW_ANGLE         = 70.0;
-    public static final double CHAMBER_LOW_WRIST_SCORE_POS      = 0.1; // intake not final
-    public static final double CHAMBER_HIGH_WRIST_SCORE_POS     = 0.1; // intake not final
+    public static final double CHAMBER_LOW_WRIST_SCORE_POS      = Wrist.Params.SPECIMEN_POS;
+    public static final double CHAMBER_HIGH_WRIST_SCORE_POS     = Wrist.Params.SPECIMEN_POS;
 
     // Robot start locations in inches.
     public static final double STARTPOS_X                       = 0.5*RobotParams.Field.FULL_TILE_INCHES;

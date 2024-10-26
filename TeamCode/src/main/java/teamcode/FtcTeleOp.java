@@ -462,29 +462,46 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadLeft:
-                if (robot.grabber != null && pressed)
+                if (pressed)
                 {
-                    if (!robot.grabber.isAutoActive())
+                    if (robot.grabber != null)
                     {
-                        robot.grabber.autoIntake(null);
+                        if (!robot.grabber.isAutoActive())
+                        {
+                            robot.grabber.autoIntake(null);
+                        }
+                        else
+                        {
+                            robot.grabber.cancel();
+                        }
                     }
-                    else
+                    else if (robot.servoGrabber != null)
                     {
-                        robot.grabber.cancel();
+                        if (!robot.servoGrabber.isAutoActive())
+                        {
+                            robot.servoGrabber.autoGrab(null, 0.0, null, 0.0);
+                        }
+                        else
+                        {
+                            robot.servoGrabber.cancel();
+                        }
                     }
                 }
                 break;
 
             case DpadRight:
-                if (robot.grabber != null && pressed)
+                if (pressed)
                 {
-                    if (!robot.grabber.isAutoActive())
+                    if (robot.grabber != null)
                     {
-                        robot.grabber.autoEject(null);
-                    }
-                    else
-                    {
-                        robot.grabber.cancel();
+                        if (!robot.grabber.isAutoActive())
+                        {
+                            robot.grabber.autoEject(null);
+                        }
+                        else
+                        {
+                            robot.grabber.cancel();
+                        }
                     }
                 }
                 break;
@@ -505,34 +522,38 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case Start:
-//                if (robot.vision != null &&
-//                    (robot.vision.isLimelightVisionEnabled() || robot.vision.isAprilTagVisionEnabled()) &&
-//                    robot.robotDrive != null)
-//                {
-//                    // On press of the button, we will start looking for AprilTag for re-localization.
-//                    // On release of the button, we will set the robot's field location if we found the AprilTag.
-//                    relocalizing = pressed;
-//                    if (!pressed)
-//                    {
-//                        if (robotFieldPose != null)
-//                        {
-//                            // Vision found an AprilTag, set the new robot field location.
-//                            robot.globalTracer.traceInfo(
-//                                moduleName, ">>>>> Finish re-localizing: pose=" + robotFieldPose);
-//                            robot.robotDrive.driveBase.setFieldPosition(robotFieldPose, false);
-//                            robotFieldPose = null;
-//                        }
-//                    }
-//                    else
-//                    {
-//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Start re-localizing ...");
-//                    }
-//                }
-                if (pressed) {
-                    robot.robotDrive.driveBase.setFieldPosition(GameParams.STARTPOSE_RED_NET_ZONE);
-                    robot.globalTracer.traceInfo(
-                            moduleName, "Confirm robot pose=%s",
-                            robot.robotDrive.driveBase.getFieldPosition());
+                if (driverAltFunc)
+                {
+                    if (robot.vision != null &&
+                        (robot.vision.isLimelightVisionEnabled() || robot.vision.isAprilTagVisionEnabled()) &&
+                        robot.robotDrive != null)
+                    {
+                        // On press of the button, we will start looking for AprilTag for re-localization.
+                        // On release of the button, we will set the robot's field location if we found the AprilTag.
+                        relocalizing = pressed;
+                        if (!pressed)
+                        {
+                            if (robotFieldPose != null)
+                            {
+                                // Vision found an AprilTag, set the new robot field location.
+                                robot.globalTracer.traceInfo(
+                                    moduleName, ">>>>> Finish re-localizing: pose=" + robotFieldPose);
+                                robot.robotDrive.driveBase.setFieldPosition(robotFieldPose, false);
+                                robotFieldPose = null;
+                            }
+                        }
+                        else
+                        {
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Start re-localizing ...");
+                        }
+                    }
+                }
+                else
+                {
+                    if (pressed)
+                    {
+                        robot.robotDrive.driveBase.setFieldPosition(GameParams.STARTPOSE_RED_NET_ZONE);
+                    }
                 }
                 break;
         }

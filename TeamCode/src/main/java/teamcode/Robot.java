@@ -42,6 +42,7 @@ import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Grabber;
+import teamcode.subsystems.ServoGrabber;
 import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.motor.TrcMotor;
@@ -51,6 +52,7 @@ import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcRobot;
 import trclib.sensor.TrcDigitalInput;
 import trclib.subsystem.TrcMotorGrabber;
+import trclib.subsystem.TrcServoGrabber;
 import trclib.timer.TrcTimer;
 
 /**
@@ -82,6 +84,7 @@ public class Robot
     public TrcMotor auxClimber;
     public Grabber grabberSubsystem;
     public TrcMotorGrabber grabber;
+    public TrcServoGrabber servoGrabber;
     // Autotasks.
     public TaskAutoPickupFromGround pickupFromGroundTask;
     public TaskAutoPickupSpecimen pickupSpecimenTask;
@@ -177,6 +180,11 @@ public class Robot
                 {
                     grabberSubsystem = new Grabber(this);
                     grabber = grabberSubsystem.getGrabber();
+                }
+
+                if (RobotParams.Preferences.useServoGrabber)
+                {
+                    servoGrabber = new ServoGrabber().getGrabber();
                 }
 
                 // Creating autotasks

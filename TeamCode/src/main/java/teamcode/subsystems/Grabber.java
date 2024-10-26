@@ -373,7 +373,7 @@ public class Grabber
         double hue = ((TrcTriggerThresholdZones.CallbackContext) context).sensorValue;
 
         // Red in HSV space crosses the 0/360 cross-over, so the range is actually between <= LOW and >= HIGH.
-        if (hue <= Params.RED_THRESHOLD_LOW && hue >= Params.RED_THRESHOLD_HIGH)
+        if (hue <= Params.RED_THRESHOLD_LOW || hue >= Params.RED_THRESHOLD_HIGH)
         {
             sampleType = Vision.SampleType.RedSample;
         }

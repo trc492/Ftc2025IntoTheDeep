@@ -71,15 +71,15 @@ public class Grabber
         public static final boolean SENSOR_TRIGGER_INVERTED     = true;
         public static final double SENSOR_TRIGGER_THRESHOLD     = 0.8;
         public static final double RED_THRESHOLD_LOW            = 20.0;
-        public static final double RED_THRESHOLD_HIGH           = 30.0;
+        public static final double RED_THRESHOLD_HIGH           = 340.0;
         public static final double YELLOW_THRESHOLD_LOW         = 60.0;
         public static final double YELLOW_THRESHOLD_HIGH        = 80.0;
-        public static final double BLUE_THRESHOLD_LOW           = 220.0;
+        public static final double BLUE_THRESHOLD_LOW           = 200.0;
         public static final double BLUE_THRESHOLD_HIGH          = 240.0;
+        // Color thresholds must be sorting in ascending order.
         public static final double[] COLOR_THRESHOLDS           = new double[] {
-            RED_THRESHOLD_LOW, RED_THRESHOLD_HIGH,
-            YELLOW_THRESHOLD_LOW, YELLOW_THRESHOLD_HIGH,
-            BLUE_THRESHOLD_LOW, BLUE_THRESHOLD_HIGH};
+            RED_THRESHOLD_LOW, YELLOW_THRESHOLD_LOW, YELLOW_THRESHOLD_HIGH,
+            BLUE_THRESHOLD_LOW, BLUE_THRESHOLD_HIGH, RED_THRESHOLD_HIGH};
 
         public static final double INTAKE_POWER                 = 1.0;
         public static final double EJECT_POWER                  = -0.5;
@@ -372,7 +372,8 @@ public class Grabber
     {
         double hue = ((TrcTriggerThresholdZones.CallbackContext) context).sensorValue;
 
-        if (hue >= Params.RED_THRESHOLD_LOW && hue <= Params.RED_THRESHOLD_HIGH)
+        // Red in HSV space crosses the 0/360 cross-over, so the range is actually between <= LOW and >= HIGH.
+        if (hue <= Params.RED_THRESHOLD_LOW && hue >= Params.RED_THRESHOLD_HIGH)
         {
             sampleType = Vision.SampleType.RedSample;
         }

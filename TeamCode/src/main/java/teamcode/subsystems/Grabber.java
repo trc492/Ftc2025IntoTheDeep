@@ -168,40 +168,66 @@ public class Grabber
         return servoGrabber;
     }   //getServoGrabber
 
-    public boolean hasObject()
-    {
-        return motorGrabber != null? motorGrabber.hasObject(): servoGrabber.hasObject();
-    }   //hasObject
-
+    /**
+     * This method acquires exclusive ownership of the subsystem if it's not already owned by somebody else.
+     *
+     * @param owner specifies the ID string of the caller requesting ownership.
+     * @return true if successfully acquired ownership, false otherwise.
+     */
     public boolean acquireExclusiveAccess(String owner)
     {
         return motorGrabber != null?
             motorGrabber.acquireExclusiveAccess(owner): servoGrabber.acquireExclusiveAccess(owner);
     }   //acquireExclusiveAccess
 
-    public void releaseExclusiveAccess(String owner)
+    /**
+     * This method release exclusive ownership of the subsystem if the caller is indeed the owner.
+     *
+     * @param owner specifies the ID string of the caller releasing ownership.
+     * @return true if successfully releasing ownership, false otherwise.
+     */
+    public boolean releaseExclusiveAccess(String owner)
     {
-        if (motorGrabber != null)
-        {
-            motorGrabber.releaseExclusiveAccess(owner);
-        }
-        else
-        {
-            servoGrabber.releaseExclusiveAccess(owner);
-        }
+        return motorGrabber != null?
+            motorGrabber.releaseExclusiveAccess(owner): servoGrabber.releaseExclusiveAccess(owner);
     }   //releaseExclusiveAccess
 
+    /**
+     *
+     * This method checks if object is detected.
+     *
+     * @return true if object is detected, false otherwise.
+     */
+    public boolean hasObject()
+    {
+        return motorGrabber != null? motorGrabber.hasObject(): servoGrabber.hasObject();
+    }   //hasObject
+
+    /**
+     * This method returns the current owner of this subsystem.
+     *
+     * @return current owner, null if no owner.
+     */
     public String getOwner()
     {
         TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
         return motorGrabber != null? ownershipMgr.getOwner(motorGrabber): ownershipMgr.getOwner(servoGrabber);
     }   //getOwner
 
+    /**
+     * This method checks if auto operation is active.
+     *
+     * @return true if auto operation is in progress, false otherwise.
+     */
     public boolean isAutoActive()
     {
         return motorGrabber != null? motorGrabber.isAutoActive(): servoGrabber.isAutoActive();
     }   //isAutoActive
 
+    /**
+     * This method cancels the auto-assist operation and to clean up. It is called by the user for canceling the
+     * operation.
+     */
     public void cancel()
     {
         if (motorGrabber != null)
@@ -214,6 +240,24 @@ public class Grabber
         }
     }   //cancel
 
+    /**
+     * This method stops the grabber motor (only applicable for MotorGrabber).
+     */
+    public void stop(String owner)
+    {
+        if (motorGrabber != null)
+        {
+            motorGrabber.stop(owner);
+        }
+    }   //stop
+
+    /**
+     * This method grabs the object manually.
+     *
+     * @param owner specifies the owner ID to check if the caller has ownership of the subsystem.
+     * @param delay specifies the time in seconds to delay before grabbing the object, 0.0 if no delay.
+     * @param event specifies the event to signal when the operation is completed.
+     */
     public void intake(String owner, double delay, TrcEvent event)
     {
         if (motorGrabber != null)
@@ -226,6 +270,13 @@ public class Grabber
         }
     }   //intake
 
+    /**
+     * This method dumps the object manually.
+     *
+     * @param owner specifies the owner ID to check if the caller has ownership of the subsystem.
+     * @param delay specifies the time in seconds to delay before dumping the object, 0.0 if no delay.
+     * @param event specifies the event to signal when the operation is completed.
+     */
     public void dump(String owner, double delay, TrcEvent event)
     {
         if (motorGrabber != null)
@@ -237,14 +288,6 @@ public class Grabber
             servoGrabber.open(owner, delay, event);
         }
     }   //dump
-
-    public void stop(String owner)
-    {
-        if (motorGrabber != null)
-        {
-            motorGrabber.stop(owner);
-        }
-    }   //stop
 
     public void autoIntake(String owner, double delay, TrcEvent event)
     {

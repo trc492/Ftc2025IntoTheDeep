@@ -36,8 +36,6 @@ SOFTWARE.
             <DigitalDevice name="Elbow.lowerLimit" port="1" />
             <DigitalDevice name="Extender.lowerLimit" port="3" />
             <REV_VL53L0X_RANGE_SENSOR name="ServoGrabber.sensor" port="0" bus="1"/>
-            <Servo name="ServoGrabber.primary" port="2" />
-            <Servo name="ServoGrabber.follower" port="3" />
             <!--
             <SparkFunOTOS name="sparkfunOtos" port="0" bus="1"/>
             <OctoQuadFTC name="octoquad" port="0" bus="1"/>
@@ -51,6 +49,8 @@ SOFTWARE.
             <ContinuousRotationServo name="Grabber.primary" port="2" />
             <ContinuousRotationServo name="Grabber.follower" port="3" />
             <!--
+            <Servo name="Grabber.primary" port="2" />
+            <Servo name="Grabber.follower" port="3" />
             <LynxEmbeddedIMU name="imu" port="0" bus="0"/>
             -->
         </LynxModule>

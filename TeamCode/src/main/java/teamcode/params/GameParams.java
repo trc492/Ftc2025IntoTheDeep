@@ -57,17 +57,17 @@ public class GameParams
     public static final double BASKET_HIGH_WRIST_SCORE_POS      = 0.575; // To Tune
 
     public static final TrcPose2D RED_BASKET_CHAMBER_SCORE_POSE =
-        new TrcPose2D(-0.5*RobotParams.Field.FULL_TILE_INCHES, -1.5*RobotParams.Field.FULL_TILE_INCHES, 0.0);
+        new TrcPose2D(-0.3*RobotParams.Field.FULL_TILE_INCHES, -1.7*RobotParams.Field.FULL_TILE_INCHES, 0.0);
     public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
-        new TrcPose2D(0.5*RobotParams.Field.FULL_TILE_INCHES, -1.5*RobotParams.Field.FULL_TILE_INCHES, 0.0);
+        new TrcPose2D(0.3*RobotParams.Field.FULL_TILE_INCHES, -1.7*RobotParams.Field.FULL_TILE_INCHES, 0.0);
     public static final TrcPose2D BLUE_BASKET_CHAMBER_SCORE_POSE=
-        new TrcPose2D(0.5*RobotParams.Field.FULL_TILE_INCHES, 1.5*RobotParams.Field.FULL_TILE_INCHES, 180.0);
+        new TrcPose2D(0.3*RobotParams.Field.FULL_TILE_INCHES, 1.7*RobotParams.Field.FULL_TILE_INCHES, 180.0);
     public static final TrcPose2D BLUE_OBSERVATION_CHAMBER_SCORE_POSE =
-        new TrcPose2D(-0.5*RobotParams.Field.FULL_TILE_INCHES, 1.5*RobotParams.Field.FULL_TILE_INCHES, 180.0);
-    public static final double CHAMBER_LOW_EXTENDER_POS         = 40.0;
-    public static final double CHAMBER_HIGH_EXTENDER_POS        = 20.0;
-    public static final double CHAMBER_LOW_ELBOW_ANGLE          = 15.0;
-    public static final double CHAMBER_HIGH_ELBOW_ANGLE         = 72.0;
+        new TrcPose2D(-0.3*RobotParams.Field.FULL_TILE_INCHES, 1.7*RobotParams.Field.FULL_TILE_INCHES, 180.0);
+    public static final double CHAMBER_LOW_EXTENDER_POS         = 20.0;
+    public static final double CHAMBER_HIGH_EXTENDER_POS        = 25.0;
+    public static final double CHAMBER_LOW_ELBOW_ANGLE          = 45.0;
+    public static final double CHAMBER_HIGH_ELBOW_ANGLE         = 70.0;
     public static final double CHAMBER_LOW_WRIST_SCORE_POS      = 0.1; // intake not final
     public static final double CHAMBER_HIGH_WRIST_SCORE_POS     = 0.1; // intake not final
 
@@ -79,7 +79,7 @@ public class GameParams
     public static final TrcPose2D STARTPOSE_RED_OBSERVATION_ZONE= new TrcPose2D(STARTPOS_X, -STARTPOS_Y, 0.0);
 
     public static final TrcPose2D RED_OBSERVATION_ZONE_CONVERT  = new TrcPose2D(2.5, -2, 0.0);
-    public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   = new TrcPose2D(1.75, -2.5, 180.0);
+    public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   = new TrcPose2D(1.75, -2.25, 180.0);
 
     public static final TrcPose2D RED_NET_SPIKEMARK_PICKUP      = new TrcPose2D(-2, -3, 180.0);
 

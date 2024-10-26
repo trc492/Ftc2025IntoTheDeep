@@ -47,32 +47,7 @@ public class GameParams
         new TrcPose2D(APRILTAG_AUDIENCE_WALL_X, -APRILTAG_WALL_OFFSET_Y, -90.0) // TagId 16
     };
 
-    public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-        new TrcPose2D(-2.0*RobotParams.Field.FULL_TILE_INCHES, -2.0*RobotParams.Field.FULL_TILE_INCHES, 45.0);
-    public static final TrcPose2D BLUE_BASKET_SCORE_POSE        =
-        new TrcPose2D(2.0*RobotParams.Field.FULL_TILE_INCHES, 2.0*RobotParams.Field.FULL_TILE_INCHES, -135.0);
-    public static final double BASKET_LOW_EXTENDER_POS          = 23.0;
-    public static final double BASKET_HIGH_EXTENDER_POS         = 35.0;
-    public static final double BASKET_LOW_ELBOW_ANGLE           = 115.0;
-    public static final double BASKET_HIGH_ELBOW_ANGLE          = 105.0;
-    public static final double BASKET_LOW_WRIST_SCORE_POS       = Wrist.Params.BASKET_SCORE_POS;
-    public static final double BASKET_HIGH_WRIST_SCORE_POS      = Wrist.Params.BASKET_SCORE_POS;
-
-    public static final TrcPose2D RED_BASKET_CHAMBER_SCORE_POSE =
-        new TrcPose2D(-0.3*RobotParams.Field.FULL_TILE_INCHES, -1.7*RobotParams.Field.FULL_TILE_INCHES, 0.0);
-    public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
-        new TrcPose2D(0.3*RobotParams.Field.FULL_TILE_INCHES, -1.7*RobotParams.Field.FULL_TILE_INCHES, 0.0);
-    public static final TrcPose2D BLUE_BASKET_CHAMBER_SCORE_POSE=
-        new TrcPose2D(0.3*RobotParams.Field.FULL_TILE_INCHES, 1.7*RobotParams.Field.FULL_TILE_INCHES, 180.0);
-    public static final TrcPose2D BLUE_OBSERVATION_CHAMBER_SCORE_POSE =
-        new TrcPose2D(-0.3*RobotParams.Field.FULL_TILE_INCHES, 1.7*RobotParams.Field.FULL_TILE_INCHES, 180.0);
-    public static final double CHAMBER_LOW_EXTENDER_POS         = 20.0;
-    public static final double CHAMBER_HIGH_EXTENDER_POS        = 25.0;
-    public static final double CHAMBER_LOW_ELBOW_ANGLE          = 45.0;
-    public static final double CHAMBER_HIGH_ELBOW_ANGLE         = 70.0;
-    public static final double CHAMBER_LOW_WRIST_SCORE_POS      = Wrist.Params.SPECIMEN_POS;
-    public static final double CHAMBER_HIGH_WRIST_SCORE_POS     = Wrist.Params.SPECIMEN_POS;
-
+    // Blue alliance positions will be derived using adjustPoseByAlliance.
     // Robot start locations in inches.
     public static final double STARTPOS_X                       = 0.5*RobotParams.Field.FULL_TILE_INCHES;
     public static final double STARTPOS_Y                       =
@@ -80,9 +55,15 @@ public class GameParams
     public static final TrcPose2D STARTPOSE_RED_NET_ZONE        = new TrcPose2D(-STARTPOS_X, -STARTPOS_Y, 0.0);
     public static final TrcPose2D STARTPOSE_RED_OBSERVATION_ZONE= new TrcPose2D(STARTPOS_X, -STARTPOS_Y, 0.0);
 
+    public static final TrcPose2D RED_BASKET_SCORE_POSE         =
+        new TrcPose2D(-2.0*RobotParams.Field.FULL_TILE_INCHES, -2.0*RobotParams.Field.FULL_TILE_INCHES, 45.0);
+    public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE =
+        new TrcPose2D(-0.3*RobotParams.Field.FULL_TILE_INCHES, -1.7*RobotParams.Field.FULL_TILE_INCHES, 0.0);
+    public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
+        new TrcPose2D(0.3*RobotParams.Field.FULL_TILE_INCHES, -1.7*RobotParams.Field.FULL_TILE_INCHES, 0.0);
+
     public static final TrcPose2D RED_OBSERVATION_ZONE_CONVERT  = new TrcPose2D(2.5, -2, 0.0);
     public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   = new TrcPose2D(1.75, -2.25, 180.0);
-
-    public static final TrcPose2D RED_NET_SPIKEMARK_PICKUP      = new TrcPose2D(-2, -3, 180.0);
+    public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP = new TrcPose2D(-2, -3, 180.0);
 
 }   //class GameParams

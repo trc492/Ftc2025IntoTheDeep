@@ -25,6 +25,9 @@ package teamcode.autotasks;
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.params.GameParams;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
+import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
@@ -118,26 +121,26 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         {
             // Caller is TeleOp, let's determine the score position by robot's current location.
             scorePose = robotPose.x < 0.0?
-                GameParams.RED_BASKET_CHAMBER_SCORE_POSE: GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+                GameParams.RED_NET_CHAMBER_SCORE_POSE: GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
         }
         else
         {
             // Caller is Auto, let's determine the score position by robot's start position.
             scorePose = startPos == FtcAuto.StartPos.NET_ZONE?
-                GameParams.RED_BASKET_CHAMBER_SCORE_POSE: GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+                GameParams.RED_NET_CHAMBER_SCORE_POSE: GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
         }
 
         if (scoreHeight == Robot.ScoreHeight.LOW)
         {
-            elbowAngle = GameParams.CHAMBER_LOW_ELBOW_ANGLE;
-            extenderPos = GameParams.CHAMBER_LOW_EXTENDER_POS;
-            wristPos = GameParams.CHAMBER_LOW_WRIST_SCORE_POS;
+            elbowAngle = Elbow.Params.LOW_CHAMBER_SCORE_POS;
+            extenderPos = Extender.Params.LOW_CHAMBER_SCORE_POS;
+            wristPos = Wrist.Params.LOW_CHAMBER_SCORE_POS;
         }
         else
         {
-            elbowAngle = GameParams.CHAMBER_HIGH_ELBOW_ANGLE;
-            extenderPos = GameParams.CHAMBER_HIGH_EXTENDER_POS;
-            wristPos = GameParams.CHAMBER_HIGH_WRIST_SCORE_POS;
+            elbowAngle = Elbow.Params.HIGH_CHAMBER_SCORE_POS;
+            extenderPos = Extender.Params.HIGH_CHAMBER_SCORE_POS;
+            wristPos = Wrist.Params.HIGH_CHAMBER_SCORE_POS;
         }
 
         tracer.traceInfo(

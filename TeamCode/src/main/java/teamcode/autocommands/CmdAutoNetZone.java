@@ -232,7 +232,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     if (scoreSampleCount < 3)
                     {
 //                        robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
-                        targetPose = robot.adjustPoseByAlliance(GameParams.RED_NET_SPIKEMARK_PICKUP, autoChoices.alliance);
+                        targetPose = robot.adjustPoseByAlliance(
+                            GameParams.RED_NET_ZONE_SPIKEMARK_PICKUP, autoChoices.alliance);
                         robot.robotDrive.purePursuitDrive.start(
                                 event, robot.robotDrive.driveBase.getFieldPosition(), false,
                                 targetPose);

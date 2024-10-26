@@ -40,9 +40,8 @@ import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.LEDIndicator;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Grabber;
-import teamcode.subsystems.ServoGrabber;
+import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
 import trclib.motor.TrcMotor;
@@ -82,10 +81,7 @@ public class Robot
     public TrcServo wrist;
     public TaskExtenderArm extenderArm;
     public TrcMotor auxClimber;
-    public Grabber grabberSubsystem;
-    public TrcMotorGrabber grabber;
-    public ServoGrabber servoGrabberSubsystem;
-    public TrcServoGrabber servoGrabber;
+    public Grabber grabber;
     // Autotasks.
     public TaskAutoPickupFromGround pickupFromGroundTask;
     public TaskAutoPickupSpecimen pickupSpecimenTask;
@@ -177,16 +173,9 @@ public class Robot
                     auxClimber = new AuxClimber().getClimber();
                 }
 
-                if (RobotParams.Preferences.useGrabber)
+                if (RobotParams.Preferences.useMotorGrabber || RobotParams.Preferences.useServoGrabber)
                 {
-                    grabberSubsystem = new Grabber(this);
-                    grabber = grabberSubsystem.getGrabber();
-                }
-
-                if (RobotParams.Preferences.useServoGrabber)
-                {
-                    servoGrabberSubsystem = new ServoGrabber(this);
-                    servoGrabber = servoGrabberSubsystem.getGrabber();
+                    grabber = new Grabber(this);
                 }
 
                 // Creating autotasks
@@ -396,21 +385,26 @@ public class Robot
 
                 if (grabber != null)
                 {
-                    dashboard.displayPrintf(
-                        lineNum++,
-                        "Grabber: power=%.3f,hasObject=%s,sensorDist=%.3f,sensorHue=%.3f,sample=%s,autoActive=%s",
-                        grabber.getPower(), grabber.hasObject(), grabberSubsystem.getSensorDistance(),
-                        grabberSubsystem.getSensorHue(), grabberSubsystem.getSampleType(), grabber.isAutoActive());
-                }
-
-                if (servoGrabber != null)
-                {
-                    dashboard.displayPrintf(
-                        lineNum++,
-                        "Grabber: pos=%.3f,hasObject=%s,sensorDist=%.3f,sensorHue=%.3f,sample=%s,autoActive=%s",
-                        servoGrabber.getPosition(), servoGrabber.hasObject(),
-                        servoGrabberSubsystem.getSensorDistance(), servoGrabberSubsystem.getSensorHue(),
-                        grabberSubsystem.getSampleType(), servoGrabber.isAutoActive());
+                    TrcMotorGrabber motorGrabber = grabber.getMotorGrabber();
+                    TrcServoGrabber servoGrabber = grabber.getServoGrabber();
+                    if (motorGrabber != null)
+                    {
+                        dashboard.displayPrintf(
+                            lineNum++,
+                            "MotorGrabber: power=%.3f,hasObject=%s,sensorDist=%.3f,sensorHue=%.3f,sample=%s," +
+                            "autoActive=%s",
+                            motorGrabber.getPower(), grabber.hasObject(), grabber.getSensorDistance(),
+                            grabber.getSensorHue(), grabber.getSampleType(), grabber.isAutoActive());
+                    }
+                    else
+                    {
+                        dashboard.displayPrintf(
+                            lineNum++,
+                            "ServoGrabber: pos=%.3f,hasObject=%s,sensorDist=%.3f,sensorHue=%.3f,sample=%s," +
+                            "autoActive=%s",
+                            servoGrabber.getPosition(), grabber.hasObject(), grabber.getSensorDistance(),
+                            grabber.getSensorHue(), grabber.getSampleType(), grabber.isAutoActive());
+                    }
                 }
             }
         }

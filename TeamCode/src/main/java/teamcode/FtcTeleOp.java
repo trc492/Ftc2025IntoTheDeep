@@ -462,46 +462,29 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadLeft:
-                if (pressed)
+                if (robot.grabber != null && pressed)
                 {
-                    if (robot.grabber != null)
+                    if (!robot.grabber.isAutoActive())
                     {
-                        if (!robot.grabber.isAutoActive())
-                        {
-                            robot.grabber.autoIntake(null);
-                        }
-                        else
-                        {
-                            robot.grabber.cancel();
-                        }
+                        robot.grabber.autoIntake(null, 0.0, null);
                     }
-                    else if (robot.servoGrabber != null)
+                    else
                     {
-                        if (!robot.servoGrabber.isAutoActive())
-                        {
-                            robot.servoGrabber.autoGrab(null, 0.0, null, 0.0);
-                        }
-                        else
-                        {
-                            robot.servoGrabber.cancel();
-                        }
+                        robot.grabber.cancel();
                     }
                 }
                 break;
 
             case DpadRight:
-                if (pressed)
+                if (robot.grabber != null && pressed)
                 {
-                    if (robot.grabber != null)
+                    if (!robot.grabber.isAutoActive())
                     {
-                        if (!robot.grabber.isAutoActive())
-                        {
-                            robot.grabber.autoEject(null);
-                        }
-                        else
-                        {
-                            robot.grabber.cancel();
-                        }
+                        robot.grabber.autoDump(null, 0.0, null);
+                    }
+                    else
+                    {
+                        robot.grabber.cancel();
                     }
                 }
                 break;
@@ -631,11 +614,11 @@ public class FtcTeleOp extends FtcOpMode
                         if (operatorAltFunc)
                         {
                             // This is manual override in case the sensor is not working, just turn it ON.
-                            robot.grabber.intake();
+                            robot.grabber.intake(null, 0.0, null);
                         }
                         else
                         {
-                            robot.grabber.autoIntake(null);
+                            robot.grabber.autoIntake(null, 0.0, null);
                         }
                     }
                     else
@@ -647,7 +630,7 @@ public class FtcTeleOp extends FtcOpMode
                         else
                         {
                             // This is manual override in case the sensor is not working, just turn it OFF.
-                            robot.grabber.stop();
+                            robot.grabber.stop(null);
                         }
                     }
                 }
@@ -661,11 +644,11 @@ public class FtcTeleOp extends FtcOpMode
                         if (operatorAltFunc)
                         {
                             // This is manual override in case the sensor is not working, just turn it ON.
-                            robot.grabber.eject();
+                            robot.grabber.dump(null, 0.0, null);
                         }
                         else
                         {
-                            robot.grabber.autoEject(null);
+                            robot.grabber.autoDump(null, 0.0, null);
                         }
                     }
                     else
@@ -677,7 +660,7 @@ public class FtcTeleOp extends FtcOpMode
                         else
                         {
                             // This is manual override in case the sensor is not working, just turn it OFF.
-                            robot.grabber.stop();
+                            robot.grabber.stop(null);
                         }
                     }
                 }

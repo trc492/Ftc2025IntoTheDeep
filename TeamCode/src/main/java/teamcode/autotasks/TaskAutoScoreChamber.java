@@ -184,7 +184,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
+                ", grabber=" + robot.grabber.getOwner() + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -205,7 +205,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
+                ", grabber=" + robot.grabber.getOwner() + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
             robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
@@ -276,7 +276,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 break;
 
             case SCORE_CHAMBER:
-                robot.grabber.autoEject(currOwner, event, 0.0);
+                robot.grabber.autoDump(currOwner, 0.0, event);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
 

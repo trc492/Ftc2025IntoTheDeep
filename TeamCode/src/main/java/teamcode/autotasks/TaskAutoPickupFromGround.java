@@ -131,7 +131,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
+                ", grabber=" + robot.grabber.getOwner() + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -152,7 +152,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
+                ", grabber=" + robot.grabber.getOwner() + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
             robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
@@ -267,7 +267,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 {
                     // We only care about sample color if we pick up from submersible.
                     // We assume the driver would drive up to the correct sample color for picking up from ground.
-                    robot.grabber.autoIntake(currOwner, 0.0, grabberEvent, 0.0);
+                    robot.grabber.autoIntake(currOwner, 0.0, grabberEvent);
                     sm.addEvent(grabberEvent);
                     robot.extenderArm.setPosition(null, samplePose.y, null, event);
                     sm.addEvent(event);
@@ -286,7 +286,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 {
                     if (robot.ledIndicator != null)
                     {
-                        robot.ledIndicator.setDetectedSample(robot.grabberSubsystem.getSampleType(), false);
+                        robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), false);
                     }
                 }
                 stopAutoTask(true);

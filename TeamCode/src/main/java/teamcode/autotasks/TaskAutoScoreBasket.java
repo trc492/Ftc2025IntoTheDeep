@@ -138,7 +138,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
+                ", grabber=" + robot.grabber.getOwner() + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -159,7 +159,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
+                ", grabber=" + robot.grabber.getOwner() + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
             robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
@@ -233,7 +233,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     GameParams.BASKET_LOW_WRIST_SCORE_POS: GameParams.BASKET_HIGH_WRIST_SCORE_POS;
                 robot.extenderArm.setPosition(null, null, wristPos, null);
-                robot.grabber.autoEject(currOwner, 0.5, event, 0.0);
+                robot.grabber.autoDump(currOwner, 0.5, event);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM, 2.0);
                 break;
 

@@ -128,7 +128,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
+                ", grabber=" + robot.grabber.getOwner() + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -149,7 +149,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + ownershipMgr.getOwner(robot.grabber) + ").");
+                ", grabber=" + robot.grabber.getOwner() + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
             robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
@@ -213,7 +213,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             case PICKUP_SPECIMEN:
                 // intake design not confirmed
                 // TODO: There will be a color sensor on the intake.
-                robot.grabber.autoIntake(currOwner, event, 0.0);
+                robot.grabber.autoIntake(currOwner, 0.0, null);
                 // based on tuning
                 robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.1, 0.0);
                 sm.waitForSingleEvent(event, State.DONE, 4.0);
@@ -233,7 +233,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 
                 if (robot.grabber != null && robot.ledIndicator != null)
                 {
-                    robot.ledIndicator.setDetectedSample(robot.grabberSubsystem.getSampleType(), false);
+                    robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), false);
                 }
                 stopAutoTask(true);
                 break;

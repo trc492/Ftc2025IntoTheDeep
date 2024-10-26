@@ -84,6 +84,7 @@ public class Robot
     public TrcMotor auxClimber;
     public Grabber grabberSubsystem;
     public TrcMotorGrabber grabber;
+    public ServoGrabber servoGrabberSubsystem;
     public TrcServoGrabber servoGrabber;
     // Autotasks.
     public TaskAutoPickupFromGround pickupFromGroundTask;
@@ -184,7 +185,8 @@ public class Robot
 
                 if (RobotParams.Preferences.useServoGrabber)
                 {
-                    servoGrabber = new ServoGrabber().getGrabber();
+                    servoGrabberSubsystem = new ServoGrabber(this);
+                    servoGrabber = servoGrabberSubsystem.getGrabber();
                 }
 
                 // Creating autotasks
@@ -399,6 +401,16 @@ public class Robot
                         "Grabber: power=%.3f,hasObject=%s,sensorDist=%.3f,sensorHue=%.3f,sample=%s,autoActive=%s",
                         grabber.getPower(), grabber.hasObject(), grabberSubsystem.getSensorDistance(),
                         grabberSubsystem.getSensorHue(), grabberSubsystem.getSampleType(), grabber.isAutoActive());
+                }
+
+                if (servoGrabber != null)
+                {
+                    dashboard.displayPrintf(
+                        lineNum++,
+                        "Grabber: pos=%.3f,hasObject=%s,sensorDist=%.3f,sensorHue=%.3f,sample=%s,autoActive=%s",
+                        servoGrabber.getPosition(), servoGrabber.hasObject(),
+                        servoGrabberSubsystem.getSensorDistance(), servoGrabberSubsystem.getSensorHue(),
+                        grabberSubsystem.getSampleType(), servoGrabber.isAutoActive());
                 }
             }
         }

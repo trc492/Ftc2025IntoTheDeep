@@ -96,7 +96,7 @@ public class RobotBase
                 if (RobotParams.Preferences.usePinpointOdometry)
                 {
                     FtcPinpointOdometry.Config ppOdoConfig = new FtcPinpointOdometry.Config()
-                        .setPodOffsets(156.0, -144.0)   // Offsets from robot center
+                        .setPodOffsets(-156.0, -144.0)  // Offsets from robot center
                         .setEncoderResolution(ODWHEEL_CPR / (Math.PI * ODWHEEL_DIAMETER_MM))
                         .setEncodersInverted(false, false);
                     absoluteOdometry = new FtcPinpointOdometry("pinpointOdo", ppOdoConfig);

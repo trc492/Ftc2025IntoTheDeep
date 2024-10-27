@@ -77,7 +77,7 @@ public class Vision
     //
     // YCrCb Color Space.
     private static final int colorConversion = Imgproc.COLOR_RGB2YCrCb;
-    private static final double[] redSampleColorThresholds = {50.0, 180.0, 170.0, 240.0, 80.0, 120.0};
+    private static final double[] redSampleColorThresholds = {10.0, 180.0, 170.0, 240.0, 80.0, 120.0};
     private static final double[] blueSampleColorThresholds = {30.0, 180.0, 100.0, 140.0, 160.0, 200.0};
     private static final double[] yellowSampleColorThresholds = {100.0, 250.0, 120.0, 200.0, 30.0, 80.0};
     private static final TrcOpenCvColorBlobPipeline.FilterContourParams sampleFilterContourParams =
@@ -86,6 +86,15 @@ public class Vision
             .setMinPerimeter(100.0)
             .setWidthRange(10.0, 1000.0)
             .setHeightRange(10.0, 1000.0)
+            .setSolidityRange(0.0, 100.0)
+            .setVerticesRange(0.0, 1000.0)
+            .setAspectRatioRange(0.5, 2.5);
+    private static final TrcOpenCvColorBlobPipeline.FilterContourParams tuneFilterContourParams =
+        new TrcOpenCvColorBlobPipeline.FilterContourParams()
+            .setMinArea(10.0)
+            .setMinPerimeter(12.0)
+            .setWidthRange(0.0, 1000.0)
+            .setHeightRange(0.0, 1000.0)
             .setSolidityRange(0.0, 100.0)
             .setVerticesRange(0.0, 1000.0)
             .setAspectRatioRange(0.5, 2.5);
@@ -150,8 +159,8 @@ public class Vision
 
             tracer.traceInfo(moduleName, "Starting RawEocvColorBlobVision...");
             rawColorBlobPipeline = new FtcRawEocvColorBlobPipeline(
-                "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, sampleFilterContourParams, true,
-                true);
+                "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, tuneFilterContourParams, true,
+                RobotParams.Preferences.doWatershed);
             // By default, display original Mat.
             rawColorBlobPipeline.setVideoOutput(0);
             rawColorBlobPipeline.setAnnotateEnabled(true);
@@ -200,19 +209,22 @@ public class Vision
 
                 redSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams,
-                    true, true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    true, RobotParams.Preferences.doWatershed, robot.robotInfo.webCam1.cameraRect,
+                    robot.robotInfo.webCam1.worldRect, true);
                 redSampleProcessor = redSampleVision.getVisionProcessor();
                 visionProcessorsList.add(redSampleProcessor);
 
                 blueSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.BLUE_SAMPLE, colorConversion, blueSampleColorThresholds, sampleFilterContourParams,
-                    true, true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    true, RobotParams.Preferences.doWatershed, robot.robotInfo.webCam1.cameraRect,
+                    robot.robotInfo.webCam1.worldRect, true);
                 blueSampleProcessor = blueSampleVision.getVisionProcessor();
                 visionProcessorsList.add(blueSampleProcessor);
 
                 yellowSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.YELLOW_SAMPLE, colorConversion, yellowSampleColorThresholds, sampleFilterContourParams,
-                    true, true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    true, RobotParams.Preferences.doWatershed, robot.robotInfo.webCam1.cameraRect,
+                    robot.robotInfo.webCam1.worldRect, true);
                 yellowSampleProcessor = yellowSampleVision.getVisionProcessor();
                 visionProcessorsList.add(yellowSampleProcessor);
             }

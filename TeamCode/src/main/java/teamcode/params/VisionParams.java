@@ -51,15 +51,15 @@ public class VisionParams
             camOrientation = OpenCvCameraRotation.UPRIGHT;
             // Homography: cameraRect in pixels, worldRect in inches
             cameraRect = new TrcHomographyMapper.Rectangle(
-                0.0, 120.0,                                             // Camera Top Left
-                camImageWidth -1, 120.0,                                // Camera Top Right
-                0.0, camImageHeight - 1,                                // Camera Bottom Left
-                camImageWidth - 1, camImageHeight - 1);                 // Camera Bottom Right
+                19.0, 20.5,                     // Camera Top Left
+                609.0, 43.0,                    // Camera Top Right
+                85.0, 433.0,                    // Camera Bottom Left
+                583.0, 445.0);                  // Camera Bottom Right
             worldRect = new TrcHomographyMapper.Rectangle(
-                -12.5626, 48.0 - 9.0 - camYOffset,   // World Top Left
-                11.4375, 44.75 - 9.0 - camYOffset,   // World Top Right
-                -2.5625, 21.0 - 9.0 - camYOffset,    // World Bottom Left
-                2.5626, 21.0 - 9.0 - camYOffset);    // World Bottom Right
+                -21.0, 45.25,                   // World Top Left
+                20.5, 45.25,                    // World Top Right
+                -4.25, 9.0,                     // World Bottom Left
+                5.75, 9.0);                     // World Bottom Right
         }   //SampleCam
     }   //class SampleCam
 

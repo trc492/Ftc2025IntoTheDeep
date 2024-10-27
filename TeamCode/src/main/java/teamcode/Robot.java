@@ -177,7 +177,8 @@ public class Robot
                 {
                     grabber = new Grabber(this);
                 }
-
+                // Zero calibrate all subsystems only at init time.
+                zeroCalibrate();
                 // Creating autotasks
                 pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
                 pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);

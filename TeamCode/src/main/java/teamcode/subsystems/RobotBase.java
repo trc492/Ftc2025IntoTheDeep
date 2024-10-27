@@ -147,7 +147,8 @@ public class RobotBase
             webCam2 = null;
             limelight = new VisionParams.Limelight();
             // Miscellaneous
-            indicatorName = "gobildaLED";
+            indicatorName = RobotParams.Preferences.useBlinkinLED? "blinkin":
+                            RobotParams.Preferences.useGobildaLED? "gobildaLED": null;
         }   //IntoTheDeepRobotParams
     }   //class IntoTheDeepRobotParams
 

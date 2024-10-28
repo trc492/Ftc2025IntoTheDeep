@@ -133,8 +133,6 @@ public class FtcTeleOp extends FtcOpMode
         //
         robot.startMode(nextMode);
         //
-
-
         // Enable AprilTag vision for re-localization.
         //
         if (robot.vision != null)
@@ -149,6 +147,13 @@ public class FtcTeleOp extends FtcOpMode
                 robot.globalTracer.traceInfo(moduleName, "Enabling WebCam AprilTagVision.");
                 robot.vision.setAprilTagVisionEnabled(true);
             }
+
+            Vision.SampleType sampleType =
+                FtcAuto.autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
+                    Vision.SampleType.RedAllianceSamples:
+                FtcAuto.autoChoices.alliance == FtcAuto.Alliance.BLUE_ALLIANCE?
+                    Vision.SampleType.BlueAllianceSamples: Vision.SampleType.AnySample;
+            robot.vision.setSampleVisionEnabled(sampleType, true);
         }
     }   //startMode
 

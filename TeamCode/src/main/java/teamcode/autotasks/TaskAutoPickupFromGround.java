@@ -70,6 +70,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
+    private final TrcEvent armEvent;
 
     private String currOwner = null;
     private TrcPose2D samplePose = null;
@@ -87,6 +88,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         this.ownerName = ownerName;
         this.robot = robot;
         event = new TrcEvent(moduleName);
+        armEvent = new TrcEvent(moduleName + ".armEvent");
     }   //TaskAutoPickupFromGround
 
     /**
@@ -194,13 +196,12 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 if (robot.vision != null)
                 {
                     // Prep for pickup.
-                    robot.vision.setSampleVisionEnabled(taskParams.sampleType, true);
                     if (robot.extenderArm != null)
                     {
                         robot.extenderArm.setPosition(
                             Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, Wrist.Params.GROUND_PICKUP_POS,
-                            event);
-                        sm.waitForSingleEvent(event, State.FIND_SAMPLE);
+                            armEvent);
+                        sm.waitForSingleEvent(armEvent, State.FIND_SAMPLE);
                     }
                     else
                     {
@@ -221,7 +222,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         robot.vision.getDetectedSample(taskParams.sampleType, -1);
                     if (sampleInfo != null)
                     {
-                        samplePose = sampleInfo.objPose;
+                        samplePose = robot.robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose);
                         String msg = String.format(
                             Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
                             sampleInfo.detectedObj.label, sampleInfo.objPose.x, sampleInfo.objPose.y,
@@ -242,7 +243,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 }
                 else
                 {
-                    tracer.traceInfo(moduleName, "Vision not enabled.");
+                    tracer.traceInfo(moduleName, taskParams.sampleType + " vision not enabled.");
                     sm.setState(State.DONE);
                 }
                 break;
@@ -250,14 +251,13 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case TURN_TO_SAMPLE:
                 if (samplePose != null)
                 {
-                    TrcPose2D convertedPose = samplePose.addRelativePose(robot.robotInfo.webCam1.camPose.toPose2D());
+                    // Turning is a lot faster than extending, so just wait for extender event.
                     robot.robotDrive.purePursuitDrive.start(
                         currOwner, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        new TrcPose2D(0.0, 0.0, convertedPose.angle));
-                    robot.extenderArm.setPosition(null,
-                            robot.robotDrive.driveBase.getFieldPosition().distanceTo(convertedPose) + RobotParams.Robot.ELBOW_OFFSET, null, event);
-                    sm.waitForSingleEvent(event, State.PICK_UP_SAMPLE);
+                        new TrcPose2D(0.0, 0.0, samplePose.angle));
+                    robot.extenderArm.setPosition(null, samplePose.y + Extender.Params.PIVOT_Y_OFFSET, null, armEvent);
+                    sm.waitForSingleEvent(armEvent, State.PICK_UP_SAMPLE);
                 }
                 else
                 {
@@ -271,8 +271,10 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                     // We only care about sample color if we pick up from submersible.
                     // We assume the driver would drive up to the correct sample color for picking up from ground.
                     robot.grabber.autoIntake(currOwner, 0.0, event);
-                    robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 6.0, null, null, event);
-                    sm.waitForSingleEvent(event, State.DONE, 4.0);
+                    sm.addEvent(event);
+                    robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 6.0, null, null, armEvent);
+                    sm.addEvent(armEvent);
+                    sm.waitForEvents(State.DONE, false, 4.0);
                 }
                 else
                 {

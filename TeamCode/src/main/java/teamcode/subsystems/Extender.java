@@ -47,6 +47,7 @@ public class Extender
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.75;
 
+        public static final double PIVOT_Y_OFFSET               = -13.0;    // pivot Y offset from robot center inches
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.0;
         public static final double GROUND_PICKUP_POS            = 18.0;
@@ -86,6 +87,8 @@ public class Extender
         extender.setStallProtection(
             Params.STALL_MIN_POWER, Params.STALL_TOLERANCE, Params.STALL_TIMEOUT, Params.STALL_RESET_TIMEOUT);
         extender.setPidStallDetectionEnabled(Params.STALL_RESET_TIMEOUT, Params.STALL_TIMEOUT, Params.STALL_TOLERANCE);
+        // We may extend it beyond its upper limit and we don't have physical upper limit switch, so set soft limits.
+        extender.setSoftPositionLimits(Extender.Params.MIN_POS, Extender.Params.MAX_POS, false);
         extender.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
     }   //Extender
 

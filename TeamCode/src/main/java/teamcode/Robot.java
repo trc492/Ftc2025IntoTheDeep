@@ -146,6 +146,10 @@ public class Robot
             //
             if (RobotParams.Preferences.useSubsystems)
             {
+//                TrcMotor elbow = null;
+//                TrcMotor extender = null;
+//                TrcServo wrist = null;
+//
                 if (RobotParams.Preferences.useElbow)
                 {
                     elbow = new Elbow(this).getMotor();
@@ -165,7 +169,7 @@ public class Robot
                     RobotParams.Preferences.useExtender &&
                     RobotParams.Preferences.useWrist)
                 {
-                    extenderArm = new TaskExtenderArm("ExtenderArm", this);
+                    extenderArm = new TaskExtenderArm("ExtenderArm", elbow, extender, wrist);
                 }
 
                 if (RobotParams.Preferences.useAuxClimber)
@@ -353,26 +357,30 @@ public class Robot
             //
             if (RobotParams.Preferences.showSubsystems)
             {
-                if (elbow != null)
+                if (extenderArm != null)
                 {
-                    dashboard.displayPrintf(
-                        lineNum++,
-                        "Elbow: power=%.3f,pos=%.1f/%.1f,limitSw=%s",
-                        elbow.getPower(), elbow.getPosition(), elbow.getPidTarget(), elbow.isLowerLimitSwitchActive());
-                }
+                    if (extenderArm.elbow != null)
+                    {
+                        dashboard.displayPrintf(
+                            lineNum++,
+                            "Elbow: power=%.3f,pos=%.1f/%.1f,limitSw=%s",
+                            extenderArm.elbow.getPower(), extenderArm.elbow.getPosition(),
+                            extenderArm.elbow.getPidTarget(), extenderArm.elbow.isLowerLimitSwitchActive());
+                    }
 
-                if (extender != null)
-                {
-                    dashboard.displayPrintf(
-                        lineNum++,
-                        "Extender: power=%.3f,pos=%.1f/%.1f,limitSw=%s",
-                        extender.getPower(), extender.getPosition(), extender.getPidTarget(),
-                        extender.isLowerLimitSwitchActive());
-                }
+                    if (extenderArm.extender != null)
+                    {
+                        dashboard.displayPrintf(
+                            lineNum++,
+                            "Extender: power=%.3f,pos=%.1f/%.1f,limitSw=%s",
+                            extenderArm.extender.getPower(), extenderArm.extender.getPosition(),
+                            extenderArm.extender.getPidTarget(), extenderArm.extender.isLowerLimitSwitchActive());
+                    }
 
-                if (wrist != null)
-                {
-                    dashboard.displayPrintf(lineNum++, "Wrist: pos=%.3f", wrist.getPosition());
+                    if (extenderArm.wrist != null)
+                    {
+                        dashboard.displayPrintf(lineNum++, "Wrist: pos=%.3f", extenderArm.wrist.getPosition());
+                    }
                 }
 
                 if (auxClimber != null)
@@ -419,9 +427,6 @@ public class Robot
         globalTracer.traceInfo(moduleName, "Cancel all operations.");
 
         if (extenderArm != null) extenderArm.cancel();
-        if (elbow != null) elbow.cancel();
-        if (extender != null) extender.cancel();
-        if (wrist != null) wrist.cancel();
         if (auxClimber != null) auxClimber.cancel();
         if (grabber != null) grabber.cancel();
         if (robotDrive != null) robotDrive.cancel();
@@ -434,14 +439,9 @@ public class Robot
      */
     public void zeroCalibrate(String owner)
     {
-        if (elbow != null)
+        if (extenderArm != null)
         {
-            elbow.zeroCalibrate(owner, Elbow.Params.ZERO_CAL_POWER);
-        }
-
-        if (extender != null)
-        {
-            extender.zeroCalibrate(owner, Extender.Params.ZERO_CAL_POWER);
+            extenderArm.zeroCalibrate(owner);
         }
 
         if (auxClimber != null)

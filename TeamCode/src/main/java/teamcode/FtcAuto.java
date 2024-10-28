@@ -83,7 +83,7 @@ public class FtcAuto extends FtcOpMode
     public static class AutoChoices
     {
         public double delay = 0.0;
-        public Alliance alliance = Alliance.RED_ALLIANCE;
+        public Alliance alliance = null;
         public AutoStrategy strategy = AutoStrategy.FULL_AUTO;
         public StartPos startPos = StartPos.NET_ZONE;
         public Robot.GamePieceType preloadType = Robot.GamePieceType.SPECIMEN;

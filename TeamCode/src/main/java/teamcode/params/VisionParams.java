@@ -41,11 +41,11 @@ public class VisionParams
             camName = "Webcam 1";
             camImageWidth = 640;
             camImageHeight = 480;
-            camXOffset = 4.5;                   // Inches to the right from robot center
-            camYOffset = 4.5;                   // Inches forward from robot center
-            camZOffset = 9.75;                  // Inches up from the floor
-            camPitch = 15.0;                    // degrees down from horizontal
-            camYaw = 0.0;                       // degrees clockwise from robot front
+            camXOffset = -4.25;                 // Inches to the right from robot center
+            camYOffset = 5.5;                   // Inches forward from robot center
+            camZOffset = 10.608;                // Inches up from the floor
+            camYaw = 0.0;                       // degrees clockwise from robot front ???
+            camPitch = 15.0;                    // degrees down from horizontal ???
             camRoll = 0.0;
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
             camOrientation = OpenCvCameraRotation.UPRIGHT;
@@ -78,8 +78,8 @@ public class VisionParams
             camXOffset = 135.47*TrcUtil.INCHES_PER_MM;  // Inches to the right from robot center
             camYOffset = 2.073;                         // Inches forward from robot center
             camZOffset = 10.758;                        // Inches up from the floor
-            camPitch = 0.0;                             // degrees down from horizontal
             camYaw = 0.0;                               // degrees clockwise from robot front
+            camPitch = 0.0;                             // degrees down from horizontal
             camRoll = 0.0;
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
         }   //Limelight

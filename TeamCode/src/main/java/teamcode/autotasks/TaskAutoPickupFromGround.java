@@ -25,13 +25,11 @@ package teamcode.autotasks;
 import java.util.Locale;
 
 import teamcode.Robot;
-import teamcode.params.RobotParams;
-import teamcode.params.VisionParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
 import teamcode.vision.Vision;
+import trclib.dataprocessor.TrcUtil;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
@@ -251,12 +249,14 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case TURN_TO_SAMPLE:
                 if (samplePose != null)
                 {
+                    double extenderLen = TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET;
+                    tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                     // Turning is a lot faster than extending, so just wait for extender event.
                     robot.robotDrive.purePursuitDrive.start(
                         currOwner, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         new TrcPose2D(0.0, 0.0, samplePose.angle));
-                    robot.extenderArm.setPosition(null, samplePose.y - Extender.Params.PIVOT_Y_OFFSET, null, armEvent);
+                    robot.extenderArm.setPosition(null, extenderLen, null, armEvent);
                     sm.waitForSingleEvent(armEvent, State.PICK_UP_SAMPLE);
                 }
                 else

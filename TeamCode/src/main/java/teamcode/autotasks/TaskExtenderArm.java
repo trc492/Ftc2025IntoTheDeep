@@ -102,6 +102,9 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     public void zeroCalibrate(String owner)
     {
+        // Strictly speaking, this is not an autotask operation because it is not calling startAutoTask.
+        // Therefore, it does not acquire subsystem ownership for the caller. It's the responsibility of the caller
+        // to acquire ownership if desired, or pass in null owner if no ownership required.
         elbow.zeroCalibrate(owner, Elbow.Params.ZERO_CAL_POWER);
         extender.zeroCalibrate(owner, Extender.Params.ZERO_CAL_POWER);
     }   //zeroCalibrate
@@ -175,8 +178,8 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         tracer.traceInfo(moduleName, "Canceling AutoTask");
         stopAutoTask(false);
         // stopAutoTask only stop subsystems if auto task is active.
-        // If subsystems are active not as part of AutoTask operation, stopAutoTask won't do anything.
-        // Let's cancel the subsystems explicitly.
+        // If subsystems are active not as part of AutoTask operation (e.g. zeroCalibrate), stopAutoTask won't do
+        // anything. Let's cancel the subsystems explicitly.
         stopSubsystems();
     }   //cancel
 
@@ -309,9 +312,6 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                         currOwner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 4.0);
                     if (safeSequence)
                     {
-                        // Don't need a callback if we are waiting for its completion.
-                        elbowEvent.setCallback(null, null);
-                        elbowCompleted = true;
                         sm.waitForSingleEvent(elbowEvent, State.SET_EXTENDER_POSITION);
                     }
                     else
@@ -337,9 +337,6 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                         4.0);
                     if (safeSequence)
                     {
-                        // Don't need a callback if we are wait for its completion.
-                        extenderEvent.setCallback(null, null);
-                        extenderCompleted = true;
                         sm.waitForSingleEvent(extenderEvent, State.CHECK_COMPLETION);
                     }
                     else

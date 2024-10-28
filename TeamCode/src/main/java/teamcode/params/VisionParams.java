@@ -41,8 +41,8 @@ public class VisionParams
             camName = "Webcam 1";
             camImageWidth = 640;
             camImageHeight = 480;
-            camXOffset = 0.0;                   // Inches to the right from robot center
-            camYOffset = 2.0;                   // Inches forward from robot center
+            camXOffset = 4.5;                   // Inches to the right from robot center
+            camYOffset = 4.5;                   // Inches forward from robot center
             camZOffset = 9.75;                  // Inches up from the floor
             camPitch = 15.0;                    // degrees down from horizontal
             camYaw = 0.0;                       // degrees clockwise from robot front

@@ -191,7 +191,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 {
                     robot.extenderArm.setPosition(
                         Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS,
-                        Wrist.Params.GROUND_PICKUP_POS, event);
+                        Wrist.Params.HIGH_CHAMBER_SCORE_POS, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
                 }
                 else
@@ -213,9 +213,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             case PICKUP_SPECIMEN:
                 // intake design not confirmed
                 // TODO: There will be a color sensor on the intake.
-                robot.grabber.autoIntake(currOwner, 0.0, null);
+                robot.grabber.autoIntake(currOwner, 0.0, event);
                 // based on tuning
-                robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.1, 0.0);
+                robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.15, 0.0);
                 sm.waitForSingleEvent(event, State.DONE, 4.0);
                 break;
 
@@ -227,7 +227,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     robot.extenderArm.setPosition(
                         Elbow.Params.SPECIMEN_PICKUP_POS + 10.0,
                         Extender.Params.MIN_POS,
-                        Wrist.Params.GROUND_PICKUP_POS,
+                        Wrist.Params.HIGH_CHAMBER_SCORE_POS,
                         null);
                 }
 

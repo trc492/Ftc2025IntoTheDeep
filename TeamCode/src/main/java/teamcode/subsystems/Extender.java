@@ -51,16 +51,16 @@ public class Extender
         public static final double MAX_POS                      = 35.0;
         public static final double GROUND_PICKUP_POS            = 18.0;
         public static final double SPECIMEN_PICKUP_POS          = 18.0; // TODO: NEEDS TUNING
-        public static final double LOW_BASKET_SCORE_POS         = 23.0;
-        public static final double HIGH_BASKET_SCORE_POS        = 35.0;
-        public static final double LOW_CHAMBER_SCORE_POS        = 20.0;
-        public static final double HIGH_CHAMBER_SCORE_POS       = 25.0;
+        public static final double LOW_BASKET_SCORE_POS         = 16.0;
+        public static final double HIGH_BASKET_SCORE_POS        = 34.0;
+        public static final double LOW_CHAMBER_SCORE_POS        = 18.5;
+        public static final double HIGH_CHAMBER_SCORE_POS       = 23.0;
         public static final double[] posPresets                 = {MIN_POS, 20.0, 25.0, 30.0, 35.0};
         public static final double POS_PRESET_TOLERANCE         = 3.0;
 
         public static final TrcPidController.PidCoefficients posPidCoeffs =
             new TrcPidController.PidCoefficients(5.0, 0.0, 0.0, 0.0, 0.0);
-        public static final double POS_PID_TOLERANCE            = 0.1;
+        public static final double POS_PID_TOLERANCE            = 0.2;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
         public static final double STALL_TOLERANCE              = 0.1;
         public static final double STALL_TIMEOUT                = 0.1;

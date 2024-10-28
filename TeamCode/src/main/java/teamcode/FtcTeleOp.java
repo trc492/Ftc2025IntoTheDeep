@@ -100,7 +100,7 @@ public class FtcTeleOp extends FtcOpMode
         driverGamepad.setLeftStickInverted(false, true);
         driverGamepad.setRightStickInverted(false, true);
         operatorGamepad.setLeftStickInverted(false, true);
-        operatorGamepad.setRightStickInverted(false, false);
+        operatorGamepad.setRightStickInverted(false, true);
         drivePowerScale = RobotParams.Robot.DRIVE_NORMAL_SCALE;
         turnPowerScale = RobotParams.Robot.TURN_NORMAL_SCALE;
         setDriveOrientation(RobotParams.Robot.DRIVE_ORIENTATION);
@@ -505,7 +505,7 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case Start:
-                if (driverAltFunc)
+                if (!driverAltFunc)
                 {
                     if (robot.vision != null &&
                         (robot.vision.isLimelightVisionEnabled() || robot.vision.isAprilTagVisionEnabled()) &&

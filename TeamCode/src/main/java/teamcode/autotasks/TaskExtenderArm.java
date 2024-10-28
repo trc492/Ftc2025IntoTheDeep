@@ -145,7 +145,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     public void retract(TrcEvent completionEvent)
     {
-        setPosition(false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.GROUND_PICKUP_POS, completionEvent);
+        setPosition(false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.RETRACT_POS, completionEvent);
     }   //retract
 
     /**

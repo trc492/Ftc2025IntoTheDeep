@@ -64,6 +64,7 @@ public class Vision
 
     public enum SampleType
     {
+        Specimen,
         RedSample,
         BlueSample,
         YellowSample,

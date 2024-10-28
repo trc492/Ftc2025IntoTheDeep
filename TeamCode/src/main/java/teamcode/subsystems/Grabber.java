@@ -69,17 +69,20 @@ public class Grabber
 
         public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
         public static final boolean SENSOR_TRIGGER_INVERTED     = true;
-        public static final double SENSOR_TRIGGER_THRESHOLD     = 0.8;
-        public static final double RED_THRESHOLD_LOW            = 20.0;
+        public static final double SENSOR_TRIGGER_THRESHOLD     = 1.3;
+        public static final double RED_THRESHOLD_LOW            = 30.0;
         public static final double RED_THRESHOLD_HIGH           = 340.0;
         public static final double YELLOW_THRESHOLD_LOW         = 60.0;
         public static final double YELLOW_THRESHOLD_HIGH        = 80.0;
+        public static final double BLACK_THRESHOLD_LOW          = 160.0;
+        public static final double BLACK_THRESHOLD_HIGH         = 190.0;
         public static final double BLUE_THRESHOLD_LOW           = 200.0;
         public static final double BLUE_THRESHOLD_HIGH          = 240.0;
         // Color thresholds must be sorting in ascending order.
         public static final double[] COLOR_THRESHOLDS           = new double[] {
             RED_THRESHOLD_LOW, YELLOW_THRESHOLD_LOW, YELLOW_THRESHOLD_HIGH,
-            BLUE_THRESHOLD_LOW, BLUE_THRESHOLD_HIGH, RED_THRESHOLD_HIGH};
+            BLACK_THRESHOLD_LOW, BLACK_THRESHOLD_HIGH, BLUE_THRESHOLD_LOW,
+                BLUE_THRESHOLD_HIGH, RED_THRESHOLD_HIGH};
 
         public static final double INTAKE_POWER                 = 1.0;
         public static final double EJECT_POWER                  = -0.5;
@@ -384,6 +387,10 @@ public class Grabber
         else if (hue >= Params.BLUE_THRESHOLD_LOW && hue <= Params.BLUE_THRESHOLD_HIGH)
         {
             sampleType = Vision.SampleType.BlueSample;
+        }
+        else if (hue >= Params.BLACK_THRESHOLD_LOW && hue <= Params.BLACK_THRESHOLD_HIGH)
+        {
+            sampleType = Vision.SampleType.Specimen;
         }
         else
         {

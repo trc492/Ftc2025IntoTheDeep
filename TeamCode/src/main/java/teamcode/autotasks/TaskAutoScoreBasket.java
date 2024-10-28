@@ -29,6 +29,7 @@ import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
 import trclib.robotcore.TrcAutoTask;
+import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
@@ -236,8 +237,10 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
                 robot.extenderArm.setPosition(null, null, wristPos, null);
-                robot.grabber.autoDump(currOwner, 0.5, event);
-                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM, 2.0);
+                robot.grabber.getMotorGrabber().tracer.setTraceLevel(TrcDbgTrace.MsgLevel.DEBUG);
+                robot.grabber.autoDump(currOwner, 1.5, event);
+                robot.grabber.getMotorGrabber().tracer.setTraceLevel(TrcDbgTrace.MsgLevel.INFO);
+                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM, 3.0);
                 break;
 
             case RETRACT_EXTENDER_ARM:

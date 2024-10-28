@@ -49,7 +49,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         SET_EXTENDER,
         LOWER_ELBOW,
         SCORE_CHAMBER,
-        RETRACT_EXTENDER_ARM,
+//        RETRACT_EXTENDER_ARM,
+        DRIVE_BACK,
         DONE
     }   //enum State
 
@@ -254,7 +255,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                         currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance, false));
-                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, null, null);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, taskParams.wristPos, null);
                     sm.waitForSingleEvent(event, State.SET_EXTENDER);
                 }
                 else
@@ -275,20 +276,26 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 break;
 
             case LOWER_ELBOW:
-                robot.extenderArm.setPosition(taskParams.elbowAngle - 10.0, null, null, event);
+                robot.extenderArm.setPosition(taskParams.elbowAngle - 20.0, null, null, event);
 //                robot.extenderArm.setPosition(null, null, taskParams.wristPos, null);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER);
                 break;
 
             case SCORE_CHAMBER:
                 robot.grabber.autoDump(currOwner, 0.0, event);
-                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
-                break;
-
-            case RETRACT_EXTENDER_ARM:
-                robot.extenderArm.retract(event);
                 sm.waitForSingleEvent(event, State.DONE);
                 break;
+
+//            case RETRACT_EXTENDER_ARM:
+//                robot.extenderArm.retract(event);
+//                sm.waitForSingleEvent(event, State.DONE);
+//                break;
+//            case DRIVE_BACK:
+//                robot.robotDrive.purePursuitDrive.start(
+//                        currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
+//                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+//                        ;
+//                sm.waitForSingleEvent(event, State.DONE);
 
             default:
             case DONE:

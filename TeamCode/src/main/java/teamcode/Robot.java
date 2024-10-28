@@ -67,6 +67,7 @@ public class Robot
     public static FtcMatchInfo matchInfo = null;
     private static TrcPose2D endOfAutoRobotPose = null;
     private static double nextStatusUpdateTime = 0.0;
+    public static Vision.SampleType sampleType = Vision.SampleType.AnySample;
     // Robot Drive.
     public FtcRobotDrive.RobotInfo robotInfo;
     public FtcRobotDrive robotDrive;
@@ -214,6 +215,13 @@ public class Robot
      */
     public void startMode(TrcRobot.RunMode runMode)
     {
+        if (vision != null)
+        {
+            // Enable the correct sample type vision according to Alliance color from AutoChoices or if in standalone
+            // TeleOp (no prior auto run), enable vision for any sample.
+            vision.setSampleVisionEnabled(sampleType, true);
+        }
+
         if (robotDrive != null)
         {
             //

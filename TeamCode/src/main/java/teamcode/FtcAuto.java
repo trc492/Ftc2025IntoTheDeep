@@ -36,6 +36,7 @@ import ftclib.robotcore.FtcOpMode;
 import teamcode.autocommands.CmdAutoNetZone;
 import teamcode.autocommands.CmdAutoObservationZone;
 import teamcode.params.RobotParams;
+import teamcode.vision.Vision;
 import trclib.command.CmdPidDrive;
 import trclib.command.CmdTimedDrive;
 import trclib.pathdrive.TrcPose2D;
@@ -192,6 +193,8 @@ public class FtcAuto extends FtcOpMode
                 autoCommand = null;
                 break;
         }
+        Robot.sampleType = autoChoices.alliance == Alliance.RED_ALLIANCE?
+            Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
         robot.zeroCalibrate();
     }   //robotInit
 

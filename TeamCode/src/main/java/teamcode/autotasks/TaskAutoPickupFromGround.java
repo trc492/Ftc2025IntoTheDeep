@@ -256,7 +256,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         currOwner, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         new TrcPose2D(0.0, 0.0, samplePose.angle));
-                    robot.extenderArm.setPosition(null, samplePose.y + Extender.Params.PIVOT_Y_OFFSET, null, armEvent);
+                    robot.extenderArm.setPosition(null, samplePose.y - Extender.Params.PIVOT_Y_OFFSET, null, armEvent);
                     sm.waitForSingleEvent(armEvent, State.PICK_UP_SAMPLE);
                 }
                 else

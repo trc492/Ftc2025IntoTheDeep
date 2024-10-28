@@ -82,7 +82,7 @@ public class Grabber
         public static final double[] COLOR_THRESHOLDS           = new double[] {
             RED_THRESHOLD_LOW, YELLOW_THRESHOLD_LOW, YELLOW_THRESHOLD_HIGH,
             BLACK_THRESHOLD_LOW, BLACK_THRESHOLD_HIGH, BLUE_THRESHOLD_LOW,
-                BLUE_THRESHOLD_HIGH, RED_THRESHOLD_HIGH};
+            BLUE_THRESHOLD_HIGH, RED_THRESHOLD_HIGH};
 
         public static final double INTAKE_POWER                 = 1.0;
         public static final double EJECT_POWER                  = -0.5;

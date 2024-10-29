@@ -29,7 +29,6 @@ import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
 import trclib.robotcore.TrcAutoTask;
-import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
@@ -201,8 +200,6 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         switch (state)
         {
             case GO_TO_SCORE_POSITION:
-                // Code Review: Is it really realistic to not drive??? If you don't drive, who guarantee the robot
-                // is at the correct scoring location?
                 if (taskParams.doDrive)
                 {
                     robot.robotDrive.purePursuitDrive.start(
@@ -237,9 +234,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
                 robot.extenderArm.setPosition(null, null, wristPos, null);
-                robot.grabber.getMotorGrabber().tracer.setTraceLevel(TrcDbgTrace.MsgLevel.DEBUG);
-                robot.grabber.autoDump(currOwner, 1.5, event);
-                robot.grabber.getMotorGrabber().tracer.setTraceLevel(TrcDbgTrace.MsgLevel.INFO);
+                robot.grabber.autoDump(currOwner, 0.5, event);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM, 3.0);
                 break;
 

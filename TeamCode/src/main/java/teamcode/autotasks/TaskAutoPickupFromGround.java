@@ -37,8 +37,6 @@ import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
 import trclib.timer.TrcTimer;
-import trclib.vision.TrcOpenCvColorBlobPipeline;
-import trclib.vision.TrcVisionTargetInfo;
 
 /**
  * This class implements auto-assist task to pick up a sample from ground.

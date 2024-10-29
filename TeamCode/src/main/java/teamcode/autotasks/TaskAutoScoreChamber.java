@@ -24,7 +24,7 @@ package teamcode.autotasks;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
-import teamcode.params.GameParams;
+import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
@@ -122,13 +122,13 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         {
             // Caller is TeleOp, let's determine the score position by robot's current location.
             scorePose = robotPose.x < 0.0?
-                GameParams.RED_NET_CHAMBER_SCORE_POSE: GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+                RobotParams.Game.RED_NET_CHAMBER_SCORE_POSE: RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE;
         }
         else
         {
             // Caller is Auto, let's determine the score position by robot's start position.
             scorePose = startPos == FtcAuto.StartPos.NET_ZONE?
-                GameParams.RED_NET_CHAMBER_SCORE_POSE: GameParams.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+                RobotParams.Game.RED_NET_CHAMBER_SCORE_POSE: RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE;
         }
 
         if (scoreHeight == Robot.ScoreHeight.LOW)

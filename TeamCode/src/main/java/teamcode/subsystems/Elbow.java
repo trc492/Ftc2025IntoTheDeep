@@ -24,7 +24,7 @@ package teamcode.subsystems;
 
 import ftclib.motor.FtcMotorActuator;
 import teamcode.Robot;
-import teamcode.params.RobotParams;
+import teamcode.RobotParams;
 import trclib.dataprocessor.TrcUtil;
 import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;

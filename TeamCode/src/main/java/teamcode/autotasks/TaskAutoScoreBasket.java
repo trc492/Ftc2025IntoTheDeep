@@ -24,7 +24,7 @@ package teamcode.autotasks;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
-import teamcode.params.GameParams;
+import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
@@ -208,7 +208,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     robot.robotDrive.purePursuitDrive.start(
                         currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        robot.adjustPoseByAlliance(GameParams.RED_BASKET_SCORE_POSE, taskParams.alliance, false));
+                        robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance, false));
                     sm.waitForSingleEvent(event, State.SET_EXTENDER_ARM);
                 }
                 else

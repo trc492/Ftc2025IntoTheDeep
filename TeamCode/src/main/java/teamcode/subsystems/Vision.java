@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package teamcode.vision;
+package teamcode.subsystems;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -31,9 +31,11 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
+import ftclib.drivebase.FtcRobotDrive;
 import ftclib.robotcore.FtcOpMode;
 import ftclib.vision.FtcCameraStreamProcessor;
 import ftclib.vision.FtcEocvColorBlobProcessor;
@@ -44,11 +46,12 @@ import ftclib.vision.FtcVision;
 import ftclib.vision.FtcVisionAprilTag;
 import ftclib.vision.FtcVisionEocvColorBlob;
 import teamcode.Robot;
-import teamcode.params.GameParams;
-import teamcode.params.RobotParams;
-import teamcode.subsystems.LEDIndicator;
+import teamcode.RobotParams;
+import trclib.dataprocessor.TrcUtil;
 import trclib.pathdrive.TrcPose2D;
+import trclib.pathdrive.TrcPose3D;
 import trclib.robotcore.TrcDbgTrace;
+import trclib.vision.TrcHomographyMapper;
 import trclib.vision.TrcOpenCvColorBlobPipeline;
 import trclib.vision.TrcOpenCvDetector;
 import trclib.vision.TrcVisionTargetInfo;
@@ -61,6 +64,60 @@ import trclib.vision.TrcVisionTargetInfo;
 public class Vision
 {
     private final String moduleName = getClass().getSimpleName();
+
+    /**
+     * This class contains the parameters of the webcam for detecting samples.
+     */
+    public static class SampleCamParams extends FtcRobotDrive.VisionInfo
+    {
+        public SampleCamParams()
+        {
+            camName = "Webcam 1";
+            camImageWidth = 640;
+            camImageHeight = 480;
+            camXOffset = -4.25;                 // Inches to the right from robot center
+            camYOffset = 5.5;                   // Inches forward from robot center
+            camZOffset = 10.608;                // Inches up from the floor
+            camYaw = 0.0;                       // degrees clockwise from robot front ???
+            camPitch = 15.0;                    // degrees down from horizontal ???
+            camRoll = 0.0;
+            camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
+            camOrientation = OpenCvCameraRotation.UPRIGHT;
+            // Homography: cameraRect in pixels, worldRect in inches
+            cameraRect = new TrcHomographyMapper.Rectangle(
+                19.0, 20.5,                     // Camera Top Left
+                609.0, 43.0,                    // Camera Top Right
+                85.0, 433.0,                    // Camera Bottom Left
+                583.0, 445.0);                  // Camera Bottom Right
+            worldRect = new TrcHomographyMapper.Rectangle(
+                -21.0, 45.25,                   // World Top Left
+                20.5, 45.25,                    // World Top Right
+                -4.25, 9.0,                     // World Bottom Left
+                5.75, 9.0);                     // World Bottom Right
+        }   //SampleCamParams
+    }   //class SampleCamParams
+
+    /**
+     * This class contains the parameters of the Limelight vision processor.
+     */
+    public static class LimelightParams extends FtcRobotDrive.VisionInfo
+    {
+        public LimelightParams()
+        {
+            camName = "Limelight3a";
+            camImageWidth = 640;
+            camImageHeight = 480;
+            camHFov = 54.5;                             // in degrees
+            camVFov = 42.0;                             // in degrees
+            camXOffset = 135.47*TrcUtil.INCHES_PER_MM;  // Inches to the right from robot center
+            camYOffset = 2.073;                         // Inches forward from robot center
+            camZOffset = 10.758;                        // Inches up from the floor
+            camYaw = -10.0;                             // degrees clockwise from robot front
+            camPitch = 0.0;                             // degrees down from horizontal
+            camRoll = 0.0;
+            camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
+        }   //LimelightParams
+    }   //class LimelightParams
 
     public enum SampleType
     {
@@ -558,7 +615,7 @@ public class Vision
         if (aprilTagInfo != null)
         {
             TrcPose2D aprilTagPose =
-                GameParams.APRILTAG_POSES[aprilTagInfo.detectedObj.aprilTagDetection.id - 1];
+                RobotParams.Game.APRILTAG_POSES[aprilTagInfo.detectedObj.aprilTagDetection.id - 1];
             TrcPose2D cameraPose = aprilTagPose.subtractRelativePose(aprilTagInfo.objPose);
             robotPose = cameraPose.subtractRelativePose(
                 new TrcPose2D(robot.robotInfo.webCam1.camXOffset, robot.robotInfo.webCam1.camYOffset,

@@ -24,7 +24,7 @@ package teamcode.autotasks;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
-import teamcode.params.GameParams;
+import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
@@ -206,7 +206,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 robot.robotDrive.purePursuitDrive.start(
                     currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                     robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                    robot.adjustPoseByAlliance(GameParams.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
+                    robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                 sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
                 break;
 

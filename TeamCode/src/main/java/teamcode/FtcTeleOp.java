@@ -29,13 +29,11 @@ import java.util.Locale;
 import ftclib.drivebase.FtcSwerveDrive;
 import ftclib.driverio.FtcGamepad;
 import ftclib.robotcore.FtcOpMode;
-import teamcode.params.GameParams;
-import teamcode.params.RobotParams;
 import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
-import teamcode.vision.Vision;
+import teamcode.subsystems.Vision;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
@@ -533,7 +531,7 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     if (pressed)
                     {
-                        robot.robotDrive.driveBase.setFieldPosition(GameParams.STARTPOSE_RED_NET_ZONE);
+                        robot.robotDrive.driveBase.setFieldPosition(RobotParams.Game.STARTPOSE_RED_NET_ZONE);
                     }
                 }
                 break;

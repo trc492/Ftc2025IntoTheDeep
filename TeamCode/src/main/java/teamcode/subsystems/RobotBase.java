@@ -29,8 +29,7 @@ import ftclib.drivebase.FtcRobotDrive;
 import ftclib.motor.FtcMotorActuator;
 import ftclib.sensor.FtcPinpointOdometry;
 import ftclib.sensor.FtcSparkFunOtos;
-import teamcode.params.RobotParams;
-import teamcode.params.VisionParams;
+import teamcode.RobotParams;
 import trclib.dataprocessor.TrcUtil;
 import trclib.drivebase.TrcDriveBase;
 import trclib.robotcore.TrcPidController;
@@ -143,9 +142,9 @@ public class RobotBase
             ppdFollowingDistance = 6.0;
             velPidCoeffs = new TrcPidController.PidCoefficients(0.0, 0.0, 0.0, 1.0/profiledMaxVelocity, 0.0);
             // Vision
-            webCam1 = new VisionParams.SampleCam();
+            webCam1 = new Vision.SampleCamParams();
             webCam2 = null;
-            limelight = new VisionParams.Limelight();
+            limelight = new Vision.LimelightParams();
             // Miscellaneous
             indicatorName = RobotParams.Preferences.useBlinkinLED? "blinkin":
                             RobotParams.Preferences.useGobildaLED? "gobildaLED": null;
@@ -218,7 +217,7 @@ public class RobotBase
             ppdFollowingDistance = 6.0;
             velPidCoeffs = new TrcPidController.PidCoefficients(0.0, 0.0, 0.0, 1.0/profiledMaxVelocity, 0.0);
             // Vision
-            webCam1 = new VisionParams.SampleCam();
+            webCam1 = new Vision.SampleCamParams();
             webCam2 = null;
             limelight = null;
             // Miscellaneous
@@ -231,9 +230,9 @@ public class RobotBase
         public VisionOnlyParams()
         {
             robotName = "VisionOnly";
-            webCam1 = new VisionParams.SampleCam();
+            webCam1 = new Vision.SampleCamParams();
             webCam2 = null;
-            limelight = new VisionParams.Limelight();
+            limelight = new Vision.LimelightParams();
         }   //VisionOnlyParams
     }   //class VisionOnlyParams
 

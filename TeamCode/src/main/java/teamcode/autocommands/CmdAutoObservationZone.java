@@ -24,11 +24,11 @@ package teamcode.autocommands;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
-import teamcode.params.GameParams;
+import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
-import teamcode.vision.Vision;
+import teamcode.subsystems.Vision;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
@@ -184,7 +184,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                 case DRIVE_TO_OBSERVATION:
                     //Drive to observation
                     targetPose = robot.adjustPoseByAlliance(
-                        GameParams.RED_OBSERVATION_ZONE_CONVERT, autoChoices.alliance);
+                        RobotParams.Game.RED_OBSERVATION_ZONE_CONVERT, autoChoices.alliance);
                     robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
                     if (robot.grabber.hasObject())
@@ -239,7 +239,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                 case DRIVE_TO_OBSERVATION2:
                     //rotate and drive to pickup up specimen in correct orientation
                     targetPose = robot.adjustPoseByAlliance(
-                        GameParams.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
+                        RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
                     robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
                     sm.waitForSingleEvent(event, State.PICKUP_FROM_OBSERVATION);
@@ -279,9 +279,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                 case PARK:
                     //Park in observation zone
                     targetPose = robot.adjustPoseByAlliance(
-                        GameParams.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
+                        RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, autoChoices.alliance);
                     robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
+                        event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
                     sm.waitForSingleEvent(event, State.DONE);
                     break;
 

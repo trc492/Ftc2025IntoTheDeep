@@ -24,8 +24,8 @@ package teamcode.autocommands;
 
 import teamcode.FtcAuto;
 import teamcode.Robot;
-import teamcode.params.GameParams;
-import teamcode.vision.Vision;
+import teamcode.RobotParams;
+import teamcode.subsystems.Vision;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
@@ -233,7 +233,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     {
 //                        robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
                         targetPose = robot.adjustPoseByAlliance(
-                            GameParams.RED_NET_ZONE_SPIKEMARK_PICKUP, autoChoices.alliance);
+                            RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP, autoChoices.alliance);
                         robot.robotDrive.purePursuitDrive.start(
                                 event, robot.robotDrive.driveBase.getFieldPosition(), false,
                                 targetPose);

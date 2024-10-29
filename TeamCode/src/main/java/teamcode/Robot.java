@@ -34,8 +34,6 @@ import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.autotasks.TaskAutoScoreBasket;
 import teamcode.autotasks.TaskAutoScoreChamber;
 import teamcode.autotasks.TaskExtenderArm;
-import teamcode.params.GameParams;
-import teamcode.params.RobotParams;
 import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.LEDIndicator;
 import teamcode.subsystems.Elbow;
@@ -43,7 +41,7 @@ import teamcode.subsystems.Extender;
 import teamcode.subsystems.Grabber;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Wrist;
-import teamcode.vision.Vision;
+import teamcode.subsystems.Vision;
 import trclib.motor.TrcMotor;
 import trclib.motor.TrcServo;
 import trclib.pathdrive.TrcPose2D;
@@ -476,7 +474,7 @@ public class Robot
         robotDrive.driveBase.setFieldPosition(
             adjustPoseByAlliance(
                 autoChoices.startPos == FtcAuto.StartPos.NET_ZONE?
-                    GameParams.STARTPOSE_RED_NET_ZONE: GameParams.STARTPOSE_RED_OBSERVATION_ZONE,
+                    RobotParams.Game.STARTPOSE_RED_NET_ZONE: RobotParams.Game.STARTPOSE_RED_OBSERVATION_ZONE,
                 autoChoices.alliance, false));
     }   //setRobotStartPosition
 

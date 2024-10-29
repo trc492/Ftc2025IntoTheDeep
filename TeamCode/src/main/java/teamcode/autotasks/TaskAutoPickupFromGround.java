@@ -246,7 +246,6 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 if (samplePose != null)
                 {
                     double extenderLen = TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET;
-                    samplePose.angle -= 5.0;    //fudge factor! Really bad!!!
                     tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                     // Turning is a lot faster than extending, so just wait for extender event.
                     robot.robotDrive.purePursuitDrive.start(

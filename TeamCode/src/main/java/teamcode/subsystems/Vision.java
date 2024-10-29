@@ -78,8 +78,8 @@ public class Vision
             camXOffset = -4.25;                 // Inches to the right from robot center
             camYOffset = 5.5;                   // Inches forward from robot center
             camZOffset = 10.608;                // Inches up from the floor
-            camYaw = 0.0;                       // degrees clockwise from robot front ???
-            camPitch = 15.0;                    // degrees down from horizontal ???
+            camYaw = -5.0;                      // degrees clockwise from robot forward
+            camPitch = 32.3466297;              // degrees down from horizontal ???
             camRoll = 0.0;
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
             camOrientation = OpenCvCameraRotation.UPRIGHT;
@@ -430,7 +430,9 @@ public class Vision
         if (lineNum != -1)
         {
             robot.dashboard.displayPrintf(
-                lineNum, "RawColorBlob: %s", colorBlobInfo != null? colorBlobInfo: "Not found.");
+                lineNum, "RawColorBlob: %s, heading=%.3f",
+                colorBlobInfo != null? colorBlobInfo: "Not found.",
+                robot.robotDrive != null? robot.robotDrive.driveBase.getHeading(): 0.0);
         }
 
         return colorBlobInfo;

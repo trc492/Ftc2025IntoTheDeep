@@ -105,6 +105,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         // Strictly speaking, this is not an autotask operation because it is not calling startAutoTask.
         // Therefore, it does not acquire subsystem ownership for the caller. It's the responsibility of the caller
         // to acquire ownership if desired, or pass in null owner if no ownership required.
+        wrist.setPosition(Wrist.Params.MAX_POS);
         elbow.zeroCalibrate(owner, Elbow.Params.ZERO_CAL_POWER);
         extender.zeroCalibrate(owner, Extender.Params.ZERO_CAL_POWER);
     }   //zeroCalibrate
@@ -125,7 +126,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         tracer.traceInfo(
             moduleName,
             "safeSequence=" + safeSequence +
-            "elbowAngle=" + elbowAngle +
+            ",elbowAngle=" + elbowAngle +
             ", extenderPos=" + extenderPosition +
             ", wristPosition=" + wristPosition +
             ", event=" + completionEvent);
@@ -167,7 +168,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     public void retract(TrcEvent completionEvent)
     {
         setPosition(
-            false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.GROUND_PICKUP_POS, completionEvent);
+            false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.RETRACT_POS, completionEvent);
     }   //retract
 
     /**
@@ -306,7 +307,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             case SET_ELBOW_ANGLE:
                 if (taskParams.elbowAngle != null)
                 {
-                    elbowEvent.setCallback((c)->{elbowCompleted = true;}, null);
+                    elbowEvent.setCallback((c)-> elbowCompleted = true, null);
                     // We are setting elbow angle, go do it.
                     elbow.setPosition(
                         currOwner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 4.0);
@@ -330,7 +331,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             case SET_EXTENDER_POSITION:
                 if (taskParams.extenderPosition != null)
                 {
-                    extenderEvent.setCallback((c)->{extenderCompleted = true;}, null);
+                    extenderEvent.setCallback((c)-> extenderCompleted = true, null);
                     // We are setting extender position, go do it.
                     extender.setPosition(
                         currOwner, 0.0, taskParams.extenderPosition, true, Extender.Params.POWER_LIMIT, extenderEvent,

@@ -87,6 +87,7 @@ public class Grabber
         public static final double INTAKE_POWER                 = 1.0;
         public static final double EJECT_POWER                  = -0.5;
         public static final double RETAIN_POWER                 = 0.0;
+        public static final double FINISH_DELAY                 = 0.5;
 
         public static final double OPEN_POS                     = 0.2;
         public static final double OPEN_TIME                    = 0.5;
@@ -119,7 +120,7 @@ public class Grabber
                 .setPrimaryMotor(Params.PRIMARY_MOTOR_NAME, Params.PRIMARY_MOTOR_TYPE, Params.PRIMARY_MOTOR_INVERTED)
                 .setFollowerMotor(
                     Params.FOLLOWER_MOTOR_NAME, Params.FOLLOWER_MOTOR_TYPE, Params.FOLLOWER_MOTOR_INVERTED)
-                .setPowerParams(Params.INTAKE_POWER, Params.EJECT_POWER, Params.RETAIN_POWER)
+                .setPowerParams(Params.INTAKE_POWER, Params.EJECT_POWER, Params.RETAIN_POWER, Params.FINISH_DELAY)
                 .setAnalogSensorTrigger(
                     this::getSensorDistance, Params.SENSOR_TRIGGER_INVERTED, Params.SENSOR_TRIGGER_THRESHOLD);
             motorGrabber = new FtcMotorGrabber(Params.SUBSYSTEM_NAME, grabberParams).getGrabber();

@@ -209,7 +209,7 @@ public class RobotBase
             yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.035, 0.0, 0.0035, 0.0, 0.0);
             yDrivePidPowerLimit = 1.0;
             yDriveMaxPidRampRate = null;
-            turnPidCoeffs = new TrcPidController.PidCoefficients(0.012, 0.0, 0.0012, 0.0, 0.0);
+            turnPidCoeffs = new TrcPidController.PidCoefficients(0.013, 0.0, 0.001, 0.0, 0.0);
             turnPidPowerLimit = 0.5;
             turnMaxPidRampRate = null;
             // PID Stall Detection

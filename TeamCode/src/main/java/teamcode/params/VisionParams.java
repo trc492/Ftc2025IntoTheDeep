@@ -78,7 +78,7 @@ public class VisionParams
             camXOffset = 135.47*TrcUtil.INCHES_PER_MM;  // Inches to the right from robot center
             camYOffset = 2.073;                         // Inches forward from robot center
             camZOffset = 10.758;                        // Inches up from the floor
-            camYaw = 0.0;                               // degrees clockwise from robot front
+            camYaw = -10.0;                             // degrees clockwise from robot front
             camPitch = 0.0;                             // degrees down from horizontal
             camRoll = 0.0;
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);

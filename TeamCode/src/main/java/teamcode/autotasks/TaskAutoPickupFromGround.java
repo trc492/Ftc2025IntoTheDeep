@@ -32,6 +32,7 @@ import teamcode.vision.Vision;
 import trclib.dataprocessor.TrcUtil;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
+import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
@@ -53,6 +54,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         FIND_SAMPLE,
         TURN_TO_SAMPLE,
         PICK_UP_SAMPLE,
+        RETRACT_ALL,
         DONE
     }   //enum State
 
@@ -250,6 +252,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 if (samplePose != null)
                 {
                     double extenderLen = TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET;
+                    samplePose.angle -= 5.0;    //fudge factor! Really bad!!!
                     tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                     // Turning is a lot faster than extending, so just wait for extender event.
                     robot.robotDrive.purePursuitDrive.start(
@@ -274,7 +277,20 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                     sm.addEvent(event);
                     robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 6.0, null, null, armEvent);
                     sm.addEvent(armEvent);
-                    sm.waitForEvents(State.DONE, false, 4.0);
+                    sm.waitForEvents(State.RETRACT_ALL, false, 4.0);
+                }
+                else
+                {
+                    sm.setState(State.DONE);
+                }
+                break;
+
+            case RETRACT_ALL:
+                if (robot.extenderArm != null)
+                {
+                    robot.extenderArm.cancel();
+                    robot.extenderArm.retract(armEvent);
+                    sm.waitForSingleEvent(armEvent, State.DONE);
                 }
                 else
                 {
@@ -285,10 +301,6 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             default:
             case DONE:
                 // Stop task.
-                if (robot.extenderArm != null)
-                {
-                    robot.extenderArm.retract(null);
-                }
                 if (robot.grabber != null)
                 {
                     if (robot.ledIndicator != null)

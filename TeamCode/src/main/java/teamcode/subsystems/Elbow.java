@@ -69,7 +69,7 @@ public class Elbow
 
         public static final TrcPidController.PidCoefficients posPidCoeffs =
             new TrcPidController.PidCoefficients(0.12, 0.0, 0.0, 0.0, 0.0);
-        public static final double POS_PID_TOLERANCE            = 1.0;
+        public static final double POS_PID_TOLERANCE            = 2.0;
         public static final double GRAVITY_COMP_MAX_POWER       = 0.2/Extender.Params.POS_OFFSET;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
         public static final double STALL_TOLERANCE              = 0.1;

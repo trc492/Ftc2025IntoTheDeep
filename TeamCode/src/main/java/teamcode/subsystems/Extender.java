@@ -47,7 +47,7 @@ public class Extender
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.75;
 
-        public static final double PIVOT_Y_OFFSET               = -13.0;    // pivot Y offset from robot center inches
+        public static final double PIVOT_Y_OFFSET               = -9.0;    // pivot Y offset from robot center inches
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.0;
         public static final double GROUND_PICKUP_POS            = 18.0;
@@ -61,7 +61,7 @@ public class Extender
 
         public static final TrcPidController.PidCoefficients posPidCoeffs =
             new TrcPidController.PidCoefficients(5.0, 0.0, 0.0, 0.0, 0.0);
-        public static final double POS_PID_TOLERANCE            = 0.2;
+        public static final double POS_PID_TOLERANCE            = 0.5;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
         public static final double STALL_TOLERANCE              = 0.1;
         public static final double STALL_TIMEOUT                = 0.1;

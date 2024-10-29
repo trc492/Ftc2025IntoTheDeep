@@ -46,7 +46,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         RETRACT_EXTENDER,
         SET_ELBOW_ANGLE,
         SET_EXTENDER_POSITION,
-        CHECK_COMPLETION,
+        WAIT_FOR_COMPLETION,
         DONE
     }   //enum State
 
@@ -73,8 +73,6 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
 
     private String currOwner = null;
     private boolean safeSequence = false;
-    private boolean elbowCompleted = false;
-    private boolean extenderCompleted = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -277,8 +275,8 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         switch (state)
         {
             case SET_POSITION:
-                elbowCompleted = false;
-                extenderCompleted = false;
+                elbowEvent.clear();
+                extenderEvent.clear();
                 if (taskParams.wristPosition != null)
                 {
                     // Caller provided wrist position, go set it (fire and forget).
@@ -307,7 +305,6 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             case SET_ELBOW_ANGLE:
                 if (taskParams.elbowAngle != null)
                 {
-                    elbowEvent.setCallback((c)-> elbowCompleted = true, null);
                     // We are setting elbow angle, go do it.
                     elbow.setPosition(
                         currOwner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 4.0);
@@ -317,13 +314,14 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                     }
                     else
                     {
+                        // Not performing safe sequence, so don't wait.
                         sm.setState(State.SET_EXTENDER_POSITION);
                     }
                 }
                 else
                 {
                     // Caller did not provide elbow angle, skip this state.
-                    elbowCompleted = true;
+                    elbowEvent.signal();
                     sm.setState(State.SET_EXTENDER_POSITION);
                 }
                 break;
@@ -331,32 +329,40 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             case SET_EXTENDER_POSITION:
                 if (taskParams.extenderPosition != null)
                 {
-                    extenderEvent.setCallback((c)-> extenderCompleted = true, null);
                     // We are setting extender position, go do it.
                     extender.setPosition(
                         currOwner, 0.0, taskParams.extenderPosition, true, Extender.Params.POWER_LIMIT, extenderEvent,
                         4.0);
                     if (safeSequence)
                     {
-                        sm.waitForSingleEvent(extenderEvent, State.CHECK_COMPLETION);
+                        sm.waitForSingleEvent(extenderEvent, State.WAIT_FOR_COMPLETION);
                     }
                     else
                     {
-                        sm.setState(State.CHECK_COMPLETION);
+                        // Not performing safe sequence, so don't wait.
+                        sm.setState(State.WAIT_FOR_COMPLETION);
                     }
                 }
                 else
                 {
                     // We are not setting extender position, we are done.
-                    extenderCompleted = true;
-                    sm.setState(State.CHECK_COMPLETION);
+                    extenderEvent.signal();
+                    sm.setState(State.WAIT_FOR_COMPLETION);
                 }
                 break;
 
-            case CHECK_COMPLETION:
-                if (elbowCompleted && extenderCompleted)
+            case WAIT_FOR_COMPLETION:
+                if (safeSequence)
                 {
+                    // If we performed safe sequence and came here, it means both events are already signaled.
                     sm.setState(State.DONE);
+                }
+                else
+                {
+                    sm.addEvent(elbowEvent);
+                    sm.addEvent(extenderEvent);
+                    // Don't clear the events.
+                    sm.waitForEvents(State.DONE, false, true);
                 }
                 break;
 

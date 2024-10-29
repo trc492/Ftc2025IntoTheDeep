@@ -217,15 +217,12 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 // need to tune all of this based on this year's game
                 if (robot.vision.isSampleVisionEnabled(taskParams.sampleType))
                 {
-                    TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo =
-                        robot.vision.getDetectedSample(taskParams.sampleType, -1);
-                    if (sampleInfo != null)
+                    samplePose = robot.getDetectedSamplePose(taskParams.sampleType);
+                    if (samplePose != null)
                     {
-                        samplePose = robot.robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose);
                         String msg = String.format(
                             Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
-                            sampleInfo.detectedObj.label, sampleInfo.objPose.x, sampleInfo.objPose.y,
-                            sampleInfo.objPose.angle);
+                            taskParams.sampleType, samplePose.x, samplePose.y, samplePose.angle);
                         tracer.traceInfo(moduleName, msg);
                         robot.speak(msg);
                         sm.setState(State.TURN_TO_SAMPLE);
@@ -274,7 +271,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                     // We assume the driver would drive up to the correct sample color for picking up from ground.
                     robot.grabber.autoIntake(currOwner, 0.0, event);
                     sm.addEvent(event);
-                    robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 6.0, null, null, armEvent);
+                    robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 4.0, null, null, armEvent);
                     sm.addEvent(armEvent);
                     sm.waitForEvents(State.RETRACT_ALL, false, 4.0);
                 }

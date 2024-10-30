@@ -31,6 +31,7 @@ import ftclib.robotcore.FtcOpMode;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.LEDIndicator;
+import teamcode.subsystems.Wrist;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
@@ -516,24 +517,24 @@ public class FtcTeleOp extends FtcOpMode
         switch (button)
         {
             case A:
-//                if (robot.wrist != null && pressed)
-//                {
-//                    robot.wrist.setPosition(Wrist.Params.MAX_POS);
-//                }
+                if (robot.wrist != null && pressed)
+                {
+                    robot.wrist.setPosition(Wrist.Params.MIN_POS);
+                }
                 break;
 
             case B:
-//                if (robot.wrist != null && pressed)
-//                {
-//                    robot.wrist.setPosition(0.575); // ??? What is this position???
-//                }
+                if (robot.wrist != null && pressed)
+                {
+                    robot.wrist.setPosition(Wrist.Params.MAX_POS);
+                }
                 break;
 
             case X:
-//                if (robot.wrist != null && pressed)
-//                {
-//                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
-//                }
+                if (robot.wrist != null && pressed)
+                {
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
+                }
                 break;
 
             case Y:

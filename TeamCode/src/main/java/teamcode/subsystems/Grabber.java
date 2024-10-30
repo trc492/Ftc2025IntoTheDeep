@@ -56,7 +56,7 @@ public class Grabber
 
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final FtcMotorActuator.MotorType PRIMARY_MOTOR_TYPE = FtcMotorActuator.MotorType.CRServo;
-        public static final boolean PRIMARY_MOTOR_INVERTED      = false;
+        public static final boolean PRIMARY_MOTOR_INVERTED      = true;
         public static final String FOLLOWER_MOTOR_NAME          = SUBSYSTEM_NAME + ".follower";
         public static final FtcMotorActuator.MotorType FOLLOWER_MOTOR_TYPE = FtcMotorActuator.MotorType.CRServo;
         public static final boolean FOLLOWER_MOTOR_INVERTED     = !PRIMARY_MOTOR_INVERTED;

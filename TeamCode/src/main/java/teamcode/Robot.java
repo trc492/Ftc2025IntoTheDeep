@@ -41,6 +41,7 @@ import teamcode.subsystems.Grabber;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.Wrist;
 import teamcode.subsystems.Vision;
+import trclib.dataprocessor.TrcUtil;
 import trclib.motor.TrcMotor;
 import trclib.motor.TrcServo;
 import trclib.pathdrive.TrcPose2D;
@@ -460,6 +461,11 @@ public class Robot
             if (sampleInfo != null)
             {
                 samplePose = robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose);
+                double extenderLen = TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET;
+                if (ledIndicator != null && extenderLen < Extender.Params.MAX_POS)
+                {
+                    ledIndicator.setDetectedPattern(sampleInfo.detectedObj.label);
+                }
                 globalTracer.traceDebug(
                     moduleName, "detectedSamplePose=%s, adjustedSamplePose=%s", sampleInfo.objPose, samplePose);
             }

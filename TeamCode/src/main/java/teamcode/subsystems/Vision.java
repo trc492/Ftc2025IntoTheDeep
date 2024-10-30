@@ -754,26 +754,22 @@ public class Vision
         SampleType sampleType, int lineNum)
     {
         TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo = null;
-        String sampleName = null;
 
         switch (sampleType)
         {
             case RedSample:
                 sampleInfo = redSampleVision != null? redSampleVision.getBestDetectedTargetInfo(
                     null, this::compareDistance, 0.0, 0.0): null;
-                sampleName = LEDIndicator.RED_SAMPLE;
                 break;
 
             case BlueSample:
                 sampleInfo = blueSampleVision != null? blueSampleVision.getBestDetectedTargetInfo(
                     null, this::compareDistance, 0.0, 0.0): null;
-                sampleName = LEDIndicator.BLUE_SAMPLE;
                 break;
 
             case YellowSample:
                 sampleInfo = yellowSampleVision != null? yellowSampleVision.getBestDetectedTargetInfo(
                     null, this::compareDistance, 0.0, 0.0): null;
-                sampleName = LEDIndicator.YELLOW_SAMPLE;
                 break;
 
             case RedAllianceSamples:
@@ -816,7 +812,6 @@ public class Vision
                         sampleList.sort(this::compareDistance);
                     }
                     sampleInfo = sampleList.get(0);
-                    sampleName = sampleInfo.detectedObj.label;
                 }
                 break;
         }
@@ -827,19 +822,13 @@ public class Vision
                 sampleInfo.detectedObj.label, sampleInfo.detectedObj.getRotatedRectVertices());
         }
 
-        if (sampleInfo != null && robot.ledIndicator != null)
-        {
-            robot.ledIndicator.setDetectedPattern(sampleName);
-        }
-
         if (lineNum != -1)
         {
-            robot.dashboard.displayPrintf(
-                lineNum, "%s: %s", sampleName, sampleInfo != null? sampleInfo: "Not found.");
             if (sampleInfo != null)
             {
                 robot.dashboard.displayPrintf(
-                    lineNum + 1, "%s: angle=%.3f", sampleName, sampleInfo.detectedObj.rotatedRect.angle);
+                    lineNum, "%s: %s (rotatedAngle=%.1f)",
+                    sampleInfo.detectedObj.label, sampleInfo, sampleInfo.detectedObj.rotatedRect.angle);
             }
         }
 

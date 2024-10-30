@@ -474,12 +474,17 @@ public class Robot
     public TrcPose2D getDetectedSamplePose(Vision.SampleType sampleType)
     {
         TrcPose2D samplePose = null;
+
         if (vision != null && vision.isSampleVisionEnabled(sampleType))
         {
             TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo =
                 vision.getDetectedSample(sampleType, -1);
-            samplePose = sampleInfo != null?
-                robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose): null;
+            if (sampleInfo != null)
+            {
+                samplePose = robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose);
+                globalTracer.traceDebug(
+                    moduleName, "detectedSamplePose=%s, adjustedSamplePose=%s", sampleInfo.objPose, samplePose);
+            }
         }
 
         return samplePose;

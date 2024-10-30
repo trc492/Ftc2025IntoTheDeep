@@ -34,7 +34,6 @@ import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.autotasks.TaskAutoScoreBasket;
 import teamcode.autotasks.TaskAutoScoreChamber;
 import teamcode.autotasks.TaskExtenderArm;
-import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.LEDIndicator;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
@@ -81,7 +80,6 @@ public class Robot
     public TrcMotor extender;
     public TrcServo wrist;
     public TaskExtenderArm extenderArm;
-    public TrcMotor auxClimber;
     public Grabber grabber;
     // Autotasks.
     public TaskAutoPickupFromGround pickupFromGroundTask;
@@ -171,11 +169,6 @@ public class Robot
                     RobotParams.Preferences.useWrist)
                 {
                     extenderArm = new TaskExtenderArm("ExtenderArm", elbow, extender, wrist);
-                }
-
-                if (RobotParams.Preferences.useAuxClimber)
-                {
-                    auxClimber = new AuxClimber().getClimber();
                 }
 
                 if (RobotParams.Preferences.useMotorGrabber || RobotParams.Preferences.useServoGrabber)
@@ -391,15 +384,6 @@ public class Robot
                     }
                 }
 
-                if (auxClimber != null)
-                {
-                    dashboard.displayPrintf(
-                        lineNum++,
-                        "AuxClimber: power=%.3f,pos=%.1f/%.1f,limitSw=%s",
-                        auxClimber.getPower(), auxClimber.getPosition(), auxClimber.getPidTarget(),
-                        auxClimber.isLowerLimitSwitchActive());
-                }
-
                 if (grabber != null)
                 {
                     TrcMotorGrabber motorGrabber = grabber.getMotorGrabber();
@@ -435,7 +419,6 @@ public class Robot
         globalTracer.traceInfo(moduleName, "Cancel all operations.");
 
         if (extenderArm != null) extenderArm.cancel();
-        if (auxClimber != null) auxClimber.cancel();
         if (grabber != null) grabber.cancel();
         if (robotDrive != null) robotDrive.cancel();
     }   //cancelAll
@@ -450,11 +433,6 @@ public class Robot
         if (extenderArm != null)
         {
             extenderArm.zeroCalibrate(owner);
-        }
-
-        if (auxClimber != null)
-        {
-            auxClimber.zeroCalibrate(owner, AuxClimber.Params.ZERO_CAL_POWER);
         }
     }   //zeroCalibrate
 

@@ -200,6 +200,12 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 }
                 break;
 
+            // Code Review: should use vision to aid picking up.
+            // - Drive to a location right in front of the specimen according to vision.
+            // - Send arm out to the length determined by vision.
+            // - grab the specimen
+            // - retract
+            // - done
             case DRIVE_TO_PICKUP:
                 // Code Review: Can you really do a blink pick up???
                 // Drive to the observation zone

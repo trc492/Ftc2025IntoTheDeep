@@ -345,25 +345,6 @@ public class Robot
     }   //stopMode
 
     /**
-     * This method calls vision to detect the specified sample and return the sample pose.
-     *
-     * @return detected sample pose, null if vision is busy or no sample detected.
-     */
-    public TrcPose2D getDetectedSamplePose(Vision.SampleType sampleType)
-    {
-        TrcPose2D samplePose = null;
-        if (vision != null && vision.isSampleVisionEnabled(sampleType))
-        {
-            TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo =
-                vision.getDetectedSample(sampleType, -1);
-            samplePose = sampleInfo != null?
-                robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose): null;
-        }
-
-        return samplePose;
-    }   //getDetectedSamplePose
-
-    /**
      * This method update all subsystem status on the dashboard.
      *
      * @param startLineNum specifies the first Dashboard line for printing status.
@@ -484,6 +465,25 @@ public class Robot
     {
         zeroCalibrate(null);
     }   //zeroCalibrate
+
+    /**
+     * This method calls vision to detect the specified sample and return the sample pose.
+     *
+     * @return detected sample pose, null if vision is busy or no sample detected.
+     */
+    public TrcPose2D getDetectedSamplePose(Vision.SampleType sampleType)
+    {
+        TrcPose2D samplePose = null;
+        if (vision != null && vision.isSampleVisionEnabled(sampleType))
+        {
+            TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo =
+                vision.getDetectedSample(sampleType, -1);
+            samplePose = sampleInfo != null?
+                robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose): null;
+        }
+
+        return samplePose;
+    }   //getDetectedSamplePose
 
     /**
      * This method sets the robot's starting position according to the autonomous choices.

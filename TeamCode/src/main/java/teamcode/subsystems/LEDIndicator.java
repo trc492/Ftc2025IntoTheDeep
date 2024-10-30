@@ -36,6 +36,8 @@ import trclib.driverio.TrcRevBlinkin;
 public class LEDIndicator
 {
     // LED pattern names.
+    public static final String SCORE_HEIGHT_HIGH = "ScoreHeightHigh";
+    public static final String SCORE_HEIGHT_LOW = "ScoreHeightLow";
     public static final String RED_SAMPLE = "RedSample";
     public static final String BLUE_SAMPLE = "BlueSample";
     public static final String YELLOW_SAMPLE = "YellowSample";
@@ -60,6 +62,8 @@ public class LEDIndicator
             // LED Patterns are sorted in decreasing priority order.
             final TrcGobildaIndicatorLight.Pattern[] ledPatternPriorities = {
                 // Highest priority.
+                new TrcGobildaIndicatorLight.Pattern(SCORE_HEIGHT_HIGH, TrcGobildaIndicatorLight.Color.Green),
+                new TrcGobildaIndicatorLight.Pattern(SCORE_HEIGHT_LOW, TrcGobildaIndicatorLight.Color.Cyan),
                 new TrcGobildaIndicatorLight.Pattern(RED_SAMPLE, TrcGobildaIndicatorLight.Color.Red),
                 new TrcGobildaIndicatorLight.Pattern(BLUE_SAMPLE, TrcGobildaIndicatorLight.Color.Blue),
                 new TrcGobildaIndicatorLight.Pattern(YELLOW_SAMPLE, TrcGobildaIndicatorLight.Color.Yellow),
@@ -79,6 +83,8 @@ public class LEDIndicator
             // LED Patterns are sorted in decreasing priority order.
             final TrcRevBlinkin.Pattern[] ledPatternPriorities = {
                 // Highest priority.
+                new TrcRevBlinkin.Pattern(SCORE_HEIGHT_HIGH, TrcRevBlinkin.RevLedPattern.SolidGreen),
+                new TrcRevBlinkin.Pattern(SCORE_HEIGHT_LOW, TrcRevBlinkin.RevLedPattern.SolidAqua),
                 new TrcRevBlinkin.Pattern(RED_SAMPLE, TrcRevBlinkin.RevLedPattern.SolidRed),
                 new TrcRevBlinkin.Pattern(BLUE_SAMPLE, TrcRevBlinkin.RevLedPattern.SolidBlue),
                 new TrcRevBlinkin.Pattern(YELLOW_SAMPLE, TrcRevBlinkin.RevLedPattern.SolidYellow),

@@ -26,14 +26,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import java.util.Locale;
 
-import ftclib.drivebase.FtcSwerveDrive;
 import ftclib.driverio.FtcGamepad;
 import ftclib.robotcore.FtcOpMode;
-import teamcode.subsystems.AuxClimber;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Wrist;
-import teamcode.subsystems.Vision;
+import teamcode.subsystems.LEDIndicator;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
@@ -59,8 +56,6 @@ public class FtcTeleOp extends FtcOpMode
     private TrcPose2D robotFieldPose = null;
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
-
-    private Robot.GamePieceType objectType;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
 
     //
@@ -305,25 +300,31 @@ public class FtcTeleOp extends FtcOpMode
 
         switch (button) {
             case A:
-                // Toggle between field or robot oriented driving, only applicable for holonomic drive base.
-                if (driverAltFunc) {
-                    if (pressed && robot.robotDrive != null) {
-                        if (robot.robotDrive.driveBase.isGyroAssistEnabled()) {
-                            // Disable GyroAssist drive.
+                if (robot.robotDrive != null && pressed)
+                {
+                    if (driverAltFunc)
+                    {
+                        if (robot.robotDrive.driveBase.isGyroAssistEnabled())
+                        {
                             robot.globalTracer.traceInfo(moduleName, ">>>>> Disabling GyroAssist.");
                             robot.robotDrive.driveBase.setGyroAssistEnabled(null);
-                        } else {
-                            // Enable GyroAssist drive.
+                        }
+                        else
+                        {
                             robot.globalTracer.traceInfo(moduleName, ">>>>> Enabling GyroAssist.");
                             robot.robotDrive.driveBase.setGyroAssistEnabled(robot.robotDrive.pidDrive.getTurnPidCtrl());
                         }
                     }
-                } else {
-                    if (pressed && robot.robotDrive != null && robot.robotDrive.driveBase.supportsHolonomicDrive()) {
-                        if (robot.robotDrive.driveBase.getDriveOrientation() != TrcDriveBase.DriveOrientation.FIELD) {
+                    else if (robot.robotDrive.driveBase.supportsHolonomicDrive())
+                    {
+                        // Toggle between field or robot oriented driving, only applicable for holonomic drive base.
+                        if (robot.robotDrive.driveBase.getDriveOrientation() != TrcDriveBase.DriveOrientation.FIELD)
+                        {
                             robot.globalTracer.traceInfo(moduleName, ">>>>> Enabling FIELD mode.");
                             setDriveOrientation(TrcDriveBase.DriveOrientation.FIELD);
-                        } else {
+                        }
+                        else
+                        {
                             robot.globalTracer.traceInfo(moduleName, ">>>>> Enabling ROBOT mode.");
                             setDriveOrientation(TrcDriveBase.DriveOrientation.ROBOT);
                         }
@@ -332,57 +333,43 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case B:
-                if (robot.scoreChamberTask != null && pressed) {
-                    if (!robot.scoreChamberTask.isActive()) {
+                if (robot.scoreChamberTask != null && pressed)
+                {
+                    if (!robot.scoreChamberTask.isActive())
+                    {
+                        robot.globalTracer.traceInfo(
+                            moduleName, ">>>>> Auto score chamber (scoreHeight=%s).", scoreHeight);
                         robot.scoreChamberTask.autoScoreChamber(null, null, scoreHeight, !driverAltFunc, null);
-                    } else {
+                    }
+                    else
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto score chamber.");
                         robot.scoreChamberTask.cancel();
                     }
                 }
                 break;
 
             case X:
-//                if (robot.extenderArm != null && pressed &&
-//                    robot.pickupFromGroundTask != null && robot.pickupSpecimenTask != null)
-//                {
-//                    if (!driverAltFunc)
-//                    {
-//                        if (!robot.pickupFromGroundTask.isActive())
-//                        {
-//                            objectType = Robot.GamePieceType.SAMPLE;
-//                            robot.pickupFromGroundTask.autoPickupFromGround(
-//                                Vision.SampleType.AnySample, // Logic to decide which one later
-//                                null);
-//                        }
-//                        else
-//                        {
-//                            robot.pickupFromGroundTask.cancel();
-//                        }
-//                    }
-//                    else
-//                    {
-//                        if (!robot.pickupSpecimenTask.isActive())
-//                        {
-//                            objectType = Robot.GamePieceType.SPECIMEN;
-//                            robot.pickupSpecimenTask.autoPickupSpecimen(null, null);
-//                        }
-//                        else
-//                        {
-//                            robot.pickupSpecimenTask.cancel();
-//                        }
-//                    }
-//                }
-                if (robot.scoreBasketTask != null && pressed) {
-                    if (!robot.scoreBasketTask.isActive()) {
+                if (robot.scoreBasketTask != null && pressed)
+                {
+                    if (!robot.scoreBasketTask.isActive())
+                    {
+                        robot.globalTracer.traceInfo(
+                            moduleName, ">>>>> Auto score basket (scoreHeight=%s).", scoreHeight);
                         robot.scoreBasketTask.autoScoreBasket(null, scoreHeight, !driverAltFunc, null);
-                    } else {
+                    }
+                    else
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto score basket.");
                         robot.scoreChamberTask.cancel();
                     }
                 }
                 break;
 
             case Y:
-                if (driverAltFunc && pressed) {
+                if (driverAltFunc && pressed)
+                {
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel all.");
                     robot.cancelAll();
                 }
                 break;
@@ -394,11 +381,14 @@ public class FtcTeleOp extends FtcOpMode
 
             case RightBumper:
                 // Press and hold for slow drive.
-                if (pressed) {
+                if (pressed)
+                {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> DrivePower slow.");
                     drivePowerScale = RobotParams.Robot.DRIVE_SLOW_SCALE;
                     turnPowerScale = RobotParams.Robot.TURN_SLOW_SCALE;
-                } else {
+                }
+                else
+                {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> DrivePower normal.");
                     drivePowerScale = RobotParams.Robot.DRIVE_NORMAL_SCALE;
                     turnPowerScale = RobotParams.Robot.TURN_NORMAL_SCALE;
@@ -406,37 +396,44 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadUp:
-                // TODO: Climb high rung (2nd level)
-//                if (pressed)
-//                {
-//                    if (scoreHeight == Robot.ScoreHeight.HIGH)
-//                    {
-//                        scoreHeight = Robot.ScoreHeight.LOW;
-//                    }
-//                    else
-//                    {
-//                        scoreHeight = Robot.ScoreHeight.HIGH;
-//                    }
-//                }
-//                if (robot.auxClimber != null && pressed) {
-//                    robot.auxClimber.setPosition(AuxClimber.Params.MAX_POS);
-//                }
+                if (pressed)
+                {
+                    if (scoreHeight == Robot.ScoreHeight.HIGH)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Set score height low.");
+                        scoreHeight = Robot.ScoreHeight.LOW;
+                        if (robot.ledIndicator != null)
+                        {
+                            robot.ledIndicator.setDetectedPattern(LEDIndicator.SCORE_HEIGHT_HIGH);
+                        }
+                    }
+                    else
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Set score height high.");
+                        scoreHeight = Robot.ScoreHeight.HIGH;
+                        if (robot.ledIndicator != null)
+                        {
+                            robot.ledIndicator.setDetectedPattern(LEDIndicator.SCORE_HEIGHT_LOW);
+                        }
+                    }
+                }
                 break;
 
             case DpadDown:
-                // TODO: Climb low rung (1st level)
-//                if (robot.auxClimber != null && pressed) {
-//                    robot.auxClimber.setPosition(AuxClimber.Params.MIN_POS);
-//                }
+                // TODO: press once climb low rung, press again climb high rung.
                 break;
 
             case DpadLeft:
-                if (robot.pickupFromGroundTask != null && pressed) {
-                    if (!robot.pickupFromGroundTask.isActive()) {
-                        robot.pickupFromGroundTask.autoPickupFromGround(
-                                Robot.sampleType, // Logic to decide which one later
-                                null);
-                    } else {
+                if (robot.pickupFromGroundTask != null && pressed)
+                {
+                    if (!robot.pickupFromGroundTask.isActive())
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup from ground.");
+                        robot.pickupFromGroundTask.autoPickupFromGround(Robot.sampleType, null);
+                    }
+                    else
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto pickup from ground.");
                         robot.pickupFromGroundTask.cancel();
                     }
                 }
@@ -447,10 +444,12 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     if (!robot.pickupSpecimenTask.isActive())
                     {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup specimen.");
                         robot.pickupSpecimenTask.autoPickupSpecimen(null, null);
                     }
                     else
                     {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto pickup specimen.");
                         robot.pickupSpecimenTask.cancel();
                     }
                 }
@@ -459,15 +458,9 @@ public class FtcTeleOp extends FtcOpMode
             case Back:
                 if (pressed)
                 {
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrate pressed.");
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrating.");
                     robot.cancelAll();
                     robot.zeroCalibrate();
-                    if (robot.robotDrive != null && robot.robotDrive instanceof FtcSwerveDrive)
-                    {
-                        // Drive base is a Swerve Drive, align all steering wheels forward.
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Set SteerAngle to zero.");
-                        ((FtcSwerveDrive) robot.robotDrive).setSteerAngle(0.0, false, false);
-                    }
                 }
                 break;
 
@@ -502,6 +495,7 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     if (pressed)
                     {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Set start position to RED_NET_ZONE.");
                         robot.robotDrive.driveBase.setFieldPosition(RobotParams.Game.STARTPOSE_RED_NET_ZONE);
                     }
                 }
@@ -543,7 +537,9 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case Y:
-                if (driverAltFunc && pressed) {
+                if (driverAltFunc && pressed)
+                {
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel all.");
                     robot.cancelAll();
                 }
                 break;
@@ -556,31 +552,24 @@ public class FtcTeleOp extends FtcOpMode
             case RightBumper:
                 if (robot.extenderArm != null && pressed)
                 {
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Turtle.");
                     robot.extenderArm.retract(null);
                 }
                 break;
 
             case DpadUp:
-                //auxiliary climber subsystem goes up
-//                if (robot.auxClimber != null && pressed)
-//                {
-//                    robot.auxClimber.setPosition(AuxClimber.Params.MAX_POS);
-//                }
-                if (robot.wrist != null && pressed){
-                    // TODO: Add wrist presets
-                    robot.wrist.setPosition(Wrist.Params.MAX_POS);
+                if (robot.wrist != null && pressed)
+                {
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist preset up.");
+                    robot.wrist.presetPositionUp(null);
                 }
                 break;
 
             case DpadDown:
-                //auxiliary climber subsystem goes down
-//                if (robot.auxClimber != null && pressed)
-//                {
-//                   robot.auxClimber.setPosition(AuxClimber.Params.MIN_POS);
-//                }
-                if (robot.wrist != null && pressed){
-                    // TODO: Add wrist presets
-                    robot.wrist.setPosition(Wrist.Params.MIN_POS);
+                if (robot.wrist != null && pressed)
+                {
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist preset down.");
+                    robot.wrist.presetPositionDown(null);
                 }
                 break;
 
@@ -592,10 +581,12 @@ public class FtcTeleOp extends FtcOpMode
                         if (operatorAltFunc)
                         {
                             // This is manual override in case the sensor is not working, just turn it ON.
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Manual intake.");
                             robot.grabber.intake(null, 0.0, null);
                         }
                         else
                         {
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Auto intake.");
                             robot.grabber.autoIntake(null, 0.0, null);
                         }
                     }
@@ -603,11 +594,13 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         if (robot.grabber.isAutoActive())
                         {
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto intake.");
                             robot.grabber.cancel();
                         }
                         else
                         {
                             // This is manual override in case the sensor is not working, just turn it OFF.
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Stop manual intake.");
                             robot.grabber.stop(null);
                         }
                     }
@@ -622,10 +615,12 @@ public class FtcTeleOp extends FtcOpMode
                         if (operatorAltFunc)
                         {
                             // This is manual override in case the sensor is not working, just turn it ON.
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Manual dump.");
                             robot.grabber.dump(null, 0.0, null);
                         }
                         else
                         {
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Auto dump.");
                             robot.grabber.autoDump(null, 0.0, null);
                         }
                     }
@@ -633,11 +628,13 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         if (robot.grabber.isAutoActive())
                         {
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto dump.");
                             robot.grabber.cancel();
                         }
                         else
                         {
                             // This is manual override in case the sensor is not working, just turn it OFF.
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Stop manual dump.");
                             robot.grabber.stop(null);
                         }
                     }
@@ -648,7 +645,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (pressed)
                 {
                     // Zero calibrate all subsystems (arm, elevator and turret).
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrate pressed.");
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrating.");
                     robot.cancelAll();
                     robot.zeroCalibrate(moduleName);
                 }

@@ -45,7 +45,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     {
         START,
         DRIVE_TO_PICKUP,
+        APPROACH_SPECIMEN,
         PICKUP_SPECIMEN,
+        RETRACT_ARM,
         DONE
     }   //enum State
 
@@ -61,6 +63,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
+    private final TrcEvent grabberEvent;
 
     private String currOwner = null;
 
@@ -76,6 +79,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         this.ownerName = ownerName;
         this.robot = robot;
         event = new TrcEvent(moduleName);
+        grabberEvent = new TrcEvent(moduleName + ".grabber");
     }   //TaskAutoPickupSpecimen
 
     /**
@@ -113,8 +117,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     {
         // ExtenderArm is an AutoTask and is not an ExclusiveSubsystem.
         boolean success = ownerName == null ||
-                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName);// &&
-//                          robot.grabber.acquireExclusiveAccess(ownerName);
+                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName);
 
         if (success)
         {
@@ -127,8 +130,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             tracer.traceWarn(
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + robot.grabber.getOwner() + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -148,10 +150,8 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             tracer.traceInfo(
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + robot.grabber.getOwner() + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
-//            robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
         }
     }   //releaseSubsystemsOwnership
@@ -187,16 +187,18 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         switch (state)
         {
             case START:
-                if (robot.extenderArm != null)
+                if (robot.extenderArm == null || robot.grabber == null)
+                {
+                    // Arm doesn't exist, nothing we can do.
+                    tracer.traceInfo(moduleName, "Arm or grabber doesn't exist, we are done.");
+                    sm.setState(State.DONE);
+                }
+                else
                 {
                     robot.extenderArm.setPosition(
                         Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS,
                         Wrist.Params.HIGH_CHAMBER_SCORE_POS, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
-                }
-                else
-                {
-                    sm.setState(State.DONE);
                 }
                 break;
 
@@ -207,8 +209,6 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             // - retract
             // - done
             case DRIVE_TO_PICKUP:
-                // Code Review: Can you really do a blink pick up???
-                // Drive to the observation zone
                 robot.robotDrive.purePursuitDrive.start(
                     currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                     robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
@@ -216,27 +216,28 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
                 break;
 
-            case PICKUP_SPECIMEN:
-                // intake design not confirmed
-                // TODO: There will be a color sensor on the intake.
+            case APPROACH_SPECIMEN:
+                // Turn on intake and approach specimen slowly.
                 robot.grabber.autoIntake(null, 0.0, event);
-                // based on tuning
                 robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.15, 0.0);
-                sm.waitForSingleEvent(event, State.DONE, 4.0);
+                sm.waitForSingleEvent(event, State.RETRACT_ARM, 2.0);
+                break;
+
+            case PICKUP_SPECIMEN:
+                robot.robotDrive.driveBase.stop(currOwner);
+                robot.grabber.cancel();
+                robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS + 10.0, null, null, event);
+                sm.waitForSingleEvent(event, State.RETRACT_ARM);
+                break;
+
+            case RETRACT_ARM:
+                robot.extenderArm.retract(event);
+                sm.waitForSingleEvent(event, State.DONE);
                 break;
 
             default:
             case DONE:
                 // Stop task.
-                if (robot.extenderArm != null)
-                {
-                    robot.extenderArm.setPosition(
-                        Elbow.Params.SPECIMEN_PICKUP_POS + 10.0,
-                        Extender.Params.MIN_POS,
-                        Wrist.Params.HIGH_CHAMBER_SCORE_POS,
-                        null);
-                }
-
                 if (robot.grabber != null && robot.ledIndicator != null)
                 {
                     robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), false);

@@ -50,7 +50,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         START,
         FIND_SAMPLE,
         TURN_TO_SAMPLE,
-        PICK_UP_SAMPLE,
+        PICKUP_SAMPLE,
         RETRACT_ALL,
         DONE
     }   //enum State
@@ -58,9 +58,13 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     private static class TaskParams
     {
         final Vision.SampleType sampleType;
-        TaskParams(Vision.SampleType sampleType)
+        final boolean useVision;
+        final boolean noDrive;
+        TaskParams(Vision.SampleType sampleType, boolean useVision, boolean noDrive)
         {
             this.sampleType = sampleType;
+            this.useVision = useVision;
+            this.noDrive = noDrive;
         }   //TaskParams
     }   //class TaskParams
 
@@ -92,11 +96,14 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
      * This method starts the auto-assist operation.
      *
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
+     * @param useVision specifies true to use vision to locate sample, false otherwise.
+     * @param noDrive specifies true to not drive the robot to the sample, false otherwise.
      */
-    public void autoPickupFromGround(Vision.SampleType sampleType, TrcEvent completionEvent)
+    public void autoPickupFromGround(
+        Vision.SampleType sampleType, boolean useVision, boolean noDrive, TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "sampleType=" + sampleType + ",event=" + completionEvent);
-        startAutoTask(State.START, new TaskParams(sampleType), completionEvent);
+        startAutoTask(State.START, new TaskParams(sampleType, useVision, noDrive), completionEvent);
     }   //autoPickupFromGround
 
     //
@@ -115,8 +122,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     {
         // ExtenderArm is an AutoTask and is not an ExclusiveSubsystem.
         boolean success = ownerName == null ||
-                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName) &&
-                          robot.grabber.acquireExclusiveAccess(ownerName);
+                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName);
 
         if (success)
         {
@@ -129,8 +135,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             tracer.traceWarn(
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + robot.grabber.getOwner() + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -150,10 +155,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             tracer.traceInfo(
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + robot.grabber.getOwner() + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
-            robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
         }
     }   //releaseSubsystemsOwnership
@@ -185,110 +188,82 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode, boolean slowPeriodicLoop)
     {
         TaskParams taskParams = (TaskParams) params;
+        State nextState;
 
         switch (state)
         {
             case START:
-                samplePose = null;
-                if (robot.vision != null)
+                if (robot.extenderArm == null || robot.grabber == null)
                 {
-                    // Prep for pickup.
-                    if (robot.extenderArm != null)
-                    {
-                        robot.extenderArm.setPosition(
-                            Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, Wrist.Params.GROUND_PICKUP_POS,
-                            armEvent);
-                        sm.waitForSingleEvent(armEvent, State.FIND_SAMPLE);
-                    }
-                    else
-                    {
-                        sm.setState(State.FIND_SAMPLE);
-                    }
+                    // Arm doesn't exist, nothing we can do.
+                    tracer.traceInfo(moduleName, "Arm or grabber doesn't exist, we are done.");
+                    sm.setState(State.DONE);
                 }
                 else
                 {
-                    sm.setState(State.DONE);
+                    nextState =
+                        taskParams.useVision && robot.vision != null &&
+                        robot.vision.isSampleVisionEnabled(taskParams.sampleType)?
+                            State.FIND_SAMPLE: State.PICKUP_SAMPLE;
+                    // Prep arm for pick up.
+                    robot.extenderArm.setPosition(
+                        Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, Wrist.Params.GROUND_PICKUP_POS,
+                        armEvent);
+                    sm.waitForSingleEvent(armEvent, nextState);
                 }
                 break;
 
             case FIND_SAMPLE:
-                // need to tune all of this based on this year's game
-                if (robot.vision.isSampleVisionEnabled(taskParams.sampleType))
+                samplePose = robot.getDetectedSamplePose(taskParams.sampleType);
+                if (samplePose != null)
                 {
-                    samplePose = robot.getDetectedSamplePose(taskParams.sampleType);
-                    if (samplePose != null)
-                    {
-                        String msg = String.format(
-                            Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
-                            taskParams.sampleType, samplePose.x, samplePose.y, samplePose.angle);
-                        tracer.traceInfo(moduleName, msg);
-                        robot.speak(msg);
-                        sm.setState(State.TURN_TO_SAMPLE);
-                    }
-                    else if (visionExpiredTime == null)
-                    {
-                        visionExpiredTime = TrcTimer.getCurrentTime() + 1.0;
-                    }
-                    else if (TrcTimer.getCurrentTime() >= visionExpiredTime)
-                    {
-                        tracer.traceInfo(moduleName, "%s not found.", taskParams.sampleType);
-                        sm.setState(State.DONE);
-                    }
+                    String msg = String.format(
+                        Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
+                        taskParams.sampleType, samplePose.x, samplePose.y, samplePose.angle);
+                    tracer.traceInfo(moduleName, msg);
+                    robot.speak(msg);
+                    sm.setState(State.TURN_TO_SAMPLE);
                 }
-                else
+                else if (visionExpiredTime == null)
                 {
-                    tracer.traceInfo(moduleName, taskParams.sampleType + " vision not enabled.");
+                    visionExpiredTime = TrcTimer.getCurrentTime() + 1.0;
+                }
+                else if (TrcTimer.getCurrentTime() >= visionExpiredTime)
+                {
+                    tracer.traceInfo(moduleName, "%s not found, we are done.", taskParams.sampleType);
                     sm.setState(State.DONE);
                 }
                 break;
 
             case TURN_TO_SAMPLE:
-                if (samplePose != null)
+                double extenderLen = TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET;
+                tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
+                if (!taskParams.noDrive)
                 {
-                    double extenderLen = TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET;
-                    tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                     // Turning is a lot faster than extending, so just wait for extender event.
                     robot.robotDrive.purePursuitDrive.start(
                         currOwner, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         new TrcPose2D(0.0, 0.0, samplePose.angle));
-                    robot.extenderArm.setPosition(null, extenderLen, null, armEvent);
-                    sm.waitForSingleEvent(armEvent, State.PICK_UP_SAMPLE);
                 }
-                else
-                {
-                    sm.setState(State.DONE);
-                }
+                robot.extenderArm.setPosition(null, extenderLen, null, armEvent);
+                sm.waitForSingleEvent(armEvent, State.PICKUP_SAMPLE);
                 break;
 
-            case PICK_UP_SAMPLE:
-                if (robot.extenderArm != null && robot.grabber != null)
-                {
-                    // We only care about sample color if we pick up from submersible.
-                    // We assume the driver would drive up to the correct sample color for picking up from ground.
-                    robot.grabber.autoIntake(null, 0.0, event);
-                    sm.addEvent(event);
-                    robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 4.0, null, null, armEvent);
-                    sm.addEvent(armEvent);
-                    sm.waitForEvents(State.RETRACT_ALL, false, 4.0);
-                }
-                else
-                {
-                    sm.setState(State.DONE);
-                }
+            case PICKUP_SAMPLE:
+                // We only care about sample color if we pick up from submersible.
+                // We assume the driver would drive up to the correct sample color for picking up from ground.
+                robot.grabber.autoIntake(null, 0.0, event);
+                sm.addEvent(event);
+                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 4.0, null, null, armEvent);
+                sm.addEvent(armEvent);
+                sm.waitForEvents(State.RETRACT_ALL, false, 4.0);
                 break;
 
             case RETRACT_ALL:
-                if (robot.extenderArm != null)
-                {
-                    robot.extenderArm.cancel();
-                    robot.extenderArm.retract(armEvent);
-                    sm.waitForSingleEvent(armEvent, State.DONE);
-                }
-                else
-                {
-                    sm.setState(State.DONE);
-                }
+                robot.extenderArm.cancel();
+                robot.extenderArm.retract(armEvent);
+                sm.waitForSingleEvent(armEvent, State.DONE);
                 break;
 
             default:

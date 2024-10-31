@@ -69,6 +69,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     private final TrcEvent event;
 
     private String currOwner = null;
+    private double elbowScorePos = 0.0;
 
     /**
      * Constructor: Create an instance of the object.
@@ -127,7 +128,6 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     {
         boolean success = ownerName == null ||
                           robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName);
-//                          robot.grabber.acquireExclusiveAccess(ownerName);
 
         if (success)
         {
@@ -140,8 +140,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             tracer.traceWarn(
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + robot.grabber.getOwner() + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -161,10 +160,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             tracer.traceInfo(
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
-                ", grabber=" + robot.grabber.getOwner() + ").");
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
-//            robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
         }
     }   //releaseSubsystemsOwnership
@@ -215,27 +212,27 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 break;
 
             case SET_EXTENDER_ARM:
-                double elbowAngle, extenderPos;
+                double extenderScorePos;
                 if (taskParams.scoreHeight == Robot.ScoreHeight.LOW)
                 {
-                    elbowAngle = Elbow.Params.LOW_BASKET_SCORE_POS;
-                    extenderPos = Extender.Params.LOW_BASKET_SCORE_POS;
+                    elbowScorePos = Elbow.Params.LOW_BASKET_SCORE_POS;
+                    extenderScorePos = Extender.Params.LOW_BASKET_SCORE_POS;
                 }
                 else
                 {
-                    elbowAngle = Elbow.Params.HIGH_BASKET_SCORE_POS;
-                    extenderPos = Extender.Params.HIGH_BASKET_SCORE_POS;
+                    elbowScorePos = Elbow.Params.HIGH_BASKET_SCORE_POS;
+                    extenderScorePos = Extender.Params.HIGH_BASKET_SCORE_POS;
                 }
-                robot.extenderArm.setPosition(elbowAngle, extenderPos, null, event);
+                robot.extenderArm.setPosition(Elbow.Params.BASKET_PRESCORE_POS, extenderScorePos, null, event);
                 sm.waitForSingleEvent(event, State.SCORE_BASKET);
                 break;
 
             case SCORE_BASKET:
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
-                robot.extenderArm.setPosition(null, null, wristPos, null);
+                robot.extenderArm.setPosition(elbowScorePos, null, wristPos, null);
                 robot.grabber.autoDump(null, 0.5, event);
-                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM, 3.0);
+                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM, 2.0);
                 break;
 
             case RETRACT_EXTENDER_ARM:

@@ -194,7 +194,6 @@ public class FtcAuto extends FtcOpMode
         }
         Robot.sampleType = autoChoices.alliance == Alliance.RED_ALLIANCE?
             Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
-        robot.zeroCalibrate();
     }   //robotInit
 
     //

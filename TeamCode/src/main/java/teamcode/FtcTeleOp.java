@@ -89,12 +89,14 @@ public class FtcTeleOp extends FtcOpMode
         //
         driverGamepad = new FtcGamepad("DriverGamepad", gamepad1);
         driverGamepad.setButtonEventHandler(this::driverButtonEvent);
-        operatorGamepad = new FtcGamepad("OperatorGamepad", gamepad2);
-        operatorGamepad.setButtonEventHandler(this::operatorButtonEvent);
         driverGamepad.setLeftStickInverted(false, true);
         driverGamepad.setRightStickInverted(false, true);
+
+        operatorGamepad = new FtcGamepad("OperatorGamepad", gamepad2);
+        operatorGamepad.setButtonEventHandler(this::operatorButtonEvent);
         operatorGamepad.setLeftStickInverted(false, true);
         operatorGamepad.setRightStickInverted(false, true);
+
         drivePowerScale = RobotParams.Robot.DRIVE_NORMAL_SCALE;
         turnPowerScale = RobotParams.Robot.TURN_NORMAL_SCALE;
         setDriveOrientation(RobotParams.Robot.DRIVE_ORIENTATION);
@@ -221,7 +223,6 @@ public class FtcTeleOp extends FtcOpMode
             if (RobotParams.Preferences.useSubsystems)
             {
                 // Analog control of subsystems.
-                //elbow subsystem
                 if (robot.elbow != null)
                 {
                     double elbowPower = operatorGamepad.getRightStickY(true) * Elbow.Params.POWER_LIMIT;
@@ -239,7 +240,6 @@ public class FtcTeleOp extends FtcOpMode
                     }
                 }
 
-                //extender arm subsystem
                 if (robot.extender != null)
                 {
                     double extenderPower = operatorGamepad.getLeftStickY(true) * Extender.Params.POWER_LIMIT;
@@ -299,7 +299,8 @@ public class FtcTeleOp extends FtcOpMode
     {
         robot.dashboard.displayPrintf(8, "Driver: %s=%s", button, pressed? "Pressed": "Released");
 
-        switch (button) {
+        switch (button)
+        {
             case A:
                 if (robot.robotDrive != null && pressed)
                 {

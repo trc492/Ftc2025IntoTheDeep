@@ -93,15 +93,6 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
         startAutoTask(State.LEVEL3_START, new TaskParams(), completionEvent);
     }   //autoClimbLevel3
 
-    /**
-     * This method cancels an in progress auto-assist operation if any.
-     */
-    public void autoAssistCancel()
-    {
-        tracer.traceInfo(moduleName, "Canceling auto-assist.");
-        stopAutoTask(false);
-    }   //autoAssistCancel
-
     //
     // Implement TrcAutoTask abstract methods.
     //

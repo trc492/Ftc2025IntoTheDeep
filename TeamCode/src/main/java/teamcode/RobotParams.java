@@ -87,7 +87,6 @@ public class RobotParams
         public static final String TEAM_FOLDER_PATH             =
             Environment.getExternalStorageDirectory().getPath() + "/FIRST/ftc3543";
         public static final String LOG_FOLDER_PATH              = TEAM_FOLDER_PATH + "/tracelogs";
-        public static final String STEER_ZERO_CAL_FILE          = TEAM_FOLDER_PATH + "/SteerZeroCalibration.txt";
         public static final double DASHBOARD_UPDATE_INTERVAL    = 0.2;      // in msec
         public static final String ROBOT_CODEBASE               = "Robot2025";
         // Robot Drive Parameters.
@@ -106,14 +105,15 @@ public class RobotParams
      */
     public static class Game
     {
+        public static final boolean fieldIsMirrored             = false;
         // DO NOT CHANGE the AprilTag location numbers. They are from the AprilTag metadata.
         // All AprilTags are at the height of 5.75-inch from the tile floor.
-        public static final double APRILTAG_AUDIENCE_WALL_X         = -70.25;
-        public static final double APRILTAG_BACK_WALL_X             = 70.25;
-        public static final double APRILTAG_BLUE_ALLIANCE_WALL_Y    = 70.25;
-        public static final double APRILTAG_RED_ALLIANCE_WALL_Y     = -70.25;
-        public static final double APRILTAG_WALL_OFFSET_Y           = 46.83;
-        public static final TrcPose2D[] APRILTAG_POSES              = new TrcPose2D[] {
+        public static final double APRILTAG_AUDIENCE_WALL_X     = -70.25;
+        public static final double APRILTAG_BACK_WALL_X         = 70.25;
+        public static final double APRILTAG_BLUE_ALLIANCE_WALL_Y= 70.25;
+        public static final double APRILTAG_RED_ALLIANCE_WALL_Y = -70.25;
+        public static final double APRILTAG_WALL_OFFSET_Y       = 46.83;
+        public static final TrcPose2D[] APRILTAG_POSES          = new TrcPose2D[] {
             new TrcPose2D(APRILTAG_AUDIENCE_WALL_X, APRILTAG_WALL_OFFSET_Y, -90.0), // TagId 11
             new TrcPose2D(0.0, APRILTAG_BLUE_ALLIANCE_WALL_Y, 0.0),                 // TagId 12
             new TrcPose2D(APRILTAG_BACK_WALL_X, APRILTAG_WALL_OFFSET_Y, 90.0),      // TagId 13
@@ -124,22 +124,25 @@ public class RobotParams
 
         // Blue alliance positions will be derived using adjustPoseByAlliance.
         // Robot start locations in inches.
-        public static final double STARTPOS_X                       = 0.5*RobotParams.Field.FULL_TILE_INCHES;
-        public static final double STARTPOS_Y                       =
+        public static final double STARTPOS_X                   = 0.5*RobotParams.Field.FULL_TILE_INCHES;
+        public static final double STARTPOS_Y                   =
             RobotParams.Field.HALF_FIELD_INCHES - RobotParams.Robot.ROBOT_LENGTH/2.0;
-        public static final TrcPose2D STARTPOSE_RED_NET_ZONE        = new TrcPose2D(-STARTPOS_X, -STARTPOS_Y, 0.0);
+        public static final TrcPose2D STARTPOSE_RED_NET_ZONE    = new TrcPose2D(-STARTPOS_X, -STARTPOS_Y, 0.0);
         public static final TrcPose2D STARTPOSE_RED_OBSERVATION_ZONE= new TrcPose2D(STARTPOS_X, -STARTPOS_Y, 0.0);
 
-        public static final TrcPose2D RED_BASKET_SCORE_POSE         =
+        public static final TrcPose2D RED_BASKET_SCORE_POSE     =
             new TrcPose2D(-2.1*RobotParams.Field.FULL_TILE_INCHES, -2.1*RobotParams.Field.FULL_TILE_INCHES, 45.0);
-        public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE =
+        public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE=
             new TrcPose2D(-0.3*RobotParams.Field.FULL_TILE_INCHES, -1.75*RobotParams.Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
             new TrcPose2D(0.3*RobotParams.Field.FULL_TILE_INCHES, -1.7*RobotParams.Field.FULL_TILE_INCHES, 0.0);
 
-        public static final TrcPose2D RED_OBSERVATION_ZONE_CONVERT  = new TrcPose2D(2.5, -2, 0.0);
-        public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   = new TrcPose2D(1.7, -2.1, 180.0);
-        public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP = new TrcPose2D(-2, -3, 180.0);
+        public static final TrcPose2D RED_OBSERVATION_ZONE_CONVERT =
+            new TrcPose2D(2.5, -2, 0.0);
+        public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP =
+            new TrcPose2D(1.7, -2.1, 180.0);
+        public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
+            new TrcPose2D(-2, -3, 180.0);
     }   //class Game
 
     /**

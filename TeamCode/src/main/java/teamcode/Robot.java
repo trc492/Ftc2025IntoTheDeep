@@ -178,7 +178,7 @@ public class Robot
                 }
                 // Zero calibrate all subsystems only at init time.
                 zeroCalibrate();
-                // Creating autotasks
+                // Create autotasks.
                 pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
                 pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);
                 scoreBasketTask = new TaskAutoScoreBasket("scoreBasketTask", this);
@@ -499,16 +499,27 @@ public class Robot
      * @return pose adjusted to be in the specified alliance in inches.
      */
     public TrcPose2D adjustPoseByAlliance(
-            double x, double y, double heading, FtcAuto.Alliance alliance, boolean isTileUnit)
+        double x, double y, double heading, FtcAuto.Alliance alliance, boolean isTileUnit)
     {
         TrcPose2D newPose = new TrcPose2D(x, y, heading);
 
         if (alliance == FtcAuto.Alliance.BLUE_ALLIANCE)
         {
-            // Translate Red Alliance pose to Blue Alliance pose.
-            newPose.x = -newPose.x;
-            newPose.y = -newPose.y;
-            newPose.angle = (newPose.angle + 180.0) % 360.0;
+            // Translate blue alliance pose to red alliance pose.
+            if (RobotParams.Game.fieldIsMirrored)
+            {
+                // Mirrored field.
+                double angleDelta = (newPose.angle - 90.0)*2.0;
+                newPose.angle -= angleDelta;
+                newPose.y = -newPose.y;
+            }
+            else
+            {
+                // Symmetrical field.
+                newPose.x = -newPose.x;
+                newPose.y = -newPose.y;
+                newPose.angle = (newPose.angle + 180.0) % 360.0;
+            }
         }
 
         if (isTileUnit)

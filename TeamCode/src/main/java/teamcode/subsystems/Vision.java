@@ -830,6 +830,10 @@ public class Vision
                     lineNum, "%s: %s (rotatedAngle=%.1f)",
                     sampleInfo.detectedObj.label, sampleInfo, sampleInfo.detectedObj.rotatedRect.angle);
             }
+            else
+            {
+                robot.dashboard.displayPrintf(lineNum, "No sample found.");
+            }
         }
 
         return sampleInfo;

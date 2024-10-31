@@ -113,8 +113,8 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     {
         // ExtenderArm is an AutoTask and is not an ExclusiveSubsystem.
         boolean success = ownerName == null ||
-                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName) &&
-                          robot.grabber.acquireExclusiveAccess(ownerName);
+                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName);// &&
+//                          robot.grabber.acquireExclusiveAccess(ownerName);
 
         if (success)
         {
@@ -151,7 +151,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
                 ", grabber=" + robot.grabber.getOwner() + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
-            robot.grabber.releaseExclusiveAccess(currOwner);
+//            robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
         }
     }   //releaseSubsystemsOwnership
@@ -219,7 +219,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             case PICKUP_SPECIMEN:
                 // intake design not confirmed
                 // TODO: There will be a color sensor on the intake.
-                robot.grabber.autoIntake(currOwner, 0.0, event);
+                robot.grabber.autoIntake(null, 0.0, event);
                 // based on tuning
                 robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.15, 0.0);
                 sm.waitForSingleEvent(event, State.DONE, 4.0);

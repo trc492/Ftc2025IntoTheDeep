@@ -130,6 +130,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
             switch (state)
             {
                 case START:
+                    robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
                     // Set robot location according to auto choices.
                     robot.setRobotStartPosition(autoChoices);
                     // if necessary, move extender arm into position for travelling
@@ -137,10 +138,10 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 //                    {
 //                        robot.extenderArm.retract(null);
 //                    }
-                    robot.robotDrive.purePursuitDrive.start(
-                            event, robot.robotDrive.driveBase.getFieldPosition(), false);
+//                    robot.robotDrive.purePursuitDrive.start(
+//                            event, robot.robotDrive.driveBase.getFieldPosition(), false);
 
-                    sm.waitForSingleEvent(event, State.DO_DELAY);
+                    sm.setState(State.DO_DELAY);
 
 
                     break;
@@ -151,7 +152,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     {
                         robot.globalTracer.traceInfo(moduleName, "***** Do delay " + autoChoices.delay + "s.");
                         timer.set(autoChoices.delay, event);
-                        sm.waitForSingleEvent(event, State.DONE);
+                        sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
                     }
                     else
                     {
@@ -159,12 +160,12 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         if (autoChoices.preloadType == Robot.GamePieceType.SPECIMEN)
                         {
                             //starting the preload specimen scoring process
-                            sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
+                            sm.setState(State.SCORE_PRELOAD_SPECIMEN);
                         }
                         else if (autoChoices.preloadType == Robot.GamePieceType.SAMPLE)
                         {
                             //if you select a preload sample, you will just start the sample basket sample scoring cycle
-                            sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
+                            sm.setState(State.SCORE_SAMPLE_BASKET);
                         }
 //                        else
 //                        {
@@ -189,7 +190,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                     robot.scoreChamberTask.autoScoreChamber(
                             autoChoices.alliance, autoChoices.startPos, autoChoices.scoreHeight, true, event);
-                    sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
                     break;
 
                 case PICKUP_FROM_SUBMERSIBLE:
@@ -234,9 +235,9 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 //                        robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
                         targetPose = robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP, autoChoices.alliance);
-                        robot.robotDrive.purePursuitDrive.start(
-                                event, robot.robotDrive.driveBase.getFieldPosition(), false,
-                                targetPose);
+                        robot.robotDrive.purePursuitDrive.start(null,
+                                event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                                robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration, targetPose);
                         scoreSampleCount++;
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     }
@@ -258,11 +259,11 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case DRIVE_TO_SUBMERSIBLE:
                     robot.robotDrive.purePursuitDrive.setMoveOutputLimit(0.5);
-                   intermediate1 = robot.adjustPoseByAlliance(-1.5, -2, 0, autoChoices.alliance);
-                   targetPose = robot.adjustPoseByAlliance(-1.5, -0.5, 0, autoChoices.alliance);
-                   robot.robotDrive.purePursuitDrive.start(
-                            null, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            intermediate1, targetPose);
+                    intermediate1 = robot.adjustPoseByAlliance(-1.5, -2, 0, autoChoices.alliance);
+                    targetPose = robot.adjustPoseByAlliance(-1.5, -0.5, 0, autoChoices.alliance);
+                    robot.robotDrive.purePursuitDrive.start(null,
+                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration, targetPose);
                     sm.waitForSingleEvent(event, State.PICKUP_FROM_SUBMERSIBLE, 5.0);
                     break;
 

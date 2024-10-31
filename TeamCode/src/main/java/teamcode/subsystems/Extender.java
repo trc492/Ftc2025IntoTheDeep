@@ -52,10 +52,10 @@ public class Extender
         public static final double MAX_POS                      = 35.0;
         public static final double GROUND_PICKUP_POS            = 18.0;
         public static final double SPECIMEN_PICKUP_POS          = 18.0; // TODO: NEEDS TUNING
-        public static final double LOW_BASKET_SCORE_POS         = 16.0;
+        public static final double LOW_BASKET_SCORE_POS         = MIN_POS;
         public static final double HIGH_BASKET_SCORE_POS        = 34.0;
         public static final double LOW_CHAMBER_SCORE_POS        = 18.5;
-        public static final double HIGH_CHAMBER_SCORE_POS       = 23.0;
+        public static final double HIGH_CHAMBER_SCORE_POS       = 21.0;
         public static final double[] posPresets                 = {MIN_POS, 20.0, 25.0, 30.0, 35.0};
         public static final double POS_PRESET_TOLERANCE         = 3.0;
 

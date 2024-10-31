@@ -266,7 +266,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 {
                     // We only care about sample color if we pick up from submersible.
                     // We assume the driver would drive up to the correct sample color for picking up from ground.
-                    robot.grabber.autoIntake(currOwner, 0.0, event);
+                    robot.grabber.autoIntake(null, 0.0, event);
                     sm.addEvent(event);
                     robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 4.0, null, null, armEvent);
                     sm.addEvent(armEvent);

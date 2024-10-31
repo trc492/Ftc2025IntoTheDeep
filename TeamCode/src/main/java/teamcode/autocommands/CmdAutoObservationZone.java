@@ -147,6 +147,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 //                        {
 //                            sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
 //                        }
+                    } else
+                    {
+                        sm.setState(State.SCORE_PRELOAD_SPECIMEN);
                     }
                     break;
 

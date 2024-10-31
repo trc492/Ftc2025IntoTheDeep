@@ -32,7 +32,7 @@ SOFTWARE.
             <RevBlinkinLedDriver name="blinkin" port="0" />
             <Servo name="gobildaLED" port="1" />
             <goBILDAPinpoint name="pinpointOdo" port="0" bus="1"/>
-            <RevColorSensorV3 name="Grabber.sensor" port="0" bus="2" />
+            <RevColorSensorV3 name="Grabber.sensor" port="0" bus="3" />
             <DigitalDevice name="Elbow.lowerLimit" port="1" />
             <DigitalDevice name="Extender.lowerLimit" port="3" />
             <REV_VL53L0X_RANGE_SENSOR name="ServoGrabber.sensor" port="0" bus="1"/>

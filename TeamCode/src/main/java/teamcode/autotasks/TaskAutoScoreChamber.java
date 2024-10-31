@@ -49,7 +49,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         SET_EXTENDER,
         LOWER_ELBOW,
         SCORE_CHAMBER,
-//        RETRACT_EXTENDER_ARM,
+        RETRACT_EXTENDER_ARM,
         DRIVE_BACK,
         DONE
     }   //enum State
@@ -173,8 +173,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
     protected boolean acquireSubsystemsOwnership()
     {
         boolean success = ownerName == null ||
-                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName) &&
-                          robot.grabber.acquireExclusiveAccess(ownerName);
+                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName);// &&
+//                          robot.grabber.acquireExclusiveAccess(ownerName);
 
         if (success)
         {
@@ -211,7 +211,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) +
                 ", grabber=" + robot.grabber.getOwner() + ").");
             robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
-            robot.grabber.releaseExclusiveAccess(currOwner);
+//            robot.grabber.releaseExclusiveAccess(currOwner);
             currOwner = null;
         }
     }   //releaseSubsystemsOwnership
@@ -276,20 +276,20 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 break;
 
             case LOWER_ELBOW:
-                robot.extenderArm.setPosition(taskParams.elbowAngle - 20.0, null, null, event);
+                robot.extenderArm.setPosition(taskParams.elbowAngle - 25.0, null, null, event);
 //                robot.extenderArm.setPosition(null, null, taskParams.wristPos, null);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER);
                 break;
 
             case SCORE_CHAMBER:
                 robot.grabber.autoDump(currOwner, 0.0, event);
-                sm.waitForSingleEvent(event, State.DONE);
+                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
 
-//            case RETRACT_EXTENDER_ARM:
-//                robot.extenderArm.retract(event);
-//                sm.waitForSingleEvent(event, State.DONE);
-//                break;
+            case RETRACT_EXTENDER_ARM:
+                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, event);
+                sm.waitForSingleEvent(event, State.DONE);
+                break;
 //            case DRIVE_BACK:
 //                robot.robotDrive.purePursuitDrive.start(
 //                        currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,

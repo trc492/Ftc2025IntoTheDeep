@@ -59,9 +59,9 @@ public class Elbow
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 120.0;
         public static final double GROUND_PICKUP_POS            = 20.0;
-        public static final double SPECIMEN_PICKUP_POS          = 24.0;
+        public static final double SPECIMEN_PICKUP_POS          = 21.0;
         public static final double LOW_BASKET_SCORE_POS         = 115.0;
-        public static final double HIGH_BASKET_SCORE_POS        = 108.0;
+        public static final double HIGH_BASKET_SCORE_POS        = 105.0;
         public static final double LOW_CHAMBER_SCORE_POS        = 40.0;
         public static final double HIGH_CHAMBER_SCORE_POS       = 64.0;
         public static final double[] posPresets                 = {MIN_POS, 30.0, 60.0, 90.0, MAX_POS};

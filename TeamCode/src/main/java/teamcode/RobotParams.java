@@ -131,7 +131,7 @@ public class RobotParams
         public static final TrcPose2D STARTPOSE_RED_OBSERVATION_ZONE= new TrcPose2D(STARTPOS_X, -STARTPOS_Y, 0.0);
 
         public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-            new TrcPose2D(-2.1*RobotParams.Field.FULL_TILE_INCHES, -2.1*RobotParams.Field.FULL_TILE_INCHES, 45.0);
+            new TrcPose2D(-2.2*RobotParams.Field.FULL_TILE_INCHES, -2.2*RobotParams.Field.FULL_TILE_INCHES, 45.0);
         public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE =
             new TrcPose2D(-0.3*RobotParams.Field.FULL_TILE_INCHES, -1.75*RobotParams.Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
@@ -139,7 +139,7 @@ public class RobotParams
 
         public static final TrcPose2D RED_OBSERVATION_ZONE_CONVERT  = new TrcPose2D(2.5, -2, 0.0);
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   = new TrcPose2D(1.7, -2.1, 180.0);
-        public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP = new TrcPose2D(-2, -3, 180.0);
+        public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP = new TrcPose2D(-2.2, -2.0, 0.0);
     }   //class Game
 
     /**

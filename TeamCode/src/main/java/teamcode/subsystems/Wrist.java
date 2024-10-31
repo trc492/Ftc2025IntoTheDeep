@@ -41,10 +41,10 @@ public class Wrist
         public static final double MAX_POS                      = 0.8;
         public static final double RETRACT_POS                  = 0.5;
         public static final double GROUND_PICKUP_POS            = MIN_POS + 0.05;
-        public static final double LOW_BASKET_SCORE_POS         = MAX_POS;
-        public static final double HIGH_BASKET_SCORE_POS        = MAX_POS;
-        public static final double LOW_CHAMBER_SCORE_POS        = 0.55;
-        public static final double HIGH_CHAMBER_SCORE_POS       = 0.55;
+        public static final double LOW_BASKET_SCORE_POS         = 0.58;
+        public static final double HIGH_BASKET_SCORE_POS        = 0.55;
+        public static final double LOW_CHAMBER_SCORE_POS        = 0.4;
+        public static final double HIGH_CHAMBER_SCORE_POS       = 0.4;
         public static final double[] posPresets                 =
             {MIN_POS, GROUND_PICKUP_POS, RETRACT_POS, LOW_CHAMBER_SCORE_POS, MAX_POS};
         public static final double POS_PRESET_TOLERANCE         = 0.01;

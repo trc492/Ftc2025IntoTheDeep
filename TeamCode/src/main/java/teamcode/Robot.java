@@ -418,10 +418,15 @@ public class Robot
     public void cancelAll()
     {
         globalTracer.traceInfo(moduleName, "Cancel all operations.");
-
+        // Cancel subsystems.
         if (extenderArm != null) extenderArm.cancel();
         if (grabber != null) grabber.cancel();
         if (robotDrive != null) robotDrive.cancel();
+        // Cancel auto tasks.
+        if (pickupFromGroundTask != null) pickupFromGroundTask.cancel();
+        if (pickupSpecimenTask != null) pickupSpecimenTask.cancel();
+        if (scoreBasketTask != null) scoreBasketTask.cancel();
+        if (scoreChamberTask != null) scoreChamberTask.cancel();
     }   //cancelAll
 
     /**

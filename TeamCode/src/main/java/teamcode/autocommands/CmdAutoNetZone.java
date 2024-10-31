@@ -188,8 +188,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case SCORE_PRELOAD_SPECIMEN:
 
-                    robot.scoreChamberTask.autoScoreChamber(
-                            autoChoices.alliance, autoChoices.startPos, autoChoices.scoreHeight, true, event);
+                    robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
                     break;
 
@@ -199,9 +198,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     robot.pickupFromGroundTask.autoPickupFromGround(
                             autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
                                     Vision.SampleType.RedAllianceSamples :
-                                    Vision.SampleType.BlueAllianceSamples
-                            , event
-                    );
+                                    Vision.SampleType.BlueAllianceSamples,
+                            false, false, event);
 
                     // This can be optimized...
                     if (!endPickup)
@@ -251,9 +249,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     robot.pickupFromGroundTask.autoPickupFromGround(
                             autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
                                     Vision.SampleType.RedAllianceSamples :
-                                    Vision.SampleType.BlueAllianceSamples
-                            , event
-                    );
+                                    Vision.SampleType.BlueAllianceSamples,
+                            false, false, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET, 5.0);
                     break;
 

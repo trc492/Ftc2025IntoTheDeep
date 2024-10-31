@@ -157,9 +157,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     //Auto-Score Specimen
                     if (robot.scoreChamberTask != null)
                     {
-                        robot.scoreChamberTask.autoScoreChamber(
-                                autoChoices.alliance, autoChoices.startPos, autoChoices.scoreHeight, true, event
-                        );
+                        robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, event);
                         sm.waitForSingleEvent(event, State.PICKUP_FROM_SUBMERSIBLE);
                     } else
                     {
@@ -174,9 +172,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         robot.pickupFromGroundTask.autoPickupFromGround(
                                 autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
                                         Vision.SampleType.RedSample :
-                                        Vision.SampleType.BlueSample,
-                                event
-                        );
+                                        Vision.SampleType.BlueSample, false, false, event);
                         sm.waitForSingleEvent(event, State.DRIVE_TO_OBSERVATION);
                     } else
                     {
@@ -206,9 +202,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         robot.pickupFromGroundTask.autoPickupFromGround(
                                 autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
                                         Vision.SampleType.RedSample :
-                                        Vision.SampleType.BlueSample,
-                                event
-                        );
+                                        Vision.SampleType.BlueSample, false, false, event);
                     } else
                     {
                         sm.setState(State.PARK);
@@ -263,8 +257,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     //Auto-score specimen
                     if (robot.scoreChamberTask != null)
                     {
-                        robot.scoreChamberTask.autoScoreChamber(
-                                autoChoices.alliance, autoChoices.startPos, autoChoices.scoreHeight, true, event);
+                        robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, event);
                     }
 
                     //check cycle count to see if park or continue picking up from submersible

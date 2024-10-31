@@ -341,7 +341,7 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         robot.globalTracer.traceInfo(
                             moduleName, ">>>>> Auto score chamber (scoreHeight=%s).", scoreHeight);
-                        robot.scoreChamberTask.autoScoreChamber(null, null, scoreHeight, !driverAltFunc, null);
+                        robot.scoreChamberTask.autoScoreChamber(scoreHeight, null);
                     }
                     else
                     {
@@ -431,7 +431,7 @@ public class FtcTeleOp extends FtcOpMode
                     if (!robot.pickupFromGroundTask.isActive())
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup from ground.");
-                        robot.pickupFromGroundTask.autoPickupFromGround(Robot.sampleType, null);
+                        robot.pickupFromGroundTask.autoPickupFromGround(Robot.sampleType, true, false, null);
                     }
                     else
                     {

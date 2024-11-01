@@ -22,6 +22,8 @@
 
 package teamcode.autotasks;
 
+import androidx.annotation.NonNull;
+
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
@@ -58,12 +60,17 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         {
             this.alliance = alliance;
         }   //TaskParams
+
+        @NonNull
+        public String toString()
+        {
+            return "alliance=" + alliance;
+        }   //toString
     }   //class TaskParams
 
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
-    private final TrcEvent grabberEvent;
 
     private String currOwner = null;
 
@@ -79,7 +86,6 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         this.ownerName = ownerName;
         this.robot = robot;
         event = new TrcEvent(moduleName);
-        grabberEvent = new TrcEvent(moduleName + ".grabber");
     }   //TaskAutoPickupSpecimen
 
     /**
@@ -97,8 +103,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         }
 
-        tracer.traceInfo(moduleName, "alliance=" + alliance + ",event=" + completionEvent);
-        startAutoTask(State.START, new TaskParams(alliance), completionEvent);
+        TaskParams taskParams = new TaskParams(alliance);
+        tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
+        startAutoTask(State.START, taskParams, completionEvent);
     }   //autoPickupSpecimen
 
     //

@@ -22,6 +22,8 @@
 
 package teamcode.autotasks;
 
+import androidx.annotation.NonNull;
+
 import java.util.Locale;
 
 import teamcode.Robot;
@@ -66,6 +68,14 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             this.useVision = useVision;
             this.noDrive = noDrive;
         }   //TaskParams
+
+        @NonNull
+        public String toString()
+        {
+            return "sampleType=" + sampleType +
+                   ",useVision=" + useVision +
+                   ",noDrive=" + noDrive;
+        }   //toString
     }   //class TaskParams
 
     private final String ownerName;
@@ -102,8 +112,9 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     public void autoPickupFromGround(
         Vision.SampleType sampleType, boolean useVision, boolean noDrive, TrcEvent completionEvent)
     {
-        tracer.traceInfo(moduleName, "sampleType=" + sampleType + ",event=" + completionEvent);
-        startAutoTask(State.START, new TaskParams(sampleType, useVision, noDrive), completionEvent);
+        TaskParams taskParams = new TaskParams(sampleType, useVision, noDrive);
+        tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
+        startAutoTask(State.START, taskParams, completionEvent);
     }   //autoPickupFromGround
 
     //

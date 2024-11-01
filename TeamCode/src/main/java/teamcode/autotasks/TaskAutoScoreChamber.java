@@ -80,7 +80,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         public String toString()
         {
             return String.format(
-                Locale.US, "alliance=%s, scorePose=%s, elbowPos=%.1f, extenderPos=%.1f, wristPos=%.3f",
+                Locale.US, "alliance=%s,scorePose=%s,elbowPos=%.1f,extenderPos=%.1f,wristPos=%.3f",
                 alliance, scorePose, elbowAngle, extenderPos, wristPos);
         }   //toString
     }   //class TaskParams
@@ -141,7 +141,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         }
 
         TaskParams taskParams = new TaskParams(alliance, scorePose, elbowAngle, extenderPos, wristPos);
-        tracer.traceInfo(moduleName, "taskParams=(%s), event=%s", taskParams, completionEvent);
+        tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         startAutoTask(State.GO_TO_SCORE_POSITION, taskParams, completionEvent);
     }   //autoScoreChamber
 

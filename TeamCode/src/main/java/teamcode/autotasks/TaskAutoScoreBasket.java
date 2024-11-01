@@ -62,6 +62,11 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             this.scoreHeight = scoreHeight;
             this.doDrive = doDrive;
         }   //TaskParams
+
+        public String toString()
+        {
+            return "alliance=" + alliance + ",scoreHeight=" + scoreHeight + ",doDrive=" + doDrive;
+        }   //toString
     }   //class TaskParams
 
     private final String ownerName;
@@ -103,12 +108,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         }
 
-        tracer.traceInfo(
-            moduleName,
-            "alliance=" + alliance +
-            ",scoreHeight=" + scoreHeight +
-            ",doDrive=" + doDrive +
-            ",event=" + completionEvent);
+        TaskParams taskParams = new TaskParams(alliance, scoreHeight, doDrive);
+        tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight, doDrive), completionEvent);
     }   //autoScoreBasket
 

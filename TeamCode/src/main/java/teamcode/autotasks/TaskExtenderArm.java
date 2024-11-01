@@ -22,6 +22,10 @@
 
 package teamcode.autotasks;
 
+import androidx.annotation.NonNull;
+
+import java.util.Locale;
+
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
@@ -62,6 +66,12 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             this.extenderPosition = extenderPosition;
             this.wristPosition = wristPosition;
         }   //TaskParams
+
+        @NonNull
+        public String toString()
+        {
+            return "elbowPos=" + elbowAngle + ",extenderPos=" + extenderPosition + ",wristPos=" + wristPosition;
+        }   //toString
     }   //class TaskParams
 
     private final String ownerName;
@@ -103,6 +113,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         // Strictly speaking, this is not an autotask operation because it is not calling startAutoTask.
         // Therefore, it does not acquire subsystem ownership for the caller. It's the responsibility of the caller
         // to acquire ownership if desired, or pass in null owner if no ownership required.
+        tracer.traceInfo(moduleName, "Zero Calibrating.");
         wrist.setPosition(Wrist.Params.MAX_POS);
         elbow.zeroCalibrate(owner, Elbow.Params.ZERO_CAL_POWER);
         extender.zeroCalibrate(owner, Extender.Params.ZERO_CAL_POWER);
@@ -121,13 +132,8 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         boolean safeSequence, Double elbowAngle, Double extenderPosition, Double wristPosition,
         TrcEvent completionEvent)
     {
-        tracer.traceInfo(
-            moduleName,
-            "safeSequence=" + safeSequence +
-            ",elbowAngle=" + elbowAngle +
-            ", extenderPos=" + extenderPosition +
-            ", wristPosition=" + wristPosition +
-            ", event=" + completionEvent);
+        TaskParams taskParams = new TaskParams(elbowAngle, extenderPosition, wristPosition);
+        tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         this.safeSequence = safeSequence;
         startAutoTask(
             State.SET_POSITION, new TaskParams(elbowAngle, extenderPosition, wristPosition), completionEvent);

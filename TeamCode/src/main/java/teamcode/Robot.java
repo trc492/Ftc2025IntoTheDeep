@@ -453,9 +453,11 @@ public class Robot
     /**
      * This method calls vision to detect the specified sample and return the sample pose.
      *
+     * @param sampleType specifies the sample type to look for.
+     * @param logInfo specifies true to log detected info into tracelog, false otherwise.
      * @return detected sample pose, null if vision is busy or no sample detected.
      */
-    public TrcPose2D getDetectedSamplePose(Vision.SampleType sampleType)
+    public TrcPose2D getDetectedSamplePose(Vision.SampleType sampleType, boolean logInfo)
     {
         TrcPose2D samplePose = null;
 
@@ -467,12 +469,16 @@ public class Robot
             {
                 samplePose = robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose);
                 double extenderLen = TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET;
+                samplePose.angle = Math.toDegrees(Math.atan(samplePose.x/samplePose.y));
                 if (ledIndicator != null && extenderLen < Extender.Params.MAX_POS)
                 {
                     ledIndicator.setDetectedPattern(sampleInfo.detectedObj.label);
                 }
-                globalTracer.traceDebug(
-                    moduleName, "detectedSamplePose=%s, adjustedSamplePose=%s", sampleInfo.objPose, samplePose);
+                if (logInfo)
+                {
+                    globalTracer.traceInfo(
+                        moduleName, "detectedSamplePose=%s, adjustedSamplePose=%s", sampleInfo.objPose, samplePose);
+                }
             }
         }
 

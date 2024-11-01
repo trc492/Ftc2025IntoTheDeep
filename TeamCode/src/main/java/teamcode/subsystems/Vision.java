@@ -78,22 +78,22 @@ public class Vision
             camXOffset = -4.25;                 // Inches to the right from robot center
             camYOffset = 5.5;                   // Inches forward from robot center
             camZOffset = 10.608;                // Inches up from the floor
-            camYaw = -5.0;                      // degrees clockwise from robot forward
-            camPitch = 32.3466297;              // degrees down from horizontal
+            camYaw = -2.0;                      // degrees clockwise from robot forward
+            camPitch = 32.346629699;            // degrees down from horizontal
             camRoll = 0.0;
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
             camOrientation = OpenCvCameraRotation.UPRIGHT;
             // Homography: cameraRect in pixels, worldRect in inches
             cameraRect = new TrcHomographyMapper.Rectangle(
-                19.0, 20.5,                     // Camera Top Left
-                609.0, 43.0,                    // Camera Top Right
-                85.0, 433.0,                    // Camera Bottom Left
-                583.0, 445.0);                  // Camera Bottom Right
+                14.0, 28.0,                     // Camera Top Left
+                612.0, 33.0,                    // Camera Top Right
+                56.0, 448.0,                    // Camera Bottom Left
+                581.0, 430.5);                  // Camera Bottom Right
             worldRect = new TrcHomographyMapper.Rectangle(
-                -21.0, 45.25,                   // World Top Left
-                20.5, 45.25,                    // World Top Right
-                -4.25, 9.0,                     // World Bottom Left
-                5.75, 9.0);                     // World Bottom Right
+                -19.0, 37.5,                    // World Top Left
+                24.0, 37.5,                     // World Top Right
+                -4.75, 9.0,                     // World Bottom Left
+                6.25, 9.0);                     // World Bottom Right
         }   //SampleCamParams
     }   //class SampleCamParams
 

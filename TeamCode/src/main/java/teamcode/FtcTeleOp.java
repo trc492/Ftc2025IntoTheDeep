@@ -184,7 +184,7 @@ public class FtcTeleOp extends FtcOpMode
     {
         if (slowPeriodicLoop)
         {
-            robot.getDetectedSamplePose(Robot.sampleType);
+            robot.getDetectedSamplePose(Robot.sampleType, false);
             //
             // DriveBase subsystem.
             //

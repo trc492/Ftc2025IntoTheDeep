@@ -233,7 +233,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 robot.robotDrive.purePursuitDrive.start(
                     currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                     robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                    robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance, false));
+                    robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance));
                 robot.extenderArm.setPosition(taskParams.elbowAngle, null, taskParams.wristPos, null);
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);
                 break;

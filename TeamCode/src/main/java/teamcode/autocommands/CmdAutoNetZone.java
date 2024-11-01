@@ -25,8 +25,10 @@ package teamcode.autocommands;
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
 import teamcode.subsystems.Vision;
-import trclib.pathdrive.TrcPose2D;
+import teamcode.subsystems.Wrist;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcStateMachine;
@@ -43,14 +45,13 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     {
         START,
         DO_DELAY,
-//        DRIVE_TO_CHAMBER,
-        SCORE_PRELOAD_SPECIMEN,
-        PICKUP_FROM_SUBMERSIBLE,
-        SCORE_SAMPLE_BASKET,
-        DRIVE_TO_PICKUP,
+        SCORE_PRELOAD,
+        DRIVE_TO_SPIKE_MARKS,
         PICKUP_FLOOR_SAMPLE,
-        DRIVE_TO_SUBMERSIBLE,
+        SCORE_SAMPLE_BASKET,
+        GO_PARK,
         PARK,
+        ASCENT,
         DONE
     }   //enum State
 
@@ -59,9 +60,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private final TrcTimer timer;
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
-
     private int scoreSampleCount = 0;
-    private boolean endPickup = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -124,152 +123,101 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
         {
             robot.dashboard.displayPrintf(8, "State: " + state);
             robot.globalTracer.tracePreStateInfo(sm.toString(), state);
-            TrcPose2D targetPoseTile, targetPose;
-            TrcPose2D intermediate1, intermediate2, intermediate3, intermediate4, intermediate5;
-
             switch (state)
             {
                 case START:
-                    robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
                     // Set robot location according to auto choices.
                     robot.setRobotStartPosition(autoChoices);
-                    // if necessary, move extender arm into position for travelling
-//                    if (robot.extenderArm != null)
-//                    {
-//                        robot.extenderArm.retract(null);
-//                    }
-//                    robot.robotDrive.purePursuitDrive.start(
-//                            event, robot.robotDrive.driveBase.getFieldPosition(), false);
-
-                    sm.setState(State.DO_DELAY);
-
-
-                    break;
-
+                    //
+                    // Intentionally fall to next state.
+                    //
                 case DO_DELAY:
-
                     if (autoChoices.delay > 0.0)
                     {
                         robot.globalTracer.traceInfo(moduleName, "***** Do delay " + autoChoices.delay + "s.");
                         timer.set(autoChoices.delay, event);
-                        sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
+                        sm.waitForSingleEvent(event, State.SCORE_PRELOAD);
                     }
                     else
                     {
-                        //doing different things based on preload
-                        if (autoChoices.preloadType == Robot.GamePieceType.SPECIMEN)
-                        {
-                            //starting the preload specimen scoring process
-                            sm.setState(State.SCORE_PRELOAD_SPECIMEN);
-                        }
-                        else if (autoChoices.preloadType == Robot.GamePieceType.SAMPLE)
-                        {
-                            //if you select a preload sample, you will just start the sample basket sample scoring cycle
-                            sm.setState(State.SCORE_SAMPLE_BASKET);
-                        }
-//                        else
-//                        {
-//                            //in case something terrible happens
-//                            sm.waitForSingleEvent(event, State.DONE);
-//                        }
+                        sm.setState(State.SCORE_PRELOAD);
                     }
                     break;
 
-//                Because you've used do drive in the next state you don't need this.
-//                case DRIVE_TO_CHAMBER:
-//                    //Drive to Chamber
-//                   robot.robotDrive.purePursuitDrive.setMoveOutputLimit(0.8);
-//                   targetPose = robot.adjustPoseByAlliance(-0.5, -1.5, -90.0, autoChoices.alliance);
-//                   robot.robotDrive.purePursuitDrive.start(
-//                   null, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
-//                   sm.waitForSingleEvent(event, State.SCORE_PRELOAD_SPECIMEN);
-//
-//                    break;
-
-                case SCORE_PRELOAD_SPECIMEN:
-
-                    robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, event);
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
-                    break;
-
-                case PICKUP_FROM_SUBMERSIBLE:
-
-                    //Auto pickup from submersible
-                    robot.pickupFromGroundTask.autoPickupFromGround(
-                            autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
-                                    Vision.SampleType.RedAllianceSamples :
-                                    Vision.SampleType.BlueAllianceSamples,
-                            false, false, event);
-
-                    // This can be optimized...
-                    if (!endPickup)
+                case SCORE_PRELOAD:
+                    if (autoChoices.preloadType == Robot.GamePieceType.SPECIMEN)
                     {
-                        endPickup = true;
-                        sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
-                    } else if (endPickup)
-                    {
-                        sm.waitForSingleEvent(event, State.PARK);
+                        robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, event);
                     }
+                    else
+                    {
+                        robot.scoreBasketTask.autoScoreBasket(
+                            autoChoices.alliance, autoChoices.scoreHeight, true, event);
+                    }
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
                     break;
 
-                case SCORE_SAMPLE_BASKET:
-
-//                    robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
-//                    targetPose = robot.adjustPoseByAlliance(-2, -3, 225, autoChoices.alliance);
-//                    robot.robotDrive.purePursuitDrive.start(
-//                             null, robot.robotDrive.driveBase.getFieldPosition(), false, targetPose);
-//                    sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE, 5.0);
-
-                    //Auto-score sample in basket with drive
-                    robot.scoreBasketTask.autoScoreBasket(
-                            autoChoices.alliance, autoChoices.scoreHeight, true, event
-                    );
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
-                    break;
-
-                case DRIVE_TO_PICKUP:
+                case DRIVE_TO_SPIKE_MARKS:
                     if (scoreSampleCount < 3)
                     {
-//                        robot.robotDrive.purePursuitDrive.setMoveOutputLimit(1.0);
-                        targetPose = robot.adjustPoseByAlliance(
-                            RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP, autoChoices.alliance);
-                        robot.robotDrive.purePursuitDrive.start(null,
-                                event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                                robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration, targetPose);
+                        robot.robotDrive.purePursuitDrive.start(
+                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            robot.adjustPoseByAlliance(
+                                RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP, autoChoices.alliance));
                         scoreSampleCount++;
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     }
                     else
                     {
-                        sm.setState(State.DRIVE_TO_SUBMERSIBLE);
+                        sm.setState(State.GO_PARK);
                     }
                     break;
 
                 case PICKUP_FLOOR_SAMPLE:
-                    robot.pickupFromGroundTask.autoPickupFromGround(
-                            autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
-                                    Vision.SampleType.RedAllianceSamples :
-                                    Vision.SampleType.BlueAllianceSamples,
-                            false, false, event);
+                    robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, false, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET, 5.0);
                     break;
 
-                case DRIVE_TO_SUBMERSIBLE:
-                    robot.robotDrive.purePursuitDrive.setMoveOutputLimit(0.5);
-                    intermediate1 = robot.adjustPoseByAlliance(-1.5, -2, 0, autoChoices.alliance);
-                    targetPose = robot.adjustPoseByAlliance(-1.5, -0.5, 0, autoChoices.alliance);
-                    robot.robotDrive.purePursuitDrive.start(null,
+                case SCORE_SAMPLE_BASKET:
+                    robot.scoreBasketTask.autoScoreBasket(autoChoices.alliance, autoChoices.scoreHeight, true, event);
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
+                    break;
+
+                case GO_PARK:
+                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
+                    {
+                        robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration, targetPose);
-                    sm.waitForSingleEvent(event, State.PICKUP_FROM_SUBMERSIBLE, 5.0);
+                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            robot.adjustPoseByAlliance(
+                                RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE, autoChoices.alliance));
+                        sm.waitForSingleEvent(event, State.PARK);
+                    }
+                    else
+                    {
+                        sm.setState(State.DONE);
+                    }
                     break;
 
                 case PARK:
-                    //You will be here after picking up a sample
-                    //code for touching the rung
-                    sm.waitForSingleEvent(event, State.DONE, 5.0);
+                    if (robot.extenderArm != null)
+                    {
+                        robot.extenderArm.setPosition(
+                            Elbow.Params.ASCENT_LEVEL1_POS + 10.0, Extender.Params.ASCENT_LEVEL1_POS,
+                            Wrist.Params.ASCENT_LEVEL1_POS, event);
+                        sm.waitForSingleEvent(event, State.ASCENT);
+                    }
+                    else
+                    {
+                        sm.setState(State.DONE);
+                    }
                     break;
 
+                case ASCENT:
+                    robot.extenderArm.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, null, null, event);
+                    sm.waitForSingleEvent(event, State.DONE);
+                    break;
 
                 default:
                 case DONE:

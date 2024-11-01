@@ -56,6 +56,7 @@ public class Extender
         public static final double HIGH_BASKET_SCORE_POS        = 34.0;
         public static final double LOW_CHAMBER_SCORE_POS        = 18.5;
         public static final double HIGH_CHAMBER_SCORE_POS       = 21.0;
+        public static final double ASCENT_LEVEL1_POS            = 25.0;
         public static final double[] posPresets                 = {MIN_POS, 20.0, 25.0, 30.0, 35.0};
         public static final double POS_PRESET_TOLERANCE         = 3.0;
 

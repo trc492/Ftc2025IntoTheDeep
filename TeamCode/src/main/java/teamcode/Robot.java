@@ -547,7 +547,7 @@ public class Robot
      */
     public TrcPose2D adjustPoseByAlliance(double x, double y, double heading, FtcAuto.Alliance alliance)
     {
-        return adjustPoseByAlliance(x, y, heading, alliance, true);
+        return adjustPoseByAlliance(x, y, heading, alliance, false);
     }   //adjustPoseByAlliance
 
     /**
@@ -572,7 +572,7 @@ public class Robot
      */
     public TrcPose2D adjustPoseByAlliance(TrcPose2D pose, FtcAuto.Alliance alliance)
     {
-        return adjustPoseByAlliance(pose, alliance, true);
+        return adjustPoseByAlliance(pose, alliance, false);
     }   //adjustPoseByAlliance
 
     /**

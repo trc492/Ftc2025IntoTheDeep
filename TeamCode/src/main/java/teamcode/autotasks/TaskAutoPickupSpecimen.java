@@ -24,17 +24,21 @@ package teamcode.autotasks;
 
 import androidx.annotation.NonNull;
 
+import java.util.Locale;
+
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
+import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
+import trclib.timer.TrcTimer;
 
 /**
  * This class implements auto-assist task to pick up a specimen from ground.
@@ -48,6 +52,8 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         START,
         DRIVE_TO_PICKUP,
         APPROACH_SPECIMEN,
+        FIND_SPECIMEN,
+        ADJUST_TO_SPECIMEN,
         PICKUP_SPECIMEN,
         RETRACT_ARM,
         DONE
@@ -73,6 +79,8 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     private final TrcEvent event;
 
     private String currOwner = null;
+    private TrcPose2D specimenPose = null;
+    private Double visionExpiredTime = null;
 
     /**
      * Constructor: Create an instance of the object.
@@ -204,7 +212,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 {
                     robot.extenderArm.setPosition(
                         Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS,
-                        Wrist.Params.HIGH_CHAMBER_SCORE_POS, event);
+                        Wrist.Params.SPECIMEN_PICKUP_POS, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
                 }
                 break;
@@ -220,14 +228,46 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                     robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                     robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
-                sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
+                sm.waitForSingleEvent(event, State.FIND_SPECIMEN);
+                break;
+                
+            case FIND_SPECIMEN:
+                specimenPose = robot.getDetectedSamplePose(Robot.sampleType, true);
+                if (specimenPose != null)
+                {
+                    String msg = String.format(
+                            Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
+                            Robot.sampleType, specimenPose.x, specimenPose.y, specimenPose.angle);
+                    tracer.traceInfo(moduleName, msg);
+                    robot.speak(msg);
+                    sm.setState(State.ADJUST_TO_SPECIMEN);
+                }
+                else if (visionExpiredTime == null)
+                {
+                    visionExpiredTime = TrcTimer.getCurrentTime() + 1.0;
+                }
+                else if (TrcTimer.getCurrentTime() >= visionExpiredTime)
+                {
+                    tracer.traceInfo(moduleName, "%s not found, we are done.", Robot.sampleType);
+                    sm.setState(State.DONE);
+                }
+                break;
+                
+            case ADJUST_TO_SPECIMEN:
+                TrcPose2D robotPose = robot.robotDrive.driveBase.getFieldPosition();
+                double targetHeading = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE ? 180.0: 0.0;
+                robot.robotDrive.purePursuitDrive.start(
+                        currOwner, null, 0.0, robotPose, true,
+                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        new TrcPose2D(specimenPose.x, 0.0, targetHeading-robotPose.angle));
+                sm.waitForSingleEvent(event, State.APPROACH_SPECIMEN);
                 break;
 
             case APPROACH_SPECIMEN:
                 // Turn on intake and approach specimen slowly.
                 robot.grabber.autoIntake(null, 0.0, event);
                 robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.15, 0.0);
-                sm.waitForSingleEvent(event, State.RETRACT_ARM, 2.0);
+                sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN, 2.0);
                 break;
 
             case PICKUP_SPECIMEN:

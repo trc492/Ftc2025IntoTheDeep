@@ -143,7 +143,7 @@ public class RobotParams
         public static final TrcPose2D RED_OBSERVATION_ZONE_CONVERT  =
             new TrcPose2D(2.5*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
-            new TrcPose2D(1.7*Field.FULL_TILE_INCHES, -2.1*Field.FULL_TILE_INCHES, 180.0);
+            new TrcPose2D(2.0*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES, 180.0);
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
             new TrcPose2D(-2.2*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP =

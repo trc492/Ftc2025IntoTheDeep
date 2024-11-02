@@ -46,6 +46,7 @@ public class Wrist
         public static final double LOW_CHAMBER_SCORE_POS        = 0.4;
         public static final double HIGH_CHAMBER_SCORE_POS       = 0.4;
         public static final double ASCENT_LEVEL1_POS            = MAX_POS;
+        public static final double SPECIMEN_PICKUP_POS          = RETRACT_POS;
         public static final double[] posPresets                 =
             {MIN_POS, GROUND_PICKUP_POS, RETRACT_POS, LOW_CHAMBER_SCORE_POS, MAX_POS};
         public static final double POS_PRESET_TOLERANCE         = 0.01;

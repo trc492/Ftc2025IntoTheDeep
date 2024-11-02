@@ -246,24 +246,26 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 
             case LOWER_ELBOW:
                 robot.extenderArm.setPosition(taskParams.elbowAngle - 25.0, null, null, event);
-                sm.waitForSingleEvent(event, State.SCORE_CHAMBER, 0.5);
+                sm.waitForSingleEvent(event, State.SCORE_CHAMBER, 0.15);
                 break;
 
             case SCORE_CHAMBER:
+                event.clear();
                 if (!robot.grabber.hasObject())
                 {
                     sm.setState(State.RETRACT_EXTENDER_ARM);
                 }
                 else
                 {
-                    robot.grabber.autoDump(null, 0.0, Grabber.Params.FINISH_DELAY, event);
+                    robot.grabber.autoDump(null, 0.0, Grabber.Params.DUMP_TIME, event);
                     sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 }
                 break;
 
             case RETRACT_EXTENDER_ARM:
-                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, event);
+                robot.extenderArm.setPosition(Elbow.Params.HIGH_CHAMBER_SCORE_POS + 2.0, Extender.Params.MIN_POS, null, event);
                 sm.waitForSingleEvent(event, State.DONE);
+//                sm.setState(State.DONE);
                 break;
 
             default:

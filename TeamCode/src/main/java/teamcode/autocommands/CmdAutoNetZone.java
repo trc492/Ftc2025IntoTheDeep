@@ -29,6 +29,7 @@ import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Vision;
 import teamcode.subsystems.Wrist;
+import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcStateMachine;
@@ -162,11 +163,13 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     if (scoreSampleCount < 3 &&
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_BASKET_CYCLE_TIME)
                     {
+                        TrcPose2D spikeMark = robot.adjustPoseByAlliance(
+                                RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP, autoChoices.alliance);
+                        spikeMark.x -= 0.36 * RobotParams.Field.FULL_TILE_INCHES * scoreSampleCount;
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            robot.adjustPoseByAlliance(
-                                RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP, autoChoices.alliance));
+                            spikeMark);
                         scoreSampleCount++;
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     }
@@ -189,11 +192,16 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case GO_PARK:
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
+                        robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, null, null);
+                        TrcPose2D targetPose = robot.adjustPoseByAlliance(
+                            RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE, autoChoices.alliance);
+                        TrcPose2D intermediate1 = RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE.clone();
+                        intermediate1.x -= 0.5 * RobotParams.Field.FULL_TILE_INCHES;
+                        intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            robot.adjustPoseByAlliance(
-                                RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE, autoChoices.alliance));
+                            intermediate1, targetPose);
                         sm.waitForSingleEvent(event, State.PARK);
                     }
                     else

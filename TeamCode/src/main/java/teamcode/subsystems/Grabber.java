@@ -84,10 +84,10 @@ public class Grabber
             BLUE_THRESHOLD_HIGH, RED_THRESHOLD_HIGH};
 
         public static final double INTAKE_POWER                 = 1.0;
-        public static final double EJECT_POWER                  = -0.3;
+        public static final double EJECT_POWER                  = -0.2;
         public static final double RETAIN_POWER                 = 0.0;
-        public static final double FINISH_DELAY                 = 0.5;
-        public static final double DUMP_TIME                    = 0.5;
+        public static final double FINISH_DELAY                 = 0.15;
+        public static final double DUMP_TIME                    = 0.3;
 
 
         public static final double OPEN_POS                     = 0.2;
@@ -294,16 +294,23 @@ public class Grabber
         }
     }   //dump
 
-    public void autoIntake(String owner, double delay, double finishDelay, TrcEvent event)
+//    public void autoIntake(String owner, double delay, TrcEvent event, double timeout)
+    public void autoIntake(String owner, double delay, double finishDelay, TrcEvent event, double timeout)
     {
         if (motorGrabber != null)
         {
-            motorGrabber.autoIntake(owner, delay, finishDelay, event, 0.0);
+//            motorGrabber.autoIntake(owner, delay, event, timeout);
+            motorGrabber.autoIntake(owner, delay, finishDelay, event, timeout);
         }
         else
         {
-            servoGrabber.autoGrab(owner, delay, event, 0.0);
+            servoGrabber.autoGrab(owner, delay, event, timeout);
         }
+    }   //autoIntake
+
+    public void autoIntake(String owner, double delay, double finishDelay, TrcEvent event)
+    {
+        autoIntake(owner, delay, finishDelay, event, 0.0);
     }   //autoIntake
 
     public void autoDump(String owner, double delay, double finishDelay, TrcEvent event)

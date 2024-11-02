@@ -44,7 +44,7 @@ public class RobotParams
     {
         // Global config
         public static final RobotBase.RobotType robotType       = RobotBase.RobotType.IntoTheDeepRobot;
-        public static final boolean inCompetition               = false;
+        public static final boolean inCompetition               = true;
         public static final boolean useTraceLog                 = true;
         public static final boolean useLoopPerformanceMonitor   = true;
         public static final boolean useBatteryMonitor           = false;
@@ -66,7 +66,7 @@ public class RobotParams
         public static final boolean doWatershed                 = false;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = false;
-        // Drive Base
+        // Drive Bdase
         public static final boolean useDriveBase                = true;
         public static final boolean usePinpointOdometry         = true;
         public static final boolean useSparkfunOTOS             = false;
@@ -138,7 +138,7 @@ public class RobotParams
         public static final double CHAMBER_MAX_SCORE_POS_X          = (CHAMBER_LENGTH / 2.0) - 3.0;
         // Score poses.
         public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-            new TrcPose2D(-2.25*Field.FULL_TILE_INCHES, -2.25*Field.FULL_TILE_INCHES, 45.0);
+            new TrcPose2D(-2.28*Field.FULL_TILE_INCHES, -2.28*Field.FULL_TILE_INCHES, 45.0);
         public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE    =
             new TrcPose2D(-0.3*Field.FULL_TILE_INCHES, -1.75*Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
@@ -149,12 +149,12 @@ public class RobotParams
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
             new TrcPose2D(2.0*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES, 180.0);
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
-            new TrcPose2D(-2.2*Field.FULL_TILE_INCHES, -1.8*Field.FULL_TILE_INCHES, 0.0);
+            new TrcPose2D(-1.8*Field.FULL_TILE_INCHES, -1.8*Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP =
             new TrcPose2D(2.2*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES);
 
         public static final TrcPose2D RED_ASCENT_ZONE_PARK_POSE     =
-            new TrcPose2D(-1.0*Field.FULL_TILE_INCHES, 0.0, 90.0);
+            new TrcPose2D(-1.0*Field.FULL_TILE_INCHES, -0.5*Field.FULL_TILE_INCHES, 90.0);
         public static final TrcPose2D RED_OBSERVATION_ZONE_PARK_POSE=
             new TrcPose2D(2.5*Field.FULL_TILE_INCHES, -2.5*Field.FULL_TILE_INCHES, 0.0);
     }   //class Game

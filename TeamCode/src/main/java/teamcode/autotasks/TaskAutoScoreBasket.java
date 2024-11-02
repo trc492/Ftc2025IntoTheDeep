@@ -111,7 +111,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
         TaskParams taskParams = new TaskParams(alliance, scoreHeight, doDrive);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
-        startAutoTask(State.GO_TO_SCORE_POSITION, new TaskParams(alliance, scoreHeight, doDrive), completionEvent);
+        startAutoTask(State.SET_EXTENDER_ARM, new TaskParams(alliance, scoreHeight, doDrive), completionEvent);
     }   //autoScoreBasket
 
     //
@@ -206,11 +206,12 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(-2.0, -2.0, 0.0, taskParams.alliance, true),
                         robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
-                    sm.waitForSingleEvent(event, State.SET_EXTENDER_ARM);
+                    sm.waitForSingleEvent(event, State.SCORE_BASKET);
+//                    sm.setState(State.SET_EXTENDER_ARM);
                 }
                 else
                 {
-                    sm.setState(State.SET_EXTENDER_ARM);
+                    sm.setState(State.SCORE_BASKET);
                 }
                 break;
 
@@ -226,8 +227,11 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     elbowScorePos = Elbow.Params.HIGH_BASKET_SCORE_POS;
                     extenderScorePos = Extender.Params.HIGH_BASKET_SCORE_POS;
                 }
-                robot.extenderArm.setPosition(Elbow.Params.BASKET_PRESCORE_POS, extenderScorePos, null, event);
-                sm.waitForSingleEvent(event, State.SCORE_BASKET);
+                robot.extenderArm.setPosition(Elbow.Params.BASKET_PRESCORE_POS, extenderScorePos, null, null);
+//                sm.addEvent(event);
+//                sm.addEvent(event2);
+//                sm.waitForEvents(State.SCORE_BASKET);
+                sm.setState(State.GO_TO_SCORE_POSITION);
                 break;
 
             case SCORE_BASKET:
@@ -236,17 +240,19 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 robot.extenderArm.setPosition(elbowScorePos, null, wristPos, null);
                 if (robot.grabber.hasObject())
                 {
-                    robot.grabber.autoDump(null, 1.5, Grabber.Params.FINISH_DELAY, event);
+                    robot.grabber.autoDump(null, 0.5, Grabber.Params.DUMP_TIME, event);
                 } else
                 {
-                    robot.grabber.dump(null, 1.5, event);
+                    robot.grabber.dump(null, 0.5, event);
                 }
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
 
             case RETRACT_EXTENDER_ARM:
-                robot.extenderArm.retract(event);
-                sm.waitForSingleEvent(event, State.DONE);
+//                robot.extenderArm.retract(event);
+                robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, null,null);
+//                sm.waitForSingleEvent(event, State.DONE);
+                sm.setState(State.DONE);
                 break;
 
             default:

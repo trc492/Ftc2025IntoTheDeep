@@ -1138,7 +1138,7 @@ public class FtcTest extends FtcTeleOp
 
             if (robot.vision.isSampleVisionEnabled(Vision.SampleType.AnySample))
             {
-                robot.vision.getDetectedSample(Vision.SampleType.AnySample, lineNum++);
+                robot.vision.getDetectedSample(Vision.SampleType.AnySample, 0.0, lineNum++);
             }
         }
     }   //doVisionTest

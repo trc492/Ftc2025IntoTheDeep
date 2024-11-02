@@ -226,7 +226,8 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 break;
                 
             case FIND_SPECIMEN:
-                specimenPose = robot.getDetectedSamplePose(Robot.sampleType, true);
+                specimenPose = robot.getDetectedSamplePose(
+                    Robot.sampleType, RobotParams.Game.SAMPLE_GROUND_OFFSET, true);
                 if (specimenPose != null)
                 {
                     String msg = String.format(

@@ -454,17 +454,18 @@ public class Robot
      * This method calls vision to detect the specified sample and return the sample pose.
      *
      * @param sampleType specifies the sample type to look for.
+     * @param sampleGroundOffset specifies the object ground offset above the floor.
      * @param logInfo specifies true to log detected info into tracelog, false otherwise.
      * @return detected sample pose, null if vision is busy or no sample detected.
      */
-    public TrcPose2D getDetectedSamplePose(Vision.SampleType sampleType, boolean logInfo)
+    public TrcPose2D getDetectedSamplePose(Vision.SampleType sampleType, double sampleGroundOffset, boolean logInfo)
     {
         TrcPose2D samplePose = null;
 
         if (vision != null && vision.isSampleVisionEnabled(sampleType))
         {
             TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo =
-                vision.getDetectedSample(sampleType, -1);
+                vision.getDetectedSample(sampleType, sampleGroundOffset, -1);
             if (sampleInfo != null)
             {
                 samplePose = robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose);

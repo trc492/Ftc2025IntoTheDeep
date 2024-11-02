@@ -747,11 +747,12 @@ public class Vision
      * This method calls ColorBlob vision to detect the specified Sample object.
      *
      * @param sampleType specifies the sample type to be detected.
+     * @param groundOffset specifies the ground offset of the detected sample.
      * @param lineNum specifies the dashboard line number to display the detected object info, -1 to disable printing.
      * @return detected Sample object info.
      */
     public TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> getDetectedSample(
-        SampleType sampleType, int lineNum)
+        SampleType sampleType, double groundOffset, int lineNum)
     {
         TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo = null;
 
@@ -759,17 +760,17 @@ public class Vision
         {
             case RedSample:
                 sampleInfo = redSampleVision != null? redSampleVision.getBestDetectedTargetInfo(
-                    null, this::compareDistance, 0.0, 0.0): null;
+                    null, this::compareDistance, groundOffset, robot.robotInfo.webCam1.camZOffset): null;
                 break;
 
             case BlueSample:
                 sampleInfo = blueSampleVision != null? blueSampleVision.getBestDetectedTargetInfo(
-                    null, this::compareDistance, 0.0, 0.0): null;
+                    null, this::compareDistance, groundOffset, robot.robotInfo.webCam1.camZOffset): null;
                 break;
 
             case YellowSample:
                 sampleInfo = yellowSampleVision != null? yellowSampleVision.getBestDetectedTargetInfo(
-                    null, this::compareDistance, 0.0, 0.0): null;
+                    null, this::compareDistance, groundOffset, robot.robotInfo.webCam1.camZOffset): null;
                 break;
 
             case RedAllianceSamples:
@@ -781,7 +782,7 @@ public class Vision
                 if (sampleType != SampleType.BlueAllianceSamples)
                 {
                     sampleInfo = redSampleVision != null ? redSampleVision.getBestDetectedTargetInfo(
-                        null, this::compareDistance, 0.0, 0.0) : null;
+                        null, this::compareDistance, groundOffset, robot.robotInfo.webCam1.camZOffset) : null;
                     if (sampleInfo != null)
                     {
                         sampleList.add(sampleInfo);
@@ -791,7 +792,7 @@ public class Vision
                 if (sampleType != SampleType.RedAllianceSamples)
                 {
                     sampleInfo = blueSampleVision != null ? blueSampleVision.getBestDetectedTargetInfo(
-                        null, this::compareDistance, 0.0, 0.0) : null;
+                        null, this::compareDistance, groundOffset, robot.robotInfo.webCam1.camZOffset) : null;
                     if (sampleInfo != null)
                     {
                         sampleList.add(sampleInfo);
@@ -799,7 +800,7 @@ public class Vision
                 }
 
                 sampleInfo = yellowSampleVision != null? yellowSampleVision.getBestDetectedTargetInfo(
-                    null, this::compareDistance, 0.0, 0.0): null;
+                    null, this::compareDistance, groundOffset, robot.robotInfo.webCam1.camZOffset): null;
                 if (sampleInfo != null)
                 {
                     sampleList.add(sampleInfo);

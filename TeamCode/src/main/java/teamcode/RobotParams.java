@@ -106,8 +106,6 @@ public class RobotParams
      */
     public static class Game
     {
-        public static final double AUTO_PERIOD                      = 30.0; // 30 seconds auto period
-        public static final double SCORE_BASKET_CYCLE_TIME          = 8.0;  // in seconds
         public static final boolean fieldIsMirrored                 = false;
         // DO NOT CHANGE the AprilTag location numbers. They are from the AprilTag metadata.
         // All AprilTags are at the height of 5.75-inch from the tile floor.
@@ -132,6 +130,9 @@ public class RobotParams
         public static final TrcPose2D STARTPOSE_RED_NET_ZONE        = new TrcPose2D(-STARTPOS_X, -STARTPOS_Y, 0.0);
         public static final TrcPose2D STARTPOSE_RED_OBSERVATION_ZONE= new TrcPose2D(STARTPOS_X, -STARTPOS_Y, 0.0);
 
+        public static final double AUTO_PERIOD                      = 30.0; // 30 seconds auto period
+        public static final double SCORE_BASKET_CYCLE_TIME          = 8.0;  // in seconds
+        public static final double SAMPLE_GROUND_OFFSET             = 8.0;  // inches
         public static final double CHAMBER_LENGTH                   = 26.0;
         public static final double CHAMBER_MAX_SCORE_POS_X          = (CHAMBER_LENGTH / 2.0) - 3.0;
         // Score poses.

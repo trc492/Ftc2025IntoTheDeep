@@ -225,7 +225,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 break;
 
             case FIND_SAMPLE:
-                samplePose = robot.getDetectedSamplePose(taskParams.sampleType, true);
+                samplePose = robot.getDetectedSamplePose(taskParams.sampleType, 0.0, true);
                 if (samplePose != null)
                 {
                     String msg = String.format(

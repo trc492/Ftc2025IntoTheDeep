@@ -31,6 +31,7 @@ import teamcode.Robot;
 import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
@@ -263,7 +264,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 
             case APPROACH_SPECIMEN:
                 // Turn on intake and approach specimen slowly.
-                robot.grabber.autoIntake(null, 0.0, event);
+                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event);
                 robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.15, 0.0);
                 sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN, 2.0);
                 break;

@@ -121,7 +121,7 @@ public class Grabber
                 .setPrimaryMotor(Params.PRIMARY_MOTOR_NAME, Params.PRIMARY_MOTOR_TYPE, Params.PRIMARY_MOTOR_INVERTED)
                 .setFollowerMotor(
                     Params.FOLLOWER_MOTOR_NAME, Params.FOLLOWER_MOTOR_TYPE, Params.FOLLOWER_MOTOR_INVERTED)
-                .setPowerParams(Params.INTAKE_POWER, Params.EJECT_POWER, Params.RETAIN_POWER, Params.FINISH_DELAY)
+                .setPowerParams(Params.INTAKE_POWER, Params.EJECT_POWER, Params.RETAIN_POWER)
                 .setAnalogSensorTrigger(
                     this::getSensorDistance, Params.SENSOR_TRIGGER_INVERTED, Params.SENSOR_TRIGGER_THRESHOLD);
             motorGrabber = new FtcMotorGrabber(Params.SUBSYSTEM_NAME, grabberParams).getGrabber();
@@ -294,11 +294,11 @@ public class Grabber
         }
     }   //dump
 
-    public void autoIntake(String owner, double delay, TrcEvent event)
+    public void autoIntake(String owner, double delay, double finishDelay, TrcEvent event)
     {
         if (motorGrabber != null)
         {
-            motorGrabber.autoIntake(owner, delay, event, 0.0);
+            motorGrabber.autoIntake(owner, delay, finishDelay, event, 0.0);
         }
         else
         {
@@ -306,11 +306,11 @@ public class Grabber
         }
     }   //autoIntake
 
-    public void autoDump(String owner, double delay, TrcEvent event)
+    public void autoDump(String owner, double delay, double finishDelay, TrcEvent event)
     {
         if (motorGrabber != null)
         {
-            motorGrabber.autoEject(owner, delay, event, 0.0);
+            motorGrabber.autoEject(owner, delay, finishDelay, event, 0.0);
         }
         else
         {

@@ -30,6 +30,7 @@ import ftclib.driverio.FtcGamepad;
 import ftclib.robotcore.FtcOpMode;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.Grabber;
 import teamcode.subsystems.LEDIndicator;
 import teamcode.subsystems.Wrist;
 import trclib.drivebase.TrcDriveBase;
@@ -589,7 +590,7 @@ public class FtcTeleOp extends FtcOpMode
                         else
                         {
                             robot.globalTracer.traceInfo(moduleName, ">>>>> Auto intake.");
-                            robot.grabber.autoIntake(null, 0.0, null);
+                            robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, null);
                         }
                     }
                     else
@@ -623,7 +624,7 @@ public class FtcTeleOp extends FtcOpMode
                         else
                         {
                             robot.globalTracer.traceInfo(moduleName, ">>>>> Auto dump.");
-                            robot.grabber.autoDump(null, 0.0, null);
+                            robot.grabber.autoDump(null, 0.0, Grabber.Params.FINISH_DELAY, null);
                         }
                     }
                     else

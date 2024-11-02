@@ -31,6 +31,7 @@ import teamcode.Robot;
 import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
@@ -255,7 +256,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 }
                 else
                 {
-                    robot.grabber.autoDump(null, 0.0, event);
+                    robot.grabber.autoDump(null, 0.0, Grabber.Params.FINISH_DELAY, event);
                     sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 }
                 break;

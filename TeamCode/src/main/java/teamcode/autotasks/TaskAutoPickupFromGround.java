@@ -29,6 +29,7 @@ import java.util.Locale;
 import teamcode.Robot;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
 import teamcode.subsystems.Vision;
 import trclib.dataprocessor.TrcUtil;
@@ -264,7 +265,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case PICKUP_SAMPLE:
                 // We only care about sample color if we pick up from submersible.
                 // We assume the driver would drive up to the correct sample color for picking up from ground.
-                robot.grabber.autoIntake(null, 0.0, event);
+                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event);
                 sm.addEvent(event);
                 robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 4.0, null, null, armEvent);
                 sm.addEvent(armEvent);

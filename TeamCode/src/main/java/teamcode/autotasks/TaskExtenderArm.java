@@ -24,8 +24,6 @@ package teamcode.autotasks;
 
 import androidx.annotation.NonNull;
 
-import java.util.Locale;
-
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;

@@ -27,6 +27,7 @@ import teamcode.Robot;
 import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
@@ -235,7 +236,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 robot.extenderArm.setPosition(elbowScorePos, null, wristPos, null);
                 if (robot.grabber.hasObject())
                 {
-                    robot.grabber.autoDump(null, 1.5, event);
+                    robot.grabber.autoDump(null, 1.5, Grabber.Params.FINISH_DELAY, event);
                 } else
                 {
                     robot.grabber.dump(null, 1.5, event);

@@ -178,7 +178,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case PICKUP_FLOOR_SAMPLE:
                     robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, false, event);
-                    sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET, 5.0);
+                    sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
                     break;
 
                 case SCORE_SAMPLE_BASKET:

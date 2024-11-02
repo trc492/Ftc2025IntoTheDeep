@@ -520,14 +520,14 @@ public class FtcTeleOp extends FtcOpMode
             case A:
                 if (robot.wrist != null && pressed)
                 {
-                    robot.wrist.setPosition(Wrist.Params.MIN_POS);
+                    robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS);
                 }
                 break;
 
             case B:
                 if (robot.wrist != null && pressed)
                 {
-                    robot.wrist.setPosition(Wrist.Params.MAX_POS);
+                    robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS);
                 }
                 break;
 

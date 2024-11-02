@@ -84,9 +84,11 @@ public class Grabber
             BLUE_THRESHOLD_HIGH, RED_THRESHOLD_HIGH};
 
         public static final double INTAKE_POWER                 = 1.0;
-        public static final double EJECT_POWER                  = -0.5;
+        public static final double EJECT_POWER                  = -0.3;
         public static final double RETAIN_POWER                 = 0.0;
         public static final double FINISH_DELAY                 = 0.5;
+        public static final double DUMP_TIME                    = 0.5;
+
 
         public static final double OPEN_POS                     = 0.2;
         public static final double OPEN_TIME                    = 0.5;
@@ -284,7 +286,7 @@ public class Grabber
     {
         if (motorGrabber != null)
         {
-            motorGrabber.eject(owner, delay, 0.0, event);
+            motorGrabber.eject(owner, delay, Grabber.Params.DUMP_TIME, event);
         }
         else
         {

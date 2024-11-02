@@ -53,7 +53,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         DRIVE_TO_PICKUP,
         APPROACH_SPECIMEN,
         FIND_SPECIMEN,
-        ADJUST_TO_SPECIMEN,
+        ALIGN_TO_SPECIMEN,
         PICKUP_SPECIMEN,
         RETRACT_ARM,
         DONE
@@ -204,7 +204,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             case START:
                 if (robot.extenderArm == null || robot.grabber == null)
                 {
-                    // Arm doesn't exist, nothing we can do.
+                    // Arm or grabber don't exist, nothing we can do.
                     tracer.traceInfo(moduleName, "Arm or grabber doesn't exist, we are done.");
                     sm.setState(State.DONE);
                 }
@@ -217,12 +217,6 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 }
                 break;
 
-            // Code Review: should use vision to aid picking up.
-            // - Drive to a location right in front of the specimen according to vision.
-            // - Send arm out to the length determined by vision.
-            // - grab the specimen
-            // - retract
-            // - done
             case DRIVE_TO_PICKUP:
                 robot.robotDrive.purePursuitDrive.start(
                     currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
@@ -236,11 +230,11 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 if (specimenPose != null)
                 {
                     String msg = String.format(
-                            Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
-                            Robot.sampleType, specimenPose.x, specimenPose.y, specimenPose.angle);
+                        Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
+                        Robot.sampleType, specimenPose.x, specimenPose.y, specimenPose.angle);
                     tracer.traceInfo(moduleName, msg);
                     robot.speak(msg);
-                    sm.setState(State.ADJUST_TO_SPECIMEN);
+                    sm.setState(State.ALIGN_TO_SPECIMEN);
                 }
                 else if (visionExpiredTime == null)
                 {
@@ -253,13 +247,13 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 }
                 break;
                 
-            case ADJUST_TO_SPECIMEN:
+            case ALIGN_TO_SPECIMEN:
                 TrcPose2D robotPose = robot.robotDrive.driveBase.getFieldPosition();
-                double targetHeading = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE ? 180.0: 0.0;
+                double targetHeading = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE? 180.0: 0.0;
                 robot.robotDrive.purePursuitDrive.start(
-                        currOwner, null, 0.0, robotPose, true,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        new TrcPose2D(specimenPose.x, 0.0, targetHeading-robotPose.angle));
+                    currOwner, null, 0.0, robotPose, true,
+                    robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                    new TrcPose2D(specimenPose.x, 0.0, targetHeading - robotPose.angle));
                 sm.waitForSingleEvent(event, State.APPROACH_SPECIMEN);
                 break;
 

@@ -206,7 +206,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case START:
                 if (robot.extenderArm == null || robot.grabber == null)
                 {
-                    // Arm doesn't exist, nothing we can do.
+                    // Arm or grabber don't exist, nothing we can do.
                     tracer.traceInfo(moduleName, "Arm or grabber doesn't exist, we are done.");
                     sm.setState(State.DONE);
                 }

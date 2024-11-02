@@ -62,15 +62,17 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     private static class TaskParams
     {
         final FtcAuto.Alliance alliance;
-        TaskParams(FtcAuto.Alliance alliance)
+        final boolean useVision;
+        TaskParams(FtcAuto.Alliance alliance, boolean useVision)
         {
             this.alliance = alliance;
+            this.useVision = useVision;
         }   //TaskParams
 
         @NonNull
         public String toString()
         {
-            return "alliance=" + alliance;
+            return "alliance=" + alliance + ",useVision=" + useVision;
         }   //toString
     }   //class TaskParams
 
@@ -100,9 +102,10 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
      * This method starts the auto-assist operation.
      *
      * @param alliance specifies the alliance color, can be null if caller is TeleOp.
+     * @param useVision specifies true to use Vision, false otherwise.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoPickupSpecimen(FtcAuto.Alliance alliance, TrcEvent completionEvent)
+    public void autoPickupSpecimen(FtcAuto.Alliance alliance, boolean useVision, TrcEvent completionEvent)
     {
         if (alliance == null)
         {
@@ -111,7 +114,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         }
 
-        TaskParams taskParams = new TaskParams(alliance);
+        TaskParams taskParams = new TaskParams(alliance, useVision);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         startAutoTask(State.START, taskParams, completionEvent);
     }   //autoPickupSpecimen
@@ -222,7 +225,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                     robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                     robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
-                sm.waitForSingleEvent(event, State.FIND_SPECIMEN);
+                sm.waitForSingleEvent(event, taskParams.useVision? State.FIND_SPECIMEN: State.APPROACH_SPECIMEN);
                 break;
                 
             case FIND_SPECIMEN:
@@ -282,7 +285,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 // Stop task.
                 if (robot.grabber != null && robot.ledIndicator != null)
                 {
-                    robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), false);
+                    robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
                 }
                 stopAutoTask(true);
                 break;

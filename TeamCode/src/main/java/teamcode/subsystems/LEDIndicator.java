@@ -148,12 +148,13 @@ public class LEDIndicator
             indicator.setPatternState(RED_SAMPLE, false);
             indicator.setPatternState(BLUE_SAMPLE, false);
             indicator.setPatternState(YELLOW_SAMPLE, false);
+            indicator.setPatternState(NO_SAMPLE, false);
             if (sampleType != null)
             {
                 indicator.setPatternState(
                     sampleType == Vision.SampleType.RedSample ? RED_SAMPLE :
                         sampleType == Vision.SampleType.BlueSample ? BLUE_SAMPLE :
-                            sampleType == Vision.SampleType.YellowSample ? YELLOW_SAMPLE : NO_SAMPLE,
+                            sampleType == Vision.SampleType.YellowSample ? YELLOW_SAMPLE : OFF_PATTERN,
                     true, flash ? 0.5 : 0.0);
             }
         }

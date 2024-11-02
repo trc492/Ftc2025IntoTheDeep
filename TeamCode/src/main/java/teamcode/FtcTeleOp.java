@@ -447,7 +447,7 @@ public class FtcTeleOp extends FtcOpMode
                     if (!robot.pickupSpecimenTask.isActive())
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup specimen.");
-                        robot.pickupSpecimenTask.autoPickupSpecimen(null, null);
+                        robot.pickupSpecimenTask.autoPickupSpecimen(null, !driverAltFunc, null);
                     }
                     else
                     {

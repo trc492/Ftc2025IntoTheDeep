@@ -285,7 +285,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 {
                     if (robot.ledIndicator != null)
                     {
-                        robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), false);
+                        robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
                     }
                 }
                 stopAutoTask(true);

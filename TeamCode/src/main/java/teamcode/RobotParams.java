@@ -132,6 +132,7 @@ public class RobotParams
 
         public static final double AUTO_PERIOD                      = 30.0; // 30 seconds auto period
         public static final double SCORE_BASKET_CYCLE_TIME          = 8.0;  // in seconds
+        public static final double SCORE_SPECIMEN_CYCLE_TIME        = 8.0;  // in seconds
         public static final double SAMPLE_GROUND_OFFSET             = 8.0;  // inches
         public static final double CHAMBER_LENGTH                   = 26.0;
         public static final double CHAMBER_MAX_SCORE_POS_X          = (CHAMBER_LENGTH / 2.0) - 3.0;

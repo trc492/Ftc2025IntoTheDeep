@@ -146,7 +146,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_TO_SPIKE_MARKS:
-                    if (scoreSpecimenCount < 3)
+                    // Make sure remaining time is long enough to score a cycle, or else go park.
+                    if (scoreSpecimenCount < 3 &&
+                        (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_SPECIMEN_CYCLE_TIME)
                     {
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,

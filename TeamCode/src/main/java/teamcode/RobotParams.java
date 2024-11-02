@@ -106,6 +106,8 @@ public class RobotParams
      */
     public static class Game
     {
+        public static final double AUTO_PERIOD                      = 30.0; // 30 seconds auto period
+        public static final double SCORE_BASKET_CYCLE_TIME          = 8.0;  // in seconds
         public static final boolean fieldIsMirrored                 = false;
         // DO NOT CHANGE the AprilTag location numbers. They are from the AprilTag metadata.
         // All AprilTags are at the height of 5.75-inch from the tile floor.

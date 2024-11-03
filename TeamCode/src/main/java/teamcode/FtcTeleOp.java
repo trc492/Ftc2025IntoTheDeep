@@ -229,6 +229,21 @@ public class FtcTeleOp extends FtcOpMode
                     double elbowPower = operatorGamepad.getRightStickY(true) * Elbow.Params.POWER_LIMIT;
                     if (elbowPower != elbowPrevPower)
                     {
+                        if (robot.elbow.getPosition() < 60.0 && robot.extender.getPosition() > Extender.Params.MAX_POS - Math.cos(Math.toRadians(robot.elbow.getPosition())) * 6.0)
+                        {
+                            robot.extender.setPosition(Extender.Params.MAX_POS - Math.cos(Math.toRadians(robot.elbow.getPosition())) * 6.0);
+//                            if (robot.elbow.getPosition() < Elbow.Params.SAFE_POS) {
+//                                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
+//                            }
+                        }
+//                        if (robot.elbow.getPosition() < Elbow.Params.SAFE_POS && robot.extender.getPosition() > Extender.Params.MAX_POS - 6.0)
+//                        {
+////                            robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
+//                            if (robot.wrist.getPosition() == Wrist.Params.GROUND_PICKUP_POS) {
+//                                robot.extender.setPosition(Extender.Params.MAX_POS - 6.0);
+//                            }
+//
+//                        }
                         if (operatorAltFunc)
                         {
                             robot.elbow.setPower(elbowPower);
@@ -252,8 +267,10 @@ public class FtcTeleOp extends FtcOpMode
                         }
                         else
                         {
+                            double adjust = Math.cos(Math.toRadians(robot.elbow.getPosition())) * 6.0;
                             robot.extender.setPidPower(
-                                extenderPower, Extender.Params.MIN_POS, Extender.Params.MAX_POS, true);
+//                                extenderPower, Extender.Params.MIN_POS, Extender.Params.MAX_POS - (robot.elbow.getPosition() < Elbow.Params.SAFE_POS ? 6.0 : 0.0 ), true);
+                                extenderPower, Extender.Params.MIN_POS, Extender.Params.MAX_POS - (adjust >= 0? adjust: 0.0), true);
                         }
                         extenderPrevPower = extenderPower;
                     }
@@ -519,14 +536,14 @@ public class FtcTeleOp extends FtcOpMode
         switch (button)
         {
             case A:
-                if (robot.wrist != null && pressed)
+                if (robot.wrist != null && pressed && (robot.elbow.getPosition() > Elbow.Params.SAFE_POS || robot.extender.getPosition() < Extender.Params.MAX_POS - 6.0))
                 {
                     robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS);
                 }
                 break;
 
             case B:
-                if (robot.wrist != null && pressed)
+                if (robot.wrist != null && pressed && (robot.elbow.getPosition() > Elbow.Params.SAFE_POS || robot.extender.getPosition() < Extender.Params.MAX_POS - 6.0))
                 {
                     robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS);
                 }

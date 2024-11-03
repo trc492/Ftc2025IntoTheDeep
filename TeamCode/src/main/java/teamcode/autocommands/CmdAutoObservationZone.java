@@ -46,6 +46,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
         SCORE_SPECIMEN,
         DRIVE_TO_SPIKE_MARKS,
         PICKUP_FLOOR_SAMPLE,
+        DROP_IN_OBSERVATION,
         DRIVE_TO_CHAMBER_POS,
         PARK,
         DONE
@@ -141,7 +142,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     break;
 
                 case SCORE_SPECIMEN:
-                    robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, event);
+                    robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, scoreSpecimenCount > 0, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
                     break;
 
@@ -150,11 +151,14 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     if (scoreSpecimenCount < 3 &&
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_SPECIMEN_CYCLE_TIME)
                     {
+                        TrcPose2D spikeMark = RobotParams.Game.RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP.clone();
+                        spikeMark.x -= 0.36 * scoreSpecimenCount;
+                        spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                             robot.adjustPoseByAlliance(
-                                RobotParams.Game.RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP, autoChoices.alliance));
+                                spikeMark, autoChoices.alliance));
                         scoreSpecimenCount++;
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     }
@@ -169,12 +173,24 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
                             Vision.SampleType.RedSample: Vision.SampleType.BlueSample,
                         true, false, event);
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER_POS, 5.0);
+                    sm.waitForSingleEvent(event, State.DROP_IN_OBSERVATION);
+                    break;
+
+                case DROP_IN_OBSERVATION:
+                    TrcPose2D spikeMark = RobotParams.Game.RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP.clone();
+                    spikeMark.x += 0.36 * scoreSpecimenCount;
+                    spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
+                    robot.robotDrive.purePursuitDrive.start(
+                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            robot.adjustPoseByAlliance(
+                                    spikeMark, autoChoices.alliance));
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
                     break;
 
                 case DRIVE_TO_CHAMBER_POS:
                     TrcPose2D scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
-                    scorePose.x += 3.0*scoreSpecimenCount;
+                    scorePose.x += 3.0 * scoreSpecimenCount * RobotParams.Field.FULL_TILE_INCHES;
                     robot.robotDrive.purePursuitDrive.start(
                         event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,

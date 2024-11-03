@@ -125,7 +125,7 @@ public class RobotBase
             profiledMaxAcceleration = robotMaxAcceleration;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
-            drivePidTolerance = 1.0;
+            drivePidTolerance = 0.8;
             turnPidTolerance = 1.0;
             xDrivePidCoeffs = new TrcPidController.PidCoefficients(0.055, 0.0, 0.00001, 0.0, 0.0);
             xDrivePidPowerLimit = 1.0;

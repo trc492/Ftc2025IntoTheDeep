@@ -277,9 +277,9 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
 
             case RETRACT_ALL:
                 robot.extenderArm.cancel();
-                robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null, armEvent);
-                sm.waitForSingleEvent(armEvent, State.DONE);
-//                sm.setState(State.DONE);
+                robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null, null);
+//                sm.waitForSingleEvent(armEvent, State.DONE);
+                sm.setState(State.DONE);
                 break;
 
             default:

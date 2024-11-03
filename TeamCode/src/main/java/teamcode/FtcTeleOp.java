@@ -342,7 +342,7 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         robot.globalTracer.traceInfo(
                             moduleName, ">>>>> Auto score chamber (scoreHeight=%s).", scoreHeight);
-                        robot.scoreChamberTask.autoScoreChamber(scoreHeight, null);
+                        robot.scoreChamberTask.autoScoreChamber(scoreHeight, false,null);
                     }
                     else
                     {
@@ -624,7 +624,7 @@ public class FtcTeleOp extends FtcOpMode
                         else
                         {
                             robot.globalTracer.traceInfo(moduleName, ">>>>> Auto dump.");
-                            robot.grabber.autoDump(null, 0.0, Grabber.Params.FINISH_DELAY, null);
+                            robot.grabber.autoDump(null, 0.0, Grabber.Params.DUMP_DELAY, null);
                         }
                     }
                     else

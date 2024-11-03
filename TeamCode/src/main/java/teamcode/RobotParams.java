@@ -131,14 +131,14 @@ public class RobotParams
         public static final TrcPose2D STARTPOSE_RED_OBSERVATION_ZONE= new TrcPose2D(STARTPOS_X, -STARTPOS_Y, 0.0);
 
         public static final double AUTO_PERIOD                      = 30.0; // 30 seconds auto period
-        public static final double SCORE_BASKET_CYCLE_TIME          = 8.0;  // in seconds
+        public static final double SCORE_BASKET_CYCLE_TIME          = 6.0;  // in seconds
         public static final double SCORE_SPECIMEN_CYCLE_TIME        = 8.0;  // in seconds
         public static final double SAMPLE_GROUND_OFFSET             = 8.0;  // inches
         public static final double CHAMBER_LENGTH                   = 26.0;
         public static final double CHAMBER_MAX_SCORE_POS_X          = (CHAMBER_LENGTH / 2.0) - 3.0;
         // Score poses.
         public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-            new TrcPose2D(-2.28*Field.FULL_TILE_INCHES, -2.28*Field.FULL_TILE_INCHES, 45.0);
+            new TrcPose2D(-2.32*Field.FULL_TILE_INCHES, -2.32*Field.FULL_TILE_INCHES, 45.0);
         public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE    =
             new TrcPose2D(-0.3*Field.FULL_TILE_INCHES, -1.75*Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
@@ -151,7 +151,7 @@ public class RobotParams
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
             new TrcPose2D(-1.8*Field.FULL_TILE_INCHES, -1.8*Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP =
-            new TrcPose2D(2.2*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES);
+            new TrcPose2D(1.8*Field.FULL_TILE_INCHES, -1.8*Field.FULL_TILE_INCHES);
 
         public static final TrcPose2D RED_ASCENT_ZONE_PARK_POSE     =
             new TrcPose2D(-1.0*Field.FULL_TILE_INCHES, -0.5*Field.FULL_TILE_INCHES, 90.0);

@@ -204,7 +204,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     robot.robotDrive.purePursuitDrive.start(
                         currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        robot.adjustPoseByAlliance(-2.0, -2.0, 0.0, taskParams.alliance, true),
+                        robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
                         robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
                     sm.waitForSingleEvent(event, State.SCORE_BASKET);
 //                    sm.setState(State.SET_EXTENDER_ARM);
@@ -240,7 +240,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 robot.extenderArm.setPosition(elbowScorePos, null, wristPos, null);
                 if (robot.grabber.hasObject())
                 {
-                    robot.grabber.autoDump(null, 0.5, Grabber.Params.DUMP_TIME, event);
+                    robot.grabber.autoDump(null, 0.5, Grabber.Params.DUMP_DELAY, event);
                 } else
                 {
                     robot.grabber.dump(null, 0.5, event);

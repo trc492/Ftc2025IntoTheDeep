@@ -232,7 +232,7 @@ public class FtcTeleOp extends FtcOpMode
                     elbowPos = robot.elbow.getPosition();
                     extenderPos = robot.extender.getPosition();
                     double extenderLimit = Extender.Params.MAX_POS - Math.cos(Math.toRadians(elbowPos)) * 6.0;
-                    if (elbowPos < 60.0 && extenderPos > extenderLimit)
+                    if (elbowPos < 50.0 && extenderPos > extenderLimit)
                     {
                         robot.extender.setPosition(extenderLimit);
                         if (elbowPos < Elbow.Params.SAFE_POS)
@@ -278,7 +278,7 @@ public class FtcTeleOp extends FtcOpMode
                             double adjust = Math.cos(Math.toRadians(robot.elbow.getPosition())) * 6.0;
                             robot.extender.setPidPower(
 //                                extenderPower, Extender.Params.MIN_POS, Extender.Params.MAX_POS - (robot.elbow.getPosition() < Elbow.Params.SAFE_POS ? 6.0 : 0.0 ), true);
-                                extenderPower, Extender.Params.MIN_POS, Extender.Params.MAX_POS - (adjust >= 0? adjust: 0.0), true);
+                                extenderPower, Extender.Params.MIN_POS, Extender.Params.MAX_POS - (adjust >= 0 && robot.elbow.getPosition() < 50.0? adjust: 0.0), true);
                         }
                         extenderPrevPower = extenderPower;
                     }

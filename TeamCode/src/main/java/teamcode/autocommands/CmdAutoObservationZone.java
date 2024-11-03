@@ -143,7 +143,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case SCORE_SPECIMEN:
                     robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, scoreSpecimenCount > 0, event);
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
+//                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
+                    sm.waitForSingleEvent(event,State.PARK);
                     break;
 
                 case DRIVE_TO_SPIKE_MARKS:
@@ -157,8 +158,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            robot.adjustPoseByAlliance(
-                                spikeMark, autoChoices.alliance));
+                            spikeMark);
                         scoreSpecimenCount++;
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     }

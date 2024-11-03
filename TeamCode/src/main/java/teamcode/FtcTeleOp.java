@@ -59,6 +59,7 @@ public class FtcTeleOp extends FtcOpMode
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
+    private double elbowPos, extenderPos;
 
     //
     // Implements FtcOpMode abstract method.
@@ -227,13 +228,19 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.elbow != null)
                 {
                     double elbowPower = operatorGamepad.getRightStickY(true) * Elbow.Params.POWER_LIMIT;
-                    if (robot.elbow.getPosition() < 60.0 && robot.extender.getPosition() > Extender.Params.MAX_POS - Math.cos(Math.toRadians(robot.elbow.getPosition())) * 6.0)
+
+                    elbowPos = robot.elbow.getPosition();
+                    extenderPos = robot.extender.getPosition();
+                    double extenderLimit = Extender.Params.MAX_POS - Math.cos(Math.toRadians(elbowPos)) * 6.0;
+                    if (elbowPos < 60.0 && extenderPos > extenderLimit)
                     {
-                        robot.extender.setPosition(Extender.Params.MAX_POS - Math.cos(Math.toRadians(robot.elbow.getPosition())) * 6.0);
-                        if (robot.elbow.getPosition() < Elbow.Params.SAFE_POS) {
+                        robot.extender.setPosition(extenderLimit);
+                        if (elbowPos < Elbow.Params.SAFE_POS)
+                        {
                             robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
                         }
                     }
+
                     if (elbowPower != elbowPrevPower)
                     {
 
@@ -537,14 +544,16 @@ public class FtcTeleOp extends FtcOpMode
         switch (button)
         {
             case A:
-                if (robot.wrist != null && pressed && (robot.elbow.getPosition() > Elbow.Params.SAFE_POS || robot.extender.getPosition() < Extender.Params.MAX_POS - 6.0))
+                if (robot.wrist != null && pressed &&
+                    (elbowPos > Elbow.Params.SAFE_POS || extenderPos < Extender.Params.MAX_POS - 6.0))
                 {
                     robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS);
                 }
                 break;
 
             case B:
-                if (robot.wrist != null && pressed && (robot.elbow.getPosition() > Elbow.Params.SAFE_POS || robot.extender.getPosition() < Extender.Params.MAX_POS - 6.0))
+                if (robot.wrist != null && pressed &&
+                    (elbowPos > Elbow.Params.SAFE_POS || extenderPos < Extender.Params.MAX_POS - 6.0))
                 {
                     robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS);
                 }

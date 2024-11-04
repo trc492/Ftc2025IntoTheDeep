@@ -59,7 +59,7 @@ public class FtcTeleOp extends FtcOpMode
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
-    private double elbowPos, extenderPos;
+    private double elbowPos, extenderPos, extenderLimit;
 
     //
     // Implements FtcOpMode abstract method.
@@ -231,7 +231,7 @@ public class FtcTeleOp extends FtcOpMode
 
                     elbowPos = robot.elbow.getPosition();
                     extenderPos = robot.extender.getPosition();
-                    double extenderLimit = Extender.Params.MAX_POS - Math.cos(Math.toRadians(elbowPos)) * 6.0;
+                    extenderLimit = Extender.Params.MAX_POS - Math.max(Math.cos(Math.toRadians(elbowPos)) * 6.0, 0.0);
                     if (elbowPos < 50.0 && extenderPos > extenderLimit)
                     {
                         robot.extender.setPosition(extenderLimit);
@@ -243,15 +243,6 @@ public class FtcTeleOp extends FtcOpMode
 
                     if (elbowPower != elbowPrevPower)
                     {
-
-//                        if (robot.elbow.getPosition() < Elbow.Params.SAFE_POS && robot.extender.getPosition() > Extender.Params.MAX_POS - 6.0)
-//                        {
-////                            robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
-//                            if (robot.wrist.getPosition() == Wrist.Params.GROUND_PICKUP_POS) {
-//                                robot.extender.setPosition(Extender.Params.MAX_POS - 6.0);
-//                            }
-//
-//                        }
                         if (operatorAltFunc)
                         {
                             robot.elbow.setPower(elbowPower);
@@ -275,10 +266,7 @@ public class FtcTeleOp extends FtcOpMode
                         }
                         else
                         {
-                            double adjust = Math.cos(Math.toRadians(robot.elbow.getPosition())) * 6.0;
-                            robot.extender.setPidPower(
-//                                extenderPower, Extender.Params.MIN_POS, Extender.Params.MAX_POS - (robot.elbow.getPosition() < Elbow.Params.SAFE_POS ? 6.0 : 0.0 ), true);
-                                extenderPower, Extender.Params.MIN_POS, Extender.Params.MAX_POS - (adjust >= 0 && robot.elbow.getPosition() < 50.0? adjust: 0.0), true);
+                            robot.extender.setPidPower(extenderPower, Extender.Params.MIN_POS, extenderLimit, true);
                         }
                         extenderPrevPower = extenderPower;
                     }

@@ -293,5 +293,5 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 break;
         }
     }   //runTaskState
- 
+
 }   //class TaskAutoScoreChamber

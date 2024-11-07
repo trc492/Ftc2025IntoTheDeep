@@ -179,5 +179,5 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
         }
     }   //runTaskState
- 
+
 }   //class TaskAutoClimb

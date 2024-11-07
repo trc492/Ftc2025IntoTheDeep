@@ -377,5 +377,5 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                 break;
         }
     }   //runTaskState
- 
+
 }   //class TaskExtenderArm

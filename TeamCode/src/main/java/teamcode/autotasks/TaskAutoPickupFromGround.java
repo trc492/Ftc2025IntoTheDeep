@@ -296,5 +296,5 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 break;
         }
     }   //runTaskState
- 
+
 }   //class TaskAutoPickupFromGround

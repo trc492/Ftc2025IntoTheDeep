@@ -1,0 +1,144 @@
+FtcTeleOp.startMode_INFO [0.006603043] ***** Starting TeleOp: 20241103@140942 *****
+Robot.startMode_INFO [0.040500254] Restore saved RobotPose=(x=-61.100,y=59.676,angle=180.672)
+FtcTeleOp.startMode_INFO [0.042724796] Enabling Limelight AprilTagVision.
+FtcTeleOp.driverButtonEvent_INFO [2.094300461] >>>>> DrivePower slow.
+FtcTeleOp.driverButtonEvent_INFO [3.445310222] >>>>> Enabling FIELD mode.
+FtcTeleOp.setDriveOrientation_INFO [3.447044763] driveOrientation=FIELD
+FtcTeleOp.driverButtonEvent_INFO [5.155648685] >>>>> DrivePower normal.
+Extender.primary.posPidCtrl.isStalled_INFO [5.877558466] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [12.962928845] >>>>> DrivePower slow.
+FtcTeleOp.driverButtonEvent_INFO [14.066060122] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [15.544244729] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [16.686101177] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [18.334438009] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [18.528379445] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [20.615615155] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [20.853326137] >>>>> Wrist preset down.
+FtcTeleOp.operatorButtonEvent_INFO [21.767119354] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [26.475581161] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [30.99911549] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [31.0104657] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [31.220575971] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [31.353033192] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [31.49738079] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [31.502866166] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [31.644121805] >>>>> Wrist preset up.
+FtcTeleOp.operatorButtonEvent_INFO [32.324296998] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [32.330939416] >>>>> Stop manual dump.
+FtcTeleOp.driverButtonEvent_INFO [32.367581211] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [34.732548657] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [38.065014492] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [38.346592437] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [38.560222541] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [38.97758125] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [39.217043691] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [39.421545795] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [39.565285559] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [39.682318571] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [40.218500833] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [40.433082063] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [40.649700001] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [40.870737565] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [41.083504337] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [41.59621268] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [41.766398739] >>>>> Wrist preset down.
+FtcTeleOp.operatorButtonEvent_INFO [42.930077397] >>>>> Stop manual intake.
+FtcTeleOp.driverButtonEvent_INFO [43.488289537] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [47.173157282] >>>>> Auto dump.
+FtcTeleOp.operatorButtonEvent_INFO [47.254916415] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [48.001948323] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [48.038693661] >>>>> Cancel auto dump.
+FtcTeleOp.driverButtonEvent_INFO [50.130773954] >>>>> DrivePower slow.
+FtcTeleOp.driverButtonEvent_INFO [50.542384787] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [52.198744495] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [53.582801843] >>>>> Auto intake.
+FtcTeleOp.driverButtonEvent_INFO [53.82728095] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [54.802215965] >>>>> DrivePower slow.
+FtcTeleOp.driverButtonEvent_INFO [54.961440314] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [54.970715607] >>>>> Stop manual intake.
+FtcTeleOp.operatorButtonEvent_INFO [58.512955421] >>>>> Auto dump.
+FtcTeleOp.operatorButtonEvent_INFO [58.589638971] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [58.720638734] >>>>> Wrist preset up.
+FtcTeleOp.operatorButtonEvent_INFO [59.356334464] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [59.363259798] >>>>> Cancel auto dump.
+FtcTeleOp.driverButtonEvent_INFO [61.592319022] >>>>> DrivePower slow.
+FtcTeleOp.driverButtonEvent_INFO [62.599425457] >>>>> DrivePower normal.
+Extender.primary.posPidCtrl.isStalled_INFO [62.692188591] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [63.621535226] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [65.088340749] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [66.324672706] >>>>> Auto intake.
+FtcTeleOp.driverButtonEvent_INFO [68.146942639] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [68.281908778] >>>>> Stop manual intake.
+FtcTeleOp.driverButtonEvent_INFO [69.574103366] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [71.698005079] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [71.802359048] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [72.473409449] >>>>> Wrist preset down.
+FtcTeleOp.operatorButtonEvent_INFO [72.510900286] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [73.382555832] >>>>> Stop manual intake.
+FtcTeleOp.driverButtonEvent_INFO [73.589626936] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [77.83747178] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [80.058627711] >>>>> Auto dump.
+FtcTeleOp.operatorButtonEvent_INFO [80.154063679] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [80.161085555] >>>>> Wrist preset up.
+FtcTeleOp.operatorButtonEvent_INFO [80.955475676] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [80.963315385] >>>>> Cancel auto dump.
+FtcTeleOp.driverButtonEvent_INFO [81.26156529] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [83.9260651] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [84.816800023] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [86.430452726] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [86.636448747] >>>>> Auto intake.
+Extender.primary.posPidCtrl.isStalled_INFO [86.735592382] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [86.88347148] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [87.124557629] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [88.054732306] >>>>> Auto intake.
+Extender.primary.posPidCtrl.isStalled_INFO [88.923672727] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [89.105141328] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [89.218234506] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [89.223753132] >>>>> Stop manual intake.
+FtcTeleOp.driverButtonEvent_INFO [89.48159145] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [95.516931681] >>>>> Auto dump.
+FtcTeleOp.operatorButtonEvent_INFO [95.678657656] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [96.202362417] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [96.207606292] >>>>> Cancel auto dump.
+FtcTeleOp.driverButtonEvent_INFO [98.161421697] >>>>> DrivePower slow.
+FtcTeleOp.driverButtonEvent_INFO [99.262931599] >>>>> DrivePower normal.
+Extender.primary.posPidCtrl.isStalled_INFO [104.912180375] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [105.103008269] PID stalled.
+TrcDigitalInput.getInput.printElapsedTime_INFO [165.750699071] TrcDigitalInput.getInput: avgElapsed=0.0021129134655870447, minElapsed=5.075E-5, maxElapsed=0.016025043
+TrcMotor.getPos.printElapsedTime_INFO [165.751392946] TrcMotor.getPos: avgElapsed=4.0381227520711255E-4, minElapsed=2.042E-6, maxElapsed=0.014961043
+TrcMotor.setPower.printElapsedTime_INFO [165.752289821] TrcMotor.setPower: avgElapsed=2.1493580610818365E-4, minElapsed=3.5E-6, maxElapsed=0.020337627
+TrcMotor.setVel.printElapsedTime_INFO [165.753190196] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [165.754367655] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [165.755047238] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [165.755592363] TrcServo.setPos: avgElapsed=0.009500141, minElapsed=0.006996501, maxElapsed=0.011195917
+Robot.stopMode_INFO [165.756053488] Disabling RedSampleVision.
+Robot.stopMode_INFO [165.756495072] Disabling BlueSampleVision.
+Robot.stopMode_INFO [165.756920322] Disabling YellowSampleVision.
+Robot.stopMode_INFO [165.757431614] Disabling LimelightVision.
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.760150822] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=5.336271906195531E-5/0.01328428239161781
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.761852989] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=3.645110711456188E-5/0.013284287660196483
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.764104656] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=5.3948538821106005E-5/0.01328428835343052
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.764680114] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=3.628449061237424E-5/0.013284058007050622
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.765188198] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.007619249597812978/0.013324457249979898
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.766031406] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=7.179509704507645E-6/0.013284056713142676
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.766580906] blinkin: OUTPUT_TASK=3.594730824685099E-5/0.013284058191951201
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.76994324] Elbow.primary.pidCtrlTask: OUTPUT_TASK=0.0037759665377119314/0.013284973060846143
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.770707407] Extender.primary.pidCtrlTask: OUTPUT_TASK=7.392015501069476E-4/0.013283953244632812
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.771769365] Grabber.colorTrigger.triggerTask: PRE_PERIODIC_TASK=0.009356140151947148/0.057605206877607784
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.77333124] Grabber.primary.pidCtrlTask: OUTPUT_TASK=2.1940095223005625E-5/0.013283945018854472
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.77405749] Grabber.follower.pidCtrlTask: OUTPUT_TASK=2.7309626871583618E-6/0.013283945319258497
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.774691865] null.triggerTask: PRE_PERIODIC_TASK=0.01075314403125/0.49645428139375003
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.775529532] DriverGamepad.buttonEventTask: PRE_PERIODIC_TASK=1.3060976425591098E-4/0.057598899128650904
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [165.780466283] OperatorGamepad.buttonEventTask: PRE_PERIODIC_TASK=4.679660361613352E-4/0.057598874890820585
+FtcOpMode.printPerformanceMetrics_INFO [165.782006574] [FtcTeleOp] Main robot thread average elapsed times:
+       robotInit=2.331426s
+    initPeriodic=0.004183s
+       startMode=0.000043s
+    loopInterval=0.057606s (17.359Hz)
+             sdk=0.000202s
+ prePeriodicTask=0.010668s
+        periodic=0.041861s
+postPeriodicTask=0.000074s
+         loopSum=0.057412s
+        stopMode=0.000000s
+FtcTeleOp.stopMode_INFO [165.784035408] ***** Stopping TeleOp: 20241103@141228 *****

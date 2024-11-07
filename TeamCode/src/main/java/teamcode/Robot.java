@@ -374,9 +374,10 @@ public class Robot
                     {
                         dashboard.displayPrintf(
                             lineNum++,
-                            "Extender: power=%.3f,pos=%.1f/%.1f,limitSw=%s",
-                            extenderArm.extender.getPower(), extenderArm.extender.getPosition(),
-                            extenderArm.extender.getPidTarget(), extenderArm.extender.isLowerLimitSwitchActive());
+                            "Extender: power=%.3f,current=%.3f,pos=%.1f/%.1f,limitSw=%s",
+                            extenderArm.extender.getPower(), extenderArm.extender.getCurrent(),
+                            extenderArm.extender.getPosition(), extenderArm.extender.getPidTarget(),
+                            extenderArm.extender.isLowerLimitSwitchActive());
                     }
 
                     if (extenderArm.wrist != null)

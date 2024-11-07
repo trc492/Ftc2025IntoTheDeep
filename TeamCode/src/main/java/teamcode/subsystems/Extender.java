@@ -42,7 +42,7 @@ public class Extender
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = false;
 
-        public static final double INCHES_PER_COUNT             = 0.0020825894713429496;
+        public static final double INCHES_PER_COUNT             = 0.0020825894713429496 * 9 / 4;
         public static final double POS_OFFSET                   = 16.25;
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.75;

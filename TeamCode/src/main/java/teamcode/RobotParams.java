@@ -63,7 +63,6 @@ public class RobotParams
         public static final boolean useCameraStreamProcessor    = false;
         public static final boolean useAprilTagVision           = false;
         public static final boolean useColorBlobVision          = true;
-        public static final boolean doWatershed                 = false;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = false;
         // Drive Bdase

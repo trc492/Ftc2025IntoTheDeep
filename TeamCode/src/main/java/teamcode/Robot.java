@@ -214,6 +214,12 @@ public class Robot
             // Enable the correct sample type vision according to Alliance color from AutoChoices or if in standalone
             // TeleOp (no prior auto run), enable vision for any sample.
             vision.setSampleVisionEnabled(sampleType, true);
+            // If using vision, make sure Limelight is running the correct pipeline.
+            int pipelineIndex =
+                sampleType == Vision.SampleType.RedSample? 1:
+                sampleType == Vision.SampleType.BlueSample? 2:
+                robotDrive.driveBase.getFieldPosition().y < 0.0? 1: 2;
+            vision.setLimelightVisionEnabled(pipelineIndex, true);
         }
 
         if (robotDrive != null)

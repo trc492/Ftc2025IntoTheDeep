@@ -1,0 +1,70 @@
+FtcAuto.startMode_INFO [0.007649251] ***** Starting autonomous: 20241103@135256 *****
+FtcAuto.startMode_INFO [0.008848001] <Info name="MatchInfo" date="Sun Nov 03 13:52:05 PST 2024" type="QUALIFICATION" number=6 />
+FtcAuto.startMode_INFO [0.010052876] <Info name="AutoChoices" delay=0 alliance="RED_ALLIANCE" strategy="FULL_AUTO" startPos="NET_ZONE" preload="SPECIMEN" scoreHeight="HIGH" parkOption="PARK" xTarget=4.0 yTarget=4.0 turnTarget=90 driveTime=5 drivePower=0.5 />
+CmdAutoNetZone.cmdPeriodic_INFO [0.025703128] <Event name="StateInfo" time="0.025211961" tag="vvvvv" CmdAutoNetZone.state="START" />
+CmdAutoNetZone.cmdPeriodic_INFO [0.044160963] <Event name="StateInfo" time="0.04382263" tag="^^^^^" CmdAutoNetZone.state="START" />
+CmdAutoNetZone.cmdPeriodic_INFO [0.056527631] <Event name="StateInfo" time="0.056102964" tag="vvvvv" CmdAutoNetZone.state="SCORE_PRELOAD" />
+TaskAutoScoreChamber.autoScoreChamber_INFO [0.065980257] taskParams=(alliance=RED_ALLIANCE,scorePose=(x=-7.062,y=-41.195,angle=0.000),elbowPos=64.0,extenderPos=21.5,wristPos=0.400), event=(CmdAutoNetZone=CLEARED)
+TaskAutoScoreChamber.acquireSubsystemsOwnership_INFO [0.067731424] Successfully acquired subsystem ownerships.
+CmdAutoNetZone.cmdPeriodic_INFO [0.069399465] <Event name="StateInfo" time="0.069064632" tag="^^^^^" CmdAutoNetZone.state="SCORE_PRELOAD" />
+TaskAutoScoreChamber.autoTask_INFO [0.070877632] <Event name="StateInfo" time="0.070555924" tag="vvvvv" TaskAutoScoreChamber.state="GO_TO_SCORE_POSITION" />
+purePursuitDrive.start_INFO [0.077689508] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=-11.770,y=-61.620,angle=-0.000),vel=0.0), Waypoint(simple=true,index=1,pose=(x=-7.062,y=-41.195,angle=0.000),vel=0.0)])
+TaskExtenderArm.setPosition_INFO [0.079117508] taskParams=(elbowPos=64.0,extenderPos=21.5,wristPos=0.4), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [0.080946842] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [0.188767852] <Event name="StateInfo" time="0.188436519" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [0.275390528] <Event name="StateInfo" time="0.275004361" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [0.34314091] <Event name="StateInfo" time="0.342818326" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [0.399567332] <Event name="StateInfo" time="0.397201332" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.isMotorStalled_INFO [0.505730218] Stall detection triggered.
+Extender.primary.posPidCtrl.isStalled_INFO [0.536998346] PID stalled.
+Extender.primary.pidCtrlTask_INFO [0.538094138] controlMode: Position onTarget=false(16.795638441491853/21.5), stalled=true, expired=false, event=(Extender=SIGNALED)
+Extender.primary.isMotorStalled_INFO [0.607253853] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [0.73208749] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [0.843148627] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [0.955667221] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [1.068855483] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [1.174174868] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [1.275589712] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [1.385057181] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [1.486271941] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [1.587753576] Stall detection triggered.
+purePursuitDrive.xPosPid.isStalled_INFO [1.667288168] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [1.667799459] PID stalled.
+purePursuitDrive.turnPid.isStalled_INFO [1.668317751] PID stalled.
+purePursuitDrive.driveTask_INFO [1.66922396] Done: index=3/4, stalled=true, timeout=false, posOnTarget=false,headingOnTarget=false,robotPose=(x=-9.480,y=-31.874,angle=1.017)
+purePursuitDrive.driveTask_INFO [1.684849419] Signal completion event (TaskAutoScoreChamber=CLEARED).
+TaskAutoScoreChamber.autoTask_INFO [1.685665211] <Event name="StateInfo" time="1.685348753" tag="vvvvv" TaskAutoScoreChamber.state="SET_EXTENDER" />
+TaskExtenderArm.setPosition_INFO [1.686252336] taskParams=(elbowPos=null,extenderPos=21.5,wristPos=null), event=(TaskAutoScoreChamber=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [1.686993753] Successfully acquired subsystem ownerships.
+Extender.primary.isMotorStalled_INFO [1.695734129] Stall detection triggered.
+TaskExtenderArm.autoTask_INFO [1.714100672] <Event name="StateInfo" time="1.713538631" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [1.72798984] <Event name="StateInfo" time="1.727545049" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [1.738523383] <Event name="StateInfo" time="1.738125841" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [1.75521051] <Event name="StateInfo" time="1.754695718" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.isMotorStalled_INFO [1.860837604] Stall detection triggered.
+Extender.primary.posPidCtrl.isStalled_INFO [1.876064355] PID stalled.
+Extender.primary.pidCtrlTask_INFO [1.879764731] controlMode: Position onTarget=false(16.79355585202051/21.5), stalled=true, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [1.885292981] <Event name="StateInfo" time="1.884856065" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [1.88613094] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [1.887182981] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null, wrist=ExtenderArm).
+TaskAutoScoreChamber.autoTask_INFO [1.887986815] <Event name="StateInfo" time="1.887616398" tag="vvvvv" TaskAutoScoreChamber.state="LOWER_ELBOW" />
+TaskExtenderArm.setPosition_INFO [1.889325857] taskParams=(elbowPos=44.0,extenderPos=null,wristPos=null), event=(TaskAutoScoreChamber=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [1.890230023] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [1.900767649] <Event name="StateInfo" time="1.900415024" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [1.911055609] <Event name="StateInfo" time="1.9107514" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [1.924209777] <Event name="StateInfo" time="1.923916068" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [1.936052028] <Event name="StateInfo" time="1.935680153" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.isMotorStalled_INFO [1.962762864] Stall detection triggered.
+TaskAutoScoreChamber.autoTask_INFO [2.056583873] <Event name="StateInfo" time="2.056172623" tag="vvvvv" TaskAutoScoreChamber.state="SCORE_CHAMBER" />
+Extender.primary.isMotorStalled_INFO [2.064749958] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [2.167181551] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [2.278481562] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [2.379186781] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [2.49084] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [2.594706886] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [2.708019397] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [2.817458867] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [2.936447795] Stall detection triggered.
+TaskAutoScoreChamber.autoTask_INFO [2.945464963] <Event name="StateInfo" time="2.945122546" tag="vvvvv" TaskAutoScoreChamber.state="RETRACT_EXTENDER_ARM" />
+TaskExtenderArm.setPosition_INFO [2.94621688] taskParams=(elbowPos=null,extenderPos=16.0,wristPos=null), event=(TaskAutoScoreChamber=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [2.94679613] Successfully acquired subsystem ownerships.

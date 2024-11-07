@@ -166,7 +166,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         TrcPose2D spikeMark = RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP.clone();
                         spikeMark.x -= 0.36 * scoreSampleCount * RobotParams.Field.FULL_TILE_INCHES;
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
-                        robot.extenderArm.setPosition(null, 21.0, null, null);
+                        robot.extenderArm.setPosition(null, 22.5, null, null);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,

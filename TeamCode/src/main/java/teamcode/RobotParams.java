@@ -65,7 +65,7 @@ public class RobotParams
         public static final boolean useColorBlobVision          = true;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = false;
-        // Drive Bdase
+        // Drive Base
         public static final boolean useDriveBase                = true;
         public static final boolean usePinpointOdometry         = true;
         public static final boolean useSparkfunOTOS             = false;

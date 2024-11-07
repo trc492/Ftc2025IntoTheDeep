@@ -228,10 +228,10 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                 sm.waitForSingleEvent(event, taskParams.useVision? State.FIND_SPECIMEN: State.APPROACH_SPECIMEN);
                 break;
-                
+
             case FIND_SPECIMEN:
                 specimenPose = robot.getDetectedSamplePose(
-                    Robot.sampleType, RobotParams.Game.SAMPLE_GROUND_OFFSET, true);
+                    Robot.sampleType, RobotParams.Game.SPECIMEN_GROUND_OFFSET, true);
                 if (specimenPose != null)
                 {
                     String msg = String.format(
@@ -251,7 +251,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     sm.setState(State.DONE);
                 }
                 break;
-                
+
             case ALIGN_TO_SPECIMEN:
                 TrcPose2D robotPose = robot.robotDrive.driveBase.getFieldPosition();
                 double targetHeading = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE? 180.0: 0.0;
@@ -292,5 +292,5 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 break;
         }
     }   //runTaskState
- 
+
 }   //class TaskAutoPickupSpecimen

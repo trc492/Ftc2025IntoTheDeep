@@ -249,8 +249,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 }
                 else
                 {
-                    robot.extenderArm.extender.setPosition(taskParams.extenderPos, true, 0.5);
-                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, taskParams.wristPos, event);
+                    robot.extenderArm.extender.setPosition(0.0, taskParams.extenderPos, true, 0.25, event);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, taskParams.wristPos, null);
                 }
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);
                 break;

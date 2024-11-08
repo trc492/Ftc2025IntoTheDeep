@@ -42,8 +42,8 @@ public class Extender
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = false;
 
-        public static final double INCHES_PER_COUNT             = 0.00496703040759602983348850145263;
-        public static final double POS_OFFSET                   = 15.0;
+        public static final double INCHES_PER_COUNT             = 0.00479555742786738354339957485092;
+        public static final double POS_OFFSET                   = 14.75;
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.75;
 
@@ -63,7 +63,7 @@ public class Extender
         public static final double POS_PRESET_TOLERANCE         = 3.0;
 
         public static final TrcPidController.PidCoefficients posPidCoeffs =
-            new TrcPidController.PidCoefficients(3.0, 0.0, 0.0, 0.0, 0.0);
+            new TrcPidController.PidCoefficients(1.5, 0.0, 0.0, 0.0, 0.0);
         public static final double POS_PID_TOLERANCE            = 0.5;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
         public static final double STALL_TOLERANCE              = 0.1;

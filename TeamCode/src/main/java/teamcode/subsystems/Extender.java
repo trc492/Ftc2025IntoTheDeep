@@ -42,12 +42,12 @@ public class Extender
         public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
         public static final boolean LOWER_LIMIT_INVERTED        = false;
 
-        public static final double INCHES_PER_COUNT             = 0.0020825894713429496 * 9 / 4;
-        public static final double POS_OFFSET                   = 16.25;
+        public static final double INCHES_PER_COUNT             = 0.00496703040759602983348850145263;
+        public static final double POS_OFFSET                   = 15.0;
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.75;
 
-        public static final double PIVOT_Y_OFFSET               = -6.35;    // pivot Y offset from robot center inches
+        public static final double PIVOT_Y_OFFSET               = -7.0;     // pivot Y offset from robot center inches
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.0;
         public static final double GROUND_PICKUP_POS            = 18.0;
@@ -63,7 +63,7 @@ public class Extender
         public static final double POS_PRESET_TOLERANCE         = 3.0;
 
         public static final TrcPidController.PidCoefficients posPidCoeffs =
-            new TrcPidController.PidCoefficients(5.0, 0.0, 0.0, 0.0, 0.0);
+            new TrcPidController.PidCoefficients(3.0, 0.0, 0.0, 0.0, 0.0);
         public static final double POS_PID_TOLERANCE            = 0.5;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
         public static final double STALL_TOLERANCE              = 0.1;

@@ -51,14 +51,14 @@ public class Extender
         public static final double PICKUP_POS_WRIST_OFFSET      = 1.5;  // pickup position offset from wrist joint
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.0;
-        public static final double GROUND_PICKUP_POS            = 18.0;
         public static final double SPECIMEN_PICKUP_POS          = 18.0; // TODO: NEEDS TUNING
         public static final double LOW_BASKET_SCORE_POS         = MIN_POS;
         public static final double HIGH_BASKET_SCORE_POS        = 34.0;
         public static final double LOW_CHAMBER_SCORE_POS        = 18.5;
         public static final double HIGH_CHAMBER_SCORE_POS       = 21.5;
-        public static final double ASCENT_LEVEL1_POS            = 20.0;
-        public static final double LEVEL2_HOOK_POS              = 5.0;
+        public static final double PRE_CLIMB_POS                = 20.0;
+        public static final double ASCENT_LEVEL1_POS            = 23.0;
+        public static final double ASCENT_LEVEL2_POS            = 20.0;
         public static final double MAX_SAFE_ADJUSTMENT          = 6.0;
         public static final double MAX_SAFE_LIMIT               = MAX_POS - MAX_SAFE_ADJUSTMENT;
         public static final double[] posPresets                 = {MIN_POS, 20.0, 25.0, 30.0, 35.0};

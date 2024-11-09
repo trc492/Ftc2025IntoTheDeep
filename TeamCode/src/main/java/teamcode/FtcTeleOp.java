@@ -61,6 +61,7 @@ public class FtcTeleOp extends FtcOpMode
     private double extenderPrevPower = 0.0;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
     private Double elbowPos = null, extenderPos = null, extenderLimit = null;
+    private int climbedLevel = 0;
 
     //
     // Implements FtcOpMode abstract method.
@@ -433,10 +434,26 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadDown:
-                // TODO: press once climb low rung, press again climb high rung.
                 if (pressed && robot.autoClimbTask != null)
                 {
-                    robot.autoClimbTask.autoClimbLevel2(null);
+                    if (climbedLevel == 0)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto climb level 1.");
+                        robot.autoClimbTask.autoClimbLevel1(null);
+                        climbedLevel++;
+                    }
+                    else if (climbedLevel == 1)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto climb level 2.");
+                        robot.autoClimbTask.autoClimbLevel2(null);
+                        climbedLevel++;
+                    }
+                    else if (climbedLevel == 2)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto climb level 3.");
+                        robot.autoClimbTask.autoClimbLevel3(null);
+                        climbedLevel++;
+                    }
                 }
                 break;
 

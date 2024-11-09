@@ -25,6 +25,7 @@ package teamcode.autotasks;
 import teamcode.Robot;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.Wrist;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
@@ -40,10 +41,11 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
 
     public enum State
     {
+        LEVEL1_START,
+        LEVEL1_ASCENT,
         LEVEL2_START,
-        PULL_UP,
         FOLD_ROBOT,
-        ENGAGE_SECONDARY_HOOK,
+        LEVEL2_ASCENT,
         LEVEL3_START,
         DONE
     }   //enum State
@@ -74,6 +76,17 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
         this.robot = robot;
         event = new TrcEvent(moduleName);
     }   //TaskAutoClimb
+
+    /**
+     * This method starts the auto-assist operation.
+     *
+     * @param completionEvent specifies the event to signal when done, can be null if none provided.
+     */
+    public void autoClimbLevel1(TrcEvent completionEvent)
+    {
+        tracer.traceInfo(moduleName, "event=" + completionEvent);
+        startAutoTask(State.LEVEL1_START, new TaskParams(), completionEvent);
+    }   //autoClimbLevel1
 
     /**
      * This method starts the auto-assist operation.
@@ -161,24 +174,30 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
 
         switch (state)
         {
-            case LEVEL2_START:
-                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_CLIMB_POS, null, null, event);
-                sm.waitForSingleEvent(event, State.PULL_UP);
+            case LEVEL1_START:
+                robot.extenderArm.setPosition(
+                    Elbow.Params.PRE_CLIMB_POS, Extender.Params.ASCENT_LEVEL1_POS, null, event);
+                sm.waitForSingleEvent(event, State.LEVEL1_ASCENT);
                 break;
 
-            case PULL_UP:
+            case LEVEL1_ASCENT:
+                robot.extenderArm.setPosition(
+                    Elbow.Params.ASCENT_LEVEL1_POS, null, Wrist.Params.ASCENT_LEVEL1_POS, event);
+                sm.waitForSingleEvent(event, State.DONE);
+                break;
+
+            case LEVEL2_START:
                 robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);
                 break;
 
             case FOLD_ROBOT:
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
-                sm.waitForSingleEvent(event, State.ENGAGE_SECONDARY_HOOK);
+                sm.waitForSingleEvent(event, State.LEVEL2_ASCENT);
                 break;
 
-            case ENGAGE_SECONDARY_HOOK:
-                robot.extenderArm.setPosition(
-                    null, Extender.Params.MIN_POS + Extender.Params.LEVEL2_HOOK_POS, null, event);
+            case LEVEL2_ASCENT:
+                robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL2_POS, null, event);
                 sm.waitForSingleEvent(event, State.DONE);
                 break;
 

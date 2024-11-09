@@ -193,7 +193,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case GO_PARK:
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
-                        robot.extenderArm.setPosition(Elbow.Params.ASCENT_LEVEL1_POS + 10.0, Extender.Params.ASCENT_LEVEL1_POS, null, null);
+                        robot.extenderArm.setPosition(
+                            Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null, null);
                         TrcPose2D targetPose = robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE, autoChoices.alliance);
                         TrcPose2D intermediate1 = RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE.clone();
@@ -214,9 +215,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case PARK:
                     if (robot.extenderArm != null)
                     {
-                        robot.extenderArm.setPosition(
-                            Elbow.Params.ASCENT_LEVEL1_POS + 10.0, Extender.Params.ASCENT_LEVEL1_POS,
-                            Wrist.Params.ASCENT_LEVEL1_POS, event);
+                        robot.extenderArm.setPosition(null, null, Wrist.Params.ASCENT_LEVEL1_POS, event);
                         sm.waitForSingleEvent(event, State.ASCENT);
                     }
                     else
@@ -226,7 +225,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case ASCENT:
-                    robot.extenderArm.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, Extender.Params.ASCENT_LEVEL1_POS + 3.0, null, event);
+                    robot.extenderArm.setPosition(
+                        Elbow.Params.ASCENT_LEVEL1_POS, Extender.Params.ASCENT_LEVEL1_POS, null, event);
                     sm.waitForSingleEvent(event, State.DONE);
                     break;
 

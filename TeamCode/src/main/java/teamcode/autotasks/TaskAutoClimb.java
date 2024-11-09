@@ -162,27 +162,24 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
         switch (state)
         {
             case LEVEL2_START:
-                robot.elbow.setPosition(null, 0.0, Elbow.Params.LEVEL_2_CLIMB_POS,
-                                    true, 1.0, event, 0.0);
+                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_CLIMB_POS, null, null, event);
                 sm.waitForSingleEvent(event, State.PULL_UP);
                 break;
 
             case PULL_UP:
-                robot.extender.setPosition(null, 0.0, Extender.Params.MIN_POS,
-                                        true, 1.0, event, 0.0);
+                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);
                 break;
 
             case FOLD_ROBOT:
-                robot.elbow.setPosition(null, 0.0, Elbow.Params.LEVEL_2_RETRACT_POS,
-                                    true, 1.0, event, 0.0);
+                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
                 sm.waitForSingleEvent(event, State.ENGAGE_SECONDARY_HOOK);
                 break;
 
             case ENGAGE_SECONDARY_HOOK:
-                robot.extender.setPosition(null, 0.0, Extender.Params.MIN_POS + Extender.Params.LEVEL_2_HOOK_POS,
-                                        true, 1.0, event, 0.0);
-                sm.waitForSingleEvent(event, State.LEVEL3_START);
+                robot.extenderArm.setPosition(
+                    null, Extender.Params.MIN_POS + Extender.Params.LEVEL2_HOOK_POS, null, event);
+                sm.waitForSingleEvent(event, State.DONE);
                 break;
 
             case LEVEL3_START:

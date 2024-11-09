@@ -58,7 +58,7 @@ public class Extender
         public static final double LOW_CHAMBER_SCORE_POS        = 18.5;
         public static final double HIGH_CHAMBER_SCORE_POS       = 21.5;
         public static final double ASCENT_LEVEL1_POS            = 20.0;
-        public static final double LEVEL_2_HOOK_POS             = 5.0;
+        public static final double LEVEL2_HOOK_POS              = 5.0;
         public static final double MAX_SAFE_ADJUSTMENT          = 6.0;
         public static final double MAX_SAFE_LIMIT               = MAX_POS - MAX_SAFE_ADJUSTMENT;
         public static final double[] posPresets                 = {MIN_POS, 20.0, 25.0, 30.0, 35.0};

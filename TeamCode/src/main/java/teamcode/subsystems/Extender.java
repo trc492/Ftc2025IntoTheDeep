@@ -47,7 +47,8 @@ public class Extender
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.75;
 
-        public static final double PIVOT_Y_OFFSET               = -5.5;     // pivot Y offset from robot center inches
+        public static final double PIVOT_Y_OFFSET               = -7.0; // pivot Y offset from robot center inches
+        public static final double PICKUP_POS_WRIST_OFFSET      = 1.5;  // pickup position offset from wrist joint
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.0;
         public static final double GROUND_PICKUP_POS            = 18.0;

@@ -43,11 +43,13 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
     {
         START,
         DO_DELAY,
-        SCORE_SPECIMEN,
-        DRIVE_TO_SPIKE_MARKS,
-        PICKUP_FLOOR_SAMPLE,
-        DROP_IN_OBSERVATION,
+        SCORE_PRELOAD,
+//        DRIVE_TO_SPIKE_MARKS,
+        MOVE_SAMPLES,
+//        PICKUP_FLOOR_SAMPLE,
+        PICKUP_SPECIMEN,
         DRIVE_TO_CHAMBER_POS,
+        SCORE_SPECIMEN,
         PARK,
         DONE
     }   //enum State
@@ -133,34 +135,48 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     {
                         robot.globalTracer.traceInfo(moduleName, "***** Do delay " + autoChoices.delay + "s.");
                         timer.set(autoChoices.delay, event);
-                        sm.waitForSingleEvent(event, State.SCORE_SPECIMEN);
+                        sm.waitForSingleEvent(event, State.SCORE_PRELOAD);
                     }
                     else
                     {
-                        sm.setState(State.SCORE_SPECIMEN);
+                        sm.setState(State.SCORE_PRELOAD);
                     }
                     break;
 
-                case SCORE_SPECIMEN:
-                    robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, scoreSpecimenCount > 0, event);
-//                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
-                    sm.waitForSingleEvent(event,State.PARK);
+                case SCORE_PRELOAD:
+                    robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, false, event);
+                    sm.waitForSingleEvent(event, State.MOVE_SAMPLES);
+//                    sm.waitForSingleEvent(event,State.PARK);
                     break;
 
-                case DRIVE_TO_SPIKE_MARKS:
+                case MOVE_SAMPLES:
                     // Make sure remaining time is long enough to score a cycle, or else go park.
-                    if (scoreSpecimenCount < 3 &&
-                        (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_SPECIMEN_CYCLE_TIME)
-                    {
-                        TrcPose2D spikeMark = RobotParams.Game.RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP.clone();
-                        spikeMark.x -= 0.36 * scoreSpecimenCount;
-                        spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
-                        robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            spikeMark);
+//                    if (scoreSpecimenCount < 3 &&
+//                        (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_SPECIMEN_CYCLE_TIME)
+//                    {
+//                    TrcPose2D spikeMark = RobotParams.Game.RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP.clone();
+//                    spikeMark.x -= 0.36 * scoreSpecimenCount;
+//                    spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
+                    robot.robotDrive.purePursuitDrive.start(
+                        event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        robot.adjustPoseByAlliance(
+                                RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_POINTS,
+                                autoChoices.alliance,
+                                true));
+                    sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
+//                    }
+//                    else
+//                    {
+//                        sm.setState(State.PARK);
+//                    }
+                    break;
+
+                case PICKUP_SPECIMEN:
+                    if (scoreSpecimenCount < 3) {
+                        robot.pickupSpecimenTask.autoPickupSpecimen(autoChoices.alliance, false,event);
+                        sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER_POS);
                         scoreSpecimenCount++;
-                        sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     }
                     else
                     {
@@ -168,25 +184,6 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     }
                     break;
 
-                case PICKUP_FLOOR_SAMPLE:
-                    robot.pickupFromGroundTask.autoPickupFromGround(
-                        autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                            Vision.SampleType.RedSample: Vision.SampleType.BlueSample,
-                        true, false, event);
-                    sm.waitForSingleEvent(event, State.DROP_IN_OBSERVATION);
-                    break;
-
-                case DROP_IN_OBSERVATION:
-                    TrcPose2D spikeMark = RobotParams.Game.RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP.clone();
-                    spikeMark.x += 0.36 * scoreSpecimenCount;
-                    spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
-                    robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            robot.adjustPoseByAlliance(
-                                    spikeMark, autoChoices.alliance));
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
-                    break;
 
                 case DRIVE_TO_CHAMBER_POS:
                     TrcPose2D scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
@@ -196,6 +193,12 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(scorePose, autoChoices.alliance));
                     sm.waitForSingleEvent(event, State.SCORE_SPECIMEN);
+                    break;
+
+                case SCORE_SPECIMEN:
+                    robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, true, event);
+                    sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
+//                    sm.waitForSingleEvent(event,State.PARK);
                     break;
 
                 case PARK:

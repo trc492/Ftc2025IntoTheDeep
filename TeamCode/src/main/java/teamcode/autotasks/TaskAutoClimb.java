@@ -23,6 +23,8 @@
 package teamcode.autotasks;
 
 import teamcode.Robot;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
@@ -55,6 +57,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
 
     private final String ownerName;
     private final Robot robot;
+    private final TrcEvent event;
 
     private String currOwner = null;
 
@@ -69,6 +72,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
         super(moduleName, ownerName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
         this.ownerName = ownerName;
         this.robot = robot;
+        event = new TrcEvent(moduleName);
     }   //TaskAutoClimb
 
     /**
@@ -158,18 +162,32 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
         switch (state)
         {
             case LEVEL2_START:
+                robot.elbow.setPosition(null, 0.0, Elbow.Params.LEVEL_2_CLIMB_POS,
+                                    true, 1.0, event, 0.0);
+                sm.waitForSingleEvent(event, State.PULL_UP);
                 break;
 
             case PULL_UP:
+                robot.extender.setPosition(null, 0.0, Extender.Params.MIN_POS,
+                                        true, 1.0, event, 0.0);
+                sm.waitForSingleEvent(event, State.FOLD_ROBOT);
                 break;
 
             case FOLD_ROBOT:
+                robot.elbow.setPosition(null, 0.0, Elbow.Params.LEVEL_2_RETRACT_POS,
+                                    true, 1.0, event, 0.0);
+                sm.waitForSingleEvent(event, State.ENGAGE_SECONDARY_HOOK);
                 break;
 
             case ENGAGE_SECONDARY_HOOK:
+                robot.extender.setPosition(null, 0.0, Extender.Params.MIN_POS + Extender.Params.LEVEL_2_HOOK_POS,
+                                        true, 1.0, event, 0.0);
+                sm.waitForSingleEvent(event, State.LEVEL3_START);
                 break;
 
             case LEVEL3_START:
+                // Don't have level 3 climb, hence setting state to done
+                sm.setState(State.DONE);
                 break;
 
             default:

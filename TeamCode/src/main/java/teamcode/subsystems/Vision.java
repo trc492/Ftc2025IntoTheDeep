@@ -217,7 +217,7 @@ public class Vision
 
             tracer.traceInfo(moduleName, "Starting RawEocvColorBlobVision...");
             rawColorBlobPipeline = new FtcRawEocvColorBlobPipeline(
-                "rawColorBlobPipeline", colorConversion, yellowSampleColorThresholds, tuneFilterContourParams, true);
+                "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, tuneFilterContourParams, true);
             // By default, display original Mat.
             rawColorBlobPipeline.setVideoOutput(0);
             rawColorBlobPipeline.setAnnotateEnabled(true);
@@ -248,7 +248,7 @@ public class Vision
 
             if (RobotParams.Preferences.useAprilTagVision)
             {
-                tracer.traceInfo(moduleName, "Starting AprilTagVision...");
+                tracer.traceInfo(moduleName, "Starting Webcam AprilTagVision...");
                 FtcVisionAprilTag.Parameters aprilTagParams = new FtcVisionAprilTag.Parameters()
                     .setDrawTagIdEnabled(true)
                     .setDrawTagOutlineEnabled(true)
@@ -262,7 +262,7 @@ public class Vision
 
             if (RobotParams.Preferences.useColorBlobVision && robot.robotInfo.webCam1 != null)
             {
-                tracer.traceInfo(moduleName, "Starting SampleVision...");
+                tracer.traceInfo(moduleName, "Starting Webcam SampleVision...");
 
                 redSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams,
@@ -451,6 +451,8 @@ public class Vision
                 limelightVision.setPipeline(pipelineIndex);
             }
             limelightVision.setVisionEnabled(enabled);
+            tracer.traceInfo(moduleName, "Pipeline %d is %s: running=%s",
+                             pipelineIndex, enabled? "enabled": "disabled", limelightVision.limelight.isRunning());
         }
     }   //setLimelightVisionEnabled
 
@@ -480,8 +482,9 @@ public class Vision
         if (limelightVision != null)
         {
             String objectName = null;
+            Double robotHeading = robot.robotDrive != null? robot.robotDrive.driveBase.getHeading(): null;
 
-            limelightInfo = limelightVision.getBestDetectedTargetInfo(resultType, label, null);
+            limelightInfo = limelightVision.getBestDetectedTargetInfo(resultType, label, robotHeading, null);
             if (limelightInfo != null)
             {
                 objectName = limelightInfo.detectedObj.label;

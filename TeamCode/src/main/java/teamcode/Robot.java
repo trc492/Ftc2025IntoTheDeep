@@ -29,6 +29,7 @@ import ftclib.driverio.FtcDashboard;
 import ftclib.driverio.FtcMatchInfo;
 import ftclib.robotcore.FtcOpMode;
 import ftclib.sensor.FtcRobotBattery;
+import teamcode.autotasks.TaskAutoClimb;
 import teamcode.autotasks.TaskAutoPickupFromGround;
 import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.autotasks.TaskAutoScoreBasket;
@@ -87,6 +88,7 @@ public class Robot
     public TaskAutoPickupSpecimen pickupSpecimenTask;
     public TaskAutoScoreBasket scoreBasketTask;
     public TaskAutoScoreChamber scoreChamberTask;
+    public TaskAutoClimb autoClimbTask;
 
     public enum GamePieceType
     {
@@ -213,12 +215,14 @@ public class Robot
         {
             // Enable the correct sample type vision according to Alliance color from AutoChoices or if in standalone
             // TeleOp (no prior auto run), enable vision for any sample.
+            globalTracer.traceInfo(moduleName, "Enabling Webcam SampleVision for " + sampleType);
             vision.setSampleVisionEnabled(sampleType, true);
             // If using vision, make sure Limelight is running the correct pipeline.
             int pipelineIndex =
                 sampleType == Vision.SampleType.RedSample? 1:
                 sampleType == Vision.SampleType.BlueSample? 2:
-                robotDrive.driveBase.getFieldPosition().y < 0.0? 1: 2;
+                robotDrive.driveBase.getFieldPosition().y <= 0.0? 1: 2;
+            globalTracer.traceInfo(moduleName, "Enabling Limelight SampleVision for pipeline " + pipelineIndex);
             vision.setLimelightVisionEnabled(pipelineIndex, true);
         }
 
@@ -283,40 +287,28 @@ public class Robot
         if (vision != null)
         {
             vision.setCameraStreamEnabled(false);
-            if (vision.rawColorBlobVision != null)
+            if (vision.isRawColorBlobVisionEnabled())
             {
                 globalTracer.traceInfo(moduleName, "Disabling RawColorBlobVision.");
                 vision.setRawColorBlobVisionEnabled(false);
             }
 
-            if (vision.aprilTagVision != null)
-            {
-                globalTracer.traceInfo(moduleName, "Disabling AprilTagVision.");
-                vision.setAprilTagVisionEnabled(false);
-            }
-
-            if (vision.redSampleVision != null)
-            {
-                globalTracer.traceInfo(moduleName, "Disabling RedSampleVision.");
-                vision.setSampleVisionEnabled(Vision.SampleType.RedSample, false);
-            }
-
-            if (vision.blueSampleVision != null)
-            {
-                globalTracer.traceInfo(moduleName, "Disabling BlueSampleVision.");
-                vision.setSampleVisionEnabled(Vision.SampleType.BlueSample, false);
-            }
-
-            if (vision.yellowSampleVision != null)
-            {
-                globalTracer.traceInfo(moduleName, "Disabling YellowSampleVision.");
-                vision.setSampleVisionEnabled(Vision.SampleType.YellowSample, false);
-            }
-
-            if (vision.limelightVision != null)
+            if (vision.isLimelightVisionEnabled())
             {
                 globalTracer.traceInfo(moduleName, "Disabling LimelightVision.");
                 vision.setLimelightVisionEnabled(0, false);
+            }
+
+            if (vision.isAprilTagVisionEnabled())
+            {
+                globalTracer.traceInfo(moduleName, "Disabling Webcam AprilTagVision.");
+                vision.setAprilTagVisionEnabled(false);
+            }
+
+            if (vision.isSampleVisionEnabled(Vision.SampleType.AnySample))
+            {
+                globalTracer.traceInfo(moduleName, "Disabling Webcam SampleVision.");
+                vision.setSampleVisionEnabled(Vision.SampleType.AnySample, false);
             }
 
             vision.close();
@@ -458,6 +450,18 @@ public class Robot
     }   //zeroCalibrate
 
     /**
+     * This method returns the position the extender needs to extend to reach the detected sample.
+     *
+     * @param samplePose specifies the relative pose of the detected sample from robot center.
+     * @return extender position to reach detected sample.
+     */
+    public double getExtenderPosFromSamplePose(TrcPose2D samplePose)
+    {
+        return TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET -
+               Extender.Params.PICKUP_POS_WRIST_OFFSET;
+    }   //getExtenderPosFromSamplePose
+
+    /**
      * This method calls vision to detect the specified sample and return the sample pose.
      *
      * @param sampleType specifies the sample type to look for.
@@ -476,9 +480,8 @@ public class Robot
             if (sampleInfo != null)
             {
                 samplePose = robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose);
-                double extenderLen = TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET;
                 samplePose.angle = Math.toDegrees(Math.atan(samplePose.x/samplePose.y));
-                if (ledIndicator != null && extenderLen < Extender.Params.MAX_POS)
+                if (ledIndicator != null && getExtenderPosFromSamplePose(samplePose) < Extender.Params.MAX_POS)
                 {
                     ledIndicator.setDetectedPattern(sampleInfo.detectedObj.label);
                 }

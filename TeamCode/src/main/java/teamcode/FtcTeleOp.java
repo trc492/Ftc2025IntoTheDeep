@@ -434,6 +434,7 @@ public class FtcTeleOp extends FtcOpMode
 
             case DpadDown:
                 // TODO: press once climb low rung, press again climb high rung.
+                robot.autoClimbTask.autoClimbLevel2(null);
                 break;
 
             case DpadLeft:

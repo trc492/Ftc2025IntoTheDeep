@@ -1127,7 +1127,7 @@ public class FtcTest extends FtcTeleOp
             {
                 robot.vision.getLimelightDetectedObject(
                     robot.vision.limelightVision.getPipeline() == 0?
-                        FtcLimelightVision.ResultType.Fiducial: FtcLimelightVision.ResultType.Color,
+                        FtcLimelightVision.ResultType.Fiducial: FtcLimelightVision.ResultType.Python,
                     null, lineNum++);
             }
 

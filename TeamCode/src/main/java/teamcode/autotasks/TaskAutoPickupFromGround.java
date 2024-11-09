@@ -251,7 +251,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 break;
 
             case TURN_TO_SAMPLE:
-                double extenderLen = TrcUtil.magnitude(samplePose.x, samplePose.y) - Extender.Params.PIVOT_Y_OFFSET;
+                double extenderLen = robot.getExtenderPosFromSamplePose(samplePose);
                 tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                 if (!taskParams.noDrive)
                 {
@@ -296,5 +296,5 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 break;
         }
     }   //runTaskState
- 
+
 }   //class TaskAutoPickupFromGround

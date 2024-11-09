@@ -63,10 +63,9 @@ public class RobotParams
         public static final boolean useCameraStreamProcessor    = false;
         public static final boolean useAprilTagVision           = false;
         public static final boolean useColorBlobVision          = true;
-        public static final boolean doWatershed                 = false;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = false;
-        // Drive Bdase
+        // Drive Base
         public static final boolean useDriveBase                = true;
         public static final boolean usePinpointOdometry         = true;
         public static final boolean useSparkfunOTOS             = false;
@@ -87,7 +86,6 @@ public class RobotParams
         public static final String TEAM_FOLDER_PATH             =
             Environment.getExternalStorageDirectory().getPath() + "/FIRST/ftc3543";
         public static final String LOG_FOLDER_PATH              = TEAM_FOLDER_PATH + "/tracelogs";
-        public static final String STEER_ZERO_CAL_FILE          = TEAM_FOLDER_PATH + "/SteerZeroCalibration.txt";
         public static final double DASHBOARD_UPDATE_INTERVAL    = 0.2;      // in msec
         public static final String ROBOT_CODEBASE               = "Robot2025";
         // Robot Drive Parameters.
@@ -133,7 +131,7 @@ public class RobotParams
         public static final double AUTO_PERIOD                      = 30.0; // 30 seconds auto period
         public static final double SCORE_BASKET_CYCLE_TIME          = 6.0;  // in seconds
         public static final double SCORE_SPECIMEN_CYCLE_TIME        = 8.0;  // in seconds
-        public static final double SAMPLE_GROUND_OFFSET             = 8.0;  // inches
+        public static final double SPECIMEN_GROUND_OFFSET           = 8.0;  // inches
         public static final double CHAMBER_LENGTH                   = 26.0;
         public static final double CHAMBER_MAX_SCORE_POS_X          = (CHAMBER_LENGTH / 2.0) - 3.0;
         // Score poses.
@@ -144,8 +142,6 @@ public class RobotParams
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
             new TrcPose2D(0.3*Field.FULL_TILE_INCHES, -1.7*Field.FULL_TILE_INCHES, 0.0);
         // Pickup poses.
-        public static final TrcPose2D RED_OBSERVATION_ZONE_CONVERT  =
-            new TrcPose2D(2.5*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
             new TrcPose2D(2.0*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES, 180.0);
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =

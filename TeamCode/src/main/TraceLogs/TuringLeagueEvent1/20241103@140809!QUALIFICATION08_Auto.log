@@ -1,0 +1,364 @@
+FtcAuto.startMode_INFO [0.006346084] ***** Starting autonomous: 20241103@140903 *****
+FtcAuto.startMode_INFO [0.007193376] <Info name="MatchInfo" date="Sun Nov 03 14:08:05 PST 2024" type="QUALIFICATION" number=8 />
+FtcAuto.startMode_INFO [0.009404501] <Info name="AutoChoices" delay=0 alliance="BLUE_ALLIANCE" strategy="FULL_AUTO" startPos="OBSERVATION_ZONE" preload="SPECIMEN" scoreHeight="HIGH" parkOption="PARK" xTarget=4.0 yTarget=4.0 turnTarget=90 driveTime=5 drivePower=0.5 />
+CmdAutoObservationZone.cmdPeriodic_INFO [0.040457962] <Event name="StateInfo" time="0.040082879" tag="vvvvv" CmdAutoObservationZone.state="START" />
+CmdAutoObservationZone.cmdPeriodic_INFO [0.055369422] <Event name="StateInfo" time="0.055015922" tag="^^^^^" CmdAutoObservationZone.state="START" />
+CmdAutoObservationZone.cmdPeriodic_INFO [0.070639049] <Event name="StateInfo" time="0.069275507" tag="vvvvv" CmdAutoObservationZone.state="SCORE_SPECIMEN" />
+TaskAutoScoreChamber.autoScoreChamber_INFO [0.074150132] taskParams=(alliance=BLUE_ALLIANCE,scorePose=(x=7.062,y=-40.018,angle=0.000),elbowPos=64.0,extenderPos=21.5,wristPos=0.400), event=(CmdAutoObservationZone=CLEARED)
+TaskAutoScoreChamber.acquireSubsystemsOwnership_INFO [0.074679799] Successfully acquired subsystem ownerships.
+CmdAutoObservationZone.cmdPeriodic_INFO [0.075317382] <Event name="StateInfo" time="0.075030966" tag="^^^^^" CmdAutoObservationZone.state="SCORE_SPECIMEN" />
+TaskAutoScoreChamber.autoTask_INFO [0.075930758] <Event name="StateInfo" time="0.075625966" tag="vvvvv" TaskAutoScoreChamber.state="GO_TO_SCORE_POSITION" />
+purePursuitDrive.start_INFO [0.0833458] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=-11.770,y=61.620,angle=180.000),vel=0.0), Waypoint(simple=true,index=1,pose=(x=-7.062,y=40.018,angle=180.000),vel=0.0)])
+TaskExtenderArm.setPosition_INFO [0.084876758] taskParams=(elbowPos=64.0,extenderPos=21.5,wristPos=0.4), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [0.086050134] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [0.193115144] <Event name="StateInfo" time="0.191405102" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [0.284831487] <Event name="StateInfo" time="0.284403903" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [0.349471243] <Event name="StateInfo" time="0.349016535" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [0.426528709] <Event name="StateInfo" time="0.426238209" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.pidCtrlTask_INFO [1.264821669] controlMode: Position onTarget=true(21.443978141529318/21.5), stalled=false, expired=false, event=(Extender=SIGNALED)
+Elbow.primary.pidCtrlTask_INFO [1.327135967] controlMode: Position onTarget=true(64.71166578577964/64.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [1.327500842] <Event name="StateInfo" time="1.326841967" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [1.328250717] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [1.332660717] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null, wrist=ExtenderArm).
+purePursuitDrive.xPosPid.isStalled_INFO [1.593571452] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [1.653922541] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [1.720103756] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [1.809651848] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [1.873887355] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [1.93865632] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.013031327] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.072041333] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.141471423] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.194331345] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.254215768] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.336498443] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.387626448] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.47086404] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.544557714] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [2.597877303] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [2.600787845] PID stalled.
+purePursuitDrive.turnPid.isStalled_INFO [2.601474428] PID stalled.
+purePursuitDrive.driveTask_INFO [2.606876387] Done: index=3/4, stalled=true, timeout=false, posOnTarget=false,headingOnTarget=true,robotPose=(x=-7.171,y=35.552,angle=179.566)
+purePursuitDrive.driveTask_INFO [2.628667389] Signal completion event (TaskAutoScoreChamber=CLEARED).
+TaskAutoScoreChamber.autoTask_INFO [2.629694056] <Event name="StateInfo" time="2.629064931" tag="vvvvv" TaskAutoScoreChamber.state="SET_EXTENDER" />
+TaskExtenderArm.setPosition_INFO [2.630377723] taskParams=(elbowPos=null,extenderPos=21.5,wristPos=null), event=(TaskAutoScoreChamber=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [2.630956973] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [2.652842183] <Event name="StateInfo" time="2.649359391" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [2.671441185] <Event name="StateInfo" time="2.670974518" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [2.693294021] <Event name="StateInfo" time="2.69296327" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [2.716445648] <Event name="StateInfo" time="2.716091564" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.posPidCtrl.isStalled_INFO [2.808436449] PID stalled.
+Extender.primary.pidCtrlTask_INFO [2.809615074] controlMode: Position onTarget=false(21.51062100461229/21.5), stalled=true, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [2.816938241] <Event name="StateInfo" time="2.816640741" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [2.818814241] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [2.819548367] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null, wrist=ExtenderArm).
+TaskAutoScoreChamber.autoTask_INFO [2.820194117] <Event name="StateInfo" time="2.819900992" tag="vvvvv" TaskAutoScoreChamber.state="LOWER_ELBOW" />
+TaskExtenderArm.setPosition_INFO [2.821179658] taskParams=(elbowPos=44.0,extenderPos=null,wristPos=null), event=(TaskAutoScoreChamber=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [2.821788367] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [2.845513994] <Event name="StateInfo" time="2.845202202" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [2.858614787] <Event name="StateInfo" time="2.858211704" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [2.88801479] <Event name="StateInfo" time="2.88657629" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [2.905944125] <Event name="StateInfo" time="2.905564375" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+TaskAutoScoreChamber.autoTask_INFO [2.978318591] <Event name="StateInfo" time="2.977995424" tag="vvvvv" TaskAutoScoreChamber.state="SCORE_CHAMBER" />
+Elbow.primary.pidCtrlTask_INFO [3.761018419] controlMode: Position onTarget=true(45.002528998232535/44.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [3.765051295] <Event name="StateInfo" time="3.763774378" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [3.767220128] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [3.769074254] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null, wrist=ExtenderArm).
+TaskAutoScoreChamber.autoTask_INFO [3.771210129] <Event name="StateInfo" time="3.770746087" tag="vvvvv" TaskAutoScoreChamber.state="RETRACT_EXTENDER_ARM" />
+TaskExtenderArm.setPosition_INFO [3.774996838] taskParams=(elbowPos=null,extenderPos=16.0,wristPos=null), event=(TaskAutoScoreChamber=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [3.776501838] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [3.804514674] <Event name="StateInfo" time="3.804188007" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [3.836056969] <Event name="StateInfo" time="3.835720677" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [3.861555055] <Event name="StateInfo" time="3.861238596" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [3.888501849] <Event name="StateInfo" time="3.888091474" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+TaskAutoScoreChamber.autoTask_INFO [3.998611568] <Event name="StateInfo" time="3.997964943" tag="vvvvv" TaskAutoScoreChamber.state="DONE" />
+TaskAutoScoreChamber.stopSubsystems_INFO [3.999834818] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [4.001945902] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [4.003608111] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [4.005226277] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null, wrist=ExtenderArm).
+TaskExtenderArm.stopSubsystems_INFO [4.005900902] Stopping subsystems.
+TaskAutoScoreChamber.releaseSubsystemsOwnership_INFO [4.006628027] Releasing subsystem ownership (currOwner=scoreChamberTask, robotDrive=scoreChamberTask).
+CmdAutoObservationZone.cmdPeriodic_INFO [4.036854906] <Event name="StateInfo" time="4.036477197" tag="vvvvv" CmdAutoObservationZone.state="PARK" />
+purePursuitDrive.start_INFO [4.044970823] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=-7.378,y=37.456,angle=179.558),vel=0.0), Waypoint(simple=true,index=1,pose=(x=-58.850,y=58.850,angle=180.000),vel=0.0)])
+CmdAutoObservationZone.cmdPeriodic_INFO [4.048081157] <Event name="StateInfo" time="4.04778774" tag="^^^^^" CmdAutoObservationZone.state="PARK" RobotPose=(x=-7.378,y=37.456,angle=179.558) TargetPose=(x=-58.850,y=58.850,angle=180.000) vel=(x=-0.250,y=0.797,angle=2.696) Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=0.000,y=0.000,angle=0.000),vel=0.0), Waypoint(simple=false,index=-1,timestep=0.4681886104874068,pose=(x=8.415,y=-3.574,angle=0.073),vel=80.0,encPos=0.0,accel=0.0,jerk=0.0), Waypoint(simple=false,index=-1,timestep=0.22857142857142856,pose=(x=42.890,y=-18.216,angle=0.370),vel=80.0,encPos=0.0,accel=-350.0,jerk=0.0), Waypoint(simple=true,index=1,pose=(x=51.305,y=-21.790,angle=0.442),vel=0.0)]) />
+Extender.primary.isMotorStalled_INFO [5.084939052] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [5.190075563] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [5.297100907] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [5.402285251] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [5.511821262] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [5.627425982] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [5.734830493] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [5.845148171] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [5.950627973] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [6.069362568] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [6.175688204] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [6.283178756] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [6.393205351] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [6.506117695] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [6.608725456] Stall detection triggered.
+purePursuitDrive.xPosPid.isStalled_INFO [6.620968165] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [6.621567249] PID stalled.
+purePursuitDrive.turnPid.isStalled_INFO [6.622082332] PID stalled.
+purePursuitDrive.driveTask_INFO [6.622847374] Done: index=3/4, stalled=true, timeout=false, posOnTarget=false,headingOnTarget=true,robotPose=(x=-61.092,y=59.670,angle=180.703)
+purePursuitDrive.driveTask_INFO [6.644743376] Signal completion event (CmdAutoObservationZone=CLEARED).
+CmdAutoObservationZone.cmdPeriodic_INFO [6.664024003] <Event name="StateInfo" time="6.663729711" tag="vvvvv" CmdAutoObservationZone.state="DONE" />
+CmdAutoObservationZone.cmdPeriodic_INFO [6.664776503] <Event name="StateInfo" time="6.664468211" tag="^^^^^" CmdAutoObservationZone.state="DONE" />
+Extender.primary.isMotorStalled_INFO [6.714400383] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [6.825140394] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [6.927626238] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.040108957] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.148251385] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.252303187] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.355559031] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.46192025] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.563792718] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.671850854] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.776519531] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.886722876] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [7.991458636] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [8.096248938] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [8.201677407] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [8.305173001] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [8.418445262] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [8.520407564] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [8.623267908] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [8.728697544] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [8.840221555] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [8.9559339] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [9.059799327] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [9.164568629] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [9.27578114] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [9.381695526] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [9.489470162] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [9.597212423] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [9.714649101] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [9.818473695] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [9.927160372] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [10.036199383] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [10.147651353] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [10.260494281] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [10.364807708] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [10.474232302] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [10.58647323] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [10.689932074] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [10.792293084] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [10.895402803] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.001484314] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.115215658] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.23151717] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.332876889] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.446329692] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.553133952] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.657749838] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.763513432] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.864671609] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [11.966288286] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [12.072733213] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [12.178891432] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [12.286494859] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [12.387987286] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [12.490001797] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [12.597830682] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [12.704255485] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [12.812373121] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [12.921111423] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.033731809] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.140242362] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.240899455] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.344891174] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.451784976] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.561360654] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.66806779] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.778745093] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.880517228] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [13.984501072] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [14.090711499] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [14.192212384] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [14.301848729] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [14.412281906] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [14.51983225] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [14.632010178] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [14.733685772] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [14.8434207] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [14.945552752] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [15.046356262] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [15.154401273] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [15.256099324] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [15.365386252] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [15.474797721] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [15.580408482] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [15.692604202] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [15.80678238] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [15.916039266] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.02930686] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.136559121] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.24222909] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.348201809] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.457392195] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.562322789] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.671614967] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.776128186] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.881241654] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [16.993067832] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [17.10583376] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [17.213736146] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [17.314834823] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [17.426324418] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [17.537426387] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [17.642628814] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [17.749229492] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [17.866730337] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [17.971040264] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [18.080205858] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [18.188927244] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [18.29594938] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [18.407060391] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [18.513068985] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [18.617369287] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [18.721830881] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [18.843271852] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [18.946822862] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [19.058541415] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [19.165567051] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [19.267249352] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [19.368568529] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [19.472225998] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [19.574177508] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [19.682433103] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [19.785067113] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [19.895686082] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.004754843] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.113955729] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.22132524] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.32248575] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.427968469] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.544246064] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.659895992] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.762836836] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.87066718] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [20.985433942] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [21.100106495] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [21.210088464] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [21.318359517] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [21.425189153] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [21.533756539] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [21.641016674] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [21.751541727] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [21.860342738] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [21.968737166] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [22.07464251] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [22.176243436] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [22.285261739] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [22.393585583] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [22.496781635] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [22.602096938] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [22.709341615] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [22.815026459] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [22.92165397] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.022648521] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.129658991] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.230775459] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.33609572] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.449273189] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.558136034] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.661316627] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.77132543] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.880359774] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [23.982265493] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [24.09046742] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [24.200662015] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [24.307274651] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [24.410982578] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [24.52186813] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [24.624592266] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [24.726633026] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [24.835186704] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [24.94448384] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [25.0529331] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [25.159053403] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [25.269978039] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [25.375205841] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [25.479682602] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [25.58302507] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [25.692911373] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [25.800964842] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [25.903435519] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.012664989] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.12458975] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.23081126] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.33843423] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.44084949] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.544677] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.648921011] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.75867198] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.864502366] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [26.96840221] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [27.072870803] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [27.175765564] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [27.278508657] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [27.384533876] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [27.496103388] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [27.601585815] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [27.712789576] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [27.814520878] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [27.926532556] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [28.032508192] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [28.141385619] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [28.254780964] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [28.359067558] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [28.459993276] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [28.570200121] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [28.676333548] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [28.786675142] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [28.896233612] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.005295373] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.110122425] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.211222268] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.318924862] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.423260165] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.530648634] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.647102687] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.747915822] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.852412999] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [29.954745135] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [30.064275312] Stall detection triggered.
+TrcDigitalInput.getInput.printElapsedTime_INFO [30.099073191] TrcDigitalInput.getInput: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.getPos.printElapsedTime_INFO [30.101621191] TrcMotor.getPos: avgElapsed=4.4317060731707315E-4, minElapsed=6.125E-6, maxElapsed=0.01335746
+TrcMotor.setPower.printElapsedTime_INFO [30.10318715] TrcMotor.setPower: avgElapsed=4.7064775823917136E-4, minElapsed=1.4875E-5, maxElapsed=0.021117544
+TrcMotor.setVel.printElapsedTime_INFO [30.104879983] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [30.106436317] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [30.107805983] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [30.109089317] TrcServo.setPos: avgElapsed=0.010281834, minElapsed=0.010281834, maxElapsed=0.010281834
+Robot.stopMode_INFO [30.110391025] Disabling RedSampleVision.
+Robot.stopMode_INFO [30.113026526] Disabling BlueSampleVision.
+Robot.stopMode_INFO [30.113595859] Disabling YellowSampleVision.
+Robot.stopMode_INFO [30.114171609] Disabling LimelightVision.
+Robot.stopMode_INFO [30.115361901] Saved robot pose=(x=-61.100,y=59.676,angle=180.672)
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.116084068] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=1.711803570922488E-5/0.011407015747484768
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.116803318] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=1.1190134618109677E-5/0.01140701640867224
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.117476484] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=1.2662649142695196E-5/0.011407016408813943
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.118259026] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=1.0313071276746493E-5/0.011407016615417317
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.118893693] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.00774699209239364/0.012930404733562528
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.119549943] purePursuitDrive.driveTask: POST_PERIODIC_TASK=0.043881830194805196/0.08431542893506494
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.121178901] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=1.3826741391526145E-5/0.011407016822162391
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.121988568] blinkin: OUTPUT_TASK=1.1971967497874753E-4/0.011406248985406632
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.122728527] Elbow.primary.pidCtrlTask: OUTPUT_TASK=0.0012357094156157007/0.011407392430211138
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.123355027] Extender.primary.pidCtrlTask: OUTPUT_TASK=0.0017130700986254784/0.011406301397619386
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.124710402] TaskExtenderArm: POST_PERIODIC_TASK=0.0012712518873239436/0.05361303414084507
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.125352068] Grabber.colorTrigger.triggerTask: PRE_PERIODIC_TASK=0.00827454634595525/0.017249676432013767
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.12667011] Grabber.primary.pidCtrlTask: OUTPUT_TASK=7.250756446585435E-6/0.011405167694531029
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.127572819] Grabber.follower.pidCtrlTask: OUTPUT_TASK=2.8467031737035987E-6/0.01140516885151601
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.128311319] null.triggerTask: PRE_PERIODIC_TASK=0.008791925942857142/0.026474027657142858
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.129339444] TaskAutoScoreChamber: POST_PERIODIC_TASK=8.0392225E-4/0.042633992510869564
+FtcOpMode.printPerformanceMetrics_INFO [30.130737111] [FtcAutonomous] Main robot thread average elapsed times:
+       robotInit=10.138547s
+    initPeriodic=0.000001s
+       startMode=0.000038s
+    loopInterval=0.017251s (57.966Hz)
+             sdk=0.000151s
+ prePeriodicTask=0.008532s
+        periodic=0.004748s
+postPeriodicTask=0.002113s
+         loopSum=0.017107s
+        stopMode=0.000000s
+FtcAuto.stopMode_INFO [30.133027861] ***** Stopping autonomous: 20241103@140933 *****

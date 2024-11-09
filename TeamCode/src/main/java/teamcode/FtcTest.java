@@ -232,16 +232,20 @@ public class FtcTest extends FtcTeleOp
                         exposure = robot.vision.vision.getCurrentExposure();
                     }
                     // Vision generally will impact performance, so we only enable it if it's needed.
-                    if (robot.vision.limelightVision != null)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, "Enabling LimelightVision.");
-                        robot.vision.setLimelightVisionEnabled(0, true);
-                    }
-
                     if (robot.vision.aprilTagVision != null)
                     {
-                        robot.globalTracer.traceInfo(moduleName, "Enabling AprilTagVision.");
+                        robot.globalTracer.traceInfo(moduleName, "Enabling AprilTagVision for Webcam.");
                         robot.vision.setAprilTagVisionEnabled(true);
+                        if (robot.vision.limelightVision != null)
+                        {
+                            robot.globalTracer.traceInfo(moduleName, "Enabling RedSpecimenVision for Limelight.");
+                            robot.vision.setLimelightVisionEnabled(1, true);
+                        }
+                    }
+                    else if (robot.vision.limelightVision != null)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, "Enabling AprilTagVision for Limelight.");
+                        robot.vision.setLimelightVisionEnabled(0, true);
                     }
 
                     if (robot.vision.redSampleVision != null)
@@ -585,11 +589,15 @@ public class FtcTest extends FtcTeleOp
                     }
                     passToTeleOp = false;
                 }
-                else if (testChoices.test == Test.VISION_TEST && pressed)
+                else if (testChoices.test == Test.VISION_TEST)
                 {
-                    fpsMeterEnabled = !fpsMeterEnabled;
-                    robot.vision.setFpsMeterEnabled(fpsMeterEnabled);
-                    robot.globalTracer.traceInfo(moduleName, "fpsMeterEnabled = %s", fpsMeterEnabled);
+                    if (pressed)
+                    {
+                        fpsMeterEnabled = !fpsMeterEnabled;
+                        robot.vision.setFpsMeterEnabled(fpsMeterEnabled);
+                        robot.globalTracer.traceInfo(moduleName, "fpsMeterEnabled = %s", fpsMeterEnabled);
+                    }
+                    passToTeleOp = false;
                 }
                 break;
 
@@ -1115,15 +1123,12 @@ public class FtcTest extends FtcTeleOp
         {
             int lineNum = 9;
 
-            if (robot.vision.vision != null)
-            {
-                // displayExposureSettings is only available for VisionPortal.
-                robot.vision.displayExposureSettings(lineNum++);
-            }
-
             if (robot.vision.limelightVision != null)
             {
-                robot.vision.getLimelightDetectedObject(FtcLimelightVision.ResultType.Fiducial, null, lineNum++);
+                robot.vision.getLimelightDetectedObject(
+                    robot.vision.limelightVision.getPipeline() == 0?
+                        FtcLimelightVision.ResultType.Fiducial: FtcLimelightVision.ResultType.Python,
+                    null, lineNum++);
             }
 
             if (robot.vision.rawColorBlobVision != null)
@@ -1139,6 +1144,12 @@ public class FtcTest extends FtcTeleOp
             if (robot.vision.isSampleVisionEnabled(Vision.SampleType.AnySample))
             {
                 robot.vision.getDetectedSample(Vision.SampleType.AnySample, 0.0, lineNum++);
+            }
+
+            if (robot.vision.vision != null)
+            {
+                // displayExposureSettings is only available for VisionPortal.
+                robot.vision.displayExposureSettings(lineNum++);
             }
         }
     }   //doVisionTest

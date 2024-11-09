@@ -56,6 +56,7 @@ public class FtcTeleOp extends FtcOpMode
     private boolean operatorAltFunc = false;
     private boolean relocalizing = false;
     private TrcPose2D robotFieldPose = null;
+    private Integer savedLimelightPipeline = null;
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
@@ -133,18 +134,10 @@ public class FtcTeleOp extends FtcOpMode
         //
         // Enable AprilTag vision for re-localization.
         //
-        if (robot.vision != null)
+        if (robot.vision != null && robot.vision.aprilTagVision != null)
         {
-            if (robot.vision.limelightVision != null)
-            {
-                robot.globalTracer.traceInfo(moduleName, "Enabling Limelight AprilTagVision.");
-                robot.vision.setLimelightVisionEnabled(0, true);
-            }
-            else if (robot.vision.aprilTagVision != null)
-            {
-                robot.globalTracer.traceInfo(moduleName, "Enabling WebCam AprilTagVision.");
-                robot.vision.setAprilTagVisionEnabled(true);
-            }
+            robot.globalTracer.traceInfo(moduleName, "Enabling WebCam AprilTagVision.");
+            robot.vision.setAprilTagVisionEnabled(true);
         }
     }   //startMode
 
@@ -487,27 +480,45 @@ public class FtcTeleOp extends FtcOpMode
             case Start:
                 if (!driverAltFunc)
                 {
-                    if (robot.vision != null &&
-                        (robot.vision.isLimelightVisionEnabled() || robot.vision.isAprilTagVisionEnabled()) &&
-                        robot.robotDrive != null)
+                    if (robot.vision != null && robot.robotDrive != null)
                     {
-                        // On press of the button, we will start looking for AprilTag for re-localization.
-                        // On release of the button, we will set the robot's field location if we found the AprilTag.
-                        relocalizing = pressed;
-                        if (!pressed)
+                        boolean hasAprilTagVision = robot.vision.isAprilTagVisionEnabled();
+
+                        if (!hasAprilTagVision && robot.vision.limelightVision != null)
                         {
-                            if (robotFieldPose != null)
-                            {
-                                // Vision found an AprilTag, set the new robot field location.
-                                robot.globalTracer.traceInfo(
-                                    moduleName, ">>>>> Finish re-localizing: pose=" + robotFieldPose);
-                                robot.robotDrive.driveBase.setFieldPosition(robotFieldPose, false);
-                                robotFieldPose = null;
-                            }
+                            // Webcam AprilTag vision is not enable, enable Limelight AprilTag pipeline instead.
+                            savedLimelightPipeline = robot.vision.limelightVision.getPipeline();
+                            robot.vision.setLimelightVisionEnabled(0, true);
+                            hasAprilTagVision = true;
                         }
-                        else
+
+                        if (hasAprilTagVision)
                         {
-                            robot.globalTracer.traceInfo(moduleName, ">>>>> Start re-localizing ...");
+                            // On press of the button, we will start looking for AprilTag for re-localization.
+                            // On release of the button, we will set the robot's field location if we found the
+                            // AprilTag.
+                            relocalizing = pressed;
+                            if (!pressed)
+                            {
+                                if (robotFieldPose != null)
+                                {
+                                    // Vision found an AprilTag, set the new robot field location.
+                                    robot.globalTracer.traceInfo(
+                                        moduleName, ">>>>> Finish re-localizing: pose=" + robotFieldPose);
+                                    robot.robotDrive.driveBase.setFieldPosition(robotFieldPose, false);
+                                    robotFieldPose = null;
+                                    if (savedLimelightPipeline != null)
+                                    {
+                                        // Done with AprilTag re-localization, restore previous Limelight pipeline.
+                                        robot.vision.limelightVision.setPipeline(savedLimelightPipeline);
+                                        savedLimelightPipeline = null;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                robot.globalTracer.traceInfo(moduleName, ">>>>> Start re-localizing ...");
+                            }
                         }
                     }
                 }

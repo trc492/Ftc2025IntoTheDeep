@@ -1,0 +1,45 @@
+FtcTeleOp.startMode_INFO [0.008549335] ***** Starting TeleOp: 20241103@150646 *****
+Robot.startMode_INFO [0.037577754] Restore saved RobotPose=(x=-52.042,y=-53.026,angle=52.646)
+FtcTeleOp.startMode_INFO [0.041219796] Enabling Limelight AprilTagVision.
+FtcTeleOp.driverButtonEvent_INFO [1.482934691] >>>>> Enabling FIELD mode.
+FtcTeleOp.setDriveOrientation_INFO [1.484908399] driveOrientation=FIELD
+Extender.primary.isMotorStalled_INFO [4.154127668] Stall detection triggered.
+Extender.primary.zeroCalibratingMotor_WARN [4.165961752] Stalled, lower limit switch might have failed!
+Extender.primary.pidCtrlTask_INFO [4.175604837] Zero calibration done, event=null
+TrcDigitalInput.getInput.printElapsedTime_INFO [11.180816457] TrcDigitalInput.getInput: avgElapsed=0.002336827340425532, minElapsed=6.4167E-5, maxElapsed=0.010252376
+TrcMotor.getPos.printElapsedTime_INFO [11.181487582] TrcMotor.getPos: avgElapsed=7.35579320545924E-4, minElapsed=4.375E-6, maxElapsed=0.011662876
+TrcMotor.setPower.printElapsedTime_INFO [11.182909457] TrcMotor.setPower: avgElapsed=0.0025065046146095717, minElapsed=1.9834E-5, maxElapsed=0.025026752
+TrcMotor.setVel.printElapsedTime_INFO [11.183734874] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [11.184514208] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [11.185399124] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [11.186360749] TrcServo.setPos: avgElapsed=0.0048419585, minElapsed=5.29666E-4, maxElapsed=0.009154251
+Robot.stopMode_INFO [11.186893333] Disabling RedSampleVision.
+Robot.stopMode_INFO [11.187481916] Disabling BlueSampleVision.
+Robot.stopMode_INFO [11.188014208] Disabling YellowSampleVision.
+Robot.stopMode_INFO [11.18857975] Disabling LimelightVision.
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.190046541] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=1.2394932608695652E-4/0.013293381104118993
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.19564625] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=7.83355228832952E-5/0.013293388445080092
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.196385334] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=1.1400796338672769E-4/0.013293388778032036
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.196960209] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=7.449781350114416E-5/0.013293389780320367
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.197442917] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.007982912199759325/0.013426058909747293
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.198319959] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=7.0467093821510295E-6/0.013293401794050343
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.199430917] blinkin: OUTPUT_TASK=9.39523775743707E-5/0.013293389112128146
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.200227751] Elbow.primary.pidCtrlTask: OUTPUT_TASK=0.0023276288602520046/0.013306345504009163
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.201037709] Extender.primary.pidCtrlTask: OUTPUT_TASK=0.001563075892325315/0.013290819348224514
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.202406793] Grabber.colorTrigger.triggerTask: PRE_PERIODIC_TASK=0.010696134405172412/0.0955582441637931
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.203486834] Grabber.primary.pidCtrlTask: OUTPUT_TASK=5.5243203661327235E-6/0.013301158659038902
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.204384001] Grabber.follower.pidCtrlTask: OUTPUT_TASK=2.9893958810068647E-6/0.01330115899313501
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.206593376] DriverGamepad.buttonEventTask: PRE_PERIODIC_TASK=3.123523706896552E-4/0.09547011556034483
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [11.207741377] OperatorGamepad.buttonEventTask: PRE_PERIODIC_TASK=2.543585344827586E-4/0.0954692757586207
+FtcOpMode.printPerformanceMetrics_INFO [11.209279043] [FtcTeleOp] Main robot thread average elapsed times:
+       robotInit=2.275858s
+    initPeriodic=0.004887s
+       startMode=0.000049s
+    loopInterval=0.095543s (10.466Hz)
+             sdk=0.000215s
+ prePeriodicTask=0.011369s
+        periodic=0.079085s
+postPeriodicTask=0.000090s
+         loopSum=0.095690s
+        stopMode=0.000000s
+FtcTeleOp.stopMode_INFO [11.211854752] ***** Stopping TeleOp: 20241103@150657 *****

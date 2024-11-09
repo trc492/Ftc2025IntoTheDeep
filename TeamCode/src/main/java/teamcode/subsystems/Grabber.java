@@ -409,7 +409,7 @@ public class Grabber
 
         if (robot.ledIndicator != null)
         {
-            robot.ledIndicator.setDetectedSample(sampleType, false);
+            robot.ledIndicator.setDetectedSample(sampleType, true);
         }
     }   //colorTriggerCallback
 

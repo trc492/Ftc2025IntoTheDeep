@@ -150,7 +150,7 @@ public class RobotParams
             new TrcPose2D(1.8*Field.FULL_TILE_INCHES, -1.8*Field.FULL_TILE_INCHES);
 
         public static final TrcPose2D RED_ASCENT_ZONE_PARK_POSE     =
-            new TrcPose2D(-1.0*Field.FULL_TILE_INCHES, -0.5*Field.FULL_TILE_INCHES, 90.0);
+            new TrcPose2D(-1.2*Field.FULL_TILE_INCHES, -0.65*Field.FULL_TILE_INCHES, 90.0);
         public static final TrcPose2D RED_OBSERVATION_ZONE_PARK_POSE=
             new TrcPose2D(2.5*Field.FULL_TILE_INCHES, -2.5*Field.FULL_TILE_INCHES, 0.0);
     }   //class Game

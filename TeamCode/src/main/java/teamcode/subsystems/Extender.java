@@ -47,15 +47,15 @@ public class Extender
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.75;
 
-        public static final double PIVOT_Y_OFFSET               = -5.5;     // pivot Y offset from robot center inches
+        public static final double PIVOT_Y_OFFSET               = -5.0;     // pivot Y offset from robot center inches
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.0;
         public static final double GROUND_PICKUP_POS            = 18.0;
         public static final double SPECIMEN_PICKUP_POS          = 18.0; // TODO: NEEDS TUNING
         public static final double LOW_BASKET_SCORE_POS         = MIN_POS;
         public static final double HIGH_BASKET_SCORE_POS        = 34.0;
-        public static final double LOW_CHAMBER_SCORE_POS        = 18.5;
-        public static final double HIGH_CHAMBER_SCORE_POS       = 21.5;
+        public static final double LOW_CHAMBER_SCORE_POS        = 17.5;
+        public static final double HIGH_CHAMBER_SCORE_POS       = 19.75;
         public static final double ASCENT_LEVEL1_POS            = 20.0;
         public static final double MAX_SAFE_ADJUSTMENT          = 6.0;
         public static final double MAX_SAFE_LIMIT               = MAX_POS - MAX_SAFE_ADJUSTMENT;

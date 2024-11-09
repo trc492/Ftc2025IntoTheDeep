@@ -244,13 +244,13 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                             currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                             robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance));
-                    robot.extenderArm.extender.setPosition(0.0, taskParams.extenderPos, true, 0.25, null);
-                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, taskParams.wristPos, null);
+//                    robot.extenderArm.extender.setPosition(0.0, taskParams.extenderPos, true, 0.1, null);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, taskParams.extenderPos - 2.0, taskParams.wristPos, null);
 
                 }
                 else
                 {
-                    robot.extenderArm.extender.setPosition(0.0, taskParams.extenderPos, true, 0.25, event);
+//                    robot.extenderArm.extender.setPosition(0.0, taskParams.extenderPos, true, 0.1, event);
                     robot.extenderArm.setPosition(taskParams.elbowAngle, null, taskParams.wristPos, null);
                 }
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);

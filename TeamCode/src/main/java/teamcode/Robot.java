@@ -29,6 +29,7 @@ import ftclib.driverio.FtcDashboard;
 import ftclib.driverio.FtcMatchInfo;
 import ftclib.robotcore.FtcOpMode;
 import ftclib.sensor.FtcRobotBattery;
+import teamcode.autotasks.TaskAutoClimb;
 import teamcode.autotasks.TaskAutoPickupFromGround;
 import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.autotasks.TaskAutoScoreBasket;
@@ -87,6 +88,7 @@ public class Robot
     public TaskAutoPickupSpecimen pickupSpecimenTask;
     public TaskAutoScoreBasket scoreBasketTask;
     public TaskAutoScoreChamber scoreChamberTask;
+    public TaskAutoClimb autoClimbTask;
 
     public enum GamePieceType
     {

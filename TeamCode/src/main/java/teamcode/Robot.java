@@ -24,7 +24,6 @@ package teamcode;
 
 import androidx.annotation.NonNull;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import ftclib.drivebase.FtcRobotDrive;
@@ -43,6 +42,7 @@ import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Grabber;
 import teamcode.subsystems.RobotBase;
+import teamcode.subsystems.RumbleIndicator;
 import teamcode.subsystems.Wrist;
 import teamcode.subsystems.Vision;
 import trclib.dataprocessor.TrcUtil;
@@ -79,6 +79,8 @@ public class Robot
     public Vision vision;
     // Sensors and indicators.
     public LEDIndicator ledIndicator;
+    public RumbleIndicator driverRumble;
+    public RumbleIndicator operatorRumble;
     public FtcRobotBattery battery;
     // Subsystems.
     public TrcMotor elbow;

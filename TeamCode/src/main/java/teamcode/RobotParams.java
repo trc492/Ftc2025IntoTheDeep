@@ -54,6 +54,7 @@ public class RobotParams
         public static final boolean showSubsystems              = true;
         public static final boolean useBlinkinLED               = true;
         public static final boolean useGobildaLED               = false;
+        public static final boolean useRumble                   = true;
         // Vision
         public static final boolean useVision                   = true;
         public static final boolean useWebCam                   = true;     // false to use Android phone camera.
@@ -129,7 +130,10 @@ public class RobotParams
         public static final TrcPose2D STARTPOSE_RED_OBSERVATION_ZONE= new TrcPose2D(STARTPOS_X, -STARTPOS_Y, 0.0);
 
         public static final double AUTO_PERIOD                      = 30.0; // 30 seconds auto period
+        public static final double TELEOP_PERIOD                    = 120.0;// 2 minutes teleop period
         public static final double SCORE_BASKET_CYCLE_TIME          = 6.0;  // in seconds
+        public static final double LEVEL1_ASCENT_TIME               = 10.0; // in seconds
+        public static final double LEVEL1_ASCENT_DEADLINE           = TELEOP_PERIOD - LEVEL1_ASCENT_TIME;
         public static final double SCORE_SPECIMEN_CYCLE_TIME        = 8.0;  // in seconds
         public static final double SPECIMEN_GROUND_OFFSET           = 8.0;  // inches
         public static final double CHAMBER_LENGTH                   = 26.0;

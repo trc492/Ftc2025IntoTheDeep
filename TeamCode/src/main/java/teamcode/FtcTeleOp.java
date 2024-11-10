@@ -32,6 +32,7 @@ import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Grabber;
 import teamcode.subsystems.LEDIndicator;
+import teamcode.subsystems.RumbleIndicator;
 import teamcode.subsystems.Wrist;
 import trclib.drivebase.TrcDriveBase;
 import trclib.pathdrive.TrcPose2D;
@@ -100,6 +101,12 @@ public class FtcTeleOp extends FtcOpMode
         operatorGamepad.setButtonEventHandler(this::operatorButtonEvent);
         operatorGamepad.setLeftStickInverted(false, true);
         operatorGamepad.setRightStickInverted(false, true);
+
+        if (RobotParams.Preferences.useRumble)
+        {
+            robot.driverRumble = new RumbleIndicator("DriverRumble", driverGamepad);
+            robot.operatorRumble = new RumbleIndicator("OperatorRumble", operatorGamepad);
+        }
 
         drivePowerScale = RobotParams.Robot.DRIVE_NORMAL_SCALE;
         turnPowerScale = RobotParams.Robot.TURN_NORMAL_SCALE;
@@ -211,6 +218,11 @@ public class FtcTeleOp extends FtcOpMode
                     robot.dashboard.displayPrintf(
                         1, "RobotDrive: Power=(%.2f,y=%.2f,rot=%.2f),Mode:%s",
                         inputs[0], inputs[1], inputs[2], robot.robotDrive.driveBase.getDriveOrientation());
+                }
+
+                if (robot.driverRumble != null && elapsedTime > RobotParams.Game.LEVEL1_ASCENT_DEADLINE)
+                {
+                    robot.driverRumble.setRumblePattern(RumbleIndicator.ASCENT_DEADLINE);
                 }
             }
             //

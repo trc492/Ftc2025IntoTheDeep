@@ -1,59 +1,73 @@
 import cv2
 import numpy as np
 
-def runPipeline(image, llrobot):
-    # Initialize variables to avoid unboundlocal errors
-    largestContour = np.array([[]])
-    llpython = [0, 0, 0, 0, 0, 0, 0, 0]
-    x, y, w, h = 0, 0, 0, 0
+# Constants for the camera
+HORIZONTAL_FOV = 80.0  # degrees
+VERTICAL_FOV = 56.0  # degrees
+KNOWN_WIDTH = 0.0889  # meters (adjust this to the known width of your target)
+FOCAL_LENGTH = 560  # pixels (this is an estimate, you may need to calibrate)
 
+def calculate_distance_and_angles(x, y, w, h, img_width, img_height):
+    # Calculate distance
+    distance = (KNOWN_WIDTH * FOCAL_LENGTH) / w
+
+    # Calculate angles
+    horizontal_angle = (x - img_width/2) * (HORIZONTAL_FOV / img_width)
+    vertical_angle = (img_height/2 - y) * (VERTICAL_FOV / img_height)
+
+    return distance, horizontal_angle, vertical_angle
+
+def drawDecorations(image, text):
+    cv2.putText(image, text, (5, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+    # cv2.line(image, (0, 410), (639, 410), (0, 255, 0), 2)
+
+def runPipeline(image, llrobot):
     # Convert BGR to YCrCb
-    ycrcb_image = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
+    ycrcb = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
 
     # Define range for red color in YCrCb
     lower_red = np.array([10, 170, 80])
     upper_red = np.array([180, 240, 120])
 
-    # Create a mask for red color
-    mask = cv2.inRange(ycrcb_image, lower_red, upper_red)
+    # Create mask for red color
+    mask = cv2.inRange(ycrcb, lower_red, upper_red)
 
-    # Reduce noise in the mask
-    kernel = np.ones((5,5), np.uint8)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    # Apply Gaussian blur to reduce noise
+    blurred = cv2.GaussianBlur(mask, (5, 5), 0)
 
-    # Find contours in the mask
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # Find contours
+    contours, _ = cv2.findContours(blurred, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Initialize variables
+    largest_contour = np.array([[]])
+    distance = 0
+    horizontal_angle = 0
+    vertical_angle = 0
+    llpython = [0, 0, 0, 0, 0, 0, 0, 0]
 
     if contours:
         # Find the largest contour
-        largestContour = max(contours, key=cv2.contourArea)
-
+        largest_contour = max(contours, key=cv2.contourArea)
+        
         # Get bounding box of the largest contour
-        x, y, w, h = cv2.boundingRect(largestContour)
-
-        # Draw the contour and bounding box
-        cv2.drawContours(image, [largestContour], 0, (0, 255, 0), 2)
-        cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
-
-        # Calculate center of the bounding box
-        center_x = x + w // 2
-        center_y = y + h // 2
-
-        # Draw crosshair at the center
-        cv2.line(image, (center_x - 10, center_y), (center_x + 10, center_y), (0, 0, 255), 2)
-        cv2.line(image, (center_x, center_y - 10), (center_x, center_y + 10), (0, 0, 255), 2)
-
+        x, y, w, h = cv2.boundingRect(largest_contour)
+        
+        # Calculate distance and angles
+        distance, horizontal_angle, vertical_angle = calculate_distance_and_angles(
+            x + w/2, y + h/2, w, h, image.shape[1], image.shape[0])
+        
+        # Draw rectangle around the largest contour
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        
+        # Draw center point
+        center = (int(x + w/2), int(y + h/2))
+        cv2.circle(image, center, 5, (0, 0, 255), -1)
+        
         # Prepare data to send back to the robot
-        area = cv2.contourArea(largestContour)
-        llpython = [1, center_x, center_y, w, h, area, 0, 0]
+        llpython = [1, distance, horizontal_angle, vertical_angle, x, y, w, h]
 
-    # Add text to the image
-    cv2.putText(image, "Red Sample Detector", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    # Draw text on image
+    text = f"HAngle:{horizontal_angle:.2f}deg, VAngle:{vertical_angle:.2f}deg, Dist:{distance:.2f}m"
+    drawDecorations(image, text)
 
-    # If a red sample is detected, display its information
-    if llpython[0] == 1:
-        info_text = f"Center: ({llpython[1]}, {llpython[2]}), Size: {llpython[3]}x{llpython[4]}, Area: {llpython[5]}"
-        cv2.putText(image, info_text, (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-
-    return largestContour, image, llpython
+    return largest_contour, image, llpython

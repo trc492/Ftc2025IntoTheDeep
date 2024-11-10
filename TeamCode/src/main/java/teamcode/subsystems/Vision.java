@@ -113,7 +113,7 @@ public class Vision
             camYOffset = 2.073;                         // Inches forward from robot center
             camZOffset = 10.758;                        // Inches up from the floor
             camYaw = -3.438;                            // degrees clockwise from robot front
-            camPitch = 0.0;                            // degrees down from horizontal
+            camPitch = 0.0;                             // degrees down from horizontal
             camRoll = 0.0;
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
         }   //LimelightParams

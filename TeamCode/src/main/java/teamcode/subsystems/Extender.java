@@ -67,6 +67,7 @@ public class Extender
         public static final TrcPidController.PidCoefficients posPidCoeffs =
             new TrcPidController.PidCoefficients(1.5, 0.0, 0.0, 0.0, 0.0);
         public static final double POS_PID_TOLERANCE            = 0.5;
+        public static final double GRAVITY_COMP_MAX_POWER       = -0.15;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
         public static final double STALL_TOLERANCE              = 0.1;
         public static final double STALL_TIMEOUT                = 0.1;
@@ -94,6 +95,7 @@ public class Extender
         extender.setPidStallDetectionEnabled(Params.STALL_RESET_TIMEOUT, Params.STALL_TIMEOUT, Params.STALL_TOLERANCE);
         // We may extend it beyond its upper limit and we don't have physical upper limit switch, so set soft limits.
         extender.setSoftPositionLimits(Extender.Params.MIN_POS, Extender.Params.MAX_POS, false);
+        extender.setPositionPidPowerComp(this::getExtenderPowerComp);
         extender.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
     }   //Extender
 
@@ -106,5 +108,16 @@ public class Extender
     {
         return extender;
     }   //getMotor
+
+    /**
+     * This method is called to compute the power compensation to counteract the spring on the Extender.
+     *
+     * @param currPower specifies the current motor power (not used).
+     * @return compensation power for the extender.
+     */
+    private double getExtenderPowerComp(double currPower)
+    {
+        return Params.GRAVITY_COMP_MAX_POWER;
+    }   //getExtenderPowerComp
 
 }   //class Extender

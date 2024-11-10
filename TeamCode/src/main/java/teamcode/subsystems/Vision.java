@@ -482,12 +482,34 @@ public class Vision
         if (limelightVision != null)
         {
             String objectName = null;
+            int pipelineIndex = -1;
             Double robotHeading = robot.robotDrive != null? robot.robotDrive.driveBase.getHeading(): null;
 
             limelightInfo = limelightVision.getBestDetectedTargetInfo(resultType, label, robotHeading, null);
             if (limelightInfo != null)
             {
-                objectName = limelightInfo.detectedObj.label;
+                pipelineIndex = limelightVision.getPipeline();
+                switch (pipelineIndex)
+                {
+                    case 0:
+                        objectName = LEDIndicator.APRIL_TAG;
+                        break;
+
+                    case 1:
+                        objectName = LEDIndicator.RED_SAMPLE;
+                        break;
+
+                    case 2:
+                        objectName = LEDIndicator.BLUE_SAMPLE;
+                        break;
+
+                    case 3:
+                        objectName = LEDIndicator.YELLOW_SAMPLE;
+                        break;
+
+                    default:
+                        break;
+                }
             }
 
             if (objectName != null && robot.ledIndicator != null)
@@ -499,7 +521,7 @@ public class Vision
             {
                 robot.dashboard.displayPrintf(
                     lineNum, "%s(%d): %s",
-                    objectName, limelightVision.getPipeline(), limelightInfo != null? limelightInfo: "Not found.");
+                    objectName, pipelineIndex, limelightInfo != null? limelightInfo: "Not found.");
             }
         }
 

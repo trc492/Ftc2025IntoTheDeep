@@ -236,13 +236,9 @@ public class FtcTest extends FtcTeleOp
                     {
                         robot.globalTracer.traceInfo(moduleName, "Enabling AprilTagVision for Webcam.");
                         robot.vision.setAprilTagVisionEnabled(true);
-                        if (robot.vision.limelightVision != null)
-                        {
-                            robot.globalTracer.traceInfo(moduleName, "Enabling RedSpecimenVision for Limelight.");
-                            robot.vision.setLimelightVisionEnabled(1, true);
-                        }
                     }
-                    else if (robot.vision.limelightVision != null)
+
+                    if (robot.vision.limelightVision != null)
                     {
                         robot.globalTracer.traceInfo(moduleName, "Enabling AprilTagVision for Limelight.");
                         robot.vision.setLimelightVisionEnabled(0, true);
@@ -448,12 +444,12 @@ public class FtcTest extends FtcTeleOp
             {
                 case SENSORS_TEST:
                 case SUBSYSTEMS_TEST:
-                    doSensorsTest();
+                    doSensorsTest(lineNum);
                     break;
 
                 case VISION_TEST:
                 case TUNE_COLORBLOB_VISION:
-                    doVisionTest();
+                    doVisionTest(lineNum);
                     break;
 
                 case X_TIMED_DRIVE:
@@ -628,6 +624,16 @@ public class FtcTest extends FtcTeleOp
                         robot.vision.rawColorBlobVision.getPipeline().setNextVideoOutput();
                     }
                     passToTeleOp = false;
+                }
+                else if (testChoices.test == Test.VISION_TEST &&
+                         robot.vision != null && robot.vision.isLimelightVisionEnabled())
+                {
+                    if (pressed)
+                    {
+                        int pipelineIndex = (robot.vision.limelightVision.getPipeline() + 1) % 4;
+                        robot.vision.limelightVision.setPipeline(pipelineIndex);
+                        robot.globalTracer.traceInfo(moduleName, "Switch Limelight pipeline to " + pipelineIndex);
+                    }
                 }
                 break;
 
@@ -1069,10 +1075,11 @@ public class FtcTest extends FtcTeleOp
      * This method reads all sensors and prints out their values. This is a very useful diagnostic tool to check
      * if all sensors are working properly. For encoders, since test sensor mode is also teleop mode, you can
      * operate the gamepads to turn the motors and check the corresponding encoder counts.
+     *
+     * @param lineNum specifies the starting line number on the dashboard to display sensor states.
      */
-    private void doSensorsTest()
+    private void doSensorsTest(int lineNum)
     {
-        int lineNum = 9;
         //
         // Read all sensors and display on the dashboard.
         // Drive the robot around to sample different locations of the field.
@@ -1116,13 +1123,13 @@ public class FtcTest extends FtcTeleOp
 
     /**
      * This method calls vision code to detect target objects and display their info.
+     *
+     * @param lineNum specifies the starting line number on the dashboard to display vision info.
      */
-    private void doVisionTest()
+    private void doVisionTest(int lineNum)
     {
         if (robot.vision != null)
         {
-            int lineNum = 9;
-
             if (robot.vision.limelightVision != null)
             {
                 robot.vision.getLimelightDetectedObject(

@@ -585,8 +585,7 @@ public class FtcTeleOp extends FtcOpMode
         switch (button)
         {
             case A:
-                if (robot.wrist != null && pressed &&
-                    (elbowPos == null || extenderPos == null ))
+                if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high basket scoring position.");
                     robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS);
@@ -594,8 +593,7 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case B:
-                if (robot.wrist != null && pressed &&
-                    (elbowPos == null || extenderPos == null ))
+                if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high chamber scoring position.");
                     robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS);

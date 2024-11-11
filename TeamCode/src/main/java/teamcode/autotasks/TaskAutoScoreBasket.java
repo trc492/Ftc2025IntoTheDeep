@@ -238,7 +238,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             case SCORE_BASKET:
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
-                robot.extenderArm.elbow.setPosition(0.0, elbowScorePos,true, 0.5);
+                robot.extenderArm.elbow.setPosition(0.0, elbowScorePos,true, 0.6);
                 robot.extenderArm.setPosition(null, null, wristPos, null);
                 if (robot.grabber.hasObject())
                 {

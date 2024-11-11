@@ -127,13 +127,13 @@ public class RobotBase
             // DriveBase PID Parameters
             drivePidTolerance = 0.8;
             turnPidTolerance = 1.0;
-            xDrivePidCoeffs = new TrcPidController.PidCoefficients(0.055, 0.0, 0.00001, 0.0, 0.0);
+            xDrivePidCoeffs = new TrcPidController.PidCoefficients(0.068, 0.00, 0.0005, 0.0, 0.0);
             xDrivePidPowerLimit = 1.0;
             xDriveMaxPidRampRate = null;
-            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.015, 0.0, 0.0005, 0.0, 0.0);
+            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.052, 0.041, 0.0045, 0.0, 3.0);
             yDrivePidPowerLimit = 1.0;
             yDriveMaxPidRampRate = null;
-            turnPidCoeffs = new TrcPidController.PidCoefficients(0.028, 0.1, 0.0025, 0.0, 5.0);
+            turnPidCoeffs = new TrcPidController.PidCoefficients(0.032, 0.1, 0.0025, 0.0, 5.0);
             turnPidPowerLimit = 0.5;
             turnMaxPidRampRate = null;
             // PID Stall Detection
@@ -200,12 +200,12 @@ public class RobotBase
             profiledMaxAcceleration = robotMaxAcceleration;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
-            drivePidTolerance = 1.2;
-            turnPidTolerance = 3.0;
+            drivePidTolerance = 1.0;
+            turnPidTolerance = 2.0;
             xDrivePidCoeffs = new TrcPidController.PidCoefficients(0.095, 0.0, 0.006, 0.0, 0.0);
             xDrivePidPowerLimit = 1.0;
             xDriveMaxPidRampRate = null;
-            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.035, 0.0, 0.0036, 0.0, 0.0);
+            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.035, 0.0, 0.0015, 0.0, 0.0);
             yDrivePidPowerLimit = 1.0;
             yDriveMaxPidRampRate = null;
             turnPidCoeffs = new TrcPidController.PidCoefficients(0.013, 0.0, 0.001, 0.0, 0.0);

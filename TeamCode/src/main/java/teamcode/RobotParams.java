@@ -142,12 +142,12 @@ public class RobotParams
         public static final TrcPose2D RED_BASKET_SCORE_POSE         =
             new TrcPose2D(-2.35*Field.FULL_TILE_INCHES, -2.35*Field.FULL_TILE_INCHES, 45.0);
         public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE    =
-            new TrcPose2D(-0.3*Field.FULL_TILE_INCHES, -1.75*Field.FULL_TILE_INCHES, 0.0);
+            new TrcPose2D(-0.3*Field.FULL_TILE_INCHES, -1.66*Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
-            new TrcPose2D(0.3*Field.FULL_TILE_INCHES, -1.78*Field.FULL_TILE_INCHES, 0.0);
+            new TrcPose2D(0.1*Field.FULL_TILE_INCHES, -1.66*Field.FULL_TILE_INCHES, 0.0);
         // Pickup poses.
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
-            new TrcPose2D(2.0*Field.FULL_TILE_INCHES, -2.0*Field.FULL_TILE_INCHES, 180.0);
+            new TrcPose2D(2.0*Field.FULL_TILE_INCHES, -2.05*Field.FULL_TILE_INCHES, 180.0);
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
             new TrcPose2D(-1.8*Field.FULL_TILE_INCHES, -1.82*Field.FULL_TILE_INCHES, 0.0);
         public static final TrcPose2D RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP =
@@ -160,12 +160,12 @@ public class RobotParams
 
         public static final TrcPose2D[] RED_OBSERVATION_ZONE_SAMPLE_MOVE_POINTS = {
                 new TrcPose2D(1.3, -1.5, 0.0),
-                new TrcPose2D(1.4, -0.6, 0.0),
-                new TrcPose2D(1.95, -0.6, 0.0),
+                new TrcPose2D(1.4, -0.7, 0.0),
+                new TrcPose2D(1.95, -0.7, 0.0),
                 new TrcPose2D(1.95, -1.9, 0.0),
-                new TrcPose2D(1.95,-0.5, 0.0),
-                new TrcPose2D(1.95 + 10/Field.FULL_TILE_INCHES, -0.5, 0.0),
-                new TrcPose2D(1.95 + 10/Field.FULL_TILE_INCHES, -1.9, 0.0),
+                new TrcPose2D(1.95,-0.7, 0.0),
+                new TrcPose2D(1.95 + 8/Field.FULL_TILE_INCHES, -0.7, 0.0),
+                new TrcPose2D(1.95 + 8/Field.FULL_TILE_INCHES, -1.9, 0.0),
         };
     }   //class Game
 

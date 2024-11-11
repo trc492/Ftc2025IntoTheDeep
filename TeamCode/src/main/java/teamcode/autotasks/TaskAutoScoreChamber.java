@@ -94,7 +94,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
-    private final TrcTimer timer;
+    private final TrcEvent event2;
+//    private final TrcTimer timer;
 
     private String currOwner = null;
 
@@ -110,7 +111,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         this.ownerName = ownerName;
         this.robot = robot;
         this.event = new TrcEvent(moduleName);
-        this.timer = new TrcTimer(moduleName);
+        this.event2 = new TrcEvent(moduleName);
+//        this.timer = new TrcTimer(moduleName);
     }   //TaskAutoScoreChamber
 
     /**
@@ -125,7 +127,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         FtcAuto.Alliance alliance = robotPose.y < 0.0? FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         boolean nearNetZone = alliance == FtcAuto.Alliance.RED_ALLIANCE ^ robotPose.x > 0.0;
         TrcPose2D scorePose = nearNetZone?
-            RobotParams.Game.RED_NET_CHAMBER_SCORE_POSE: RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE;
+            RobotParams.Game.RED_NET_CHAMBER_SCORE_POSE.clone(): RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
         double elbowAngle, extenderPos, wristPos;
 
         if (robotPose.x >= -RobotParams.Game.CHAMBER_MAX_SCORE_POS_X &&
@@ -251,7 +253,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 else
                 {
 //                    robot.extenderArm.extender.setPosition(0.0, taskParams.extenderPos, true, 0.1, event);
-                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, taskParams.wristPos, null);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, taskParams.wristPos, event);
                 }
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);
                 break;
@@ -262,7 +264,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 break;
 
             case LOWER_ELBOW:
-                robot.extenderArm.setPosition(taskParams.elbowAngle - 20.0, null, null, event);
+                robot.extenderArm.setPosition(taskParams.elbowAngle - 23.0, null, null, event);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER, 0.15);
                 break;
 
@@ -281,9 +283,11 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 break;
 
             case RETRACT_EXTENDER_ARM:
-                robot.extenderArm.elbow.setPosition(Elbow.Params.HIGH_CHAMBER_SCORE_POS,true,0.5);
+                robot.extenderArm.elbow.setPosition(0.0,Elbow.Params.HIGH_CHAMBER_SCORE_POS,true,1.0, event2);
                 robot.extenderArm.setPosition(null, 16.0, null, event);
-                sm.waitForSingleEvent(event, State.DONE);
+                sm.addEvent(event);
+                sm.addEvent(event2);
+                sm.waitForEvents(State.DONE);
 //                sm.setState(State.DONE);
                 break;
 

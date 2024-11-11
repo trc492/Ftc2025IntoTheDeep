@@ -216,8 +216,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 {
                     robot.extenderArm.setPosition(
                         Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS,
-                        Wrist.Params.SPECIMEN_PICKUP_POS, event);
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
+                        Wrist.Params.SPECIMEN_PICKUP_POS, null);
+//                    sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
+                    sm.setState(State.DRIVE_TO_PICKUP);
                 }
                 break;
 
@@ -277,8 +278,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 break;
 
             case RETRACT_ARM:
-                robot.extenderArm.retract(event);
-                sm.waitForSingleEvent(event, State.DONE);
+                robot.extenderArm.retract(null);
+//                sm.waitForSingleEvent(event, State.DONE);
+                sm.setState(State.DONE);
                 break;
 
             default:

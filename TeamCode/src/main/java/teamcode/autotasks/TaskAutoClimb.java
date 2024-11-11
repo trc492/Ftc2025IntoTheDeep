@@ -187,12 +187,12 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case LEVEL2_START:
-                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, event);
+                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);
                 break;
 
             case FOLD_ROBOT:
-                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
+                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, event);
                 sm.waitForSingleEvent(event, State.LEVEL2_ASCENT);
                 break;
 

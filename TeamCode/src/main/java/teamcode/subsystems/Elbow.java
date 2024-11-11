@@ -60,7 +60,7 @@ public class Elbow
         public static final double MAX_POS                      = 105.0;
         public static final double GROUND_PICKUP_POS            = 20.0;
         public static final double SAFE_POS                     = 30.0;
-        public static final double SPECIMEN_PICKUP_POS          = 21.0;
+        public static final double SPECIMEN_PICKUP_POS          = 18.5;
         public static final double BASKET_PRESCORE_POS          = 90.0;
         public static final double LOW_BASKET_SCORE_POS         = 105.0;
         public static final double HIGH_BASKET_SCORE_POS        = 103.0;

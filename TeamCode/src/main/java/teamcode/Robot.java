@@ -190,6 +190,7 @@ public class Robot
                 pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);
                 scoreBasketTask = new TaskAutoScoreBasket("scoreBasketTask", this);
                 scoreChamberTask = new TaskAutoScoreChamber("scoreChamberTask", this);
+                autoClimbTask = new TaskAutoClimb("autoClimbTask", this);
             }
         }
 

@@ -47,7 +47,7 @@ public class Extender
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.75;
 
-        public static final double PIVOT_Y_OFFSET               = -7.0; // pivot Y offset from robot center inches
+        public static final double PIVOT_Y_OFFSET               = -6.8; // pivot Y offset from robot center inches
         public static final double PICKUP_POS_WRIST_OFFSET      = 1.5;  // pickup position offset from wrist joint
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.0;
@@ -55,9 +55,9 @@ public class Extender
         public static final double LOW_BASKET_SCORE_POS         = MIN_POS;
         public static final double HIGH_BASKET_SCORE_POS        = 34.0;
         public static final double LOW_CHAMBER_SCORE_POS        = 18.5;
-        public static final double HIGH_CHAMBER_SCORE_POS       = 21.5;
+        public static final double HIGH_CHAMBER_SCORE_POS       = 21.0;
         public static final double PRE_CLIMB_POS                = 20.0;
-        public static final double ASCENT_LEVEL1_POS            = 23.0;
+        public static final double ASCENT_LEVEL1_POS            = MAX_POS;
         public static final double ASCENT_LEVEL2_POS            = 20.0;
         public static final double MAX_SAFE_ADJUSTMENT          = 6.0;
         public static final double MAX_SAFE_LIMIT               = MAX_POS - MAX_SAFE_ADJUSTMENT;

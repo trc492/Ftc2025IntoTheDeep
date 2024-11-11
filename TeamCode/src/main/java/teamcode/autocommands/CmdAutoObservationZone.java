@@ -25,6 +25,8 @@ package teamcode.autocommands;
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
+import teamcode.subsystems.Elbow;
+import teamcode.subsystems.Extender;
 import teamcode.subsystems.Vision;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
@@ -173,10 +175,11 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     break;
 
                 case PICKUP_SPECIMEN:
-                    if (scoreSpecimenCount < 3) {
+//                    robot.extenderArm.setPosition(null, 22.0, null, null);
+                    if (scoreSpecimenCount < 2) {
                         robot.pickupSpecimenTask.autoPickupSpecimen(autoChoices.alliance, false,event);
-                        sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER_POS);
                         scoreSpecimenCount++;
+                        sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER_POS);
                     }
                     else
                     {
@@ -187,7 +190,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case DRIVE_TO_CHAMBER_POS:
                     TrcPose2D scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
-                    scorePose.x += 3.0 * scoreSpecimenCount * RobotParams.Field.FULL_TILE_INCHES;
+                    scorePose.x += 3.75 * scoreSpecimenCount;
+                    robot.extenderArm.setPosition(Elbow.Params.HIGH_CHAMBER_SCORE_POS, Extender.Params.HIGH_CHAMBER_SCORE_POS, null, null);
                     robot.robotDrive.purePursuitDrive.start(
                         event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,

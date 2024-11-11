@@ -66,6 +66,9 @@ public class Grabber
         public static final String FOLLOWER_SERVO_NAME          = SUBSYSTEM_NAME + ".follower";
         public static final boolean FOLLOWER_SERVO_INVERTED     = !PRIMARY_SERVO_INVERTED;
 
+        // Movement Limit Constants
+        public static final double GRABBER_LENGTH               = 5.75; // Not Tuned
+
         public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
         public static final boolean SENSOR_TRIGGER_INVERTED     = true;
         public static final double SENSOR_TRIGGER_THRESHOLD     = 1.0;

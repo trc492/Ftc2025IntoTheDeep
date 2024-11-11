@@ -235,18 +235,23 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     double elbowPower = operatorGamepad.getRightStickY(true) * Elbow.Params.POWER_LIMIT;
 
+                    // https://www.desmos.com/calculator/8bdfhot9lm
                     elbowPos = robot.elbow.getPosition();
                     extenderPos = robot.extender != null? robot.extender.getPosition(): null;
                     extenderLimit =
-                        Extender.Params.MAX_POS -
-                        Math.max(Math.cos(Math.toRadians(elbowPos)) * Extender.Params.MAX_SAFE_ADJUSTMENT, 0.0);
-                    if (elbowPos < 50.0 && extenderPos != null && extenderPos > extenderLimit)
+                            (Extender.Params.MAX_Y_LENGTH - Extender.Params.PIVOT_Z_OFFSET * Math.sin(Math.toRadians(elbowPos))) / Math.cos(Math.toRadians(elbowPos))
+                                    - Grabber.Params.GRABBER_LENGTH * Math.sin((robot.wrist.getPosition() - Wrist.Params.MIN_POS) * Math.PI / (Wrist.Params.MAX_POS - Wrist.Params.MIN_POS)) // Convert to Radians
+                                    - 0.5; // Buffer
+//                    extenderLimit =
+//                        Extender.Params.MAX_POS -
+//                        Math.max(Math.cos(Math.toRadians(elbowPos)) * Extender.Params.MAX_SAFE_ADJUSTMENT, 0.0);
+                    if (elbowPos < 35.0 && extenderPos != null && extenderPos > extenderLimit) // Stops being effective at ~35 Degrees
                     {
                         robot.extender.setPosition(extenderLimit);
-                        if (elbowPos < Elbow.Params.SAFE_POS && robot.wrist != null)
-                        {
-                            robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
-                        }
+//                        if (elbowPos < Elbow.Params.SAFE_POS && robot.wrist != null)
+//                        {
+//                            robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
+//                        }
                     }
 
                     if (elbowPower != elbowPrevPower)
@@ -276,7 +281,7 @@ public class FtcTeleOp extends FtcOpMode
                         {
                             robot.extender.setPidPower(
                                 extenderPower, Extender.Params.MIN_POS,
-                                extenderLimit != null? extenderLimit: Extender.Params.MAX_POS, true);
+                                extenderLimit != null && elbowPos < 35.0? extenderLimit: Extender.Params.MAX_POS, true);
                         }
                         extenderPrevPower = extenderPower;
                     }

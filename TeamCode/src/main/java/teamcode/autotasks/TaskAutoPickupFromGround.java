@@ -28,11 +28,9 @@ import java.util.Locale;
 
 import teamcode.Robot;
 import teamcode.subsystems.Elbow;
-import teamcode.subsystems.Extender;
 import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
 import teamcode.subsystems.Vision;
-import trclib.dataprocessor.TrcUtil;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
@@ -54,7 +52,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         FIND_SAMPLE,
         TURN_TO_SAMPLE,
         PICKUP_SAMPLE,
-        RETRACT_ALL,
+        RAISE_ARM,
         DONE
     }   //enum State
 
@@ -205,6 +203,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         switch (state)
         {
             case START:
+                // Prep subsystems for pickup.
                 if (robot.extenderArm == null || robot.grabber == null)
                 {
                     // Arm or grabber don't exist, nothing we can do.
@@ -217,21 +216,18 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         taskParams.useVision && robot.vision != null &&
                         robot.vision.isSampleVisionEnabled(taskParams.sampleType)?
                             State.FIND_SAMPLE: State.PICKUP_SAMPLE;
-                    // Prep arm for pick up.
-//                    robot.extenderArm.setPosition(
-//                        Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, Wrist.Params.GROUND_PICKUP_POS,
-//                        armEvent);
                     robot.extenderArm.setPosition(
-                        Elbow.Params.GROUND_PICKUP_POS, null, Wrist.Params.GROUND_PICKUP_POS,
-                        armEvent);
+                        Elbow.Params.GROUND_PICKUP_POS, null, Wrist.Params.GROUND_PICKUP_POS, armEvent);
                     sm.waitForSingleEvent(armEvent, nextState);
                 }
                 break;
 
             case FIND_SAMPLE:
+                // Use vision to find the sample on the floor.
                 samplePose = robot.getDetectedSamplePose(taskParams.sampleType, 0.0, true);
                 if (samplePose != null)
                 {
+                    // Vision found the sample.
                     String msg = String.format(
                         Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
                         taskParams.sampleType, samplePose.x, samplePose.y, samplePose.angle);
@@ -241,16 +237,19 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 }
                 else if (visionExpiredTime == null)
                 {
+                    // Vision doesn't find the sample, set a 1-second timeout and keep trying.
                     visionExpiredTime = TrcTimer.getCurrentTime() + 1.0;
                 }
                 else if (TrcTimer.getCurrentTime() >= visionExpiredTime)
                 {
+                    // Timed out and vision still not finding sample, giving up.
                     tracer.traceInfo(moduleName, "%s not found, we are done.", taskParams.sampleType);
                     sm.setState(State.DONE);
                 }
                 break;
 
             case TURN_TO_SAMPLE:
+                // Vision found the sample, turn the robot toward it.
                 double extenderLen = robot.getExtenderPosFromSamplePose(samplePose);
                 tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                 if (!taskParams.noDrive)
@@ -266,19 +265,20 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 break;
 
             case PICKUP_SAMPLE:
+                // Pick up sample from the floor.
                 // We only care about sample color if we pick up from submersible.
                 // We assume the driver would drive up to the correct sample color for picking up from ground.
                 robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 2.0);
                 sm.addEvent(event);
                 robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 4.0, null, null, armEvent);
                 sm.addEvent(armEvent);
-                sm.waitForEvents(State.RETRACT_ALL, false, 4.0);
+                sm.waitForEvents(State.RAISE_ARM, false, 4.0);
                 break;
 
-            case RETRACT_ALL:
+            case RAISE_ARM:
+                // We may or may not get the sample. Either way, raise the arm by "fire and forget" to save time.
                 robot.extenderArm.cancel();
                 robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null, null);
-//                sm.waitForSingleEvent(armEvent, State.DONE);
                 sm.setState(State.DONE);
                 break;
 
@@ -289,6 +289,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 {
                     if (robot.ledIndicator != null)
                     {
+                        // Flash the LED to show whether we got the sample and what type.
                         robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
                     }
                 }

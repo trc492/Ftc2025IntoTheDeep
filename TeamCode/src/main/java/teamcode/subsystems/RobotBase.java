@@ -81,12 +81,8 @@ public class RobotBase
             odometryType = TrcDriveBase.OdometryType.AbsoluteOdometry;
             // Odometry Wheels (Offset from wheel base center)
             odWheelXScale = odWheelYScale = Math.PI * ODWHEEL_DIAMETER / ODWHEEL_CPR;
-            xOdWheelSensorNames = new String[] {"xOdWheelSensor"};  // Used by OctoQuad only
-            xOdWheelIndices = new int[] {0};    // Either motor port or OctoQuad port, not used by AbsoluteOdometry.
             xOdWheelXOffsets = new double[] {4.0 * TrcUtil.INCHES_PER_MM};
             xOdWheelYOffsets = new double[] {-132.0 * TrcUtil.INCHES_PER_MM};
-            yOdWheelSensorNames = new String[] {"yLeftOdWheelSensor", "yRightOdWheelSensor"};   // Used by OctoQuad only
-            yOdWheelIndices = new int[] {1, 2}; // Either motor port or OctoQuad port, not used by AbsoluteOdometry.
             yOdWheelXOffsets = new double[] {-156.0 * TrcUtil.INCHES_PER_MM, 156.0 * TrcUtil.INCHES_PER_MM};
             yOdWheelYOffsets = new double[] {-4.0 * TrcUtil.INCHES_PER_MM, -4.0 * TrcUtil.INCHES_PER_MM};
             // Absolute Odometry

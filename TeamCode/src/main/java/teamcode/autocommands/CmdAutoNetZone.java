@@ -102,6 +102,9 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     public void cancel()
     {
         timer.cancel();
+        robot.scoreChamberTask.cancel();
+        robot.scoreBasketTask.cancel();
+        robot.pickupFromGroundTask.cancel();
         sm.stop();
     }   //cancel
 
@@ -133,6 +136,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     // Intentionally fall to next state.
                     //
                 case DO_DELAY:
+                    // Do delay if there is one.
                     if (autoChoices.delay > 0.0)
                     {
                         robot.globalTracer.traceInfo(moduleName, "***** Do delay " + autoChoices.delay + "s.");
@@ -146,9 +150,10 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case SCORE_PRELOAD:
+                    // Score the preloaded sample or specimen.
                     if (autoChoices.preloadType == Robot.GamePieceType.SPECIMEN)
                     {
-                        robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, false,event);
+                        robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, false, event);
                     }
                     else
                     {
@@ -159,6 +164,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_TO_SPIKE_MARKS:
+                    // Drive to the spike marks to pick up a sample.
                     // Make sure remaining time is long enough to score a cycle, or else go park.
                     if (scoreSampleCount < 3 &&
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_BASKET_CYCLE_TIME)
@@ -181,16 +187,19 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case PICKUP_FLOOR_SAMPLE:
+                    // Pick up a sample from the spike marks.
                     robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, false, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
                     break;
 
                 case SCORE_SAMPLE_BASKET:
+                    // Score the sample into the basket.
                     robot.scoreBasketTask.autoScoreBasket(autoChoices.alliance, autoChoices.scoreHeight, true, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
                     break;
 
                 case GO_PARK:
+                    // Go to the ascent zone.
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
                         robot.extenderArm.setPosition(
@@ -213,6 +222,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case PARK:
+                    // Prep for level 1 ascent.
                     if (robot.extenderArm != null)
                     {
                         robot.extenderArm.setPosition(null, null, Wrist.Params.ASCENT_LEVEL1_POS, event);
@@ -225,6 +235,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case ASCENT:
+                    // Do level 1 ascent.
                     robot.extenderArm.setPosition(
                         Elbow.Params.ASCENT_LEVEL1_POS, Extender.Params.ASCENT_LEVEL1_POS, null, event);
                     sm.waitForSingleEvent(event, State.DONE);

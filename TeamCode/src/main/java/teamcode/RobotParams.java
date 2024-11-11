@@ -124,7 +124,7 @@ public class RobotParams
 
         // Blue alliance positions will be derived using adjustPoseByAlliance.
         // Robot start locations in inches.
-        public static final double STARTPOS_X                       = 0.5*Field.FULL_TILE_INCHES;
+        public static final double STARTPOS_X                       = 0.5 * Field.FULL_TILE_INCHES;
         public static final double STARTPOS_Y                       = Field.HALF_FIELD_INCHES - Robot.ROBOT_LENGTH/2.0;
         public static final TrcPose2D STARTPOSE_RED_NET_ZONE        = new TrcPose2D(-STARTPOS_X, -STARTPOS_Y, 0.0);
         public static final TrcPose2D STARTPOSE_RED_OBSERVATION_ZONE= new TrcPose2D(STARTPOS_X, -STARTPOS_Y, 0.0);
@@ -134,38 +134,38 @@ public class RobotParams
         public static final double SCORE_BASKET_CYCLE_TIME          = 6.0;  // in seconds
         public static final double LEVEL1_ASCENT_TIME               = 10.0; // in seconds
         public static final double LEVEL1_ASCENT_DEADLINE           = TELEOP_PERIOD - LEVEL1_ASCENT_TIME;
-        public static final double SCORE_SPECIMEN_CYCLE_TIME        = 8.0;  // in seconds
         public static final double SPECIMEN_GROUND_OFFSET           = 8.0;  // inches
         public static final double CHAMBER_LENGTH                   = 26.0;
         public static final double CHAMBER_MAX_SCORE_POS_X          = (CHAMBER_LENGTH / 2.0) - 3.0;
-        // Score poses.
+        // Score poses (Net zone side).
         public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-            new TrcPose2D(-2.35*Field.FULL_TILE_INCHES, -2.35*Field.FULL_TILE_INCHES, 45.0);
+            new TrcPose2D(-2.35 * Field.FULL_TILE_INCHES, -2.35 * Field.FULL_TILE_INCHES, 45.0);
         public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE    =
-            new TrcPose2D(-0.3*Field.FULL_TILE_INCHES, -1.66*Field.FULL_TILE_INCHES, 0.0);
+            new TrcPose2D(-0.3 * Field.FULL_TILE_INCHES, -1.66 * Field.FULL_TILE_INCHES, 0.0);
+        // Socre pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
-            new TrcPose2D(0.1*Field.FULL_TILE_INCHES, -1.66*Field.FULL_TILE_INCHES, 0.0);
-        // Pickup poses.
-        public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
-            new TrcPose2D(2.0*Field.FULL_TILE_INCHES, -2.05*Field.FULL_TILE_INCHES, 180.0);
+            new TrcPose2D(0.1 * Field.FULL_TILE_INCHES, -1.66 * Field.FULL_TILE_INCHES, 0.0);
+        // Pickup pose (Net zone side).
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
-            new TrcPose2D(-1.8*Field.FULL_TILE_INCHES, -1.82*Field.FULL_TILE_INCHES, 0.0);
-        public static final TrcPose2D RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP =
-            new TrcPose2D(1.8*Field.FULL_TILE_INCHES, -1.8*Field.FULL_TILE_INCHES);
-
+            new TrcPose2D(-1.8 * Field.FULL_TILE_INCHES, -1.82 * Field.FULL_TILE_INCHES, 0.0);
+        // Pickup pose (Observation zone side).
+        public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
+            new TrcPose2D(2.0 * Field.FULL_TILE_INCHES, -2.05 * Field.FULL_TILE_INCHES, 180.0);
+        // Park pose (Net zone side).
         public static final TrcPose2D RED_ASCENT_ZONE_PARK_POSE     =
             new TrcPose2D(-1.2*Field.FULL_TILE_INCHES, -0.65*Field.FULL_TILE_INCHES, 90.0);
+        // Park pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_ZONE_PARK_POSE=
             new TrcPose2D(2.5*Field.FULL_TILE_INCHES, -2.5*Field.FULL_TILE_INCHES, 0.0);
-
-        public static final TrcPose2D[] RED_OBSERVATION_ZONE_SAMPLE_MOVE_POINTS = {
-                new TrcPose2D(1.3, -1.5, 0.0),
-                new TrcPose2D(1.4, -0.7, 0.0),
-                new TrcPose2D(1.95, -0.7, 0.0),
-                new TrcPose2D(1.95, -1.9, 0.0),
-                new TrcPose2D(1.95,-0.7, 0.0),
-                new TrcPose2D(1.95 + 8/Field.FULL_TILE_INCHES, -0.7, 0.0),
-                new TrcPose2D(1.95 + 8/Field.FULL_TILE_INCHES, -1.9, 0.0),
+        // Observation zone auto poses.
+        public static final TrcPose2D[] RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH = {
+            new TrcPose2D(1.3, -1.5, 0.0),
+            new TrcPose2D(1.4, -0.7, 0.0),
+            new TrcPose2D(1.95, -0.7, 0.0),
+            new TrcPose2D(1.95, -1.9, 0.0),
+            new TrcPose2D(1.95,-0.7, 0.0),
+            new TrcPose2D(1.95 + 8/Field.FULL_TILE_INCHES, -0.7, 0.0),
+            new TrcPose2D(1.95 + 8/Field.FULL_TILE_INCHES, -1.9, 0.0),
         };
     }   //class Game
 

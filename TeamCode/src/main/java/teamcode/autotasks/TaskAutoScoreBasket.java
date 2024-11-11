@@ -22,6 +22,8 @@
 
 package teamcode.autotasks;
 
+import androidx.annotation.NonNull;
+
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
@@ -44,8 +46,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
     public enum State
     {
-        GO_TO_SCORE_POSITION,
         SET_EXTENDER_ARM,
+        GO_TO_SCORE_POSITION,
         SCORE_BASKET,
         RETRACT_EXTENDER_ARM,
         DONE
@@ -64,6 +66,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
             this.doDrive = doDrive;
         }   //TaskParams
 
+        @NonNull
         public String toString()
         {
             return "alliance=" + alliance + ",scoreHeight=" + scoreHeight + ",doDrive=" + doDrive;
@@ -198,24 +201,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
         switch (state)
         {
-            case GO_TO_SCORE_POSITION:
-                if (taskParams.doDrive)
-                {
-                    robot.robotDrive.purePursuitDrive.start(
-                        currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
-                        robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
-                    sm.waitForSingleEvent(event, State.SCORE_BASKET);
-//                    sm.setState(State.SET_EXTENDER_ARM);
-                }
-                else
-                {
-                    sm.setState(State.SCORE_BASKET);
-                }
-                break;
-
             case SET_EXTENDER_ARM:
+                // Extend the arm to the correct height and angle for scoring.
                 double extenderScorePos;
                 if (taskParams.scoreHeight == Robot.ScoreHeight.LOW)
                 {
@@ -227,33 +214,55 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     elbowScorePos = Elbow.Params.HIGH_BASKET_SCORE_POS;
                     extenderScorePos = Extender.Params.HIGH_BASKET_SCORE_POS;
                 }
-                robot.extenderArm.setPosition(Elbow.Params.BASKET_PRESCORE_POS, extenderScorePos, null, null);
+                // Fire and forget to save time.
                 robot.extenderArm.setPosition(elbowScorePos, extenderScorePos, null, null);
-//                sm.addEvent(event);
-//                sm.addEvent(event2);
-//                sm.waitForEvents(State.SCORE_BASKET);
                 sm.setState(State.GO_TO_SCORE_POSITION);
                 break;
 
+            case GO_TO_SCORE_POSITION:
+                // Drive the robot to the scoring location.
+                if (taskParams.doDrive)
+                {
+                    robot.robotDrive.purePursuitDrive.start(
+                        currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
+                        robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
+                    sm.waitForSingleEvent(event, State.SCORE_BASKET);
+                }
+                else
+                {
+                    sm.setState(State.SCORE_BASKET);
+                }
+                break;
+
             case SCORE_BASKET:
+                // Score the sample into the basket.
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
+                // Swing the arm towards the basket in low speed.
                 robot.extenderArm.elbow.setPosition(0.0, elbowScorePos,true, 0.6);
                 robot.extenderArm.setPosition(null, null, wristPos, null);
+                // Depending on how the grabber holds the sample, the sensor may or may not see it.
                 if (robot.grabber.hasObject())
                 {
+                    // Sensor sees the sample, use autoDump.
+                    tracer.traceInfo(moduleName, "Grabber detected sample, auto dump sample.");
                     robot.grabber.autoDump(null, 0.5, Grabber.Params.DUMP_DELAY, event);
-                } else
+                }
+                else
                 {
+                    // Sensor doesn't see the sample, manual dump it anyway.
+                    tracer.traceInfo(moduleName, "Grabber not detecting sample, manual dump sample.");
                     robot.grabber.dump(null, 0.5, event);
                 }
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;
 
             case RETRACT_EXTENDER_ARM:
-//                robot.extenderArm.retract(event);
-                robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, Wrist.Params.HIGH_CHAMBER_SCORE_POS,null);
-//                sm.waitForSingleEvent(event, State.DONE);
+                // Retract the arm. Fire and forget to save time.
+                robot.extenderArm.setPosition(
+                    Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, Wrist.Params.HIGH_CHAMBER_SCORE_POS,null);
                 sm.setState(State.DONE);
                 break;
 

@@ -105,22 +105,6 @@ public class LEDIndicator
         }
     }   //LEDIndicator
 
-//    public void setColor(double value)
-//    {
-//        if (indicator instanceof FtcGobildaIndicatorLight)
-//        {
-//            ((FtcGobildaIndicatorLight) indicator).setColor(value);
-//        }
-//    }   //setColor
-//
-//    public void setColor(int red, int green, int blue)
-//    {
-//        if (indicator instanceof FtcGobildaIndicatorLight)
-//        {
-//            ((FtcGobildaIndicatorLight) indicator).setColor(red, green, blue);
-//        }
-//    }   //setColor
-//
     /**
      * This method sets the pattern ON for a period of time and turns off automatically afterwards.
      *

@@ -584,6 +584,7 @@ public class FtcTeleOp extends FtcOpMode
                     (elbowPos == null || elbowPos > Elbow.Params.SAFE_POS ||
                      extenderPos == null || extenderPos < Extender.Params.MAX_SAFE_LIMIT))
                 {
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high basket scoring position.");
                     robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS);
                 }
                 break;
@@ -593,6 +594,7 @@ public class FtcTeleOp extends FtcOpMode
                     (elbowPos == null || elbowPos > Elbow.Params.SAFE_POS ||
                      extenderPos == null || extenderPos < Extender.Params.MAX_SAFE_LIMIT))
                 {
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high chamber scoring position.");
                     robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS);
                 }
                 break;
@@ -600,6 +602,7 @@ public class FtcTeleOp extends FtcOpMode
             case X:
                 if (robot.wrist != null && pressed)
                 {
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to ground pickup position.");
                     robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
                 }
                 break;

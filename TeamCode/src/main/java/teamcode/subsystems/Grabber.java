@@ -90,7 +90,6 @@ public class Grabber
         public static final double DUMP_TIME                    = 0.5;
         public static final double DUMP_DELAY                   = 0.4;
 
-
         public static final double OPEN_POS                     = 0.2;
         public static final double OPEN_TIME                    = 0.5;
         public static final double CLOSE_POS                    = 0.55;
@@ -295,12 +294,19 @@ public class Grabber
         }
     }   //dump
 
-//    public void autoIntake(String owner, double delay, TrcEvent event, double timeout)
+    /**
+     * This method intakes the object and will stop when the sensor detected the object in possession.
+     *
+     * @param owner specifies the owner ID to check if the caller has ownership of the subsystem.
+     * @param delay specifies the time in seconds to delay before intaking the object, 0.0 if no delay.
+     * @param finishDelay specifies the delay time in seconds to shut off motor, only applicable for motor grabber.
+     * @param event specifies the event to signal when the operation is completed.
+     * @param timeout specifies the timeout time in seconds, can be zero if no timeout.
+     */
     public void autoIntake(String owner, double delay, double finishDelay, TrcEvent event, double timeout)
     {
         if (motorGrabber != null)
         {
-//            motorGrabber.autoIntake(owner, delay, event, timeout);
             motorGrabber.autoIntake(owner, delay, finishDelay, event, timeout);
         }
         else
@@ -309,11 +315,27 @@ public class Grabber
         }
     }   //autoIntake
 
+    /**
+     * This method intakes the object and will stop when the sensor detected the object in possession.
+     *
+     * @param owner specifies the owner ID to check if the caller has ownership of the subsystem.
+     * @param delay specifies the time in seconds to delay before intaking the object, 0.0 if no delay.
+     * @param finishDelay specifies the delay time in seconds to shut off motor, only applicable for motor grabber.
+     * @param event specifies the event to signal when the operation is completed.
+     */
     public void autoIntake(String owner, double delay, double finishDelay, TrcEvent event)
     {
         autoIntake(owner, delay, finishDelay, event, 0.0);
     }   //autoIntake
 
+    /**
+     * This method dumps the object and will stop when the sensor detected no object in possession.
+     *
+     * @param owner specifies the owner ID to check if the caller has ownership of the subsystem.
+     * @param delay specifies the time in seconds to delay before dumping the object, 0.0 if no delay.
+     * @param finishDelay specifies the delay time in seconds to shut off motor, only applicable for motor grabber.
+     * @param event specifies the event to signal when the operation is completed.
+     */
     public void autoDump(String owner, double delay, double finishDelay, TrcEvent event)
     {
         if (motorGrabber != null)

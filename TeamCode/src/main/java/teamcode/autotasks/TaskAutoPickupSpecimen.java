@@ -206,6 +206,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         switch (state)
         {
             case START:
+                // Prep subsystems for the pickup.
                 if (robot.extenderArm == null || robot.grabber == null)
                 {
                     // Arm or grabber don't exist, nothing we can do.
@@ -214,15 +215,16 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 }
                 else
                 {
+                    // Fire and forget to save time.
                     robot.extenderArm.setPosition(
                         Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS,
                         Wrist.Params.SPECIMEN_PICKUP_POS, null);
-//                    sm.waitForSingleEvent(event, State.DRIVE_TO_PICKUP);
                     sm.setState(State.DRIVE_TO_PICKUP);
                 }
                 break;
 
             case DRIVE_TO_PICKUP:
+                // Drive to the specimen pickup location.
                 robot.robotDrive.purePursuitDrive.start(
                     currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                     robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
@@ -231,10 +233,12 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 break;
 
             case FIND_SPECIMEN:
+                // Use vision to find the sample on the wall.
                 specimenPose = robot.getDetectedSamplePose(
                     Robot.sampleType, RobotParams.Game.SPECIMEN_GROUND_OFFSET, true);
                 if (specimenPose != null)
                 {
+                    // Vision found the specimen.
                     String msg = String.format(
                         Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
                         Robot.sampleType, specimenPose.x, specimenPose.y, specimenPose.angle);
@@ -244,16 +248,19 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 }
                 else if (visionExpiredTime == null)
                 {
+                    // Vision doesn't find the specimen, set a 1-second timeout and keep trying.
                     visionExpiredTime = TrcTimer.getCurrentTime() + 1.0;
                 }
                 else if (TrcTimer.getCurrentTime() >= visionExpiredTime)
                 {
+                    // Timed out and vision still not finding specimen, giving up.
                     tracer.traceInfo(moduleName, "%s not found, we are done.", Robot.sampleType);
                     sm.setState(State.DONE);
                 }
                 break;
 
             case ALIGN_TO_SPECIMEN:
+                // Vision found the specimen, align the robot to it.
                 TrcPose2D robotPose = robot.robotDrive.driveBase.getFieldPosition();
                 double targetHeading = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE? 180.0: 0.0;
                 robot.robotDrive.purePursuitDrive.start(
@@ -271,6 +278,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 break;
 
             case PICKUP_SPECIMEN:
+                // Grabber got the specimen, stop the drive and raise the arm to pick it up.
                 robot.robotDrive.driveBase.stop(currOwner);
                 robot.grabber.cancel();
                 robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS + 10.0, null, null, event);
@@ -278,8 +286,8 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 break;
 
             case RETRACT_ARM:
+                // Retract the arm with "fire and forget".
                 robot.extenderArm.retract(null);
-//                sm.waitForSingleEvent(event, State.DONE);
                 sm.setState(State.DONE);
                 break;
 
@@ -288,6 +296,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 // Stop task.
                 if (robot.grabber != null && robot.ledIndicator != null)
                 {
+                    // Flash the LED to show whether we got the specimen and what type.
                     robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
                 }
                 stopAutoTask(true);

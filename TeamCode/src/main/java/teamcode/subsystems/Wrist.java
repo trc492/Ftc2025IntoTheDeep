@@ -39,16 +39,17 @@ public class Wrist
 
         public static final double MIN_POS                      = 0.1;
         public static final double MAX_POS                      = 0.8;
-        public static final double RETRACT_POS                  = 0.5;
         public static final double GROUND_PICKUP_POS            = MIN_POS + 0.05;
-        public static final double LOW_BASKET_SCORE_POS         = 0.58;
-        public static final double HIGH_BASKET_SCORE_POS        = 0.542;
-        public static final double LOW_CHAMBER_SCORE_POS        = 0.45;
         public static final double HIGH_CHAMBER_SCORE_POS       = 0.4;
+        public static final double LOW_CHAMBER_SCORE_POS        = 0.45;
+        public static final double RETRACT_POS                  = 0.5;
+        public static final double HIGH_BASKET_SCORE_POS        = 0.542;
+        public static final double LOW_BASKET_SCORE_POS         = 0.58;
         public static final double ASCENT_LEVEL1_POS            = MAX_POS;
         public static final double SPECIMEN_PICKUP_POS          = HIGH_CHAMBER_SCORE_POS;
-        public static final double[] posPresets                 =
-            {MIN_POS, GROUND_PICKUP_POS, RETRACT_POS, LOW_CHAMBER_SCORE_POS, MAX_POS};
+        public static final double[] posPresets                 = {
+            MIN_POS, GROUND_PICKUP_POS, HIGH_CHAMBER_SCORE_POS, LOW_CHAMBER_SCORE_POS, RETRACT_POS,
+            HIGH_BASKET_SCORE_POS, LOW_BASKET_SCORE_POS, MAX_POS};
         public static final double POS_PRESET_TOLERANCE         = 0.01;
 
         public static final double DUMP_TIME                    = 0.5;
@@ -62,10 +63,10 @@ public class Wrist
     public Wrist()
     {
         FtcServoActuator.Params wristParams = new FtcServoActuator.Params()
-            .setPrimaryServo(Params.PRIMARY_SERVO_NAME, Params.PRIMARY_SERVO_INVERTED);
+            .setPrimaryServo(Params.PRIMARY_SERVO_NAME, Params.PRIMARY_SERVO_INVERTED)
+            .setPositionPresets(Params.POS_PRESET_TOLERANCE, Params.posPresets);
 
         wrist = new FtcServoActuator(wristParams).getServo();
-//            wrist.tracer.setTraceLevel(TrcDbgTrace.MsgLevel.INFO);
     }   //Wrist
 
     /**

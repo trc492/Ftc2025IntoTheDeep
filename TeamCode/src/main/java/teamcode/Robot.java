@@ -432,6 +432,7 @@ public class Robot
         if (pickupSpecimenTask != null) pickupSpecimenTask.cancel();
         if (scoreBasketTask != null) scoreBasketTask.cancel();
         if (scoreChamberTask != null) scoreChamberTask.cancel();
+        if (autoClimbTask != null) autoClimbTask.cancel();
     }   //cancelAll
 
     /**
@@ -601,25 +602,15 @@ public class Robot
     /**
      * This method adjusts the given pose in the red alliance to be the specified alliance.
      *
-     * @param poses specifies poses in the red alliance in tile unit.
+     * @param poses specifies poses in the red alliance.
      * @param alliance specifies the alliance to be converted to.
-     * @param isTileUnit specifies true if pose is in tile units, false in inches.
+     * @param isTileUnit specifies true if poses are in tile units, false in inches.
      * @return pose adjusted to be in the specified alliance in inches.
      */
 
     public TrcPose2D[] adjustPoseByAlliance(TrcPose2D[] poses, FtcAuto.Alliance alliance, boolean isTileUnit)
     {
-        return Stream.of(poses).
-                map(pose -> adjustPoseByAlliance(pose, alliance, isTileUnit))
-                .toArray(TrcPose2D[]::new);
-//        TrcPose2D[] newPoses = new TrcPose2D[poses.length];
-//
-//        for (int i = 0; i < poses.length; i++)
-//        {
-//            newPoses[i] = adjustPoseByAlliance(poses[i], alliance, isTileUnit);
-//
-//        }
-//        return newPoses;
+        return Stream.of(poses).map(pose -> adjustPoseByAlliance(pose, alliance, isTileUnit)).toArray(TrcPose2D[]::new);
     }   //adjustPoseByAlliance
 
     /**

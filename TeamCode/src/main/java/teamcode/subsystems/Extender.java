@@ -39,8 +39,6 @@ public class Extender
         public static final String PRIMARY_MOTOR_NAME           = SUBSYSTEM_NAME + ".primary";
         public static final FtcMotorActuator.MotorType PRIMARY_MOTOR_TYPE = FtcMotorActuator.MotorType.DcMotor;
         public static final boolean PRIMARY_MOTOR_INVERTED      = true;
-        public static final String LOWER_LIMIT_NAME             = SUBSYSTEM_NAME + ".lowerLimit";
-        public static final boolean LOWER_LIMIT_INVERTED        = false;
 
         public static final double INCHES_PER_COUNT             = 0.00479555742786738354339957485092;
         public static final double POS_OFFSET                   = 14.75;
@@ -83,13 +81,12 @@ public class Extender
     {
         FtcMotorActuator.Params extenderParams = new FtcMotorActuator.Params()
             .setPrimaryMotor(Params.PRIMARY_MOTOR_NAME, Params.PRIMARY_MOTOR_TYPE, Params.PRIMARY_MOTOR_INVERTED)
-//            .setLowerLimitSwitch(Params.LOWER_LIMIT_NAME, Params.LOWER_LIMIT_INVERTED)
             .setPositionScaleAndOffset(Params.INCHES_PER_COUNT, Params.POS_OFFSET)
             .setPositionPresets(Params.POS_PRESET_TOLERANCE, Params.posPresets);
         extender = new FtcMotorActuator(extenderParams).getMotor();
         extender.setSoftwarePidEnabled(true);
         extender.setPositionPidParameters(Params.posPidCoeffs, Params.POS_PID_TOLERANCE);
-        // Lower limit switch is not installed yet, so we use zero calibration by motor stall.
+        // There is no lower limit switch, so we do zero calibration by motor stall.
         extender.setStallProtection(
             Params.STALL_MIN_POWER, Params.STALL_TOLERANCE, Params.STALL_TIMEOUT, Params.STALL_RESET_TIMEOUT);
         extender.setPidStallDetectionEnabled(Params.STALL_RESET_TIMEOUT, Params.STALL_TIMEOUT, Params.STALL_TOLERANCE);

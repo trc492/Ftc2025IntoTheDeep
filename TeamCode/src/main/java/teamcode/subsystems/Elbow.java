@@ -56,10 +56,11 @@ public class Elbow
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.2;
 
+        public static final double PIVOT_OFFSET                 = 4.433;    // Measured from CAD in inches
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 105.0;
+        public static final double RESTRICTED_POS_THRESHOLD     = 35.0;
         public static final double GROUND_PICKUP_POS            = 20.0;
-//        public static final double SAFE_POS                     = 30.0;
         public static final double SPECIMEN_PICKUP_POS          = 18.5;
         public static final double LOW_BASKET_SCORE_POS         = 105.0;
         public static final double HIGH_BASKET_SCORE_POS        = 103.0;
@@ -118,13 +119,14 @@ public class Elbow
     {
         if (robot.extender != null)
         {
-            final double elbowLength = 4.1695;  // from CAD model.
             double extenderLength = robot.extender.getPosition();
-            double extenderAngleRadian = Math.toRadians(elbow.getPosition()) - Math.atan(elbowLength/extenderLength);
-            // Adjust extender length to be the length to the pivot point instead of the base point.
-            extenderLength = TrcUtil.magnitude(elbowLength, extenderLength);
+            double extenderAngleRadian =
+                Math.toRadians(elbow.getPosition()) - Math.atan(Params.PIVOT_OFFSET/extenderLength);
+            // Calculate extender floor distance from the pivot point.
+            robot.extenderFloorDistanceFromPivot =
+                TrcUtil.magnitude(Params.PIVOT_OFFSET, extenderLength) * Math.cos(extenderAngleRadian);
             // Extender angle is zero horizontal.
-            return Params.GRAVITY_COMP_MAX_POWER*extenderLength*Math.cos(extenderAngleRadian);
+            return Params.GRAVITY_COMP_MAX_POWER * robot.extenderFloorDistanceFromPivot;
         }
         else
         {

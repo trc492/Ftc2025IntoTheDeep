@@ -85,6 +85,7 @@ public class Robot
     // Subsystems.
     public TrcMotor elbow;
     public TrcMotor extender;
+    public Double extenderFloorDistanceFromPivot = null;
     public TrcServo wrist;
     public TaskExtenderArm extenderArm;
     public Grabber grabber;

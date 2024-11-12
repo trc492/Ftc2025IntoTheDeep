@@ -23,6 +23,7 @@
 package teamcode.subsystems;
 
 import ftclib.motor.FtcMotorActuator;
+import trclib.dataprocessor.TrcUtil;
 import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcPidController;
@@ -46,11 +47,10 @@ public class Extender
         public static final double ZERO_CAL_POWER               = -0.75;
 
         // Movement Limit Constants
-        public static final double PIVOT_Z_OFFSET               = 5.202; // As in CAD
-        public static final double MAX_Y_LENGTH                 = 40; // Not tuned
+        // Pivot Y offset from robot center in inches
+        public static final double PIVOT_Y_OFFSET               = -(408.0 * TrcUtil.INCHES_PER_MM - 9.0);
+        public static final double PICKUP_POS_WRIST_OFFSET      = 1.7;  // pickup position offset from wrist joint
 
-        public static final double PIVOT_Y_OFFSET               = -6.8; // pivot Y offset from robot center inches
-        public static final double PICKUP_POS_WRIST_OFFSET      = 1.5;  // pickup position offset from wrist joint
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.0;
         public static final double SPECIMEN_PICKUP_POS          = 18.0; // TODO: NEEDS TUNING
@@ -61,8 +61,6 @@ public class Extender
         public static final double PRE_CLIMB_POS                = 20.0;
         public static final double ASCENT_LEVEL1_POS            = MAX_POS;
         public static final double ASCENT_LEVEL2_POS            = 20.0;
-//        public static final double MAX_SAFE_ADJUSTMENT          = 6.0;
-//        public static final double MAX_SAFE_LIMIT               = MAX_POS - MAX_SAFE_ADJUSTMENT;
         public static final double[] posPresets                 = {MIN_POS, 20.0, 25.0, 30.0, 35.0};
         public static final double POS_PRESET_TOLERANCE         = 3.0;
 

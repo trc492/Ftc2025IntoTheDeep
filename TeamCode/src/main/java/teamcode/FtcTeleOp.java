@@ -61,7 +61,6 @@ public class FtcTeleOp extends FtcOpMode
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
-    private Double elbowPos = null, extenderPos = null, extenderLimit = null;
     private int climbedLevel = 0;
 
     //
@@ -230,29 +229,40 @@ public class FtcTeleOp extends FtcOpMode
             //
             if (RobotParams.Preferences.useSubsystems)
             {
+                double extenderLimit = Extender.Params.MAX_POS;
                 // Analog control of subsystems.
                 if (robot.elbow != null)
                 {
                     double elbowPower = operatorGamepad.getRightStickY(true) * Elbow.Params.POWER_LIMIT;
-
-                    // https://www.desmos.com/calculator/8bdfhot9lm
-                    elbowPos = robot.elbow.getPosition();
-                    extenderPos = robot.extender != null? robot.extender.getPosition(): null;
-                    extenderLimit =
-                            (Extender.Params.MAX_Y_LENGTH - Extender.Params.PIVOT_Z_OFFSET * Math.sin(Math.toRadians(elbowPos))) / Math.cos(Math.toRadians(elbowPos))
-                                    - Grabber.Params.GRABBER_LENGTH * Math.sin((robot.wrist.getPosition() - Wrist.Params.MIN_POS) * Math.PI / (Wrist.Params.MAX_POS - Wrist.Params.MIN_POS)) // Convert to Radians
-                                    - 0.5; // Buffer
-//                    extenderLimit =
-//                        Extender.Params.MAX_POS -
-//                        Math.max(Math.cos(Math.toRadians(elbowPos)) * Extender.Params.MAX_SAFE_ADJUSTMENT, 0.0);
-                    if (elbowPos < 35.0 && extenderPos != null && extenderPos > extenderLimit) // Stops being effective at ~35 Degrees
+                    double elbowPos = robot.elbow.getPosition();
+                    // Only do this if there is an extender and elbow gravity comp has computed the extender floor
+                    // distance and elbow angle is below the restricted position threshold.
+                    if (robot.extender != null && robot.extenderFloorDistanceFromPivot != null &&
+                        elbowPos < Elbow.Params.RESTRICTED_POS_THRESHOLD)
                     {
-                        robot.extender.setPosition(extenderLimit);
-//                        if (elbowPos < Elbow.Params.SAFE_POS && robot.wrist != null)
-//                        {
-//                            robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
-//                        }
+                        // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
+                        double grabberAngleRadian =
+                            (robot.wrist.getPosition() - Wrist.Params.MIN_POS) /
+                            (Wrist.Params.MAX_POS - Wrist.Params.MIN_POS) * Math.PI;
+                        double robotExtendedLength =
+                            robot.extenderFloorDistanceFromPivot + Extender.Params.PIVOT_Y_OFFSET +
+                            RobotParams.Robot.ROBOT_LENGTH/2.0 +
+                            Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadian);
+                        double exceededLength =
+                            (robotExtendedLength + 5.0) - RobotParams.Robot.HORIZONTAL_EXPANSION_LIMIT;
+                        if (exceededLength > 0.0)
+                        {
+                            extenderLimit = robot.extender.getPosition() - exceededLength;
+                            robot.extender.setPosition(extenderLimit);
+                        }
                     }
+// Code review: I think this is still wrong.
+// 1) It should be multiply by cos and divide by sin and you have it reversed.
+// 2) Both sin and cos should be applied to the angle of (elbowPos - a) and you are applying it to elbowPos only.
+// 3) I also don't understand what MAX_Y_LENGTH is. Note my correction above.
+//                    (Extender.Params.MAX_Y_LENGTH - Extender.Params.PIVOT_Z_OFFSET * Math.sin(Math.toRadians(elbowPos))) / Math.cos(Math.toRadians(elbowPos))
+//                    - Grabber.Params.GRABBER_LENGTH * Math.sin((robot.wrist.getPosition() - Wrist.Params.MIN_POS) * Math.PI / (Wrist.Params.MAX_POS - Wrist.Params.MIN_POS)) // Convert to Radians
+//                    - 0.5; // Buffer
 
                     if (elbowPower != elbowPrevPower)
                     {
@@ -279,9 +289,7 @@ public class FtcTeleOp extends FtcOpMode
                         }
                         else
                         {
-                            robot.extender.setPidPower(
-                                extenderPower, Extender.Params.MIN_POS,
-                                extenderLimit != null && elbowPos < 35.0? extenderLimit: Extender.Params.MAX_POS, true);
+                            robot.extender.setPidPower(extenderPower, Extender.Params.MIN_POS, extenderLimit, true);
                         }
                         extenderPrevPower = extenderPower;
                     }

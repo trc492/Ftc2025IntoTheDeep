@@ -98,6 +98,7 @@ public class RobotParams
         public static final double TURN_NORMAL_SCALE            = 0.6;
         public static final double ROBOT_LENGTH                 = 18.0;     // Measured in inches (CAD said 456 mm)
         public static final double ROBOT_WIDTH                  = 18.0;     // Measured in inches (CAD said 456 mm)
+        public static final double HORIZONTAL_EXPANSION_LIMIT   = 42.0;     // in inches
     }   //class Robot
 
     /**

@@ -56,7 +56,7 @@ public class Elbow
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.2;
 
-        public static final double PIVOT_OFFSET                 = 4.433;    // Measured from CAD in inches
+        public static final double PIVOT_OFFSET                 = 4.202;    // Measured from CAD in inches
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 105.0;
         public static final double RESTRICTED_POS_THRESHOLD     = 35.0;

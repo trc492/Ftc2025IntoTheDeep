@@ -196,6 +196,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case PARK:
                     // Park at the observation zone.
+                    robot.extenderArm.setPosition(98.0, null, null, null);
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
                         robot.robotDrive.purePursuitDrive.start(

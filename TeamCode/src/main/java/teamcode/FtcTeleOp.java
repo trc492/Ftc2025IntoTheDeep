@@ -235,34 +235,63 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     double elbowPower = operatorGamepad.getRightStickY(true) * Elbow.Params.POWER_LIMIT;
                     double elbowPos = robot.elbow.getPosition();
-                    // Only do this if there is an extender and elbow gravity comp has computed the extender floor
-                    // distance and elbow angle is below the restricted position threshold.
-                    if (robot.extender != null && robot.extenderFloorDistanceFromPivot != null &&
-                        elbowPos < Elbow.Params.RESTRICTED_POS_THRESHOLD)
+//                    if (robot.extender != null && robot.extenderFloorDistanceFromPivot != null &&
+//                        elbowPos < Elbow.Params.RESTRICTED_POS_THRESHOLD)
+//                    {
+//                        // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
+//                        double grabberAngleRadian =
+//                            (robot.wrist.getPosition() - Wrist.Params.MIN_POS) /
+//                            (Wrist.Params.MAX_POS - Wrist.Params.MIN_POS) * Math.PI;
+//                        double robotExtendedLength =
+//                            robot.extenderFloorDistanceFromPivot + Extender.Params.PIVOT_Y_OFFSET +
+//                            RobotParams.Robot.ROBOT_LENGTH/2.0 +
+//                            Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadian);
+//                        double exceededLength =
+//                            (robotExtendedLength + 5.0) - RobotParams.Robot.HORIZONTAL_EXPANSION_LIMIT;
+//                        if (exceededLength > 0.0)
+//                        {
+//                            extenderLimit = robot.extender.getPosition() - exceededLength;
+//                            robot.extender.setPosition(extenderLimit);
+//                        }
+//                    }
+                    // Only do this if there is an extender and elbow angle is below the restricted position threshold.
+                    if (robot.extender != null && elbowPos < Elbow.Params.RESTRICTED_POS_THRESHOLD)
                     {
+                        // eo = elbowPivotOffset
+                        // y = extenderLen
+                        // il = intakeLen
+                        // theta = elbowAngle
+                        // xl = y + il
+                        // xd = distance of (extender + intake) from pivot
+                        // xpl = extender projected length on the floor (horizontal length limit)
+                        // alpha = atan(eo / xl)
+                        // beta = theta - alpha
+                        // sin(alpha) = eo / xd
+                        // xd = eo / sin(alpha)
+                        // xpl = xd * cos(beta)
+                        // xpl = eo * cos(theta - alpha) / sin(alpha)
+                        // Note: cos(a - b) = cos(a)*cos(b) + sin(a)*sin(b)
+                        // xpl = eo * (cos(theta) * cos(alpha) + sin(theta) * sin(alpha)) / sin(alpha)
+                        // xpl = eo * (cos(theta) * cos(alpha) / sin(alpha) + sin(theta))
+                        // xpl = eo * (cos(theta) / tan(alpha) + sin(theta))
+                        // xpl = eo * (cos(theta) / tan(atan(eo / xl)) + sin(theta))
+                        // xpl = eo * (cos(theta) / (eo / xl) + sin(theta))
+                        // xpl = eo * (cos(theta) * xl / eo + sin(theta))
+                        // xpl / eo = cos(theta) * xl / eo + sin(theta)
+                        // xpl = cos(theta) * xl + sin(theta) * eo
+                        // xl = (xpl - sin(theta) * eo)) / cos(theta)
+                        // y + il = (xpl - sin(theta) * eo) / cos(theta)
+                        // y = (xpl - sin(theta) * eo) / cos(theta) - il
+                        double elbowPosRadians = Math.toRadians(elbowPos);
                         // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
-                        double grabberAngleRadian =
+                        double grabberAngleRadians =
                             (robot.wrist.getPosition() - Wrist.Params.MIN_POS) /
                             (Wrist.Params.MAX_POS - Wrist.Params.MIN_POS) * Math.PI;
-                        double robotExtendedLength =
-                            robot.extenderFloorDistanceFromPivot + Extender.Params.PIVOT_Y_OFFSET +
-                            RobotParams.Robot.ROBOT_LENGTH/2.0 +
-                            Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadian);
-                        double exceededLength =
-                            (robotExtendedLength + 5.0) - RobotParams.Robot.HORIZONTAL_EXPANSION_LIMIT;
-                        if (exceededLength > 0.0)
-                        {
-                            extenderLimit = robot.extender.getPosition() - exceededLength;
-                            robot.extender.setPosition(extenderLimit);
-                        }
+                        double grabberLength = Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadians);
+                        extenderLimit =
+                            (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
+                            Math.cos(elbowPosRadians) - grabberLength;
                     }
-// Code review: I think this is still wrong.
-// 1) It should be multiply by cos and divide by sin and you have it reversed.
-// 2) Both sin and cos should be applied to the angle of (elbowPos - a) and you are applying it to elbowPos only.
-// 3) I also don't understand what MAX_Y_LENGTH is. Note my correction above.
-//                    (Extender.Params.MAX_Y_LENGTH - Extender.Params.PIVOT_Z_OFFSET * Math.sin(Math.toRadians(elbowPos))) / Math.cos(Math.toRadians(elbowPos))
-//                    - Grabber.Params.GRABBER_LENGTH * Math.sin((robot.wrist.getPosition() - Wrist.Params.MIN_POS) * Math.PI / (Wrist.Params.MAX_POS - Wrist.Params.MIN_POS)) // Convert to Radians
-//                    - 0.5; // Buffer
 
                     if (elbowPower != elbowPrevPower)
                     {

@@ -23,6 +23,7 @@
 package teamcode.subsystems;
 
 import ftclib.motor.FtcMotorActuator;
+import teamcode.RobotParams;
 import trclib.dataprocessor.TrcUtil;
 import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;
@@ -53,6 +54,7 @@ public class Extender
 
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.0;
+        public static final double HORIZONTAL_LIMIT             = RobotParams.Robot.HORIZONTAL_EXPANSION_LIMIT - 7.0;
         public static final double SPECIMEN_PICKUP_POS          = 18.0; // TODO: NEEDS TUNING
         public static final double LOW_BASKET_SCORE_POS         = MIN_POS;
         public static final double HIGH_BASKET_SCORE_POS        = 34.0;

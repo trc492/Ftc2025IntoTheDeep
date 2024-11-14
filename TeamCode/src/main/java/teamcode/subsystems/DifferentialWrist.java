@@ -22,9 +22,7 @@
 
 package teamcode.subsystems;
 
-import ftclib.motor.FtcServoActuator;
 import ftclib.subsystem.FtcDifferentialServoWrist;
-import trclib.motor.TrcServo;
 import trclib.subsystem.TrcDifferentialServoWrist;
 
 /**
@@ -38,14 +36,14 @@ public class DifferentialWrist
 
         public static final String SERVO1_NAME                  = SUBSYSTEM_NAME + ".servo1";
         public static final boolean SERVO1_INVERTED             = false;
-        public static final String SERVO2_NAME                  = SUBSYSTEM_NAME + ".servo1";
+        public static final String SERVO2_NAME                  = SUBSYSTEM_NAME + ".servo2";
         public static final boolean SERVO2_INVERTED             = !SERVO1_INVERTED;
 
         public static final double PHYSICAL_MIN                 = -90.0;
         public static final double PHYSICAL_MAX                 = 90.0;
-        public static final double LOGICAL_MIN                  = 0.0;
-        public static final double LOGICAL_MAX                  = 1.0;
-        public static final double MAX_STEP_RATE                = 1.0;
+        public static final double LOGICAL_MIN                  = 0.15;
+        public static final double LOGICAL_MAX                  = 0.85;
+        public static final double MAX_STEP_RATE                = 300.0;
 
         public static final double MIN_POS                      = 0.1;
         public static final double MAX_POS                      = 0.8;

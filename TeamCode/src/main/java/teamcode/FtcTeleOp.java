@@ -60,6 +60,8 @@ public class FtcTeleOp extends FtcOpMode
     private Integer savedLimelightPipeline = null;
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
+    private double wristPrevTiltPower = 0.0;
+    private double wristPrevRotatePower = 0.0;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
     private int climbedLevel = 0;
 
@@ -235,8 +237,18 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     double tiltPower = operatorGamepad.getRightStickY(true);
                     double rotatePower = operatorGamepad.getRightStickX(true);
-                    robot.differentialWrist.setTiltPower(tiltPower);
-                    robot.differentialWrist.setRotatePower(rotatePower);
+
+                    if (tiltPower != wristPrevTiltPower)
+                    {
+                        robot.differentialWrist.setTiltPower(tiltPower);
+                        wristPrevTiltPower = tiltPower;
+                    }
+
+                    if (rotatePower != wristPrevRotatePower)
+                    {
+                        robot.differentialWrist.setRotatePower(rotatePower);
+                        wristPrevRotatePower = rotatePower;
+                    }
                 }
                 else if (!operatorAltFunc && robot.elbow != null)
                 {

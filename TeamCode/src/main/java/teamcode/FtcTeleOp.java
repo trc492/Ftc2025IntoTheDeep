@@ -238,15 +238,10 @@ public class FtcTeleOp extends FtcOpMode
                     double tiltPower = operatorGamepad.getRightStickY(true);
                     double rotatePower = operatorGamepad.getRightStickX(true);
 
-                    if (tiltPower != wristPrevTiltPower)
+                    if (tiltPower != wristPrevTiltPower || rotatePower != wristPrevRotatePower)
                     {
-                        robot.differentialWrist.setTiltPower(tiltPower);
+                        robot.differentialWrist.setPower(tiltPower, rotatePower);
                         wristPrevTiltPower = tiltPower;
-                    }
-
-                    if (rotatePower != wristPrevRotatePower)
-                    {
-                        robot.differentialWrist.setRotatePower(rotatePower);
                         wristPrevRotatePower = rotatePower;
                     }
                 }
@@ -254,25 +249,6 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     double elbowPower = operatorGamepad.getRightStickY(true) * Elbow.Params.POWER_LIMIT;
                     double elbowPos = robot.elbow.getPosition();
-//                    if (robot.extender != null && robot.extenderFloorDistanceFromPivot != null &&
-//                        elbowPos < Elbow.Params.RESTRICTED_POS_THRESHOLD)
-//                    {
-//                        // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
-//                        double grabberAngleRadian =
-//                            (robot.wrist.getPosition() - Wrist.Params.MIN_POS) /
-//                            (Wrist.Params.MAX_POS - Wrist.Params.MIN_POS) * Math.PI;
-//                        double robotExtendedLength =
-//                            robot.extenderFloorDistanceFromPivot + Extender.Params.PIVOT_Y_OFFSET +
-//                            RobotParams.Robot.ROBOT_LENGTH/2.0 +
-//                            Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadian);
-//                        double exceededLength =
-//                            (robotExtendedLength + 5.0) - RobotParams.Robot.HORIZONTAL_EXPANSION_LIMIT;
-//                        if (exceededLength > 0.0)
-//                        {
-//                            extenderLimit = robot.extender.getPosition() - exceededLength;
-//                            robot.extender.setPosition(extenderLimit);
-//                        }
-//                    }
                     // Only do this if there is an extender and elbow angle is below the restricted position threshold.
                     if (robot.extender != null && elbowPos < Elbow.Params.RESTRICTED_POS_THRESHOLD)
                     {
@@ -310,7 +286,7 @@ public class FtcTeleOp extends FtcOpMode
                         extenderLimit =
                             (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
                             Math.cos(elbowPosRadians) - grabberLength;
-                        if (extenderLimit < robot.extender.getPosition())
+                        if (robot.extender.getPosition() > extenderLimit)
                         {
                             robot.extender.setPosition(extenderLimit);
                         }

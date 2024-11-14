@@ -190,25 +190,31 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case LEVEL2_START:
+                robot.extender.setPidStallDetectionEnabled(false);
+                robot.extender.setStallProtection(0.0, 0.0, 0.0, 0.0);
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);
                 break;
 
             case FOLD_ROBOT:
-                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, event);
-                sm.waitForSingleEvent(event, State.LEVEL2_ASCENT);
+                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS - 1.0, null, event);
+                sm.waitForSingleEvent(event, State.ELBOW_TORQUE);
                 break;
 
             case ELBOW_TORQUE:
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_TORQUE_POS, null, null, event);
-                sm.waitForSingleEvent(event, State.ELBOW_RETRACT);
+                sm.waitForSingleEvent(event, State.ARM_RETRACT);
+                break;
 
             case ARM_RETRACT:
                 robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, event);
                 sm.waitForSingleEvent(event, State.ELBOW_RETRACT);
+                break;
 
             case ELBOW_RETRACT:
-                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
+                robot.extenderArm.setPosition(Elbow.Params.MIN_POS, null, null, event);
+                sm.waitForSingleEvent(event, State.LEVEL2_ASCENT);
+                break;
 
             case LEVEL2_ASCENT:
                 robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL2_POS, null, event);
@@ -216,6 +222,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case LEVEL3_START:
+                robot.extender.setPidStallDetectionEnabled(false);
                 // Don't have level 3 climb, hence setting state to done
                 sm.setState(State.DONE);
                 break;
@@ -223,6 +230,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
             default:
             case DONE:
                 // Stop task.
+                robot.extender.setPidStallDetectionEnabled(true);
                 stopAutoTask(true);
                 break;
         }

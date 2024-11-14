@@ -32,9 +32,9 @@ SOFTWARE.
             <RevBlinkinLedDriver name="blinkin" port="0" />
             <Servo name="gobildaLED" port="1" />
             <goBILDAPinpoint name="pinpointOdo" port="0" bus="1"/>
-            <RevColorSensorV3 name="Grabber.sensor" port="0" bus="3" />
             <DigitalDevice name="Elbow.lowerLimit" port="1" />
             <DigitalDevice name="Extender.lowerLimit" port="3" />
+<!--            <RevColorSensorV3 name="Grabber.sensor" port="0" bus="2" />-->
             <REV_VL53L0X_RANGE_SENSOR name="ServoGrabber.sensor" port="0" bus="1"/>
             <!--
             <SparkFunOTOS name="sparkfunOtos" port="0" bus="1"/>
@@ -45,6 +45,7 @@ SOFTWARE.
         <LynxModule name="Expansion Hub 2" port="2">
             <goBILDA5202SeriesMotor name="lfDriveMotor" port="1"/>
             <goBILDA5202SeriesMotor name="lbDriveMotor" port="2"/>
+            <RevColorSensorV3 name="Grabber.sensor" port="0" bus="1" />
             <Servo name="Wrist.primary" port="0" />
             <ContinuousRotationServo name="Grabber.primary" port="3" />
             <ContinuousRotationServo name="Grabber.follower" port="4" />

@@ -123,10 +123,10 @@ public class RobotBase
             // DriveBase PID Parameters
             drivePidTolerance = 0.8;
             turnPidTolerance = 1.0;
-            xDrivePidCoeffs = new TrcPidController.PidCoefficients(0.075, 0.00, 0.005, 0.0, 0.0);
+            xDrivePidCoeffs = new TrcPidController.PidCoefficients(0.075, 0.00, 0.004, 0.0, 0.0);
             xDrivePidPowerLimit = 1.0;
             xDriveMaxPidRampRate = null;
-            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.052, 0.015, 0.005, 0.0, 2.0);
+            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.052, 0.003, 0.005, 0.0, 2.0);
             yDrivePidPowerLimit = 1.0;
             yDriveMaxPidRampRate = null;
             turnPidCoeffs = new TrcPidController.PidCoefficients(0.032, 0.1, 0.0025, 0.0, 5.0);

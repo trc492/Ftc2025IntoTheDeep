@@ -245,7 +245,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance));
                     robot.extenderArm.setPosition(
-                        taskParams.elbowAngle, taskParams.extenderPos - 2.0, taskParams.wristPos, null);
+                        taskParams.elbowAngle, taskParams.extenderPos - 4.5, taskParams.wristPos, null);
                 }
                 else
                 {
@@ -262,7 +262,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 
             case LOWER_ELBOW:
                 // Lower the arm to hook the specimen.
-                robot.extenderArm.setPosition(taskParams.elbowAngle - 23.0, null, null, event);
+                robot.extenderArm.setPosition(taskParams.elbowAngle - 21.0, null, null, event);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER, 0.15);
                 break;
 

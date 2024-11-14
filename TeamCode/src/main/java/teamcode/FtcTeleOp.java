@@ -298,6 +298,10 @@ public class FtcTeleOp extends FtcOpMode
                         extenderLimit =
                             (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
                             Math.cos(elbowPosRadians) - grabberLength;
+                        if (extenderLimit < robot.extender.getPosition())
+                        {
+                            robot.extender.setPosition(extenderLimit);
+                        }
                     }
 
                     if (elbowPower != elbowPrevPower)

@@ -161,13 +161,13 @@ public class RobotParams
             new TrcPose2D(2.5*Field.FULL_TILE_INCHES, -2.5*Field.FULL_TILE_INCHES, 0.0);
         // Observation zone auto poses.
         public static final TrcPose2D[] RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH = {
-            new TrcPose2D(1.4, -1.5, 0.0),
+            new TrcPose2D(1.3, -1.5, 0.0),
             new TrcPose2D(1.4, -0.7, 0.0),
             new TrcPose2D(1.97, -0.7, 0.0),
             new TrcPose2D(1.97, -1.9, 0.0),
             new TrcPose2D(1.97,-0.7, 0.0),
-            new TrcPose2D(1.97 + 8/Field.FULL_TILE_INCHES, -0.7, 0.0),
-            new TrcPose2D(1.97 + 8/Field.FULL_TILE_INCHES, -1.9, 0.0),
+            new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -0.7, 0.0),
+            new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -1.9, 0.0),
         };
     }   //class Game
 

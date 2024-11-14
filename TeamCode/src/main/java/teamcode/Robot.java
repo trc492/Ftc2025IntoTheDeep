@@ -37,6 +37,7 @@ import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.autotasks.TaskAutoScoreBasket;
 import teamcode.autotasks.TaskAutoScoreChamber;
 import teamcode.autotasks.TaskExtenderArm;
+import teamcode.subsystems.DifferentialWrist;
 import teamcode.subsystems.LEDIndicator;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
@@ -52,6 +53,7 @@ import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcRobot;
 import trclib.sensor.TrcDigitalInput;
+import trclib.subsystem.TrcDifferentialServoWrist;
 import trclib.subsystem.TrcMotorGrabber;
 import trclib.subsystem.TrcServoGrabber;
 import trclib.timer.TrcTimer;
@@ -87,6 +89,7 @@ public class Robot
     public TrcMotor extender;
     public Double extenderFloorDistanceFromPivot = null;
     public TrcServo wrist;
+    public TrcDifferentialServoWrist differentialWrist;
     public TaskExtenderArm extenderArm;
     public Grabber grabber;
     // Autotasks.
@@ -171,6 +174,11 @@ public class Robot
                 if (RobotParams.Preferences.useWrist)
                 {
                     wrist = new Wrist().getServo();
+                }
+
+                if (RobotParams.Preferences.useDifferentialWrist)
+                {
+                    differentialWrist = new DifferentialWrist().getWrist();
                 }
 
                 if (RobotParams.Preferences.useElbow &&
@@ -389,6 +397,14 @@ public class Robot
                     {
                         dashboard.displayPrintf(lineNum++, "Wrist: pos=%.3f", extenderArm.wrist.getPosition());
                     }
+                }
+
+                if (differentialWrist != null)
+                {
+                    dashboard.displayPrintf(
+                        lineNum++, "Wrist: tilt(pwr/pos)=%.1f/%.1f,rotate(pwr/pos)=%.1f/%.1f",
+                        differentialWrist.getTiltPower(), differentialWrist.getTiltPosition(),
+                        differentialWrist.getRotatePower(), differentialWrist.getRotatePosition());
                 }
 
                 if (grabber != null)

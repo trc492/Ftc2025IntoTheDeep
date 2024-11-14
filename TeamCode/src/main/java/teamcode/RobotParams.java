@@ -75,6 +75,7 @@ public class RobotParams
         public static final boolean useElbow                    = true;
         public static final boolean useExtender                 = true;
         public static final boolean useWrist                    = true;
+        public static final boolean useDifferentialWrist        = false;
         public static final boolean useMotorGrabber             = true;
         public static final boolean useServoGrabber             = false;
     }   //class Preferences

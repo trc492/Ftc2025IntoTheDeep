@@ -69,6 +69,7 @@ public class Elbow
         public static final double PRE_CLIMB_POS                = 55.0;
         public static final double ASCENT_LEVEL1_POS            = 45.0;
         public static final double LEVEL2_RETRACT_POS           = 0.0;
+        public static final double LEVEL2_TORQUE_POS            = 5.0;
         public static final double[] posPresets                 = {MIN_POS, 30.0, 60.0, 90.0, MAX_POS};
         public static final double POS_PRESET_TOLERANCE         = 10.0;
 

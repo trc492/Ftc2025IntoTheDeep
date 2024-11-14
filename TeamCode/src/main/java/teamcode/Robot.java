@@ -446,6 +446,7 @@ public class Robot
         globalTracer.traceInfo(moduleName, "Cancel all operations.");
         // Cancel subsystems.
         if (extenderArm != null) extenderArm.cancel();
+        if (differentialWrist != null) differentialWrist.cancel();
         if (grabber != null) grabber.cancel();
         if (robotDrive != null) robotDrive.cancel();
         // Cancel auto tasks.

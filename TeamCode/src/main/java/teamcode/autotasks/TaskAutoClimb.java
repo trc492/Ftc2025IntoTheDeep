@@ -53,13 +53,6 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
         DONE
     }   //enum State
 
-    private static class TaskParams
-    {
-        TaskParams()
-        {
-        }   //TaskParams
-    }   //class TaskParams
-
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
@@ -88,7 +81,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
     public void autoClimbLevel1(TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "event=" + completionEvent);
-        startAutoTask(State.LEVEL1_START, new TaskParams(), completionEvent);
+        startAutoTask(State.LEVEL1_START, null, completionEvent);
     }   //autoClimbLevel1
 
     /**
@@ -99,7 +92,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
     public void autoClimbLevel2(TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "event=" + completionEvent);
-        startAutoTask(State.LEVEL2_START, new TaskParams(), completionEvent);
+        startAutoTask(State.LEVEL2_START, null, completionEvent);
     }   //autoClimbLevel2
 
     /**
@@ -110,7 +103,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
     public void autoClimbLevel3(TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "event=" + completionEvent);
-        startAutoTask(State.LEVEL3_START, new TaskParams(), completionEvent);
+        startAutoTask(State.LEVEL3_START, null, completionEvent);
     }   //autoClimbLevel3
 
     //
@@ -156,13 +149,14 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
     protected void stopSubsystems()
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
+        robot.extender.setPidStallDetectionEnabled(false);
         robot.extenderArm.cancel();
     }   //stopSubsystems
 
     /**
      * This methods is called periodically to run the auto-assist task.
      *
-     * @param params specifies the task parameters.
+     * @param params specifies the task parameters (not used).
      * @param state specifies the current state of the task.
      * @param taskType specifies the type of task being run.
      * @param runMode specifies the competition mode (e.g. Autonomous, TeleOp, Test).
@@ -173,8 +167,6 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
     protected void runTaskState(
         Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode, boolean slowPeriodicLoop)
     {
-        TaskParams taskParams = (TaskParams) params;
-
         switch (state)
         {
             case LEVEL1_START:
@@ -190,8 +182,10 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case LEVEL2_START:
+                // Code Review: Check if we really need these!
                 robot.extender.setPidStallDetectionEnabled(false);
                 robot.extender.setStallProtection(0.0, 0.0, 0.0, 0.0);
+                // Code Review: Can this combine with FOLD_ROBOT?
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);
                 break;
@@ -222,15 +216,13 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case LEVEL3_START:
-                robot.extender.setPidStallDetectionEnabled(false);
-                // Don't have level 3 climb, hence setting state to done
+                // Don't have level 3 climb, hence setting state to done.
                 sm.setState(State.DONE);
                 break;
 
             default:
             case DONE:
                 // Stop task.
-                robot.extender.setPidStallDetectionEnabled(true);
                 stopAutoTask(true);
                 break;
         }

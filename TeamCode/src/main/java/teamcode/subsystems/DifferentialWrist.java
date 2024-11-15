@@ -55,10 +55,12 @@ public class DifferentialWrist
         public static final double LOW_BASKET_SCORE_POS         = 0.58;
         public static final double ASCENT_LEVEL1_POS            = MAX_POS;
         public static final double SPECIMEN_PICKUP_POS          = HIGH_CHAMBER_SCORE_POS;
-        public static final double[] posPresets                 = {
-            MIN_POS, GROUND_PICKUP_POS, HIGH_CHAMBER_SCORE_POS, LOW_CHAMBER_SCORE_POS, RETRACT_POS,
-            HIGH_BASKET_SCORE_POS, LOW_BASKET_SCORE_POS, MAX_POS};
+//        public static final double[] posPresets                 = {
+//            MIN_POS, GROUND_PICKUP_POS, HIGH_CHAMBER_SCORE_POS, LOW_CHAMBER_SCORE_POS, RETRACT_POS,
+//            HIGH_BASKET_SCORE_POS, LOW_BASKET_SCORE_POS, MAX_POS};
         public static final double POS_PRESET_TOLERANCE         = 0.01;
+        public static final double[] tiltPosPresets             = {-90.0, -45.0, 0.0, 45.0, 90.0};
+        public static final double[] rotatePosPresets           = {-90.0, -45.0, 0.0, 45.0, 90.0};
 
         public static final double DUMP_TIME                    = 0.5;
     }   //class Params
@@ -74,9 +76,11 @@ public class DifferentialWrist
             .setServo1(Params.SERVO1_NAME, Params.SERVO1_INVERTED, Params.LOGICAL_MIN, Params.LOGICAL_MAX,
                        Params.PHYSICAL_MIN, Params.PHYSICAL_MAX, Params.MAX_STEP_RATE)
             .setServo2(Params.SERVO2_NAME, Params.SERVO2_INVERTED, Params.LOGICAL_MIN, Params.LOGICAL_MAX,
-                       Params.PHYSICAL_MIN, Params.PHYSICAL_MAX, Params.MAX_STEP_RATE);
+                       Params.PHYSICAL_MIN, Params.PHYSICAL_MAX, Params.MAX_STEP_RATE)
+            .setPosPresets(Params.POS_PRESET_TOLERANCE, Params.tiltPosPresets, Params.rotatePosPresets);
 
         wrist = new FtcDifferentialServoWrist(Params.SUBSYSTEM_NAME, wristParams).getWrist();
+        wrist.setPosition(0.0, 0.0);
     }   //DifferentialWrist
 
     /**

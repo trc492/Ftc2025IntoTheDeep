@@ -43,7 +43,7 @@ public class DifferentialWrist
         public static final double PHYSICAL_MAX                 = 90.0;
         public static final double LOGICAL_MIN                  = 0.15;
         public static final double LOGICAL_MAX                  = 0.85;
-        public static final double MAX_STEP_RATE                = 300.0;
+        public static final double MAX_STEP_RATE                = 360.0;    // deg/sec
 
         public static final double MIN_POS                      = 0.1;
         public static final double MAX_POS                      = 0.8;

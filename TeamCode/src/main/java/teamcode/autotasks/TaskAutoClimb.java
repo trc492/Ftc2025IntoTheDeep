@@ -29,6 +29,7 @@ import teamcode.subsystems.Wrist;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
+import trclib.robotcore.TrcPidController;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
 
@@ -150,6 +151,8 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
         robot.extender.setPidStallDetectionEnabled(false);
+        robot.extender.setPositionPidParameters(Extender.Params.posPidCoeffs, Extender.Params.POS_PID_TOLERANCE);
+        robot.elbow.setPositionPidParameters(Elbow.Params.posPidCoeffs, Elbow.Params.POS_PID_TOLERANCE);
         robot.extenderArm.cancel();
     }   //stopSubsystems
 
@@ -185,13 +188,15 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 // Code Review: Check if we really need these!
                 robot.extender.setPidStallDetectionEnabled(false);
                 robot.extender.setStallProtection(0.0, 0.0, 0.0, 0.0);
+                robot.elbow.setPositionPidParameters(0.4, 0.0, 0.0, 0.0, Elbow.Params.POS_PID_TOLERANCE);
+                robot.extender.setPositionPidParameters(2.0, 0.0, 0.01, 0.0, Extender.Params.POS_PID_TOLERANCE);
                 // Code Review: Can this combine with FOLD_ROBOT?
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);
                 break;
 
             case FOLD_ROBOT:
-                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS - 1.0, null, event);
+                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS + 1.0, null, event);
                 sm.waitForSingleEvent(event, State.ELBOW_TORQUE);
                 break;
 
@@ -206,7 +211,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case ELBOW_RETRACT:
-                robot.extenderArm.setPosition(Elbow.Params.MIN_POS, null, null, event);
+                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_FINAL_POS, null, null, event);
                 sm.waitForSingleEvent(event, State.LEVEL2_ASCENT);
                 break;
 

@@ -704,13 +704,10 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadLeft:
-                if (operatorAltFunc)
+                if (robot.differentialWrist != null && pressed)
                 {
-                    if (robot.differentialWrist != null && pressed)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset left.");
-                        robot.differentialWrist.rotatePresetPositionDown(null);
-                    }
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset left.");
+                    robot.differentialWrist.rotatePresetPositionDown(null);
                 }
                 else
                 {
@@ -718,13 +715,13 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         if (pressed)
                         {
-//                            if (operatorAltFunc)
-//                            {
-//                                // This is manual override in case the sensor is not working, just turn it ON.
-//                                robot.globalTracer.traceInfo(moduleName, ">>>>> Manual intake.");
-//                                robot.grabber.intake(null, 0.0, null);
-//                            }
-//                            else
+                            if (operatorAltFunc)
+                            {
+                                // This is manual override in case the sensor is not working, just turn it ON.
+                                robot.globalTracer.traceInfo(moduleName, ">>>>> Manual intake.");
+                                robot.grabber.intake(null, 0.0, null);
+                            }
+                            else
                             {
                                 robot.globalTracer.traceInfo(moduleName, ">>>>> Auto intake.");
                                 robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, null);
@@ -749,13 +746,10 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadRight:
-                if (operatorAltFunc)
+                if (robot.differentialWrist != null && pressed)
                 {
-                    if (robot.differentialWrist != null && pressed)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
-                        robot.differentialWrist.rotatePresetPositionUp(null);
-                    }
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
+                    robot.differentialWrist.rotatePresetPositionUp(null);
                 }
                 else
                 {
@@ -763,13 +757,13 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         if (pressed)
                         {
-//                            if (operatorAltFunc)
-//                            {
-//                                // This is manual override in case the sensor is not working, just turn it ON.
-//                                robot.globalTracer.traceInfo(moduleName, ">>>>> Manual dump.");
-//                                robot.grabber.dump(null, 0.0, null);
-//                            }
-//                            else
+                            if (operatorAltFunc)
+                            {
+                                // This is manual override in case the sensor is not working, just turn it ON.
+                                robot.globalTracer.traceInfo(moduleName, ">>>>> Manual dump.");
+                                robot.grabber.dump(null, 0.0, null);
+                            }
+                            else
                             {
                                 robot.globalTracer.traceInfo(moduleName, ">>>>> Auto dump.");
                                 robot.grabber.autoDump(null, 0.0, Grabber.Params.DUMP_DELAY, null);

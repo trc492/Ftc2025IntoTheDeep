@@ -245,7 +245,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance));
                     robot.extenderArm.setPosition(
-                        taskParams.elbowAngle, taskParams.extenderPos - 4.5, taskParams.wristPos, null);
+                        taskParams.elbowAngle, Extender.Params.MIN_POS, taskParams.wristPos, null);
                 }
                 else
                 {

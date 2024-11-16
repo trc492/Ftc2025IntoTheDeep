@@ -188,8 +188,8 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 // Code Review: Check if we really need these!
                 robot.extender.setPidStallDetectionEnabled(false);
                 robot.extender.setStallProtection(0.0, 0.0, 0.0, 0.0);
-                robot.elbow.setPositionPidParameters(0.4, 0.0, 0.0, 0.0, Elbow.Params.POS_PID_TOLERANCE);
-                robot.extender.setPositionPidParameters(2.0, 0.0, 0.01, 0.0, Extender.Params.POS_PID_TOLERANCE);
+                robot.elbow.setPositionPidParameters(0.8, 0.0, 0.0, 0.0, Elbow.Params.POS_PID_TOLERANCE);
+                robot.extender.setPositionPidParameters(3.0, 0.0, 0.01, 0.0, Extender.Params.POS_PID_TOLERANCE);
                 // Code Review: Can this combine with FOLD_ROBOT?
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);

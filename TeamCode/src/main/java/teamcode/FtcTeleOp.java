@@ -709,37 +709,34 @@ public class FtcTeleOp extends FtcOpMode
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset left.");
                     robot.differentialWrist.rotatePresetPositionDown(null);
                 }
-                else
+                else if (robot.grabber != null)
                 {
-                    if (robot.grabber != null)
+                    if (pressed)
                     {
-                        if (pressed)
+                        if (operatorAltFunc)
                         {
-                            if (operatorAltFunc)
-                            {
-                                // This is manual override in case the sensor is not working, just turn it ON.
-                                robot.globalTracer.traceInfo(moduleName, ">>>>> Manual intake.");
-                                robot.grabber.intake(null, 0.0, null);
-                            }
-                            else
-                            {
-                                robot.globalTracer.traceInfo(moduleName, ">>>>> Auto intake.");
-                                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, null);
-                            }
+                            // This is manual override in case the sensor is not working, just turn it ON.
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Manual intake.");
+                            robot.grabber.intake(null, 0.0, null);
                         }
                         else
                         {
-                            if (robot.grabber.isAutoActive())
-                            {
-                                robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto intake.");
-                                robot.grabber.cancel();
-                            }
-                            else
-                            {
-                                // This is manual override in case the sensor is not working, just turn it OFF.
-                                robot.globalTracer.traceInfo(moduleName, ">>>>> Stop manual intake.");
-                                robot.grabber.stop(null);
-                            }
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Auto intake.");
+                            robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, null);
+                        }
+                    }
+                    else
+                    {
+                        if (robot.grabber.isAutoActive())
+                        {
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto intake.");
+                            robot.grabber.cancel();
+                        }
+                        else
+                        {
+                            // This is manual override in case the sensor is not working, just turn it OFF.
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Stop manual intake.");
+                            robot.grabber.stop(null);
                         }
                     }
                 }
@@ -751,37 +748,34 @@ public class FtcTeleOp extends FtcOpMode
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
                     robot.differentialWrist.rotatePresetPositionUp(null);
                 }
-                else
+                else if (robot.grabber != null)
                 {
-                    if (robot.grabber != null)
+                    if (pressed)
                     {
-                        if (pressed)
+                        if (operatorAltFunc)
                         {
-                            if (operatorAltFunc)
-                            {
-                                // This is manual override in case the sensor is not working, just turn it ON.
-                                robot.globalTracer.traceInfo(moduleName, ">>>>> Manual dump.");
-                                robot.grabber.dump(null, 0.0, null);
-                            }
-                            else
-                            {
-                                robot.globalTracer.traceInfo(moduleName, ">>>>> Auto dump.");
-                                robot.grabber.autoDump(null, 0.0, Grabber.Params.DUMP_DELAY, null);
-                            }
+                            // This is manual override in case the sensor is not working, just turn it ON.
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Manual dump.");
+                            robot.grabber.dump(null, 0.0, null);
                         }
                         else
                         {
-                            if (robot.grabber.isAutoActive())
-                            {
-                                robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto dump.");
-                                robot.grabber.cancel();
-                            }
-                            else
-                            {
-                                // This is manual override in case the sensor is not working, just turn it OFF.
-                                robot.globalTracer.traceInfo(moduleName, ">>>>> Stop manual dump.");
-                                robot.grabber.stop(null);
-                            }
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Auto dump.");
+                            robot.grabber.autoDump(null, 0.0, Grabber.Params.DUMP_DELAY, null);
+                        }
+                    }
+                    else
+                    {
+                        if (robot.grabber.isAutoActive())
+                        {
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto dump.");
+                            robot.grabber.cancel();
+                        }
+                        else
+                        {
+                            // This is manual override in case the sensor is not working, just turn it OFF.
+                            robot.globalTracer.traceInfo(moduleName, ">>>>> Stop manual dump.");
+                            robot.grabber.stop(null);
                         }
                     }
                 }

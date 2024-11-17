@@ -221,9 +221,17 @@ public class FtcTeleOp extends FtcOpMode
                         inputs[0], inputs[1], inputs[2], robot.robotDrive.driveBase.getDriveOrientation());
                 }
 
-                if (robot.driverRumble != null && elapsedTime > RobotParams.Game.LEVEL1_ASCENT_DEADLINE)
+                if (elapsedTime > RobotParams.Game.LEVEL1_ASCENT_DEADLINE)
                 {
-                    robot.driverRumble.setRumblePattern(RumbleIndicator.ASCENT_DEADLINE);
+                    if (robot.driverRumble != null)
+                    {
+                        robot.driverRumble.setRumblePattern(RumbleIndicator.ASCENT_DEADLINE);
+                    }
+
+                    if (robot.operatorRumble != null)
+                    {
+                        robot.operatorRumble.setRumblePattern(RumbleIndicator.ASCENT_DEADLINE);
+                    }
                 }
             }
             //
@@ -252,6 +260,9 @@ public class FtcTeleOp extends FtcOpMode
                     // Only do this if there is an extender and elbow angle is below the restricted position threshold.
                     if (robot.extender != null && elbowPos < Elbow.Params.RESTRICTED_POS_THRESHOLD)
                     {
+                        // When operating the elbow up and down, the extender is smart enough to make sure it is
+                        // within the 42-inch expansion rule. The following math is basically calculating the
+                        // extender length limit at the current elbow angle:
                         // eo = elbowPivotOffset
                         // y = extenderLen
                         // il = intakeLen
@@ -706,8 +717,11 @@ public class FtcTeleOp extends FtcOpMode
             case DpadLeft:
                 if (robot.differentialWrist != null && pressed)
                 {
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset left.");
-                    robot.differentialWrist.rotatePresetPositionDown(null);
+                    if (operatorAltFunc)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset left.");
+                        robot.differentialWrist.rotatePresetPositionDown(null);
+                    }
                 }
                 else if (robot.grabber != null)
                 {
@@ -745,8 +759,11 @@ public class FtcTeleOp extends FtcOpMode
             case DpadRight:
                 if (robot.differentialWrist != null && pressed)
                 {
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
-                    robot.differentialWrist.rotatePresetPositionUp(null);
+                    if (operatorAltFunc)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
+                        robot.differentialWrist.rotatePresetPositionUp(null);
+                    }
                 }
                 else if (robot.grabber != null)
                 {

@@ -237,7 +237,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case ASCENT:
                     // Do level 1 ascent.
                     robot.extenderArm.setPosition(
-                        Elbow.Params.ASCENT_LEVEL1_POS, Extender.Params.ASCENT_LEVEL1_POS, null, event);
+                        null, Extender.Params.ASCENT_LEVEL1_POS, null, event);
+                    robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
                     sm.waitForSingleEvent(event, State.DONE);
                     break;
 

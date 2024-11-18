@@ -125,10 +125,10 @@ public class Elbow
             double extenderAngleRadian =
                 Math.toRadians(elbow.getPosition()) - Math.atan(Params.PIVOT_OFFSET/extenderLength);
             // Calculate extender floor distance from the pivot point.
-            robot.extenderFloorDistanceFromPivot =
+            double extenderFloorDistanceFromPivot =
                 TrcUtil.magnitude(Params.PIVOT_OFFSET, extenderLength) * Math.cos(extenderAngleRadian);
             // Extender angle is zero horizontal.
-            return Params.GRAVITY_COMP_MAX_POWER * robot.extenderFloorDistanceFromPivot;
+            return Params.GRAVITY_COMP_MAX_POWER * extenderFloorDistanceFromPivot;
         }
         else
         {

@@ -105,17 +105,41 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      * This method zero calibrates the ExtenderArm. This includes zero calibrating both the elbow and the extender.
      *
      * @param owner specifies the owner ID to check if the caller has ownership of the motor.
+     * @param completionEvent specifies the completion event to signal if provided.
      */
-    public void zeroCalibrate(String owner)
+    public void zeroCalibrate(String owner, TrcEvent completionEvent)
     {
         // Strictly speaking, this is not an autotask operation because it is not calling startAutoTask.
         // Therefore, it does not acquire subsystem ownership for the caller. It's the responsibility of the caller
         // to acquire ownership if desired, or pass in null owner if no ownership required.
         tracer.traceInfo(moduleName, "Zero Calibrating.");
         wrist.setPosition(Wrist.Params.MAX_POS);
-        elbow.zeroCalibrate(owner, Elbow.Params.ZERO_CAL_POWER);
-        extender.zeroCalibrate(owner, Extender.Params.ZERO_CAL_POWER);
+        if (completionEvent != null)
+        {
+            elbowEvent.setCallback(this::zeroCalibrateCallback, completionEvent);
+            elbow.zeroCalibrate(owner, Elbow.Params.ZERO_CAL_POWER, elbowEvent);
+            extenderEvent.setCallback(this::zeroCalibrateCallback, completionEvent);
+            extender.zeroCalibrate(owner, Extender.Params.ZERO_CAL_POWER, extenderEvent);
+        }
+        else
+        {
+            elbow.zeroCalibrate(owner, Elbow.Params.ZERO_CAL_POWER);
+            extender.zeroCalibrate(owner, Extender.Params.ZERO_CAL_POWER);
+        }
     }   //zeroCalibrate
+
+    /**
+     * This method is called when either elbow or extender zero calibration is done.
+     *
+     * @param context specifies the completion event to signal when both elbow and extender zero calibration is done.
+     */
+    private void zeroCalibrateCallback(Object context)
+    {
+        if (elbowEvent.isSignaled() && extenderEvent.isSignaled())
+        {
+            ((TrcEvent) context).signal();
+        }
+    }   //zeroCalibrateCallback
 
     /**
      * This method sets the Elbow, Extender and Wrist to their specifies positions.

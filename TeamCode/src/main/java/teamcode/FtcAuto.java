@@ -35,6 +35,7 @@ import ftclib.driverio.FtcValueMenu;
 import ftclib.robotcore.FtcOpMode;
 import teamcode.autocommands.CmdAutoNetZone;
 import teamcode.autocommands.CmdAutoObservationZone;
+import teamcode.subsystems.Extender;
 import teamcode.subsystems.Vision;
 import trclib.command.CmdPidDrive;
 import trclib.command.CmdTimedDrive;
@@ -207,6 +208,12 @@ public class FtcAuto extends FtcOpMode
     @Override
     public void initPeriodic()
     {
+        if (robot.zeroCalibrateEvent.isSignaled())
+        {
+            // We need to hold the extender from free extending after zero calibration.
+            robot.zeroCalibrateEvent.clear();
+            robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, null);
+        }
     }   //initPeriodic
 
     /**

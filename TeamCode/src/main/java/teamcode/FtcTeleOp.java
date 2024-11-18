@@ -804,7 +804,7 @@ public class FtcTeleOp extends FtcOpMode
                     // Zero calibrate all subsystems (arm, elevator and turret).
                     robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrating.");
                     robot.cancelAll();
-                    robot.zeroCalibrate(moduleName);
+                    robot.zeroCalibrate(moduleName, null);
                 }
                 break;
 

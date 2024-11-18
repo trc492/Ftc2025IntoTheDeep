@@ -51,6 +51,7 @@ import trclib.motor.TrcMotor;
 import trclib.motor.TrcServo;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcDbgTrace;
+import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
 import trclib.sensor.TrcDigitalInput;
 import trclib.subsystem.TrcDifferentialServoWrist;
@@ -87,10 +88,10 @@ public class Robot
     // Subsystems.
     public TrcMotor elbow;
     public TrcMotor extender;
-    public Double extenderFloorDistanceFromPivot = null;
     public TrcServo wrist;
     public TrcDifferentialServoWrist differentialWrist;
     public TaskExtenderArm extenderArm;
+    public TrcEvent zeroCalibrateEvent;
     public Grabber grabber;
     // Autotasks.
     public TaskAutoPickupFromGround pickupFromGroundTask;
@@ -197,7 +198,8 @@ public class Robot
                     grabber = new Grabber(this);
                 }
                 // Zero calibrate all subsystems only at init time.
-                zeroCalibrate();
+                zeroCalibrateEvent = new TrcEvent("zeroCalibrate");
+                zeroCalibrate(null, zeroCalibrateEvent);
                 // Create autotasks.
                 pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
                 pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);
@@ -461,12 +463,13 @@ public class Robot
      * This method zero calibrates all subsystems.
      *
      * @param owner specifies the owner ID to check if the caller has ownership of the motor.
+     * @param event specifies the event to signal when the extender arm zero calibration is done.
      */
-    public void zeroCalibrate(String owner)
+    public void zeroCalibrate(String owner, TrcEvent event)
     {
         if (extenderArm != null)
         {
-            extenderArm.zeroCalibrate(owner);
+            extenderArm.zeroCalibrate(owner, event);
         }
     }   //zeroCalibrate
 
@@ -475,7 +478,7 @@ public class Robot
      */
     public void zeroCalibrate()
     {
-        zeroCalibrate(null);
+        zeroCalibrate(null, null);
     }   //zeroCalibrate
 
     /**

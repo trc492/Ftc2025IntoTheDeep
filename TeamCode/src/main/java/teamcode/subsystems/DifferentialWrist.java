@@ -39,11 +39,15 @@ public class DifferentialWrist
         public static final String SERVO2_NAME                  = SUBSYSTEM_NAME + ".servo2";
         public static final boolean SERVO2_INVERTED             = !SERVO1_INVERTED;
 
-        public static final double PHYSICAL_MIN                 = -90.0;
-        public static final double PHYSICAL_MAX                 = 90.0;
-        public static final double LOGICAL_MIN                  = 0.15;
-        public static final double LOGICAL_MAX                  = 0.85;
-        public static final double MAX_STEP_RATE                = 360.0;    // deg/sec
+        public static final double LOGICAL_POS_MIN              = 0.0;
+        public static final double LOGICAL_POS_MAX              = 1.0;
+        public static final double PHYSICAL_POS_RANGE           = 180.0;    // -135.0 to 45.0 degrees
+        public static final double TILT_POS_OFFSET              = -45.0;
+        public static final double ROTATE_POS_OFFSET            = 0.0;
+        public static final double MAX_STEP_RATE                = 300.0;    // deg/sec
+        public static final double POS_PRESET_TOLERANCE         = 0.01;
+        public static final double[] tiltPosPresets             = {-135.0, -90.0, -45.0, 0.0, 45.0};
+        public static final double[] rotatePosPresets           = {-90.0, -45.0, 0.0, 45.0, 90.0};
 
         public static final double MIN_POS                      = 0.1;
         public static final double MAX_POS                      = 0.8;
@@ -58,9 +62,6 @@ public class DifferentialWrist
 //        public static final double[] posPresets                 = {
 //            MIN_POS, GROUND_PICKUP_POS, HIGH_CHAMBER_SCORE_POS, LOW_CHAMBER_SCORE_POS, RETRACT_POS,
 //            HIGH_BASKET_SCORE_POS, LOW_BASKET_SCORE_POS, MAX_POS};
-        public static final double POS_PRESET_TOLERANCE         = 0.01;
-        public static final double[] tiltPosPresets             = {-90.0, -45.0, 0.0, 45.0, 90.0};
-        public static final double[] rotatePosPresets           = {-90.0, -45.0, 0.0, 45.0, 90.0};
 
         public static final double DUMP_TIME                    = 0.5;
     }   //class Params
@@ -73,10 +74,11 @@ public class DifferentialWrist
     public DifferentialWrist()
     {
         FtcDifferentialServoWrist.Params wristParams = new FtcDifferentialServoWrist.Params()
-            .setServo1(Params.SERVO1_NAME, Params.SERVO1_INVERTED, Params.LOGICAL_MIN, Params.LOGICAL_MAX,
-                       Params.PHYSICAL_MIN, Params.PHYSICAL_MAX, Params.MAX_STEP_RATE)
-            .setServo2(Params.SERVO2_NAME, Params.SERVO2_INVERTED, Params.LOGICAL_MIN, Params.LOGICAL_MAX,
-                       Params.PHYSICAL_MIN, Params.PHYSICAL_MAX, Params.MAX_STEP_RATE)
+            .setServos(Params.SERVO1_NAME, Params.SERVO1_INVERTED, Params.SERVO2_NAME, Params.SERVO2_INVERTED)
+            .setPosRange(
+                Params.LOGICAL_POS_MIN, Params.LOGICAL_POS_MAX, Params.PHYSICAL_POS_RANGE, Params.TILT_POS_OFFSET,
+                Params.ROTATE_POS_OFFSET)
+            .setMaxStepRate(Params.MAX_STEP_RATE)
             .setPosPresets(Params.POS_PRESET_TOLERANCE, Params.tiltPosPresets, Params.rotatePosPresets);
 
         wrist = new FtcDifferentialServoWrist(Params.SUBSYSTEM_NAME, wristParams).getWrist();

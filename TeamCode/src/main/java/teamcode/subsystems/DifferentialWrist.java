@@ -39,8 +39,8 @@ public class DifferentialWrist
         public static final String SERVO2_NAME                  = SUBSYSTEM_NAME + ".servo2";
         public static final boolean SERVO2_INVERTED             = !SERVO1_INVERTED;
 
-        public static final double LOGICAL_POS_MIN              = 0.0;
-        public static final double LOGICAL_POS_MAX              = 1.0;
+        public static final double LOGICAL_POS_MIN              = 0.15;
+        public static final double LOGICAL_POS_MAX              = 0.85;
         public static final double PHYSICAL_POS_RANGE           = 180.0;    // -135.0 to 45.0 degrees
         public static final double TILT_POS_OFFSET              = -45.0;
         public static final double ROTATE_POS_OFFSET            = 0.0;

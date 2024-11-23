@@ -14,10 +14,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class TrcSimpleAuto extends LinearOpMode {
     // >>> Update the following constants appropriately.
     // >>> Update the motor names to their corresponding motor names.
-    private static final String LFDRIVE_NAME = "lfDrive";
-    private static final String RFDRIVE_NAME = "rfDrive";
-    private static final String LBDRIVE_NAME = "lbDrive";
-    private static final String RBDRIVE_NAME = "rbDrive";
+    private static final String LFDRIVE_NAME = "lfDriveMotor";
+    private static final String RFDRIVE_NAME = "rfDriveMotor";
+    private static final String LBDRIVE_NAME = "lbDriveMotor";
+    private static final String RBDRIVE_NAME = "rbDriveMotor";
     // >>> Update their motor directions correspondingly.
     private static final DcMotorSimple.Direction LFDRIVE_DIRECTION = DcMotor.Direction.REVERSE;
     private static final DcMotorSimple.Direction RFDRIVE_DIRECTION = DcMotor.Direction.FORWARD;
@@ -25,7 +25,7 @@ public class TrcSimpleAuto extends LinearOpMode {
     private static final DcMotorSimple.Direction RBDRIVE_DIRECTION = DcMotor.Direction.FORWARD;
     // >>> Update to the appropriate auto running time and auto running power.
     private static final double AUTO_RUN_TIME = 3.0;
-    private static final double AUTO_RUN_POWER = 0.5;
+    private static final double AUTO_RUN_POWER = -0.5;
 
     @Override
     public void runOpMode() {

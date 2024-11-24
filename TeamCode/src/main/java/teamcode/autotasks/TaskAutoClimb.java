@@ -174,13 +174,13 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
         {
             case LEVEL1_START:
                 robot.extenderArm.setPosition(
-                    Elbow.Params.PRE_CLIMB_POS, Extender.Params.ASCENT_LEVEL1_POS, null, event);
+                    Elbow.Params.PRE_CLIMB_POS, Extender.Params.ASCENT_LEVEL1_POS, event);
                 sm.waitForSingleEvent(event, State.LEVEL1_ASCENT);
                 break;
 
             case LEVEL1_ASCENT:
-                robot.extenderArm.setPosition(
-                    Elbow.Params.ASCENT_LEVEL1_POS, null, Wrist.Params.ASCENT_LEVEL1_POS, event);
+                robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, null);
+                robot.extenderArm.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, null, event);
                 sm.waitForSingleEvent(event, State.DONE);
                 break;
 
@@ -191,32 +191,32 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 robot.elbow.setPositionPidParameters(0.8, 0.0, 0.0, 0.0, Elbow.Params.POS_PID_TOLERANCE);
                 robot.extender.setPositionPidParameters(3.0, 0.0, 0.01, 0.0, Extender.Params.POS_PID_TOLERANCE);
                 // Code Review: Can this combine with FOLD_ROBOT?
-                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, null, event);
+                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);
                 break;
 
             case FOLD_ROBOT:
-                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS + 1.0, null, event);
+                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS + 1.0, event);
                 sm.waitForSingleEvent(event, State.ELBOW_TORQUE);
                 break;
 
             case ELBOW_TORQUE:
-                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_TORQUE_POS, null, null, event);
+                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_TORQUE_POS, null, event);
                 sm.waitForSingleEvent(event, State.ARM_RETRACT);
                 break;
 
             case ARM_RETRACT:
-                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, event);
+                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, event);
                 sm.waitForSingleEvent(event, State.ELBOW_RETRACT);
                 break;
 
             case ELBOW_RETRACT:
-                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_FINAL_POS, null, null, event);
+                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_FINAL_POS, null, event);
                 sm.waitForSingleEvent(event, State.LEVEL2_ASCENT);
                 break;
 
             case LEVEL2_ASCENT:
-                robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL2_POS, null, event);
+                robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL2_POS, event);
                 sm.waitForSingleEvent(event, State.DONE);
                 break;
 

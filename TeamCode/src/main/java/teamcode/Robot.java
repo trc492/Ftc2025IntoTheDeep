@@ -37,7 +37,6 @@ import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.autotasks.TaskAutoScoreBasket;
 import teamcode.autotasks.TaskAutoScoreChamber;
 import teamcode.autotasks.TaskExtenderArm;
-import teamcode.subsystems.DifferentialWrist;
 import teamcode.subsystems.LEDIndicator;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
@@ -54,7 +53,6 @@ import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
 import trclib.sensor.TrcDigitalInput;
-import trclib.subsystem.TrcDifferentialServoWrist;
 import trclib.subsystem.TrcMotorGrabber;
 import trclib.subsystem.TrcServoGrabber;
 import trclib.timer.TrcTimer;
@@ -88,9 +86,8 @@ public class Robot
     // Subsystems.
     public TrcMotor elbow;
     public TrcMotor extender;
-    public TrcServo wrist;
-    public TrcDifferentialServoWrist differentialWrist;
     public TaskExtenderArm extenderArm;
+    public Wrist wrist;
     public TrcEvent zeroCalibrateEvent;
     public Grabber grabber;
     // Autotasks.
@@ -162,10 +159,6 @@ public class Robot
             //
             if (RobotParams.Preferences.useSubsystems)
             {
-//                TrcMotor elbow = null;
-//                TrcMotor extender = null;
-//                TrcServo wrist = null;
-//
                 if (RobotParams.Preferences.useElbow)
                 {
                     elbow = new Elbow(this).getMotor();
@@ -176,21 +169,14 @@ public class Robot
                     extender = new Extender().getMotor();
                 }
 
-                if (RobotParams.Preferences.useWrist)
+                if (elbow != null && extender != null)
                 {
-                    wrist = new Wrist().getServo();
+                    extenderArm = new TaskExtenderArm("ExtenderArm", elbow, extender);
                 }
 
-                if (RobotParams.Preferences.useDifferentialWrist)
+                if (RobotParams.Preferences.useWrist || RobotParams.Preferences.useDifferentialWrist)
                 {
-                    differentialWrist = new DifferentialWrist().getWrist();
-                }
-
-                if (RobotParams.Preferences.useElbow &&
-                    RobotParams.Preferences.useExtender &&
-                    RobotParams.Preferences.useWrist)
-                {
-                    extenderArm = new TaskExtenderArm("ExtenderArm", elbow, extender, wrist);
+                    wrist = new Wrist();
                 }
 
                 if (RobotParams.Preferences.useMotorGrabber || RobotParams.Preferences.useServoGrabber)
@@ -398,19 +384,21 @@ public class Robot
                             extenderArm.extender.getPosition(), extenderArm.extender.getPidTarget(),
                             extenderArm.extender.isLowerLimitSwitchActive());
                     }
-
-                    if (extenderArm.wrist != null)
-                    {
-                        dashboard.displayPrintf(lineNum++, "Wrist: pos=%.3f", extenderArm.wrist.getPosition());
-                    }
                 }
 
-                if (differentialWrist != null)
+                if (wrist != null)
                 {
-                    dashboard.displayPrintf(
-                        lineNum++, "Wrist: tilt(pwr/pos)=%.1f/%.1f,rotate(pwr/pos)=%.1f/%.1f",
-                        differentialWrist.getTiltPower(), differentialWrist.getTiltPosition(),
-                        differentialWrist.getRotatePower(), differentialWrist.getRotatePosition());
+                    if (wrist.differentialWrist != null)
+                    {
+                        dashboard.displayPrintf(
+                            lineNum++, "Wrist: tilt(pwr/pos)=%.1f/%.1f,rotate(pwr/pos)=%.1f/%.1f",
+                            wrist.differentialWrist.getTiltPower(), wrist.differentialWrist.getTiltPosition(),
+                            wrist.differentialWrist.getRotatePower(), wrist.differentialWrist.getRotatePosition());
+                    }
+                    else
+                    {
+                        dashboard.displayPrintf(lineNum++, "Wrist: pos=%.3f", wrist.wrist.getPosition());
+                    }
                 }
 
                 if (grabber != null)
@@ -448,7 +436,7 @@ public class Robot
         globalTracer.traceInfo(moduleName, "Cancel all operations.");
         // Cancel subsystems.
         if (extenderArm != null) extenderArm.cancel();
-        if (differentialWrist != null) differentialWrist.cancel();
+        if (wrist != null) wrist.cancel();
         if (grabber != null) grabber.cancel();
         if (robotDrive != null) robotDrive.cancel();
         // Cancel auto tasks.
@@ -470,6 +458,19 @@ public class Robot
         if (extenderArm != null)
         {
             extenderArm.zeroCalibrate(owner, event);
+        }
+
+        if (wrist != null)
+        {
+            if (wrist.differentialWrist != null)
+            {
+                wrist.differentialWrist.setPosition(
+                    Wrist.DifferentialWristParams.TILT_MAX_POS, Wrist.DifferentialWristParams.ROTATE_CENTER_POS);
+            }
+            else
+            {
+                wrist.wrist.setPosition(Wrist.Params.MAX_POS);
+            }
         }
     }   //zeroCalibrate
 

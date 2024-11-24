@@ -244,25 +244,26 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                         currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance));
-                    robot.extenderArm.setPosition(
-                        taskParams.elbowAngle, Extender.Params.MIN_POS, taskParams.wristPos, null);
+                    robot.wrist.setPosition(taskParams.wristPos, null);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, Extender.Params.MIN_POS, null);
                 }
                 else
                 {
-                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, taskParams.wristPos, event);
+                    robot.wrist.setPosition(taskParams.wristPos, null);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, event);
                 }
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);
                 break;
 
             case SET_EXTENDER:
                 // Set the extender to the correct length.
-                robot.extenderArm.setPosition(null, taskParams.extenderPos, null, event);
+                robot.extenderArm.setPosition(null, taskParams.extenderPos, event);
                 sm.waitForSingleEvent(event, State.LOWER_ELBOW);
                 break;
 
             case LOWER_ELBOW:
                 // Lower the arm to hook the specimen.
-                robot.extenderArm.setPosition(taskParams.elbowAngle - 21.0, null, null, event);
+                robot.extenderArm.setPosition(taskParams.elbowAngle - 21.0, null, event);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER, 0.15);
                 break;
 
@@ -285,7 +286,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
             case RETRACT_EXTENDER_ARM:
                 // Swing the arm up and retract extender.
                 robot.extenderArm.elbow.setPosition(0.0, Elbow.Params.HIGH_CHAMBER_SCORE_POS, true, 1.0, event2);
-                robot.extenderArm.setPosition(null, 16.0, null, event);
+                robot.extenderArm.setPosition(null, 16.0, event);
                 sm.addEvent(event);
                 sm.addEvent(event2);
                 sm.waitForEvents(State.DONE);

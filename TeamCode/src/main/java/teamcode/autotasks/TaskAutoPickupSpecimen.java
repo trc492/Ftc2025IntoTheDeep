@@ -216,9 +216,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 else
                 {
                     // Fire and forget to save time.
+                    robot.wrist.setPosition(Wrist.Params.SPECIMEN_PICKUP_POS, null);
                     robot.extenderArm.setPosition(
-                        Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS,
-                        Wrist.Params.SPECIMEN_PICKUP_POS, null);
+                        Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
                     sm.setState(State.DRIVE_TO_PICKUP);
                 }
                 break;
@@ -281,7 +281,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 // Grabber got the specimen, stop the drive and raise the arm to pick it up.
                 robot.robotDrive.driveBase.stop(currOwner);
                 robot.grabber.cancel();
-                robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS + 10.0, null, null, event);
+                robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS + 10.0, null, event);
                 sm.waitForSingleEvent(event, State.RETRACT_ARM);
                 break;
 

@@ -212,7 +212,7 @@ public class FtcAuto extends FtcOpMode
         {
             // We need to hold the extender from free extending after zero calibration.
             robot.zeroCalibrateEvent.clear();
-            robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null, null);
+            robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null);
         }
     }   //initPeriodic
 
@@ -370,7 +370,6 @@ public class FtcAuto extends FtcOpMode
 
         parkOptionMenu.addChoice("Park", ParkOption.PARK, true);
         parkOptionMenu.addChoice("Don't Park", ParkOption.NO_PARK, false);
-
         //
         // Traverse menus.
         //

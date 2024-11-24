@@ -216,8 +216,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         taskParams.useVision && robot.vision != null &&
                         robot.vision.isSampleVisionEnabled(taskParams.sampleType)?
                             State.FIND_SAMPLE: State.PICKUP_SAMPLE;
-                    robot.extenderArm.setPosition(
-                        Elbow.Params.GROUND_PICKUP_POS, null, Wrist.Params.GROUND_PICKUP_POS, armEvent);
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, null);
+                    robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, armEvent);
                     sm.waitForSingleEvent(armEvent, nextState);
                 }
                 break;
@@ -260,7 +260,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         new TrcPose2D(0.0, 0.0, samplePose.angle));
                 }
-                robot.extenderArm.setPosition(null, extenderLen, null, armEvent);
+                robot.extenderArm.setPosition(null, extenderLen, armEvent);
                 sm.waitForSingleEvent(armEvent, State.PICKUP_SAMPLE);
                 break;
 
@@ -270,7 +270,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 // We assume the driver would drive up to the correct sample color for picking up from ground.
                 robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 2.0);
                 sm.addEvent(event);
-                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 4.0, null, null, armEvent);
+                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 4.0, null, armEvent);
                 sm.addEvent(armEvent);
                 sm.waitForEvents(State.RAISE_ARM, false, 4.0);
                 break;
@@ -278,7 +278,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case RAISE_ARM:
                 // We may or may not get the sample. Either way, raise the arm by "fire and forget" to save time.
                 robot.extenderArm.cancel();
-                robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null, null);
+                robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null);
                 sm.setState(State.DONE);
                 break;
 

@@ -26,9 +26,7 @@ import androidx.annotation.NonNull;
 
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Wrist;
 import trclib.motor.TrcMotor;
-import trclib.motor.TrcServo;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
@@ -56,26 +54,23 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     {
         Double elbowAngle;
         Double extenderPosition;
-        Double wristPosition;
 
-        TaskParams(Double elbowAngle, Double extenderPosition, Double wristPosition)
+        TaskParams(Double elbowAngle, Double extenderPosition)
         {
             this.elbowAngle = elbowAngle;
             this.extenderPosition = extenderPosition;
-            this.wristPosition = wristPosition;
         }   //TaskParams
 
         @NonNull
         public String toString()
         {
-            return "elbowPos=" + elbowAngle + ",extenderPos=" + extenderPosition + ",wristPos=" + wristPosition;
+            return "elbowPos=" + elbowAngle + ",extenderPos=" + extenderPosition ;
         }   //toString
     }   //class TaskParams
 
     private final String ownerName;
     public final TrcMotor elbow;
     public final TrcMotor extender;
-    public final TrcServo wrist;
     private final TrcEvent elbowEvent;
     private final TrcEvent extenderEvent;
 
@@ -88,15 +83,13 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      * @param ownerName specifies the owner name to take subsystem ownership, can be null if no ownership required.
      * @param elbow specifies the elbow object.
      * @param extender specifies the extender object.
-     * @param wrist specifies the wrist object.
      */
-    public TaskExtenderArm(String ownerName, TrcMotor elbow, TrcMotor extender, TrcServo wrist)
+    public TaskExtenderArm(String ownerName, TrcMotor elbow, TrcMotor extender)
     {
         super(moduleName, ownerName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
         this.ownerName = ownerName;
         this.elbow = elbow;
         this.extender = extender;
-        this.wrist = wrist;
         this.elbowEvent = new TrcEvent(Elbow.Params.SUBSYSTEM_NAME);
         this.extenderEvent = new TrcEvent(Extender.Params.SUBSYSTEM_NAME);
     }   //TaskExtenderArm
@@ -113,7 +106,6 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         // Therefore, it does not acquire subsystem ownership for the caller. It's the responsibility of the caller
         // to acquire ownership if desired, or pass in null owner if no ownership required.
         tracer.traceInfo(moduleName, "Zero Calibrating.");
-        wrist.setPosition(Wrist.Params.MAX_POS);
         if (completionEvent != null)
         {
             elbowEvent.setCallback(this::zeroCalibrateCallback, completionEvent);
@@ -142,36 +134,32 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     }   //zeroCalibrateCallback
 
     /**
-     * This method sets the Elbow, Extender and Wrist to their specifies positions.
+     * This method sets the Elbow and Extender to their specifies positions.
      *
      * @param safeSequence specifies true to perform safe sequence so that robot won't tip over, false to do parallel.
      * @param elbowAngle specifies the elbow angle, null if not moving elbow.
      * @param extenderPosition specifies the extender position, null if not moving extender.
-     * @param wristPosition specifies the wrist position, null if not moving wrist.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
     public void setPosition(
-        boolean safeSequence, Double elbowAngle, Double extenderPosition, Double wristPosition,
-        TrcEvent completionEvent)
+        boolean safeSequence, Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
     {
-        TaskParams taskParams = new TaskParams(elbowAngle, extenderPosition, wristPosition);
+        TaskParams taskParams = new TaskParams(elbowAngle, extenderPosition);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         this.safeSequence = safeSequence;
-        startAutoTask(
-            State.SET_POSITION, new TaskParams(elbowAngle, extenderPosition, wristPosition), completionEvent);
+        startAutoTask(State.SET_POSITION, taskParams, completionEvent);
     }   //setPosition
 
     /**
-     * This method sets the Elbow, Extender and Wrist to their specifies positions.
+     * This method sets the Elbow and Extender to their specifies positions.
      *
      * @param elbowAngle specifies the elbow angle, null if not moving elbow.
      * @param extenderPosition specifies the extender position, null if not moving extender.
-     * @param wristPosition specifies the wrist position, null if not moving wrist.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
-    public void setPosition(Double elbowAngle, Double extenderPosition, Double wristPosition, TrcEvent completionEvent)
+    public void setPosition(Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
     {
-        setPosition(false, elbowAngle, extenderPosition, wristPosition, completionEvent);
+        setPosition(false, elbowAngle, extenderPosition, completionEvent);
     }   //setPosition
 
     /**
@@ -182,8 +170,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     public void retract(boolean safeSequence, TrcEvent completionEvent)
     {
-        setPosition(
-            safeSequence, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.RETRACT_POS, completionEvent);
+        setPosition(safeSequence, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
     }   //retract
 
     /**
@@ -193,8 +180,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     public void retract(TrcEvent completionEvent)
     {
-        setPosition(
-            false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, Wrist.Params.RETRACT_POS, completionEvent);
+        setPosition(false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
     }   //retract
 
     /**
@@ -226,8 +212,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     {
         boolean success = ownerName == null ||
                           elbow.acquireExclusiveAccess(ownerName) &&
-                          extender.acquireExclusiveAccess(ownerName) &&
-                          wrist.acquireExclusiveAccess(ownerName);
+                          extender.acquireExclusiveAccess(ownerName);
 
         if (success)
         {
@@ -241,8 +226,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                 moduleName,
                 "Failed to acquire subsystem ownership (currOwner=" + currOwner +
                 ", elbow=" + ownershipMgr.getOwner(elbow) +
-                ", extender=" + ownershipMgr.getOwner(extender) +
-                ", wrist=" + ownershipMgr.getOwner(wrist) + ").");
+                ", extender=" + ownershipMgr.getOwner(extender) + ").");
             releaseSubsystemsOwnership();
         }
 
@@ -263,11 +247,9 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                 moduleName,
                 "Releasing subsystem ownership (currOwner=" + currOwner +
                 ", elbow=" + ownershipMgr.getOwner(elbow) +
-                ", extender=" + ownershipMgr.getOwner(extender) +
-                ", wrist=" + ownershipMgr.getOwner(wrist) + ").");
+                ", extender=" + ownershipMgr.getOwner(extender) + ").");
             elbow.releaseExclusiveAccess(currOwner);
             extender.releaseExclusiveAccess(currOwner);
-            wrist.releaseExclusiveAccess(currOwner);
             currOwner = null;
         }
     }   //releaseSubsystemsOwnership
@@ -281,7 +263,6 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         tracer.traceInfo(moduleName, "Stopping subsystems.");
         elbow.cancel();
         extender.cancel();
-        wrist.cancel();
     }   //stopSubsystems
 
     /**
@@ -305,11 +286,6 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             case SET_POSITION:
                 elbowEvent.clear();
                 extenderEvent.clear();
-                if (taskParams.wristPosition != null)
-                {
-                    // Caller provided wrist position, go set it (fire and forget).
-                    wrist.setPosition(currOwner, 0.0, taskParams.wristPosition, null, 0.0);
-                }
                 sm.setState(safeSequence? State.RETRACT_EXTENDER: State.SET_ELBOW_ANGLE);
                 break;
 

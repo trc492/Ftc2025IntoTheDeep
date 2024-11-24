@@ -51,7 +51,6 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
         PICKUP_FLOOR_SAMPLE,
         SCORE_SAMPLE_BASKET,
         GO_PARK,
-        PARK,
         ASCENT,
         DONE
     }   //enum State
@@ -172,7 +171,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         TrcPose2D spikeMark = RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP.clone();
                         spikeMark.x -= 0.365 * scoreSampleCount * RobotParams.Field.FULL_TILE_INCHES;
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
-                        robot.extenderArm.setPosition(null, 22.0, null, null);
+                        robot.extenderArm.setPosition(null, 22.0, null);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
@@ -203,7 +202,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
                         robot.extenderArm.setPosition(
-                            Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null, null);
+                            Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
                         TrcPose2D targetPose = robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE, autoChoices.alliance);
                         TrcPose2D intermediate1 = RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE.clone();
@@ -213,19 +212,6 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                             intermediate1, targetPose);
-                        sm.waitForSingleEvent(event, State.PARK);
-                    }
-                    else
-                    {
-                        sm.setState(State.DONE);
-                    }
-                    break;
-
-                case PARK:
-                    // Prep for level 1 ascent.
-                    if (robot.extenderArm != null)
-                    {
-                        robot.extenderArm.setPosition(null, null, Wrist.Params.ASCENT_LEVEL1_POS, event);
                         sm.waitForSingleEvent(event, State.ASCENT);
                     }
                     else
@@ -235,11 +221,18 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case ASCENT:
-                    // Do level 1 ascent.
-                    robot.extenderArm.setPosition(
-                        null, Extender.Params.ASCENT_LEVEL1_POS, null, event);
-                    robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
-                    sm.waitForSingleEvent(event, State.DONE);
+                    if (robot.extenderArm != null)
+                    {
+                        // Do level 1 ascent.
+                        robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, null);
+                        robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
+                        robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
+                        sm.waitForSingleEvent(event, State.DONE);
+                    }
+                    else
+                    {
+                        sm.setState(State.DONE);
+                    }
                     break;
 
                 default:

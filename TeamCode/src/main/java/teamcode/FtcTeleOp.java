@@ -241,14 +241,14 @@ public class FtcTeleOp extends FtcOpMode
             {
                 double extenderLimit = Extender.Params.MAX_POS;
                 // Analog control of subsystems.
-                if (operatorAltFunc && robot.differentialWrist != null)
+                if (operatorAltFunc && robot.wrist.differentialWrist != null)
                 {
                     double tiltPower = operatorGamepad.getRightStickY(true);
                     double rotatePower = operatorGamepad.getRightStickX(true);
 
                     if (tiltPower != wristPrevTiltPower || rotatePower != wristPrevRotatePower)
                     {
-                        robot.differentialWrist.setPower(tiltPower, rotatePower);
+                        robot.wrist.differentialWrist.setPower(tiltPower, rotatePower);
                         wristPrevTiltPower = tiltPower;
                         wristPrevRotatePower = rotatePower;
                     }
@@ -290,9 +290,7 @@ public class FtcTeleOp extends FtcOpMode
                         // y = (xpl - sin(theta) * eo) / cos(theta) - il
                         double elbowPosRadians = Math.toRadians(elbowPos);
                         // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
-                        double grabberAngleRadians =
-                            (robot.wrist.getPosition() - Wrist.Params.MIN_POS) /
-                            (Wrist.Params.MAX_POS - Wrist.Params.MIN_POS) * Math.PI;
+                        double grabberAngleRadians = Math.toRadians(robot.wrist.getTiltPosition());
                         double grabberLength = Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadians);
                         extenderLimit =
                             (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
@@ -635,7 +633,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high basket scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS);
+                    robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS, null);
                 }
                 break;
 
@@ -643,7 +641,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high chamber scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS);
+                    robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS, null);
                 }
                 break;
 
@@ -651,7 +649,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to ground pickup position.");
-                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS);
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, null);
                 }
                 break;
 
@@ -677,50 +675,28 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadUp:
-                if (operatorAltFunc)
+                if (robot.wrist != null && pressed)
                 {
-                    if (robot.differentialWrist != null && pressed)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist tilt preset up.");
-                        robot.differentialWrist.tiltPresetPositionUp(null);
-                    }
-                }
-                else
-                {
-                    if (robot.wrist != null && pressed)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist preset up.");
-                        robot.wrist.presetPositionUp(null);
-                    }
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist tilt preset up.");
+                    robot.wrist.tiltPresetPositionUp(null);
                 }
                 break;
 
             case DpadDown:
-                if (operatorAltFunc)
+                if (robot.wrist != null && pressed)
                 {
-                    if (robot.differentialWrist != null && pressed)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist tilt preset down.");
-                        robot.differentialWrist.tiltPresetPositionDown(null);
-                    }
-                }
-                else
-                {
-                    if (robot.wrist != null && pressed)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist preset down.");
-                        robot.wrist.presetPositionDown(null);
-                    }
+                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist tilt preset down.");
+                    robot.wrist.tiltPresetPositionDown(null);
                 }
                 break;
 
             case DpadLeft:
-                if (robot.differentialWrist != null && pressed)
+                if (robot.wrist != null && pressed)
                 {
                     if (operatorAltFunc)
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset left.");
-                        robot.differentialWrist.rotatePresetPositionDown(null);
+                        robot.wrist.rotatePresetPositionDown(null);
                     }
                 }
                 else if (robot.grabber != null)
@@ -757,12 +733,12 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadRight:
-                if (robot.differentialWrist != null && pressed)
+                if (robot.wrist != null && pressed)
                 {
                     if (operatorAltFunc)
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
-                        robot.differentialWrist.rotatePresetPositionUp(null);
+                        robot.wrist.rotatePresetPositionUp(null);
                     }
                 }
                 else if (robot.grabber != null)

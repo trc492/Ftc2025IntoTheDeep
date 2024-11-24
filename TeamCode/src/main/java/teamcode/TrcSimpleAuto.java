@@ -24,7 +24,7 @@ public class TrcSimpleAuto extends LinearOpMode {
     private static final DcMotorSimple.Direction LBDRIVE_DIRECTION = DcMotor.Direction.REVERSE;
     private static final DcMotorSimple.Direction RBDRIVE_DIRECTION = DcMotor.Direction.FORWARD;
     // >>> Update to the appropriate auto running time and auto running power.
-    private static final double AUTO_RUN_TIME = 3.0;
+    private static final double AUTO_RUN_TIME = 2.0;
     private static final double AUTO_RUN_POWER = -0.5;
 
     @Override
@@ -55,6 +55,10 @@ public class TrcSimpleAuto extends LinearOpMode {
             }
             else
             {
+                lfDrive.setPower(0.0);
+                rfDrive.setPower(0.0);
+                lbDrive.setPower(0.0);
+                rbDrive.setPower(0.0);
                 break;
             }
         }

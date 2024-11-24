@@ -215,7 +215,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     extenderScorePos = Extender.Params.HIGH_BASKET_SCORE_POS;
                 }
                 // Fire and forget to save time.
-                robot.extenderArm.setPosition(elbowScorePos, extenderScorePos, null, null);
+                robot.extenderArm.setPosition(elbowScorePos, extenderScorePos, null);
                 sm.setState(State.GO_TO_SCORE_POSITION);
                 break;
 
@@ -242,7 +242,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
                 // Swing the arm towards the basket in low speed.
                 robot.extenderArm.elbow.setPosition(0.0, elbowScorePos,true, 0.6);
-                robot.extenderArm.setPosition(null, null, wristPos, null);
+                robot.wrist.setPosition(wristPos, null);
                 // Depending on how the grabber holds the sample, the sensor may or may not see it.
                 if (robot.grabber.hasObject())
                 {
@@ -261,8 +261,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
             case RETRACT_EXTENDER_ARM:
                 // Retract the arm. Fire and forget to save time.
-                robot.extenderArm.setPosition(
-                    Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, Wrist.Params.HIGH_CHAMBER_SCORE_POS,null);
+                robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS, null);
+                robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, null);
                 sm.setState(State.DONE);
                 break;
 

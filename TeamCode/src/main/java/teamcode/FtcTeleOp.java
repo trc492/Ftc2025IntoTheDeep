@@ -691,15 +691,15 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadLeft:
-                if (robot.wrist != null && pressed)
-                {
-                    if (operatorAltFunc)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset left.");
-                        robot.wrist.rotatePresetPositionDown(null);
-                    }
-                }
-                else if (robot.grabber != null)
+//                if (robot.wrist != null && pressed)
+//                {
+//                    if (operatorAltFunc)
+//                    {
+//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset left.");
+//                        robot.wrist.rotatePresetPositionDown(null);
+//                    }
+//                }
+                if (robot.grabber != null)
                 {
                     if (pressed)
                     {
@@ -733,15 +733,15 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadRight:
-                if (robot.wrist != null && pressed)
-                {
-                    if (operatorAltFunc)
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
-                        robot.wrist.rotatePresetPositionUp(null);
-                    }
-                }
-                else if (robot.grabber != null)
+//                if (robot.wrist != null && pressed)
+//                {
+//                    if (operatorAltFunc)
+//                    {
+//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
+//                        robot.wrist.rotatePresetPositionUp(null);
+//                    }
+//                }
+                if (robot.grabber != null)
                 {
                     if (pressed)
                     {

@@ -106,10 +106,10 @@ public class Wrist
                     DifferentialWristParams.LOGICAL_MIN_POS, DifferentialWristParams.LOGICAL_MAX_POS,
                     DifferentialWristParams.PHYSICAL_POS_RANGE, DifferentialWristParams.TILT_POS_OFFSET,
                     DifferentialWristParams.ROTATE_POS_OFFSET)
+                .setMaxStepRate(DifferentialWristParams.MAX_STEP_RATE)
                 .setPositionLimits(
                     DifferentialWristParams.TILT_MIN_POS, DifferentialWristParams.TILT_MAX_POS,
                     DifferentialWristParams.ROTATE_MIN_POS, DifferentialWristParams.ROTATE_MAX_POS)
-                .setMaxStepRate(DifferentialWristParams.MAX_STEP_RATE)
                 .setPosPresets(Params.POS_PRESET_TOLERANCE, Params.tiltPosPresets, Params.rotatePosPresets);
 
             differentialWrist =

@@ -459,19 +459,6 @@ public class Robot
         {
             extenderArm.zeroCalibrate(owner, event);
         }
-
-        if (wrist != null)
-        {
-            if (wrist.differentialWrist != null)
-            {
-                wrist.differentialWrist.setPosition(
-                    Wrist.DifferentialWristParams.TILT_MAX_POS, Wrist.DifferentialWristParams.ROTATE_CENTER_POS);
-            }
-            else
-            {
-                wrist.wrist.setPosition(Wrist.Params.MAX_POS);
-            }
-        }
     }   //zeroCalibrate
 
     /**

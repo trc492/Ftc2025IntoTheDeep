@@ -59,6 +59,7 @@ public class Elbow
         public static final double PIVOT_OFFSET                 = 4.202;    // Measured from CAD in inches
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 105.0;
+        public static final double START_POS                    = MIN_POS;
         public static final double RESTRICTED_POS_THRESHOLD     = 40.0;
         public static final double GROUND_PICKUP_POS            = 20.0;
         public static final double SPECIMEN_PICKUP_POS          = 18.5;

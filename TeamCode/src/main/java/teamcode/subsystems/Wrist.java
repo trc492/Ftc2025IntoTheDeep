@@ -49,8 +49,8 @@ public class Wrist
         public static final double TILT_POS_OFFSET              = -60.0;
         public static final double ROTATE_POS_OFFSET            = -5.0;
         public static final double MAX_STEP_RATE                = 300.0;    // deg/sec (max 520)
-        public static final double TILT_MIN_POS                 = -90.0;
-        public static final double TILT_MAX_POS                 = 45.0;
+        public static final double TILT_MIN_POS                 = -100.0;
+        public static final double TILT_MAX_POS                 = 55.0;
         public static final double ROTATE_MIN_POS               = -80.0;
         public static final double ROTATE_CENTER_POS            = 0.0;
         public static final double ROTATE_MAX_POS               = 80.0;

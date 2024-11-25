@@ -60,8 +60,6 @@ public class FtcTeleOp extends FtcOpMode
     private Integer savedLimelightPipeline = null;
     private double elbowPrevPower = 0.0;
     private double extenderPrevPower = 0.0;
-    private double wristPrevTiltPower = 0.0;
-    private double wristPrevRotatePower = 0.0;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
     private int climbedLevel = 0;
 
@@ -245,13 +243,7 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     double tiltPower = operatorGamepad.getRightStickY(true);
                     double rotatePower = operatorGamepad.getRightStickX(true);
-
-                    if (tiltPower != wristPrevTiltPower || rotatePower != wristPrevRotatePower)
-                    {
-                        robot.wrist.differentialWrist.setPower(tiltPower, rotatePower);
-                        wristPrevTiltPower = tiltPower;
-                        wristPrevRotatePower = rotatePower;
-                    }
+                    robot.wrist.differentialWrist.setPower(tiltPower, rotatePower);
                 }
                 else if (!operatorAltFunc && robot.elbow != null)
                 {
@@ -677,28 +669,36 @@ public class FtcTeleOp extends FtcOpMode
             case DpadUp:
                 if (robot.wrist != null && pressed)
                 {
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist tilt preset up.");
-                    robot.wrist.tiltPresetPositionUp(null);
+                    if (operatorAltFunc)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist tilt preset up.");
+                        robot.wrist.tiltPresetPositionUp(null);
+                    }
+                    else
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
+                        robot.wrist.rotatePresetPositionUp(null);
+                    }
                 }
                 break;
 
             case DpadDown:
                 if (robot.wrist != null && pressed)
                 {
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist tilt preset down.");
-                    robot.wrist.tiltPresetPositionDown(null);
+                    if (operatorAltFunc)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist tilt preset down.");
+                        robot.wrist.tiltPresetPositionDown(null);
+                    }
+                    else
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist tilt preset down.");
+                        robot.wrist.rotatePresetPositionDown(null);
+                    }
                 }
                 break;
 
             case DpadLeft:
-//                if (robot.wrist != null && pressed)
-//                {
-//                    if (operatorAltFunc)
-//                    {
-//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset left.");
-//                        robot.wrist.rotatePresetPositionDown(null);
-//                    }
-//                }
                 if (robot.grabber != null)
                 {
                     if (pressed)
@@ -733,14 +733,6 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadRight:
-//                if (robot.wrist != null && pressed)
-//                {
-//                    if (operatorAltFunc)
-//                    {
-//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Wrist rotate preset right.");
-//                        robot.wrist.rotatePresetPositionUp(null);
-//                    }
-//                }
                 if (robot.grabber != null)
                 {
                     if (pressed)

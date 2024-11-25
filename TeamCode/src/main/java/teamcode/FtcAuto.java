@@ -35,8 +35,10 @@ import ftclib.driverio.FtcValueMenu;
 import ftclib.robotcore.FtcOpMode;
 import teamcode.autocommands.CmdAutoNetZone;
 import teamcode.autocommands.CmdAutoObservationZone;
+import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Vision;
+import teamcode.subsystems.Wrist;
 import trclib.command.CmdPidDrive;
 import trclib.command.CmdTimedDrive;
 import trclib.pathdrive.TrcPose2D;
@@ -220,7 +222,13 @@ public class FtcAuto extends FtcOpMode
         {
             // We need to hold the extender from free extending after zero calibration.
             robot.zeroCalibrateEvent.clear();
-            robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, null);
+            robot.extenderArm.setPosition(Elbow.Params.START_POS, Extender.Params.START_POS, null);
+            if (robot.wrist != null)
+            {
+                double tiltPos = robot.wrist.differentialWrist != null?
+                    Wrist.DifferentialWristParams.TILT_MAX_POS: Wrist.Params.MAX_POS;
+                robot.wrist.setPosition(tiltPos, Wrist.DifferentialWristParams.ROTATE_CENTER_POS);
+            }
         }
     }   //initPeriodic
 

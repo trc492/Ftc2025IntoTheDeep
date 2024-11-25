@@ -47,6 +47,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
         START,
         DO_DELAY,
         SCORE_PRELOAD,
+        TURN_TO_PARTNER,
         DRIVE_TO_SPIKE_MARKS,
         PICKUP_FLOOR_SAMPLE,
         SCORE_SAMPLE_BASKET,
@@ -61,6 +62,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
     private int scoreSampleCount = 0;
+    private int maxSampleCount = 3;
 
     /**
      * Constructor: Create an instance of the object.
@@ -159,13 +161,29 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         robot.scoreBasketTask.autoScoreBasket(
                             autoChoices.alliance, autoChoices.scoreHeight, true, event);
                     }
-                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
+                    sm.waitForSingleEvent(event, State.TURN_TO_PARTNER);
+                    break;
+
+                case TURN_TO_PARTNER:
+                    if (autoChoices.scorePartnerSample == FtcAuto.ScorePartnerSample.YES)
+                    {
+                        robot.robotDrive.purePursuitDrive.start(
+                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
+                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            new TrcPose2D(0.0,0.0,135.0));
+                        sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
+                        maxSampleCount++;
+                    }
+                    else
+                    {
+                        sm.setState(State.DRIVE_TO_SPIKE_MARKS);
+                    }
                     break;
 
                 case DRIVE_TO_SPIKE_MARKS:
                     // Drive to the spike marks to pick up a sample.
                     // Make sure remaining time is long enough to score a cycle, or else go park.
-                    if (scoreSampleCount < 3 &&
+                    if (scoreSampleCount < maxSampleCount &&
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_BASKET_CYCLE_TIME)
                     {
                         TrcPose2D spikeMark = RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP.clone();

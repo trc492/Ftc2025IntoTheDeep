@@ -66,6 +66,12 @@ public class FtcAuto extends FtcOpMode
         DO_NOTHING
     }   //enum AutoStrategy
 
+    public enum ScorePartnerSample
+    {
+        YES,
+        NO
+    }   //enum ScorePartnerSample
+
     public enum StartPos
     {
         NET_ZONE,
@@ -86,6 +92,7 @@ public class FtcAuto extends FtcOpMode
         public double delay = 0.0;
         public Alliance alliance = null;
         public AutoStrategy strategy = AutoStrategy.FULL_AUTO;
+        public ScorePartnerSample scorePartnerSample = ScorePartnerSample.NO;
         public StartPos startPos = StartPos.NET_ZONE;
         public Robot.GamePieceType preloadType = Robot.GamePieceType.SPECIMEN;
         public Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
@@ -105,6 +112,7 @@ public class FtcAuto extends FtcOpMode
                 "delay=%.0f " +
                 "alliance=\"%s\" " +
                 "strategy=\"%s\" " +
+                "scorePartnerSample=\"%s\" " +
                 "startPos=\"%s\" " +
                 "preload=\"%s\" " +
                 "scoreHeight=\"%s\" " +
@@ -114,7 +122,7 @@ public class FtcAuto extends FtcOpMode
                 "turnTarget=%.0f " +
                 "driveTime=%.0f " +
                 "drivePower=%.1f",
-                delay, alliance, strategy, startPos, preloadType, scoreHeight, parkOption,
+                delay, alliance, strategy, scorePartnerSample, preloadType, scoreHeight, parkOption,
                 xTarget, yTarget, turnTarget, driveTime, drivePower);
         }   //toString
 
@@ -326,6 +334,8 @@ public class FtcAuto extends FtcOpMode
         FtcValueMenu delayMenu = new FtcValueMenu("Delay time:", null, 0.0, 30.0, 1.0, 0.0, " %.0f sec");
         FtcChoiceMenu<Alliance> allianceMenu = new FtcChoiceMenu<>("Alliance:", delayMenu);
         FtcChoiceMenu<AutoStrategy> strategyMenu = new FtcChoiceMenu<>("Auto Strategies:", allianceMenu);
+        FtcChoiceMenu<ScorePartnerSample> scorePartnerSampleMenu =
+            new FtcChoiceMenu<>("Score Partner Sample:", strategyMenu);
         FtcChoiceMenu<StartPos> startPosMenu = new FtcChoiceMenu<>("Start Position:", strategyMenu);
         FtcChoiceMenu<Robot.GamePieceType> preloadTypeMenu = new FtcChoiceMenu<>("Preload Type:", startPosMenu);
         FtcChoiceMenu<Robot.ScoreHeight> scoreHeightMenu = new FtcChoiceMenu<>("Score Height:", preloadTypeMenu);
@@ -359,7 +369,10 @@ public class FtcAuto extends FtcOpMode
         strategyMenu.addChoice("Timed Drive", AutoStrategy.TIMED_DRIVE, false, driveTimeMenu);
         strategyMenu.addChoice("Do nothing", AutoStrategy.DO_NOTHING, false);
 
-        startPosMenu.addChoice("Start Net Zone", StartPos.NET_ZONE, true, preloadTypeMenu);
+        scorePartnerSampleMenu.addChoice("Yes", ScorePartnerSample.YES, false, preloadTypeMenu);
+        scorePartnerSampleMenu.addChoice("No", ScorePartnerSample.NO, true, preloadTypeMenu);
+
+        startPosMenu.addChoice("Start Net Zone", StartPos.NET_ZONE, true, scorePartnerSampleMenu);
         startPosMenu.addChoice("Start Observation Zone", StartPos.OBSERVATION_ZONE, false, preloadTypeMenu);
 
         preloadTypeMenu.addChoice("Preload Specimen", Robot.GamePieceType.SPECIMEN, true, scoreHeightMenu);
@@ -380,6 +393,7 @@ public class FtcAuto extends FtcOpMode
         autoChoices.delay = delayMenu.getCurrentValue();
         autoChoices.alliance = allianceMenu.getCurrentChoiceObject();
         autoChoices.strategy = strategyMenu.getCurrentChoiceObject();
+        autoChoices.scorePartnerSample = scorePartnerSampleMenu.getCurrentChoiceObject();
         autoChoices.startPos = startPosMenu.getCurrentChoiceObject();
         autoChoices.preloadType = preloadTypeMenu.getCurrentChoiceObject();
         autoChoices.scoreHeight = scoreHeightMenu.getCurrentChoiceObject();

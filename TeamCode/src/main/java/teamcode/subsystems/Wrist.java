@@ -45,16 +45,15 @@ public class Wrist
 
         public static final double LOGICAL_MIN_POS              = 0.15;
         public static final double LOGICAL_MAX_POS              = 0.85;
-        public static final double PHYSICAL_POS_RANGE           = 180.0;    // -135.0 to 45.0 degrees
-        public static final double TILT_POS_OFFSET              = -45.0;
-        public static final double ROTATE_POS_OFFSET            = 0.0;
-        public static final double MAX_STEP_RATE                = 300.0;    // deg/sec
-
+        public static final double PHYSICAL_POS_RANGE           = 230.0;
+        public static final double TILT_POS_OFFSET              = -60.0;
+        public static final double ROTATE_POS_OFFSET            = -5.0;
+        public static final double MAX_STEP_RATE                = 300.0;    // deg/sec (max 520)
         public static final double TILT_MIN_POS                 = -90.0;
-        public static final double TILT_MAX_POS                 = 90.0;
-        public static final double ROTATE_MIN_POS               = -90.0;
+        public static final double TILT_MAX_POS                 = 45.0;
+        public static final double ROTATE_MIN_POS               = -80.0;
         public static final double ROTATE_CENTER_POS            = 0.0;
-        public static final double ROTATE_MAX_POS               = 90.0;
+        public static final double ROTATE_MAX_POS               = 80.0;
     }   //class DifferentWristParams
 
     public static class WristParams
@@ -86,6 +85,7 @@ public class Wrist
         public static final double[] tiltPosPresets             = {
             MIN_POS, GROUND_PICKUP_POS, HIGH_CHAMBER_SCORE_POS, LOW_CHAMBER_SCORE_POS, RETRACT_POS,
             HIGH_BASKET_SCORE_POS, LOW_BASKET_SCORE_POS, MAX_POS};
+//            -110, -90.0, -45.0, 0.0, 45.0, 90.0, 110};
         public static final double[] rotatePosPresets           = {-90.0, -45.0, 0.0, 45.0, 90.0};
     }   //class Params
 
@@ -106,6 +106,9 @@ public class Wrist
                     DifferentialWristParams.LOGICAL_MIN_POS, DifferentialWristParams.LOGICAL_MAX_POS,
                     DifferentialWristParams.PHYSICAL_POS_RANGE, DifferentialWristParams.TILT_POS_OFFSET,
                     DifferentialWristParams.ROTATE_POS_OFFSET)
+                .setPositionLimits(
+                    DifferentialWristParams.TILT_MIN_POS, DifferentialWristParams.TILT_MAX_POS,
+                    DifferentialWristParams.ROTATE_MIN_POS, DifferentialWristParams.ROTATE_MAX_POS)
                 .setMaxStepRate(DifferentialWristParams.MAX_STEP_RATE)
                 .setPosPresets(Params.POS_PRESET_TOLERANCE, Params.tiltPosPresets, Params.rotatePosPresets);
 

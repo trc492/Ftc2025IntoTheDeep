@@ -170,7 +170,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            new TrcPose2D(0.0,0.0,135.0));
+                            new TrcPose2D(0.0, 0.0, 135.0));
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                         maxSampleCount++;
                     }

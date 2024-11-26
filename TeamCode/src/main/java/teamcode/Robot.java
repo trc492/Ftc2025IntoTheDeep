@@ -174,7 +174,7 @@ public class Robot
                     extenderArm = new TaskExtenderArm("ExtenderArm", elbow, extender);
                 }
 
-                if (RobotParams.Preferences.useWrist || RobotParams.Preferences.useDifferentialWrist)
+                if (RobotParams.Preferences.useWrist)
                 {
                     wrist = new Wrist();
                 }

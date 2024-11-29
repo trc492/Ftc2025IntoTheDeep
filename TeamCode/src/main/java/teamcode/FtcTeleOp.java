@@ -239,7 +239,7 @@ public class FtcTeleOp extends FtcOpMode
             {
                 double extenderLimit = Extender.Params.MAX_POS;
                 // Analog control of subsystems.
-                if (operatorAltFunc && robot.wrist.differentialWrist != null)
+                if (operatorAltFunc && robot.wrist != null && robot.wrist.differentialWrist != null)
                 {
                     double tiltPower = operatorGamepad.getRightStickY(true);
                     double rotatePower = operatorGamepad.getRightStickX(true);

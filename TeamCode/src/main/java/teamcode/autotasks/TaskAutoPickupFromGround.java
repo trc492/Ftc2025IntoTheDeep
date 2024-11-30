@@ -238,7 +238,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 else if (visionExpiredTime == null)
                 {
                     // Vision doesn't find the sample, set a 1-second timeout and keep trying.
-                    visionExpiredTime = TrcTimer.getCurrentTime() + 1.0;
+                    visionExpiredTime = TrcTimer.getCurrentTime() + 0.75;
                 }
                 else if (TrcTimer.getCurrentTime() >= visionExpiredTime)
                 {

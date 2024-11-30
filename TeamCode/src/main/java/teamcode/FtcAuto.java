@@ -124,8 +124,8 @@ public class FtcAuto extends FtcOpMode
                 "turnTarget=%.0f " +
                 "driveTime=%.0f " +
                 "drivePower=%.1f",
-                delay, alliance, strategy, scorePartnerSample, preloadType, scoreHeight, parkOption,
-                xTarget, yTarget, turnTarget, driveTime, drivePower);
+                delay, alliance, strategy, scorePartnerSample, startPos, preloadType, scoreHeight,
+                parkOption, xTarget, yTarget, turnTarget, driveTime, drivePower);
         }   //toString
 
     }   //class AutoChoices

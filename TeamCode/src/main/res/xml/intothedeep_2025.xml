@@ -48,7 +48,7 @@ SOFTWARE.
             <Servo name="Wrist.primary" port="0" />
             <ContinuousRotationServo name="Grabber.primary" port="3" />
             <ContinuousRotationServo name="Grabber.follower" port="4" />
-            <RevColorSensorV3 name="Grabber.sensor" port="0" bus="1" />
+            <RevColorSensorV3 name="Grabber.sensor" port="0" bus="2" />
             <!--
             <Servo name="Grabber.primary" port="2" />
             <Servo name="Grabber.follower" port="3" />

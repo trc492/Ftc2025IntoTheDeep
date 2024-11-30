@@ -133,7 +133,7 @@ public class RobotParams
 
         public static final double AUTO_PERIOD                      = 30.0; // 30 seconds auto period
         public static final double TELEOP_PERIOD                    = 120.0;// 2 minutes teleop period
-        public static final double SCORE_BASKET_CYCLE_TIME          = 6.0;  // in seconds
+        public static final double SCORE_BASKET_CYCLE_TIME          = 5.0;  // in seconds
         public static final double LEVEL1_ASCENT_TIME               = 10.0; // in seconds
         public static final double LEVEL1_ASCENT_DEADLINE           = TELEOP_PERIOD - LEVEL1_ASCENT_TIME;
         public static final double SPECIMEN_GROUND_OFFSET           = 8.0;  // inches

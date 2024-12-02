@@ -287,8 +287,8 @@ public class FtcTeleOp extends FtcOpMode
                             double grabberAngleRadians = Math.toRadians(robot.wrist.getTiltPosition());
                             double grabberLength = Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadians);
                             extenderLimit =
-                                    (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
-                                            Math.cos(elbowPosRadians) - grabberLength;
+                                (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
+                                Math.cos(elbowPosRadians) - grabberLength;
                             if (robot.extender.getPosition() > extenderLimit)
                             {
                                 robot.extender.setPosition(extenderLimit);
@@ -410,7 +410,7 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         robot.globalTracer.traceInfo(
                             moduleName, ">>>>> Auto score chamber (scoreHeight=%s).", scoreHeight);
-                        robot.scoreChamberTask.autoScoreChamber(scoreHeight, driverAltFunc,null);
+                        robot.scoreChamberTask.autoScoreChamber(scoreHeight, driverAltFunc, null);
                     }
                     else
                     {

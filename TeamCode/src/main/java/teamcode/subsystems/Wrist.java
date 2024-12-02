@@ -84,8 +84,7 @@ public class Wrist
         public static final double SPECIMEN_PICKUP_POS          = HIGH_CHAMBER_SCORE_POS;
         public static final double POS_PRESET_TOLERANCE         = 1.0;
         public static final double[] tiltPosPresets             = {
-            MIN_POS, GROUND_PICKUP_POS, HIGH_CHAMBER_SCORE_POS, RETRACT_POS,
-            HIGH_BASKET_SCORE_POS, MAX_POS};
+            MIN_POS, GROUND_PICKUP_POS, HIGH_CHAMBER_SCORE_POS, RETRACT_POS, HIGH_BASKET_SCORE_POS, MAX_POS};
 //            -110, -90.0, -45.0, 0.0, 45.0, 90.0, 110};
         public static final double[] rotatePosPresets           = {-90.0, -45.0, 0.0, 45.0, 90.0};
     }   //class Params

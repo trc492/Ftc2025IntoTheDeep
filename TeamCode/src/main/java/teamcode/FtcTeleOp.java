@@ -280,16 +280,19 @@ public class FtcTeleOp extends FtcOpMode
                         // xl = (xpl - sin(theta) * eo)) / cos(theta)
                         // y + il = (xpl - sin(theta) * eo) / cos(theta)
                         // y = (xpl - sin(theta) * eo) / cos(theta) - il
-                        double elbowPosRadians = Math.toRadians(elbowPos);
-                        // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
-                        double grabberAngleRadians = Math.toRadians(robot.wrist.getTiltPosition());
-                        double grabberLength = Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadians);
-                        extenderLimit =
-                            (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
-                            Math.cos(elbowPosRadians) - grabberLength;
-                        if (robot.extender.getPosition() > extenderLimit)
+                        if (RobotParams.Preferences.useSafeLimits)
                         {
-                            robot.extender.setPosition(extenderLimit);
+                            double elbowPosRadians = Math.toRadians(elbowPos);
+                            // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
+                            double grabberAngleRadians = Math.toRadians(robot.wrist.getTiltPosition());
+                            double grabberLength = Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadians);
+                            extenderLimit =
+                                    (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
+                                            Math.cos(elbowPosRadians) - grabberLength;
+                            if (robot.extender.getPosition() > extenderLimit)
+                            {
+                                robot.extender.setPosition(extenderLimit);
+                            }
                         }
                     }
 
@@ -407,7 +410,7 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         robot.globalTracer.traceInfo(
                             moduleName, ">>>>> Auto score chamber (scoreHeight=%s).", scoreHeight);
-                        robot.scoreChamberTask.autoScoreChamber(scoreHeight, false,null);
+                        robot.scoreChamberTask.autoScoreChamber(scoreHeight, driverAltFunc,null);
                     }
                     else
                     {

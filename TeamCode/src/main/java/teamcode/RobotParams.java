@@ -44,7 +44,7 @@ public class RobotParams
     {
         // Global config
         public static final RobotBase.RobotType robotType       = RobotBase.RobotType.IntoTheDeepRobot;
-        public static final boolean inCompetition               = true;
+        public static final boolean inCompetition               = false;
         public static final boolean useTraceLog                 = true;
         public static final boolean useLoopPerformanceMonitor   = true;
         public static final boolean useBatteryMonitor           = false;
@@ -75,9 +75,12 @@ public class RobotParams
         public static final boolean useElbow                    = true;
         public static final boolean useExtender                 = true;
         public static final boolean useWrist                    = true;
-        public static final boolean useDifferentialWrist        = false;
+        public static final boolean useDifferentialWrist        = true;
         public static final boolean useMotorGrabber             = true;
         public static final boolean useServoGrabber             = false;
+
+        // Stay Within the 42 in by 20 in bounding box
+        public static final boolean useSafeLimits               = false;
     }   //class Preferences
 
     /**
@@ -168,6 +171,8 @@ public class RobotParams
             new TrcPose2D(1.97,-0.7, 0.0),
             new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -0.7, 0.0),
             new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -1.9, 0.0),
+            new TrcPose2D(2.0, -1.87, 0.0),
+            new TrcPose2D(2.0, -2.05, 180.0),
         };
     }   //class Game
 

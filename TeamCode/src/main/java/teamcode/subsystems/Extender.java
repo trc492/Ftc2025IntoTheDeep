@@ -42,25 +42,25 @@ public class Extender
         public static final FtcMotorActuator.MotorType PRIMARY_MOTOR_TYPE = FtcMotorActuator.MotorType.DcMotor;
         public static final boolean PRIMARY_MOTOR_INVERTED      = true;
 
-        public static final double INCHES_PER_COUNT             = 0.00479555742786738354339957485092;
-        public static final double POS_OFFSET                   = 14.75;
+        public static final double INCHES_PER_COUNT             = 0.00479555742786738354339957485092 * ((35.9 - 1.4)/35.9); // Ratio Added
+        public static final double POS_OFFSET                   = 15.125; // 14.75
         public static final double POWER_LIMIT                  = 1.0;
         public static final double ZERO_CAL_POWER               = -0.75;
 
         // Movement Limit Constants
         // Pivot Y offset from robot center in inches
         public static final double PIVOT_Y_OFFSET               = -(408.0 * TrcUtil.INCHES_PER_MM - 9.0);
-        public static final double PICKUP_POS_WRIST_OFFSET      = 1.85;  // pickup position offset from wrist joint
+        public static final double PICKUP_POS_WRIST_OFFSET      = 1.9;  // pickup position offset from wrist joint 1.85
 
         public static final double MIN_POS                      = POS_OFFSET;
-        public static final double MAX_POS                      = 35.0;
+        public static final double MAX_POS                      = 35.5; // 35.0
         public static final double START_POS                    = MIN_POS;
         public static final double HORIZONTAL_LIMIT             = RobotParams.Robot.HORIZONTAL_EXPANSION_LIMIT - 9.0;
         public static final double SPECIMEN_PICKUP_POS          = 18.0; // TODO: NEEDS TUNING
         public static final double LOW_BASKET_SCORE_POS         = MIN_POS;
         public static final double HIGH_BASKET_SCORE_POS        = 34.0;
-        public static final double LOW_CHAMBER_SCORE_POS        = 18.5;
-        public static final double HIGH_CHAMBER_SCORE_POS       = 19.0;
+        public static final double LOW_CHAMBER_SCORE_POS        = 17.5; //18.5
+        public static final double HIGH_CHAMBER_SCORE_POS       = 20.2; //19.0
         public static final double PRE_CLIMB_POS                = 20.0;
         public static final double ASCENT_LEVEL1_POS            = MAX_POS;
         public static final double ASCENT_LEVEL2_POS            = 20.0;

@@ -126,7 +126,7 @@ public class RobotBase
             xDrivePidCoeffs = new TrcPidController.PidCoefficients(0.075, 0.00, 0.004, 0.0, 0.0);
             xDrivePidPowerLimit = 1.0;
             xDriveMaxPidRampRate = null;
-            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.042, 0.001, 0.0038, 0.0, 2.0);
+            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.042, 0.001, 0.0035, 0.0, 2.0);
             yDrivePidPowerLimit = 1.0;
             yDriveMaxPidRampRate = null;
             turnPidCoeffs = new TrcPidController.PidCoefficients(0.032, 0.1, 0.0025, 0.0, 5.0);

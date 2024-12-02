@@ -45,9 +45,11 @@ SOFTWARE.
         <LynxModule name="Expansion Hub 2" port="2">
             <goBILDA5202SeriesMotor name="lfDriveMotor" port="1"/>
             <goBILDA5202SeriesMotor name="lbDriveMotor" port="2"/>
-            <Servo name="Wrist.primary" port="0" />
-            <ContinuousRotationServo name="Grabber.primary" port="3" />
-            <ContinuousRotationServo name="Grabber.follower" port="4" />
+<!--            <Servo name="Wrist.primary" port="0" />-->
+            <Servo name="Wrist.servo2" port="0" />
+            <Servo name="Wrist.servo1" port="3" />
+            <ContinuousRotationServo name="Grabber.primary" port="4" />
+            <ContinuousRotationServo name="Grabber.follower" port="5" />
             <RevColorSensorV3 name="Grabber.sensor" port="0" bus="2" />
             <!--
             <Servo name="Grabber.primary" port="2" />

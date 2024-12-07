@@ -179,6 +179,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     // Drive to the specimen scoring position.
                     TrcPose2D scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
                     scorePose.x += 3.75 * scoreSpecimenCount;
+                    scorePose.y += 1.8 * scoreSpecimenCount; // Because I gave up on PID
                     robot.extenderArm.setPosition(
                         Elbow.Params.HIGH_CHAMBER_SCORE_POS, Extender.Params.HIGH_CHAMBER_SCORE_POS, null);
                     robot.robotDrive.purePursuitDrive.start(

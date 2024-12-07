@@ -191,6 +191,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         spikeMark.x -= 10.0 * scoreSampleCount;
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.extenderArm.setPosition(null, 22.0, null);
+//                        robot.wrist.setPosition(0.0, 15.0);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,

@@ -148,10 +148,10 @@ public class RobotParams
             new TrcPose2D(-0.3 * Field.FULL_TILE_INCHES, -1.65 * Field.FULL_TILE_INCHES, 0.0);
         // Score pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
-            new TrcPose2D(0.1 * Field.FULL_TILE_INCHES, -1.65 * Field.FULL_TILE_INCHES, 0.0);
+            new TrcPose2D(0.1 * Field.FULL_TILE_INCHES, -1.625 * Field.FULL_TILE_INCHES, 0.0);
         // Pickup pose (Net zone side).
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
-            new TrcPose2D(-1.78 * Field.FULL_TILE_INCHES, -1.8 * Field.FULL_TILE_INCHES, 0.0);
+            new TrcPose2D(-1.7 * Field.FULL_TILE_INCHES, -1.79 * Field.FULL_TILE_INCHES, 0.0);
         // Pickup pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
             new TrcPose2D(2.0 * Field.FULL_TILE_INCHES, -2.05 * Field.FULL_TILE_INCHES, 180.0);
@@ -164,10 +164,10 @@ public class RobotParams
         // Observation zone auto poses.
         public static final TrcPose2D[] RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH = {
             new TrcPose2D(1.3, -1.5, 0.0),
-            new TrcPose2D(1.4, -0.7, 0.0),
-            new TrcPose2D(1.97, -0.7, 0.0),
-            new TrcPose2D(1.97, -1.9, 0.0),
-            new TrcPose2D(1.97,-0.7, 0.0),
+            new TrcPose2D(1.41, -0.7, 0.0),
+            new TrcPose2D(1.971, -0.7, 0.0),
+            new TrcPose2D(1.971, -1.9, 0.0),
+            new TrcPose2D(1.971,-0.7, 0.0),
             new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -0.7, 0.0),
             new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -1.9, 0.0),
             new TrcPose2D(2.0, -1.87, 0.0),

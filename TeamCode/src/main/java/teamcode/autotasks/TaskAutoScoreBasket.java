@@ -249,13 +249,13 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 {
                     // Sensor sees the sample, use autoDump.
                     tracer.traceInfo(moduleName, "Grabber detected sample, auto dump sample.");
-                    robot.grabber.autoDump(null, 0.5, Grabber.Params.DUMP_DELAY, event);
+                    robot.grabber.autoDump(null, 0.2, Grabber.Params.DUMP_DELAY, event);
                 }
                 else
                 {
                     // Sensor doesn't see the sample, manual dump it anyway.
                     tracer.traceInfo(moduleName, "Grabber not detecting sample, manual dump sample.");
-                    robot.grabber.dump(null, 0.5, event);
+                    robot.grabber.dump(null, 0.2, event);
                 }
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;

@@ -242,7 +242,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
                 // Swing the arm towards the basket in low speed.
                 robot.extenderArm.elbow.setPosition(
-                    0.0, elbowScorePos,true, (taskParams.scoreHeight == Robot.ScoreHeight.HIGH)? 0.6 : 1.0);
+                    0.0, elbowScorePos,true, (taskParams.scoreHeight == Robot.ScoreHeight.HIGH)? 0.7 : 1.0);
                 robot.wrist.setPosition(wristPos, null);
                 // Depending on how the grabber holds the sample, the sensor may or may not see it.
                 if (robot.grabber.hasObject())

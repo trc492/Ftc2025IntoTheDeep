@@ -190,7 +190,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
             case LEVEL2_START:
                 robot.extender.setPidStallDetectionEnabled(false);
                 robot.extender.setStallProtection(0.0, 0.0, 0.0, 0.0);
-                robot.elbow.setPositionPidParameters(0.8, 0.0, 0.0, 0.0, Elbow.Params.POS_PID_TOLERANCE);
+                robot.elbow.setPositionPidParameters(2.5, 1.0, 0.01, 0.0, Elbow.Params.POS_PID_TOLERANCE);
                 robot.extender.setPositionPidParameters(3.0, 0.0, 0.01, 0.0, Extender.Params.POS_PID_TOLERANCE);
 
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, event);
@@ -198,12 +198,13 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case FOLD_ROBOT:
-                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS + 1.0, event);
+                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS + 2.0, event);
                 sm.waitForSingleEvent(event, State.ELBOW_TORQUE);
                 break;
 
             case ELBOW_TORQUE:
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_TORQUE_POS, null, event);
+                robot.extender.setPosition(Extender.Params.MIN_POS, true);
                 sm.waitForSingleEvent(event, State.ARM_RETRACT);
                 break;
 
@@ -213,6 +214,12 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case ELBOW_RETRACT:
+//                robot.elbow.setPower(-1.0);
+                robot.elbow.setPositionPidParameters(8, 0.0, 0.0, 0.0, Elbow.Params.POS_PID_TOLERANCE);
+//                if (robot.elbow.getPosition() <= Elbow.Params.LEVEL2_FINAL_POS + 2 && robot.elbow.getPosition() >= Elbow.Params.LEVEL2_FINAL_POS - 2)
+//                {
+//                    sm.setState(State.LEVEL2_ASCENT);
+//                }
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_FINAL_POS, null, event);
                 sm.waitForSingleEvent(event, State.LEVEL2_ASCENT);
                 break;

@@ -267,7 +267,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                         event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         new TrcPose2D(0, -2, 0.0));
-                robot.extenderArm.setPosition(taskParams.elbowAngle - 19.0, null, event);
+                robot.extenderArm.setPosition(taskParams.elbowAngle - 16.0, null, event);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER, 0.15);
                 break;
 

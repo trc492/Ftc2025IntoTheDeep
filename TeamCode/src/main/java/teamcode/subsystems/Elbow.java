@@ -70,14 +70,14 @@ public class Elbow
         public static final double PRE_CLIMB_POS                = 55.0;
         public static final double ASCENT_LEVEL1_POS            = 45.0;
         public static final double LEVEL2_RETRACT_POS           = 21.0;
-        public static final double LEVEL2_TORQUE_POS            = 41.0;
-        public static final double LEVEL2_FINAL_POS             = 4.0;
+        public static final double LEVEL2_TORQUE_POS            = 47.0;
+        public static final double LEVEL2_FINAL_POS             = 2.0;
         public static final double[] posPresets                 = {MIN_POS, 30.0, 60.0, 90.0, MAX_POS};
         public static final double POS_PRESET_TOLERANCE         = 10.0;
 
         public static final TrcPidController.PidCoefficients posPidCoeffs =
-            new TrcPidController.PidCoefficients(0.12, 0.0, 0.0, 0.0, 0.0);
-        public static final double POS_PID_TOLERANCE            = 2.0;
+            new TrcPidController.PidCoefficients(0.125, 0.0, 0.002, 0.0, 0.0);
+        public static final double POS_PID_TOLERANCE            = 2.5;
         public static final double GRAVITY_COMP_MAX_POWER       = 0.2/Extender.Params.POS_OFFSET;
     }   //class Params
 

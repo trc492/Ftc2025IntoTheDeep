@@ -222,7 +222,8 @@ public class FtcAuto extends FtcOpMode
         {
             // We need to hold the extender from free extending after zero calibration.
             robot.zeroCalibrateEvent.clear();
-            robot.extenderArm.setPosition(Elbow.Params.START_POS, Extender.Params.START_POS, null);
+            robot.extender.setPosition(Extender.Params.MIN_POS - 0.05, true);
+            robot.extenderArm.setPosition(Elbow.Params.START_POS, null, null);
             if (robot.wrist != null)
             {
                 double tiltPos = robot.wrist.differentialWrist != null?

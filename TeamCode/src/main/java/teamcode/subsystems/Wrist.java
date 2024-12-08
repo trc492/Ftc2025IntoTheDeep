@@ -115,7 +115,7 @@ public class Wrist
             differentialWrist =
                 new FtcDifferentialServoWrist(DifferentialWristParams.SUBSYSTEM_NAME, wristParams).getWrist();
 //            differentialWrist.tracer.setTraceLevel(TrcDbgTrace.MsgLevel.DEBUG);
-            differentialWrist.setPosition(0.0, 0.0);
+            differentialWrist.setPosition(90.0, 0.0);
             wrist = null;
         }
         else

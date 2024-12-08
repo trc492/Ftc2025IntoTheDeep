@@ -280,19 +280,17 @@ public class FtcTeleOp extends FtcOpMode
                     // xl = (xpl - sin(theta) * eo)) / cos(theta)
                     // y + il = (xpl - sin(theta) * eo) / cos(theta)
                     // y = (xpl - sin(theta) * eo) / cos(theta) - il
-                    if (RobotParams.Preferences.useSafeLimits)
+                    double elbowPosRadians = Math.toRadians(elbowPos);
+                    // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
+                    double grabberAngleRadians = Math.toRadians(robot.wrist.getTiltPosition());
+                    double grabberLength = Grabber.Params.GRABBER_LENGTH * Math.cos(grabberAngleRadians);
+                    extenderLimit =
+                        (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
+                        Math.cos(elbowPosRadians) - grabberLength;
+//                    robot.globalTracer.traceInfo(moduleName, "***** Extender Limit: %f", extenderLimit);
+                    if (robot.extender.getPosition() > extenderLimit)
                     {
-                        double elbowPosRadians = Math.toRadians(elbowPos);
-                        // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
-                        double grabberAngleRadians = Math.toRadians(robot.wrist.getTiltPosition());
-                        double grabberLength = Grabber.Params.GRABBER_LENGTH * Math.sin(grabberAngleRadians);
-                        extenderLimit =
-                            (Extender.Params.HORIZONTAL_LIMIT - Elbow.Params.PIVOT_OFFSET * Math.sin(elbowPosRadians)) /
-                            Math.cos(elbowPosRadians) - grabberLength;
-                        if (robot.extender.getPosition() > extenderLimit)
-                        {
-                            robot.extender.setPosition(extenderLimit);
-                        }
+                        robot.extender.setPosition(extenderLimit);
                     }
                 }
 

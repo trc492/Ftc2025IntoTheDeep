@@ -50,7 +50,7 @@ public class Extender
         // Movement Limit Constants
         // Pivot Y offset from robot center in inches
         public static final double PIVOT_Y_OFFSET               = -(408.0 * TrcUtil.INCHES_PER_MM - 9.0);
-        public static final double PICKUP_POS_WRIST_OFFSET      = 1.85;  // pickup position offset from wrist joint 1.85
+        public static final double PICKUP_POS_WRIST_OFFSET      = 1.95;  // pickup position offset from wrist joint 1.85
 
         public static final double MIN_POS                      = POS_OFFSET;
         public static final double MAX_POS                      = 35.5; // 35.0

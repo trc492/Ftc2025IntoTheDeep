@@ -79,7 +79,7 @@ public class RobotParams
         public static final boolean useMotorGrabber             = true;
         public static final boolean useServoGrabber             = false;
         // Stay Within the 42 in by 20 in bounding box
-        public static final boolean useSafeLimits               = false;
+        public static final boolean useSafeLimits               = true;
     }   //class Preferences
 
     /**
@@ -168,23 +168,30 @@ public class RobotParams
             new TrcPose2D(1.971, -0.7, 0.0),
             new TrcPose2D(1.971, -0.8, 0.0),
             new TrcPose2D(1.971, -1.9, 0.0),
+//            new TrcPose2D(1.971, -2.65, 0.0),
             new TrcPose2D(1.971,-0.7, 0.0),
             new TrcPose2D(1.971,-0.8, 0.0),
             new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -0.7, 0.0),
-            new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -1.6, 0.0),
-            new TrcPose2D(2.0, -1.87, 0.0),
+            new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -1.8, 0.0),
+//            new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -2.5, 0.0),
+            new TrcPose2D(2.0, -1.9, 0.0),
             new TrcPose2D(2.0, -1.95, 180.0)
         };
         public static final TrcPose2D[] RED_OBSERVATION_ZONE_SAMPLE_SWEEP_PATH = {
-                new TrcPose2D(0.5, -2.3, 0.0),
-                new TrcPose2D(1.0, -1.7, 45.0),
-                new TrcPose2D(1.0, -1.7, 135.0),
-                new TrcPose2D(1.1, -1.7, 45.0),
-                new TrcPose2D(1.0 + 10.0/Field.FULL_TILE_INCHES,-1.6, 135.0),
-//                new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -0.7, 0.0),
+                new TrcPose2D(0.5, -2.6, 50.0),
+                new TrcPose2D(0.95, -1.6, 40.0),
+                new TrcPose2D(1.0, -1.5, 130.0),
+                new TrcPose2D(1.0, -1.5, 140.0),
+                new TrcPose2D(1.1, -1.7, 40.0),
+                new TrcPose2D(1.25, -1.6, 40.0),
+                new TrcPose2D(1.5,-1.7, 130.0),
+                new TrcPose2D(1.5,-1.7, 140.0),
+//                new TrcPose2D(1.97 + 9.5Field.FULL_TILE_INCHES, -0.7, 0.0),
 //                new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -1.9, 0.0),
-                new TrcPose2D(2.0, -1.8, 0.0),
-                new TrcPose2D(2.0, -2.05, 180.0)
+                new TrcPose2D(1.5,-1.7, 40.0),
+                new TrcPose2D(1.75, -1.6, 40.0),
+                new TrcPose2D(1.7, -1.8, 130.0),
+//                new TrcPose2D(2.0, -2.05, 180.0)
         };
     }   //class Game
 

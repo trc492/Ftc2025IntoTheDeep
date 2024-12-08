@@ -158,7 +158,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     }
                     else
                     {
-                        robot.wrist.setPosition(0.0, null);
+                        robot.wrist.setPosition(-15.0, null);
                         robot.scoreBasketTask.autoScoreBasket(
                             autoChoices.alliance, autoChoices.scoreHeight, true, event);
                     }

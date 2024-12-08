@@ -153,6 +153,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case MOVE_SAMPLES:
                     // Herd two samples to the observation zone to be converted to specimens.
+//                    robot.extenderArm.setPosition(Elbow.Params.MIN_POS, Extender.Params.MAX_POS - 5.0, null);
+//                    robot.wrist.setPosition(-15.0, 90.0);
                     robot.robotDrive.purePursuitDrive.start(
                         event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,

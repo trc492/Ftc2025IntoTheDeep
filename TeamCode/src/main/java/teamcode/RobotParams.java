@@ -146,7 +146,7 @@ public class RobotParams
             new TrcPose2D(-0.3 * Field.FULL_TILE_INCHES, -1.65 * Field.FULL_TILE_INCHES, 0.0);
         // Score pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
-            new TrcPose2D(0.1 * Field.FULL_TILE_INCHES, -1.625 * Field.FULL_TILE_INCHES, 0.0);
+            new TrcPose2D(0.1 * Field.FULL_TILE_INCHES, -1.45 * Field.FULL_TILE_INCHES, 180.0);
         // Pickup pose (Net zone side).
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
             new TrcPose2D(-1.7 * Field.FULL_TILE_INCHES, -1.775 * Field.FULL_TILE_INCHES, 0.0);

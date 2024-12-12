@@ -224,6 +224,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     {
                         robot.extenderArm.setPosition(
                             Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
+                        robot.wrist.setPosition(10.0, 0.0);
                         TrcPose2D targetPose = robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE, autoChoices.alliance);
                         TrcPose2D intermediate1 = RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE.clone();

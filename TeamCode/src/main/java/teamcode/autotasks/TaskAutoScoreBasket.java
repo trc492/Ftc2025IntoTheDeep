@@ -262,7 +262,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
             case RETRACT_EXTENDER_ARM:
                 // Retract the arm. Fire and forget to save time.
-                robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS, null);
+                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, null);
                 robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, null);
                 sm.setState(State.DONE);
                 break;

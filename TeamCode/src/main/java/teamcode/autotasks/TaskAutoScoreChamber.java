@@ -240,17 +240,20 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                 // Drive the robot to the scoring location and prep the subsystems for scoring.
                 if (!taskParams.noDrive)
                 {
+                    TrcPose2D intermediate1 = taskParams.scorePose.clone();
+                    intermediate1.y -= 8.0;
                     robot.robotDrive.purePursuitDrive.start(
                         currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        robot.adjustPoseByAlliance(intermediate1, taskParams.alliance),
                         robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance));
                     robot.wrist.setPosition(taskParams.wristPos, null);
-                    robot.extenderArm.setPosition(taskParams.elbowAngle, Extender.Params.MIN_POS, null);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, taskParams.extenderPos, null);
                 }
                 else
                 {
                     robot.wrist.setPosition(taskParams.wristPos, null);
-                    robot.extenderArm.setPosition(taskParams.elbowAngle, null, event);
+                    robot.extenderArm.setPosition(taskParams.elbowAngle, taskParams.extenderPos, event);
                 }
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);
                 break;
@@ -263,11 +266,12 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 
             case LOWER_ELBOW:
                 // Lower the arm to hook the specimen.
-                robot.robotDrive.purePursuitDrive.start(
-                        event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        new TrcPose2D(0, -2, 0.0));
-                robot.extenderArm.setPosition(taskParams.elbowAngle - 18.0, taskParams.extenderPos, event);
+//                robot.robotDrive.purePursuitDrive.start(
+//                        event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
+//                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+//                        new TrcPose2D(0, -2, 0.0));
+                robot.extenderArm.setPosition(taskParams.elbowAngle, taskParams.extenderPos + 2.0, event);
+                robot.wrist.setPosition(0.75, 0.0, null, 0.0);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER, 0.15);
                 break;
 
@@ -289,11 +293,12 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 
             case RETRACT_EXTENDER_ARM:
                 // Swing the arm up and retract extender.
-                robot.extenderArm.elbow.setPosition(0.0, Elbow.Params.HIGH_CHAMBER_SCORE_POS, true, 1.0, event2);
-                robot.extenderArm.setPosition(null, 16.0, event);
-                sm.addEvent(event);
-                sm.addEvent(event2);
-                sm.waitForEvents(State.DONE);
+//                robot.extenderArm.elbow.setPosition(0.0, Elbow.Params.HIGH_CHAMBER_SCORE_POS, true, 1.0, event2);
+                robot.extenderArm.setPosition(Elbow.Params.MIN_POS,Extender.Params.MIN_POS, event);
+//                sm.addEvent(event);
+//                sm.addEvent(event2);
+                sm.setState(State.DONE);
+//                sm.waitForEvents(State.DONE);
                 break;
 
             default:

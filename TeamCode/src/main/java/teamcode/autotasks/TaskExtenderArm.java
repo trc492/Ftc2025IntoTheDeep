@@ -121,6 +121,33 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     }   //zeroCalibrate
 
     /**
+     * This method zero calibrates the ExtenderArm. This includes zero calibrating both the elbow and the extender.
+     *
+     * @param owner specifies the owner ID to check if the caller has ownership of the motor.
+     * @param completionEvent specifies the completion event to signal if provided.
+     */
+    public void stagedZeroCalibrate(String owner, TrcEvent completionEvent)
+    {
+        // Strictly speaking, this is not an autotask operation because it is not calling startAutoTask.
+        // Therefore, it does not acquire subsystem ownership for the caller. It's the responsibility of the caller
+        // to acquire ownership if desired, or pass in null owner if no ownership required.
+        tracer.traceInfo(moduleName, "Staged Zero Calibrating.");
+        if (completionEvent != null)
+        {
+            extenderEvent.setCallback(this::stagedCalibrationCallBack, completionEvent);
+            extender.zeroCalibrate(owner, Extender.Params.ZERO_CAL_POWER, extenderEvent);
+        }
+    }   //zeroCalibrate
+
+    private void stagedCalibrationCallBack(Object context)
+    {
+        if (extenderEvent.isSignaled())
+        {
+            elbowEvent.setCallback(this::zeroCalibrateCallback, context);
+            elbow.zeroCalibrate(null, Elbow.Params.ZERO_CAL_POWER, elbowEvent);
+        }
+    }
+    /**
      * This method is called when either elbow or extender zero calibration is done.
      *
      * @param context specifies the completion event to signal when both elbow and extender zero calibration is done.

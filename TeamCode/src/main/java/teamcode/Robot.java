@@ -185,7 +185,13 @@ public class Robot
                 }
                 // Zero calibrate all subsystems only at init time.
                 zeroCalibrateEvent = new TrcEvent("zeroCalibrate");
-                zeroCalibrate(null, zeroCalibrateEvent);
+                if (runMode == TrcRobot.RunMode.AUTO_MODE)
+                {
+                    stagedZeroCalibrate(null, zeroCalibrateEvent);
+                } else
+                {
+                    zeroCalibrate(null, zeroCalibrateEvent);
+                }
                 // Create autotasks.
                 pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
                 pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);
@@ -458,6 +464,20 @@ public class Robot
         if (extenderArm != null)
         {
             extenderArm.zeroCalibrate(owner, event);
+        }
+    }   //zeroCalibrate
+
+    /**
+     * This method zero calibrates all subsystems.
+     *
+     * @param owner specifies the owner ID to check if the caller has ownership of the motor.
+     * @param event specifies the event to signal when the extender arm zero calibration is done.
+     */
+    public void stagedZeroCalibrate(String owner, TrcEvent event)
+    {
+        if (extenderArm != null)
+        {
+            extenderArm.stagedZeroCalibrate(owner, event);
         }
     }   //zeroCalibrate
 

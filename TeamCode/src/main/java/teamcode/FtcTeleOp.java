@@ -626,7 +626,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high basket scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS, null);
+                    robot.wrist.setPosition(Wrist.Params.LOW_BASKET_SCORE_POS, null);
                 }
                 break;
 
@@ -634,7 +634,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high chamber scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.HIGH_CHAMBER_SCORE_POS, null);
+                    robot.wrist.setPosition(Wrist.Params.LOW_CHAMBER_SCORE_POS, null);
                 }
                 break;
 

@@ -143,10 +143,10 @@ public class RobotParams
         public static final TrcPose2D RED_BASKET_SCORE_POSE         =
             new TrcPose2D(-2.37 * Field.FULL_TILE_INCHES, -2.37 * Field.FULL_TILE_INCHES, 45.0);
         public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE    =
-            new TrcPose2D(-0.1 * Field.FULL_TILE_INCHES, -1.369* Field.FULL_TILE_INCHES, 180.0);
+            new TrcPose2D(-0.1 * Field.FULL_TILE_INCHES, -1.3545 * Field.FULL_TILE_INCHES, 180.0);
         // Score pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_CHAMBER_SCORE_POSE =
-            new TrcPose2D(0.1 * Field.FULL_TILE_INCHES, -1.36 * Field.FULL_TILE_INCHES, 180.0);
+            new TrcPose2D(0.1 * Field.FULL_TILE_INCHES, -1.3545 * Field.FULL_TILE_INCHES, 180.0);
         // Pickup pose (Net zone side).
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
             new TrcPose2D(-1.7 * Field.FULL_TILE_INCHES, -1.74 * Field.FULL_TILE_INCHES, 0.0);
@@ -162,20 +162,21 @@ public class RobotParams
         // Observation zone auto poses.
         public static final TrcPose2D[] RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH = {
             new TrcPose2D(0.1, -1.7, 180.0),
-            new TrcPose2D(1.3, -1.7, 180.0),
-            new TrcPose2D(1.41, -0.7, 180.0),
-            new TrcPose2D(1.8, -0.7, 180.0),
-            new TrcPose2D(2.1, -0.7, 180.0),
-            new TrcPose2D(2.065, -0.8, 180.0),
-            new TrcPose2D(2.065, -2.0, 180.0),
+            new TrcPose2D(1.4, -1.7, 180.0),
+//            new TrcPose2D(1.41, -0.7, 180.0),
+            new TrcPose2D(1.4, -0.7, 180.0),
+            new TrcPose2D(1.98, -0.7, 180.0),
+//            new TrcPose2D(2.1, -0.7, 180.0),
+//            new TrcPose2D(2.065, -0.8, 180.0),
+            new TrcPose2D(1.96, -2.0, 180.0),
 //            new TrcPose2D(2.0, -2.65, 0.0),
 //            new TrcPose2D(1.,-0.7, 180.0),
-            new TrcPose2D(2.075,-0.7, 180.0),
-            new TrcPose2D(2.075,-0.8, 180.0),
-            new TrcPose2D(2.075 + 9.5/Field.FULL_TILE_INCHES, -0.7, 180.0),
-            new TrcPose2D(2.075 + 9.5/Field.FULL_TILE_INCHES, -2.0, 180.0),
+            new TrcPose2D(1.96,-0.7, 180.0),
+//            new TrcPose2D(2.075,-0.8, 180.0),
+            new TrcPose2D(1.975 + 9.5/Field.FULL_TILE_INCHES, -0.7, 180.0),
+            new TrcPose2D(1.975 + 9.5/Field.FULL_TILE_INCHES, -2.2, 180.0),
 //            new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -2.5, 0.0),
-            new TrcPose2D(2.0, -1.9, 180.0),
+//            new TrcPose2D(2.0, -1., 180.0),
 //            new TrcPose2D(2.0, -1.95, 180.0)
         };
         public static final TrcPose2D[] RED_OBSERVATION_ZONE_SAMPLE_SWEEP_PATH = {
@@ -191,7 +192,7 @@ public class RobotParams
 //                new TrcPose2D(1.97 + 9.5/Field.FULL_TILE_INCHES, -1.9, 0.0),
                 new TrcPose2D(1.5,-1.7, 40.0),
                 new TrcPose2D(1.75, -1.6, 40.0),
-                new TrcPose2D(1.7, -1.8, 130.0),
+                new TrcPose2D(1.7, -1.9, 130.0),
 //                new TrcPose2D(2.0, -2.05, 180.0)
         };
     }   //class Game

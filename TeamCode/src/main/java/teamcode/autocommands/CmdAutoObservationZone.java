@@ -27,6 +27,7 @@ import teamcode.Robot;
 import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.Grabber;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
@@ -153,8 +154,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case MOVE_SAMPLES:
                     // Herd two samples to the observation zone to be converted to specimens.
-                    robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 10.0, Extender.Params.MIN_POS, null);
+                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
 //                    robot.wrist.setPosition(-15.0, 90.0);
+                    robot.grabber.autoIntake(null, 6.0, Grabber.Params.FINISH_DELAY, null);
                     robot.robotDrive.purePursuitDrive.start(
                         event, 9.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
@@ -180,10 +182,10 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                 case DRIVE_TO_CHAMBER_POS:
                     // Drive to the specimen scoring position.
                     TrcPose2D scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
-                    scorePose.x += 3.75 * scoreSpecimenCount;
+                    scorePose.x += 3.0 * scoreSpecimenCount;
 //                    scorePose.y += 1.7 * scoreSpecimenCount; // Because I gave up on PID
                     TrcPose2D intermediate1 = scorePose.clone();
-                    intermediate1.y -= 8.0;
+                    intermediate1.y -= 10.0;
                     robot.extenderArm.setPosition(
                         Elbow.Params.HIGH_CHAMBER_SCORE_POS, Extender.Params.HIGH_CHAMBER_SCORE_POS, null);
                     robot.wrist.setPosition(90.0, 0.0);
@@ -208,9 +210,13 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 //                    robot.extenderArm.setPosition(, null, null);
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
+                        intermediate1 = RobotParams.Game.RED_OBSERVATION_ZONE_PARK_POSE.clone();
+                        intermediate1.y -= 10.0;
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            robot.adjustPoseByAlliance(
+                                    intermediate1, autoChoices.alliance),
                             robot.adjustPoseByAlliance(
                                 RobotParams.Game.RED_OBSERVATION_ZONE_PARK_POSE, autoChoices.alliance));
                         sm.waitForSingleEvent(event, State.DONE);

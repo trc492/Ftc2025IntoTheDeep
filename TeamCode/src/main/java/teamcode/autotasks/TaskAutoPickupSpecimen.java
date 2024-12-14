@@ -213,13 +213,18 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     tracer.traceInfo(moduleName, "Arm or grabber doesn't exist, we are done.");
                     sm.setState(State.DONE);
                 }
-                else
-                {
-                    // Fire and forget to save time.
-                    robot.wrist.setPosition(Wrist.Params.SPECIMEN_PICKUP_POS, null);
-                    robot.extenderArm.setPosition(
-                        Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
-                    sm.setState(State.DRIVE_TO_PICKUP);
+                else {
+                    if (robot.grabber.hasObject()) {
+                        sm.setState(State.DONE);
+                    }
+                    else
+                    {
+                        // Fire and forget to save time.
+                        robot.wrist.setPosition(Wrist.Params.SPECIMEN_PICKUP_POS, null);
+                        robot.extenderArm.setPosition(
+                            Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
+                        sm.setState(State.DRIVE_TO_PICKUP);
+                    }
                 }
                 break;
 

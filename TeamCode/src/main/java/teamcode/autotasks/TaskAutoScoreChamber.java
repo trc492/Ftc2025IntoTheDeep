@@ -277,18 +277,23 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 
             case SCORE_CHAMBER:
                 // Score the specimen.
-                event.clear();
-                if (!robot.grabber.hasObject())
-                {
-                    // Sensor doesn't detect the specimen, just pull away.
-                    sm.setState(State.RETRACT_EXTENDER_ARM);
-                }
-                else
-                {
-                    // Sensor detects the specimen, auto dump the specimen.
-                    robot.grabber.autoDump(null, 0.0, Grabber.Params.DUMP_DELAY, event);
-                    sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
-                }
+//                event.clear();
+//                if (!robot.grabber.hasObject())
+//                {
+//                    // Sensor doesn't detect the specimen, just pull away.
+////                    robot.grabber.autoDump(null, 0.0, Grabber.Params.DUMP_DELAY, event);
+//                    sm.setState(State.RETRACT_EXTENDER_ARM);
+//                }
+//                else
+//                {
+//                    // Sensor detects the specimen, auto dump the specimen.
+//                    robot.grabber.autoDump(null, 0.0, Grabber.Params.DUMP_DELAY, event);
+////                    sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
+//                    sm.setState(State.RETRACT_EXTENDER_ARM);
+//                }
+                robot.grabber.dump(null, 0.0, event);
+                sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
+//                sm.setState(State.RETRACT_EXTENDER_ARM);
                 break;
 
             case RETRACT_EXTENDER_ARM:

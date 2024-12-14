@@ -79,7 +79,7 @@ public class Wrist
         public static final double LOW_CHAMBER_SCORE_POS        = -12.0;
         public static final double RETRACT_POS                  = 12.857;
         public static final double HIGH_BASKET_SCORE_POS        = 85.0;
-        public static final double LOW_BASKET_SCORE_POS         = 35.429;
+        public static final double LOW_BASKET_SCORE_POS         = 45.429;
         public static final double ASCENT_LEVEL1_POS            = MAX_POS;
         public static final double SPECIMEN_PICKUP_POS          = -12.857;
         public static final double POS_PRESET_TOLERANCE         = 1.0;

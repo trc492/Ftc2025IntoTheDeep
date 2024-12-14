@@ -47,6 +47,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
         DO_DELAY,
         SCORE_PRELOAD,
         MOVE_SAMPLES,
+        RAISE_ELBOW,
         PICKUP_SPECIMEN,
         DRIVE_TO_CHAMBER_POS,
         SCORE_SPECIMEN,
@@ -154,20 +155,32 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case MOVE_SAMPLES:
                     // Herd two samples to the observation zone to be converted to specimens.
-                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
+                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 0.5, Extender.Params.SPECIMEN_PICKUP_POS, null);
 //                    robot.wrist.setPosition(-15.0, 90.0);
-                    robot.grabber.autoIntake(null, 6.0, Grabber.Params.FINISH_DELAY, null);
+                    TrcEvent event1 = new TrcEvent("Intake Event");
+
+//                    event1.setCallback(this::elbowCallback, null);
+                    robot.grabber.autoIntake(null, 6.5, Grabber.Params.FINISH_DELAY, event);
                     robot.robotDrive.purePursuitDrive.start(
-                        event, 9.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        null, 9.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH, autoChoices.alliance, true));
+                    sm.waitForSingleEvent(event, State.RAISE_ELBOW);
+                    sm.addEvent(event);
+//                    sm.addEvent(event1);
+                    sm.waitForEvents(State.RAISE_ELBOW, false);
+                    break;
+
+                case RAISE_ELBOW:
+                    robot.robotDrive.purePursuitDrive.cancel();
+                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS + 10.0, null, event);
                     sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
                     break;
 
                 case PICKUP_SPECIMEN:
                     // Pick up a specimen from the wall.
-                    if (scoreSpecimenCount < 2)
+                    if (scoreSpecimenCount < 3)
                     {
                         robot.pickupSpecimenTask.autoPickupSpecimen(autoChoices.alliance, false, event);
                         scoreSpecimenCount++;
@@ -182,7 +195,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                 case DRIVE_TO_CHAMBER_POS:
                     // Drive to the specimen scoring position.
                     TrcPose2D scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
-                    scorePose.x += 3.0 * scoreSpecimenCount;
+                    scorePose.x += 2.5 * scoreSpecimenCount;
 //                    scorePose.y += 1.7 * scoreSpecimenCount; // Because I gave up on PID
                     TrcPose2D intermediate1 = scorePose.clone();
                     intermediate1.y -= 10.0;
@@ -241,5 +254,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
         return !sm.isEnabled();
     }   //cmdPeriodic
+
+//    public void elbowCallback(Object context) {
+//        robot.wrist.setPosition(45.0, null);
+//    }
 
 }   //class CmdAuto

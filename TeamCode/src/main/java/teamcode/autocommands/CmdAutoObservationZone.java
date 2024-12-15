@@ -155,14 +155,14 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case MOVE_SAMPLES:
                     // Herd two samples to the observation zone to be converted to specimens.
-                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 0.5, Extender.Params.SPECIMEN_PICKUP_POS, null);
+                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 0.5, Extender.Params.MIN_POS, null);
 //                    robot.wrist.setPosition(-15.0, 90.0);
                     TrcEvent event1 = new TrcEvent("Intake Event");
-
+                    robot.extender.setPosition(5.5, Extender.Params.SPECIMEN_PICKUP_POS, true, 1.0);
 //                    event1.setCallback(this::elbowCallback, null);
-                    robot.grabber.autoIntake(null, 6.5, Grabber.Params.FINISH_DELAY, event);
+                    robot.grabber.autoIntake(null, 6.5, Grabber.Params.FINISH_DELAY, event, 2.5);
                     robot.robotDrive.purePursuitDrive.start(
-                        null, 9.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH, autoChoices.alliance, true));
@@ -198,6 +198,16 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     scorePose.x += 2.5 * scoreSpecimenCount;
 //                    scorePose.y += 1.7 * scoreSpecimenCount; // Because I gave up on PID
                     TrcPose2D intermediate1 = scorePose.clone();
+                    TrcPose2D intermediate2 = robot.robotDrive.driveBase.getFieldPosition();
+                    if (autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE)
+                    {
+                        intermediate2.y += 7.0;
+                    }
+                    else
+                    {
+                        intermediate2.y -= 7.0;
+                    }
+
                     intermediate1.y -= 10.0;
                     robot.extenderArm.setPosition(
                         Elbow.Params.HIGH_CHAMBER_SCORE_POS, Extender.Params.HIGH_CHAMBER_SCORE_POS, null);
@@ -205,6 +215,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     robot.robotDrive.purePursuitDrive.start(
                         event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        intermediate2,
                         robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance),
                         robot.adjustPoseByAlliance(scorePose, autoChoices.alliance));
                     sm.waitForSingleEvent(event, State.SCORE_SPECIMEN);
@@ -219,12 +230,13 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                 case PARK:
                     // Park at the observation zone.
                     robot.elbow.setPosition(90.0, true);
-                    robot.elbow.setPosition(1.0, 104.0, true, 1.0);
+                    robot.elbow.setPosition(1.0, 105.0, true, 1.0);
 //                    robot.extenderArm.setPosition(, null, null);
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
-                        intermediate1 = RobotParams.Game.RED_OBSERVATION_ZONE_PARK_POSE.clone();
-                        intermediate1.y -= 10.0;
+                        intermediate1 = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
+                        intermediate1.y -= 6.0;
+                        intermediate1.x += 6.0;
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,

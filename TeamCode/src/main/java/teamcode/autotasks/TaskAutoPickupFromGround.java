@@ -270,9 +270,9 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 // We assume the driver would drive up to the correct sample color for picking up from ground.
                 robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 2.0);
                 sm.addEvent(event);
-                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 2.0, null, armEvent);
-//                sm.addEvent(armEvent);
-                sm.waitForEvents(State.RAISE_ARM, false, 4.0);
+                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 3.0, null, armEvent);
+                sm.addEvent(armEvent);
+                sm.waitForEvents(State.RAISE_ARM, true, 3.0);
                 break;
 
             case RAISE_ARM:

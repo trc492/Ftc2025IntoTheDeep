@@ -231,7 +231,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             case DRIVE_TO_PICKUP:
                 // Drive to the specimen pickup location.
                 robot.robotDrive.purePursuitDrive.start(
-                    currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                    currOwner, event, 5.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                     robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                     robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                 sm.waitForSingleEvent(event, taskParams.useVision? State.FIND_SPECIMEN: State.APPROACH_SPECIMEN);

@@ -44,7 +44,7 @@ public class RobotParams
     {
         // Global config
         public static final RobotBase.RobotType robotType       = RobotBase.RobotType.IntoTheDeepRobot;
-        public static final boolean inCompetition               = true;
+        public static final boolean inCompetition               = false;
         public static final boolean useTraceLog                 = true;
         public static final boolean useLoopPerformanceMonitor   = true;
         public static final boolean useBatteryMonitor           = false;
@@ -141,7 +141,7 @@ public class RobotParams
         public static final double CHAMBER_MAX_SCORE_POS_X          = (CHAMBER_LENGTH / 2.0) - 3.0;
         // Score poses (Net zone side).
         public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-            new TrcPose2D(-2.38 * Field.FULL_TILE_INCHES, -2.38 * Field.FULL_TILE_INCHES, 45.0);
+            new TrcPose2D(-2.43 * Field.FULL_TILE_INCHES, -2.43 * Field.FULL_TILE_INCHES, 45.0);
         public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE    =
             new TrcPose2D(-0.1 * Field.FULL_TILE_INCHES, -1.35458 * Field.FULL_TILE_INCHES, 180.0);
         // Score pose (Observation zone side).
@@ -149,7 +149,7 @@ public class RobotParams
             new TrcPose2D(0.1 * Field.FULL_TILE_INCHES, -1.3548 * Field.FULL_TILE_INCHES, 180.0);
         // Pickup pose (Net zone side).
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
-            new TrcPose2D(-1.7 * Field.FULL_TILE_INCHES, -1.775 * Field.FULL_TILE_INCHES, 0.0);
+            new TrcPose2D(-1.7 * Field.FULL_TILE_INCHES, -2.0 * Field.FULL_TILE_INCHES, 0.0);
         // Pickup pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
             new TrcPose2D(2.0 * Field.FULL_TILE_INCHES, -2.05 * Field.FULL_TILE_INCHES, 180.0);
@@ -165,16 +165,16 @@ public class RobotParams
             new TrcPose2D(1.375, -1.7, 180.0),
 //            new TrcPose2D(1.41, -0.7, 180.0),
             new TrcPose2D(1.375, -0.7, 180.0),
-            new TrcPose2D(1.93, -0.7, 180.0),
+            new TrcPose2D(1.92, -0.7, 180.0),
 //            new TrcPose2D(2.1, -0.7, 180.0),
 //            new TrcPose2D(2.065, -0.8, 180.0),
-            new TrcPose2D(1.92, -2.08, 180.0),
+            new TrcPose2D(1.92, -2.09, 180.0),
 //            new TrcPose2D(2.0, -2.65, 0.0),
 //            new TrcPose2D(1.,-0.7, 180.0),
             new TrcPose2D(1.96,-0.7, 180.0),
 //            new TrcPose2D(2.075,-0.8, 180.0),
-            new TrcPose2D(1.975 + 9.5/Field.FULL_TILE_INCHES, -0.7, 180.0),
-            new TrcPose2D(1.975 + 9.5/Field.FULL_TILE_INCHES, -2.08, 180.0),
+            new TrcPose2D(1.975 + 10.0/Field.FULL_TILE_INCHES, -0.7, 180.0),
+            new TrcPose2D(1.975 + 10.0/Field.FULL_TILE_INCHES, -2.08, 180.0),
 //            new TrcPose2D(1.975 + 9.5/Field.FULL_TILE_INCHES, -0.7, 180.0),
 //            new TrcPose2D(1.975 + 19/Field.FULL_TILE_INCHES, -0.7, 180.0),
 //            new TrcPose2D(1.975 + 19/Field.FULL_TILE_INCHES, -2.2, 180.0),

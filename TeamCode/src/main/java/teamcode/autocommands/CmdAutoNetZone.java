@@ -189,7 +189,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_BASKET_CYCLE_TIME)
                     {
                         TrcPose2D spikeMark = RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP.clone();
-                        spikeMark.x -= 9.6 * scoreSampleCount;
+                        spikeMark.x -= 8.9 * scoreSampleCount;
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.extenderArm.setPosition(null, 22.0, null);
 //                        robot.wrist.setPosition(0.0, 15.0);
@@ -208,6 +208,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case PICKUP_FLOOR_SAMPLE:
                     // Pick up a sample from the spike marks.
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 15.0);
                     robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, false, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
                     break;
@@ -238,6 +239,21 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     }
                     else
                     {
+                        robot.extenderArm.setPosition(
+                                Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS + 2.0, null);
+                        robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 0.0);
+                        TrcPose2D targetPose = RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE.clone();
+                        targetPose.y = -0.2;
+                        targetPose = robot.adjustPoseByAlliance(targetPose, autoChoices.alliance);
+                        TrcPose2D intermediate1 = RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE.clone();
+                        intermediate1.angle = 0.0;
+                        intermediate1.x -= 0.65 * RobotParams.Field.FULL_TILE_INCHES;
+                        intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance);
+                        robot.robotDrive.purePursuitDrive.start(
+                                event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                                robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                                intermediate1, targetPose);
+                        sm.waitForSingleEvent(event, State.ASCENT);
                         sm.setState(State.DONE);
                     }
                     break;
@@ -245,11 +261,29 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case ASCENT:
                     if (robot.extenderArm != null)
                     {
-                        // Do level 1 ascent.
-                        robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, null);
-                        robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
-                        robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
-                        sm.waitForSingleEvent(event, State.DONE);
+                        if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
+                        {
+                            // Do level 1 ascent.
+                            robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, null);
+                            robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
+                            robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
+                            sm.waitForSingleEvent(event, State.DONE);
+                        }
+                        else
+                        {
+                            Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
+                                    Vision.SampleType.RedSample: Vision.SampleType.BlueSample;
+//                            if (autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE)
+//                            {
+//                                pickupColor = Vision.SampleType.RedAllianceSamples;
+//                            }
+//                            else
+//                            {
+//                                pickupColor = Vision.SampleType.BlueAllianceSamples;
+//                            }
+                            robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, event);
+                            sm.waitForSingleEvent(event, State.DONE);
+                        }
                     }
                     else
                     {

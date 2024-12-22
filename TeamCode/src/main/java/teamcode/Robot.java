@@ -188,10 +188,11 @@ public class Robot
                 if (runMode == TrcRobot.RunMode.AUTO_MODE)
                 {
                     stagedZeroCalibrate(null, zeroCalibrateEvent);
-                } else
-                {
-                    zeroCalibrate(null, zeroCalibrateEvent);
                 }
+//                else
+//                {
+//                    zeroCalibrate(null, zeroCalibrateEvent);
+//                }
                 // Create autotasks.
                 pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
                 pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);

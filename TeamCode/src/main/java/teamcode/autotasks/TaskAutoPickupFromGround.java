@@ -55,7 +55,6 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         RAISE_ARM,
         DONE
     }   //enum State
-
     private static class TaskParams
     {
         final Vision.SampleType sampleType;
@@ -216,7 +215,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         taskParams.useVision && robot.vision != null &&
                         robot.vision.isSampleVisionEnabled(taskParams.sampleType)?
                             State.FIND_SAMPLE: State.PICKUP_SAMPLE;
-                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, null);
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, robot.wrist.getRotatePosition());
                     robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, armEvent);
                     sm.waitForSingleEvent(armEvent, nextState);
                 }
@@ -268,11 +267,11 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 // Pick up sample from the floor.
                 // We only care about sample color if we pick up from submersible.
                 // We assume the driver would drive up to the correct sample color for picking up from ground.
-                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 2.0);
+                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.65); //TO: 0.5s
                 sm.addEvent(event);
-                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 3.0, null, armEvent);
+                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 5.0, null, armEvent);
                 sm.addEvent(armEvent);
-                sm.waitForEvents(State.RAISE_ARM, true, 3.0);
+                sm.waitForEvents(State.RAISE_ARM, true, 0.0);
                 break;
 
             case RAISE_ARM:

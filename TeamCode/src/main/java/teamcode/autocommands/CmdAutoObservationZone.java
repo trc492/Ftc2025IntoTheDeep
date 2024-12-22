@@ -25,6 +25,7 @@ package teamcode.autocommands;
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
+import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Grabber;
@@ -47,7 +48,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
         DO_DELAY,
         SCORE_PRELOAD,
         MOVE_SAMPLES,
-        RAISE_ELBOW,
+        PICKUP_PRELOAD,
         PICKUP_SPECIMEN,
         DRIVE_TO_CHAMBER_POS,
         SCORE_SPECIMEN,
@@ -155,35 +156,36 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case MOVE_SAMPLES:
                     // Herd two samples to the observation zone to be converted to specimens.
-                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 0.5, null, null);
+                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 1.0, null, null);
 //                    robot.wrist.setPosition(-15.0, 90.0);
-                    TrcEvent event1 = new TrcEvent("Intake Event");
+//                    robot.robotDrive.purePursuitDrive.setMoveOutputLimit(0);
+//                    TrcEvent event1 = new TrcEvent("Intake Event");
                     robot.extender.setPosition(4.0, Extender.Params.SPECIMEN_PICKUP_POS, true, 1.0);
 //                    event1.setCallback(this::elbowCallback, null);
-                    robot.grabber.autoIntake(null, 6.5, Grabber.Params.FINISH_DELAY, event, 2.5);
+//                    robot.grabber.autoIntake(null, 6.5, Grabber.Params.FINISH_DELAY, event, 2.5);
                     robot.robotDrive.purePursuitDrive.start(
-                        null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        event, 9.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH, autoChoices.alliance, true));
-                    sm.waitForSingleEvent(event, State.RAISE_ELBOW);
-                    sm.addEvent(event);
+                    sm.waitForSingleEvent(event, State.PICKUP_PRELOAD);
+//                    sm.addEvent(event);
 //                    sm.addEvent(event1);
-                    sm.waitForEvents(State.RAISE_ELBOW, false);
+//                    sm.waitForEvents(State.RAISE_ELBOW, false);
                     break;
 
-                case RAISE_ELBOW:
-                    robot.robotDrive.purePursuitDrive.cancel();
-                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS + 10.0, null, event);
-                    sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
+                case PICKUP_PRELOAD:
+                    robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.85); // TO: 0.75
+                    robot.robotDrive.driveBase.holonomicDrive(null, 0.0, 0.3, 0.0);
+                    sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN, 0.0);
                     break;
 
                 case PICKUP_SPECIMEN:
                     // Pick up a specimen from the wall.
+                    robot.robotDrive.driveBase.stop(null);
                     if (scoreSpecimenCount < 3)
                     {
                         robot.pickupSpecimenTask.autoPickupSpecimen(autoChoices.alliance, false, event);
-                        scoreSpecimenCount++;
                         sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER_POS);
                     }
                     else
@@ -193,6 +195,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_TO_CHAMBER_POS:
+                    scoreSpecimenCount++;
                     // Drive to the specimen scoring position.
                     TrcPose2D scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
                     scorePose.x += 2.5 * scoreSpecimenCount;

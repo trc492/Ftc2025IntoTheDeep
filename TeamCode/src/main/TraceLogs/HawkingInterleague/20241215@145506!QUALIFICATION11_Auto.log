@@ -1,0 +1,471 @@
+FtcAuto.startMode_INFO [0.008367042] ***** Starting autonomous: 20241215@145859 *****
+FtcAuto.startMode_INFO [0.009387001] <Info name="MatchInfo" date="Sun Dec 15 14:55:04 PST 2024" type="PRACTICE" number=1 />
+FtcAuto.startMode_INFO [0.010541417] <Info name="AutoChoices" delay=0 alliance="RED_ALLIANCE" strategy="FULL_AUTO" scorePartnerSample="NO" startPos="OBSERVATION_ZONE" preload="SPECIMEN" scoreHeight="HIGH" parkOption="PARK" xTarget=4.0 yTarget=4.0 turnTarget=90 driveTime=5 drivePower=0.5 />
+Robot.startMode_INFO [0.011106668] Enabling Webcam SampleVision for RedAllianceSamples
+Robot.startMode_INFO [0.012026876] Enabling Limelight SampleVision for pipeline 1
+Vision.setLimelightVisionEnabled_INFO [0.017886752] Pipeline 1 is enabled: running=true
+CmdAutoObservationZone.cmdPeriodic_INFO [0.042528504] <Event name="StateInfo" time="0.042229837" tag="vvvvv" CmdAutoObservationZone.state="START" />
+CmdAutoObservationZone.cmdPeriodic_INFO [0.065064715] <Event name="StateInfo" time="0.064731048" tag="^^^^^" CmdAutoObservationZone.state="START" />
+TaskExtenderArm.autoTask_INFO [0.066039465] <Event name="StateInfo" time="0.065587381" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+CmdAutoObservationZone.cmdPeriodic_INFO [0.078870758] <Event name="StateInfo" time="0.078545549" tag="vvvvv" CmdAutoObservationZone.state="SCORE_PRELOAD" />
+TaskAutoScoreChamber.autoScoreChamber_INFO [0.080735383] taskParams=(alliance=RED_ALLIANCE,scorePose=(x=2.354,y=-31.892,angle=180.000),elbowPos=95.0,extenderPos=17.5,wristPos=90.000,noDrive=false), event=(CmdAutoObservationZone=CLEARED)
+TaskAutoScoreChamber.acquireSubsystemsOwnership_INFO [0.081710425] Successfully acquired subsystem ownerships.
+CmdAutoObservationZone.cmdPeriodic_INFO [0.083235841] <Event name="StateInfo" time="0.0821838" tag="^^^^^" CmdAutoObservationZone.state="SCORE_PRELOAD" />
+TaskExtenderArm.autoTask_INFO [0.084197758] <Event name="StateInfo" time="0.083791467" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskAutoScoreChamber.autoTask_INFO [0.099560135] <Event name="StateInfo" time="0.098937135" tag="vvvvv" TaskAutoScoreChamber.state="GO_TO_SCORE_POSITION" />
+purePursuitDrive.start_INFO [0.118363012] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=11.770,y=-61.620,angle=-180.000),vel=0.0), Waypoint(simple=true,index=1,pose=(x=2.354,y=-39.892,angle=180.000),vel=0.0), Waypoint(simple=true,index=2,pose=(x=2.354,y=-31.892,angle=180.000),vel=0.0)])
+Wrist.performAction_INFO [0.136564472] currTiltPos=90.0714285714286,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [0.165372391] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [0.1705346] taskParams=(elbowPos=95.0,extenderPos=17.5), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [0.174206392] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [0.271407235] <Event name="StateInfo" time="0.271047902" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+Elbow.primary.pidCtrlTask_INFO [0.315959323] controlMode: Position onTarget=true(0.9443961377366321/0.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [0.326565199] <Event name="StateInfo" time="0.326126533" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [0.390443122] <Event name="StateInfo" time="0.390017581" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [0.471948506] <Event name="StateInfo" time="0.471525297" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.pidCtrlTask_INFO [0.820377041] controlMode: Position onTarget=true(17.67352485759242/17.5), stalled=false, expired=false, event=(Extender=SIGNALED)
+Elbow.primary.pidCtrlTask_INFO [1.69409292] controlMode: Position onTarget=true(94.56279587858535/95.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [1.702960171] <Event name="StateInfo" time="1.702546879" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [1.703758754] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [1.70812413] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+purePursuitDrive.xPosPid.isStalled_INFO [2.06073779] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [2.062947749] PID stalled.
+purePursuitDrive.turnPid.isStalled_INFO [2.065551166] PID stalled.
+purePursuitDrive.driveTask_INFO [2.074297375] Done: index=4/5, stalled=true, timeout=false, posOnTarget=false,headingOnTarget=true,robotPose=(x=0.472,y=-32.557,angle=-178.940)
+purePursuitDrive.driveTask_INFO [2.090811543] Signal completion event (TaskAutoScoreChamber.event=CLEARED).
+TaskAutoScoreChamber.autoTask_INFO [2.09384021] <Event name="StateInfo" time="2.093412335" tag="vvvvv" TaskAutoScoreChamber.state="SET_EXTENDER" />
+TaskExtenderArm.setPosition_INFO [2.094521252] taskParams=(elbowPos=null,extenderPos=17.5), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [2.095987169] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [2.117111712] <Event name="StateInfo" time="2.115583379" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [2.130345505] <Event name="StateInfo" time="2.129965172" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [2.138923131] <Event name="StateInfo" time="2.138602006" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [2.162875092] <Event name="StateInfo" time="2.159452092" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.posPidCtrl.isStalled_INFO [2.304312731] PID stalled.
+Extender.primary.pidCtrlTask_INFO [2.305692315] controlMode: Position onTarget=false(17.595179608805672/17.5), stalled=true, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [2.315146982] <Event name="StateInfo" time="2.314706274" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [2.315954316] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [2.317476816] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoScoreChamber.autoTask_INFO [2.323291775] <Event name="StateInfo" time="2.322970941" tag="vvvvv" TaskAutoScoreChamber.state="LOWER_ELBOW" />
+TaskExtenderArm.setPosition_INFO [2.325919983] taskParams=(elbowPos=95.0,extenderPos=19.5), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [2.330623692] Successfully acquired subsystem ownerships.
+Wrist.performAction_INFO [2.340942568] currTiltPos=90.0714285714286,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=0.75, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [2.366842863] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=0.75, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.autoTask_INFO [2.380284322] <Event name="StateInfo" time="2.379889989" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [2.391198198] <Event name="StateInfo" time="2.390824573" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [2.417682701] <Event name="StateInfo" time="2.417312284" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [2.438877828] <Event name="StateInfo" time="2.438570995" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+TaskAutoScoreChamber.autoTask_INFO [2.527444462] <Event name="StateInfo" time="2.52701192" tag="vvvvv" TaskAutoScoreChamber.state="SCORE_CHAMBER" />
+Elbow.primary.pidCtrlTask_INFO [2.613459596] controlMode: Position onTarget=true(94.64491728186678/95.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+Extender.primary.pidCtrlTask_INFO [2.799547031] controlMode: Position onTarget=true(19.24042983332736/19.5), stalled=false, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [2.80692474] <Event name="StateInfo" time="2.806372323" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [2.807754532] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [2.811225949] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoScoreChamber.autoTask_INFO [2.811981074] <Event name="StateInfo" time="2.811636032" tag="vvvvv" TaskAutoScoreChamber.state="RETRACT_EXTENDER_ARM" />
+TaskExtenderArm.setPosition_INFO [2.812725699] taskParams=(elbowPos=0.0,extenderPos=15.125), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [2.813973449] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [2.832248993] <Event name="StateInfo" time="2.831836284" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoScoreChamber.autoTask_INFO [2.833331951] <Event name="StateInfo" time="2.832863826" tag="vvvvv" TaskAutoScoreChamber.state="DONE" />
+TaskAutoScoreChamber.stopSubsystems_INFO [2.835192785] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [2.840044368] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [2.843816494] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [2.844906452] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [2.845621327] Stopping subsystems.
+TaskAutoScoreChamber.releaseSubsystemsOwnership_INFO [2.852793703] Releasing subsystem ownership (currOwner=scoreChamberTask, robotDrive=scoreChamberTask).
+CmdAutoObservationZone.cmdPeriodic_INFO [2.87516833] <Event name="StateInfo" time="2.874666372" tag="vvvvv" CmdAutoObservationZone.state="MOVE_SAMPLES" />
+TaskExtenderArm.setPosition_INFO [2.875854914] taskParams=(elbowPos=17.35,extenderPos=null), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [2.877041122] Successfully acquired subsystem ownerships.
+purePursuitDrive.start_INFO [2.90213875] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=0.445,y=-32.585,angle=-179.035),vel=0.0), Waypoint(simple=true,index=1,pose=(x=2.352,y=-40.014,angle=179.996),vel=0.0), Waypoint(simple=true,index=2,pose=(x=32.365,y=-40.012,angle=179.996),vel=0.0), Waypoint(simple=true,index=3,pose=(x=32.364,y=-16.472,angle=179.996),vel=0.0), Waypoint(simple=true,index=4,pose=(x=45.664,y=-16.471,angle=179.996),vel=0.0), Waypoint(simple=true,index=5,pose=(x=45.430,y=-48.957,angle=179.996),vel=0.0), Waypoint(simple=true,index=6,pose=(x=46.135,y=-16.471,angle=179.996),vel=0.0), Waypoint(simple=true,index=7,pose=(x=55.988,y=-16.471,angle=179.996),vel=0.0), Waypoint(simple=true,index=8,pose=(x=55.990,y=-48.956,angle=179.996),vel=0.0)])
+CmdAutoObservationZone.cmdPeriodic_INFO [2.908420084] <Event name="StateInfo" time="2.907997459" tag="^^^^^" CmdAutoObservationZone.state="MOVE_SAMPLES" RobotPose=(x=0.445,y=-32.585,angle=-179.035) TargetPose=(x=55.990,y=-48.956,angle=179.996) vel=(x=-0.484,y=0.506,angle=-0.139) Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=0.000,y=0.000,angle=0.000),vel=0.0), Waypoint(simple=true,index=1,pose=(x=-2.032,y=7.396,angle=359.031),vel=73.27254194932257), Waypoint(simple=false,index=-1,timestep=0.35675563220920076,pose=(x=-3.505,y=7.371,angle=359.031),vel=80.0,encPos=0.0,accel=0.0,jerk=0.0), Waypoint(simple=true,index=2,pose=(x=-32.041,y=6.888,angle=359.031),vel=80.0), Waypoint(simple=true,index=3,pose=(x=-31.643,y=-16.648,angle=359.031),vel=80.0), Waypoint(simple=true,index=4,pose=(x=-44.941,y=-16.873,angle=359.031),vel=80.0), Waypoint(simple=true,index=5,pose=(x=-45.255,y=15.611,angle=359.031),vel=80.0), Waypoint(simple=true,index=6,pose=(x=-45.412,y=-16.881,angle=359.031),vel=80.0), Waypoint(simple=true,index=7,pose=(x=-55.264,y=-17.048,angle=359.031),vel=80.0), Waypoint(simple=false,index=-1,timestep=0.2285714285714286,pose=(x=-55.658,y=6.291,angle=359.031),vel=80.0,encPos=0.0,accel=-350.0,jerk=0.0), Waypoint(simple=true,index=8,pose=(x=-55.813,y=15.433,angle=359.031),vel=0.0)]) />
+TaskExtenderArm.autoTask_INFO [2.982624758] <Event name="StateInfo" time="2.982239466" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [3.033366596] <Event name="StateInfo" time="3.032974888" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [3.096172936] <Event name="StateInfo" time="3.094693602" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [3.173699694] <Event name="StateInfo" time="3.173372444" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Elbow.primary.pidCtrlTask_INFO [4.011432653] controlMode: Position onTarget=true(18.764740649810463/17.35), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [4.042947531] <Event name="StateInfo" time="4.042327739" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [4.043998698] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [4.045419698] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+purePursuitDrive.xPosPid.isStalled_INFO [9.847909573] PID stalled.
+purePursuitDrive.driveTask_INFO [10.75616433] Done: index=10/11, stalled=false, timeout=false, posOnTarget=true,headingOnTarget=true,robotPose=(x=56.066,y=-50.074,angle=-180.242)
+CmdAutoObservationZone.cmdPeriodic_INFO [10.862510675] <Event name="StateInfo" time="10.862227466" tag="vvvvv" CmdAutoObservationZone.state="RAISE_ELBOW" />
+TaskExtenderArm.setPosition_INFO [10.863413675] taskParams=(elbowPos=27.85,extenderPos=null), event=(CmdAutoObservationZone=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [10.864069633] Successfully acquired subsystem ownerships.
+CmdAutoObservationZone.cmdPeriodic_INFO [10.864957175] <Event name="StateInfo" time="10.86460455" tag="^^^^^" CmdAutoObservationZone.state="RAISE_ELBOW" />
+TaskExtenderArm.autoTask_INFO [10.865660383] <Event name="StateInfo" time="10.865347133" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [10.891037719] <Event name="StateInfo" time="10.890726511" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [10.908297679] <Event name="StateInfo" time="10.907598262" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [10.919075639] <Event name="StateInfo" time="10.918730597" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Elbow.primary.pidCtrlTask_INFO [11.278756675] controlMode: Position onTarget=true(28.906733955069072/27.85), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [11.281647383] <Event name="StateInfo" time="11.281259175" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [11.282384717] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [11.283218592] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+CmdAutoObservationZone.cmdPeriodic_INFO [11.299493593] <Event name="StateInfo" time="11.297510843" tag="vvvvv" CmdAutoObservationZone.state="PICKUP_SPECIMEN" />
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [11.302334135] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=(CmdAutoObservationZone=SIGNALED)
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [11.304494802] Successfully acquired subsystem ownerships.
+CmdAutoObservationZone.cmdPeriodic_INFO [11.305629969] <Event name="StateInfo" time="11.305239427" tag="^^^^^" CmdAutoObservationZone.state="PICKUP_SPECIMEN" />
+TaskAutoPickupSpecimen.autoTask_INFO [11.307119511] <Event name="StateInfo" time="11.306749969" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [11.328840805] currTiltPos=0.8095238095238102,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [11.34581114] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [11.346519598] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [11.347124515] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [11.36864485] <Event name="StateInfo" time="11.368132684" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [11.370812809] <Event name="StateInfo" time="11.370466309" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [11.374473226] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=56.098,y=-49.740,angle=-180.382),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.080,y=-48.257,angle=180.000),vel=0.0)])
+TaskExtenderArm.autoTask_INFO [11.453935484] <Event name="StateInfo" time="11.453504109" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [11.530412242] <Event name="StateInfo" time="11.530099575" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [11.598374082] <Event name="StateInfo" time="11.597957582" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Elbow.primary.pidCtrlTask_INFO [11.84189244] controlMode: Position onTarget=true(19.17534766621769/17.85), stalled=false, expired=false, event=(Elbow=SIGNALED)
+Extender.primary.posPidCtrl.isStalled_INFO [11.9436917] PID stalled.
+Extender.primary.pidCtrlTask_INFO [11.944603742] controlMode: Position onTarget=true(18.09751090985011/18.0), stalled=true, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [11.99972408] <Event name="StateInfo" time="11.998508997" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [12.001413414] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [12.002758581] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+purePursuitDrive.xPosPid.isStalled_INFO [12.664224814] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [12.665636481] PID stalled.
+purePursuitDrive.turnPid.isStalled_INFO [12.666933814] PID stalled.
+purePursuitDrive.driveTask_INFO [12.668236689] Done: index=1/2, stalled=true, timeout=false, posOnTarget=true,headingOnTarget=false,robotPose=(x=48.274,y=-48.236,angle=-177.213)
+purePursuitDrive.driveTask_INFO [12.694073109] Signal completion event (TaskAutoPickupSpecimen=CLEARED).
+TaskAutoPickupSpecimen.autoTask_INFO [12.695792484] <Event name="StateInfo" time="12.695403984" tag="vvvvv" TaskAutoPickupSpecimen.state="APPROACH_SPECIMEN" />
+TaskAutoPickupSpecimen.autoTask_INFO [14.786551819] <Event name="StateInfo" time="14.786155152" tag="vvvvv" TaskAutoPickupSpecimen.state="PICKUP_SPECIMEN" />
+TaskExtenderArm.setPosition_INFO [14.852023117] taskParams=(elbowPos=27.85,extenderPos=null), event=(TaskAutoPickupSpecimen=CANCELED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [14.853246659] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [14.874521994] <Event name="StateInfo" time="14.874241119" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [14.884792454] <Event name="StateInfo" time="14.884463745" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [14.898647205] <Event name="StateInfo" time="14.898300705" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [14.909661706] <Event name="StateInfo" time="14.909263873" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Elbow.primary.pidCtrlTask_INFO [15.243130073] controlMode: Position onTarget=true(28.455066237021114/27.85), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [15.24621124] <Event name="StateInfo" time="15.245872323" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [15.246866323] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [15.24757449] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoPickupSpecimen.autoTask_INFO [15.24826749] <Event name="StateInfo" time="15.247959782" tag="vvvvv" TaskAutoPickupSpecimen.state="RETRACT_ARM" />
+TaskExtenderArm.setPosition_INFO [15.250546865] taskParams=(elbowPos=0.0,extenderPos=15.125), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [15.251128449] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [15.264219033] <Event name="StateInfo" time="15.263890033" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [15.265076242] <Event name="StateInfo" time="15.264730034" tag="vvvvv" TaskAutoPickupSpecimen.state="DONE" />
+TaskAutoPickupSpecimen.stopSubsystems_INFO [15.266558492] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [15.268561076] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [15.276878535] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [15.278916993] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [15.281181493] Stopping subsystems.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [15.283739119] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+CmdAutoObservationZone.cmdPeriodic_INFO [15.296686787] <Event name="StateInfo" time="15.296234703" tag="vvvvv" CmdAutoObservationZone.state="DRIVE_TO_CHAMBER_POS" />
+TaskExtenderArm.setPosition_INFO [15.298364745] taskParams=(elbowPos=95.0,extenderPos=17.5), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [15.299218162] Successfully acquired subsystem ownerships.
+Wrist.performAction_INFO [15.30952858] currTiltPos=-12.880952380952365,currRotatePos=-0.08730158730158166,actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [15.32853329] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+purePursuitDrive.start_INFO [15.338388708] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=49.424,y=-55.497,angle=-193.487),vel=0.0), Waypoint(simple=true,index=1,pose=(x=49.423,y=-48.495,angle=-193.482),vel=0.0), Waypoint(simple=true,index=2,pose=(x=4.854,y=-41.892,angle=180.000),vel=0.0), Waypoint(simple=true,index=3,pose=(x=4.854,y=-31.892,angle=180.000),vel=0.0)])
+CmdAutoObservationZone.cmdPeriodic_INFO [15.352004001] <Event name="StateInfo" time="15.345758833" tag="^^^^^" CmdAutoObservationZone.state="DRIVE_TO_CHAMBER_POS" RobotPose=(x=49.424,y=-55.497,angle=-193.487) TargetPose=(x=4.854,y=-31.892,angle=180.000) vel=(x=0.039,y=-0.029,angle=-0.349) Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=0.000,y=0.000,angle=0.000),vel=0.0), Waypoint(simple=true,index=1,pose=(x=-1.632,y=-6.809,angle=0.004),vel=70.00704052931029), Waypoint(simple=false,index=-1,timestep=0.5364230039475628,pose=(x=0.355,y=-7.608,angle=0.645),vel=80.0,encPos=0.0,accel=0.0,jerk=0.0), Waypoint(simple=true,index=2,pose=(x=40.168,y=-23.624,angle=373.487),vel=80.0), Waypoint(simple=false,index=-1,timestep=0.2285714285714285,pose=(x=39.968,y=-24.457,angle=373.487),vel=80.0,encPos=0.0,accel=-350.0,jerk=0.0), Waypoint(simple=true,index=3,pose=(x=37.835,y=-33.348,angle=373.487),vel=0.0)]) />
+TaskExtenderArm.autoTask_INFO [15.404550089] <Event name="StateInfo" time="15.404136214" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [15.456232553] <Event name="StateInfo" time="15.455824803" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [15.531302894] <Event name="StateInfo" time="15.531025227" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [15.605481901] <Event name="StateInfo" time="15.605176234" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.pidCtrlTask_INFO [15.815385964] controlMode: Position onTarget=true(17.6781334016387/17.5), stalled=false, expired=false, event=(Extender=SIGNALED)
+Elbow.primary.pidCtrlTask_INFO [16.565666456] controlMode: Position onTarget=true(95.01446359663329/95.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [16.595140251] <Event name="StateInfo" time="16.594720542" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [16.597311126] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [16.598093376] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+purePursuitDrive.xPosPid.isStalled_INFO [18.048693313] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [18.049312522] PID stalled.
+purePursuitDrive.turnPid.isStalled_INFO [18.049867855] PID stalled.
+purePursuitDrive.driveTask_INFO [18.056589022] Done: index=5/6, stalled=true, timeout=false, posOnTarget=false,headingOnTarget=true,robotPose=(x=4.209,y=-34.231,angle=-179.194)
+purePursuitDrive.driveTask_INFO [18.079294983] Signal completion event (CmdAutoObservationZone=CLEARED).
+CmdAutoObservationZone.cmdPeriodic_INFO [18.089592276] <Event name="StateInfo" time="18.088647276" tag="vvvvv" CmdAutoObservationZone.state="SCORE_SPECIMEN" />
+TaskAutoScoreChamber.autoScoreChamber_INFO [18.094204109] taskParams=(alliance=RED_ALLIANCE,scorePose=(x=4.209,y=-31.892,angle=180.000),elbowPos=95.0,extenderPos=17.5,wristPos=90.000,noDrive=true), event=(CmdAutoObservationZone=SIGNALED)
+TaskAutoScoreChamber.acquireSubsystemsOwnership_INFO [18.096466568] Successfully acquired subsystem ownerships.
+CmdAutoObservationZone.cmdPeriodic_INFO [18.09724911] <Event name="StateInfo" time="18.09690611" tag="^^^^^" CmdAutoObservationZone.state="SCORE_SPECIMEN" />
+TaskAutoScoreChamber.autoTask_INFO [18.099371277] <Event name="StateInfo" time="18.098979277" tag="vvvvv" TaskAutoScoreChamber.state="GO_TO_SCORE_POSITION" />
+Wrist.performAction_INFO [18.109016403] currTiltPos=90.0714285714286,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [18.131418447] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [18.13215403] taskParams=(elbowPos=95.0,extenderPos=17.5), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [18.132807655] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [18.155461991] <Event name="StateInfo" time="18.155132699" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [18.170845076] <Event name="StateInfo" time="18.169120742" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [18.183570493] <Event name="StateInfo" time="18.183293702" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [18.213803496] <Event name="StateInfo" time="18.213319913" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.posPidCtrl.isStalled_INFO [18.295949963] PID stalled.
+Extender.primary.pidCtrlTask_INFO [18.29721638] controlMode: Position onTarget=false(17.645873593314747/17.5), stalled=true, expired=false, event=(Extender=SIGNALED)
+Elbow.primary.pidCtrlTask_INFO [18.389959973] controlMode: Position onTarget=true(94.72703868514823/95.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [18.411306183] <Event name="StateInfo" time="18.410116183" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [18.414288475] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [18.417046184] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoScoreChamber.autoTask_INFO [18.420981642] <Event name="StateInfo" time="18.420678309" tag="vvvvv" TaskAutoScoreChamber.state="SET_EXTENDER" />
+TaskExtenderArm.setPosition_INFO [18.422346642] taskParams=(elbowPos=null,extenderPos=17.5), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [18.423571059] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [18.436670394] <Event name="StateInfo" time="18.43415856" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [18.446309978] <Event name="StateInfo" time="18.445764561" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [18.457941063] <Event name="StateInfo" time="18.457523979" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [18.468838605] <Event name="StateInfo" time="18.468405772" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.posPidCtrl.isStalled_INFO [18.679536293] PID stalled.
+Extender.primary.pidCtrlTask_INFO [18.680624502] controlMode: Position onTarget=true(17.632047961175907/17.5), stalled=true, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [18.687896044] <Event name="StateInfo" time="18.686623211" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [18.688944294] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [18.690045919] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoScoreChamber.autoTask_INFO [18.690685836] <Event name="StateInfo" time="18.690383961" tag="vvvvv" TaskAutoScoreChamber.state="LOWER_ELBOW" />
+TaskExtenderArm.setPosition_INFO [18.691412378] taskParams=(elbowPos=95.0,extenderPos=19.5), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [18.692069795] Successfully acquired subsystem ownerships.
+Wrist.performAction_INFO [18.701145295] currTiltPos=90.0714285714286,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=0.75, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [18.723326839] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=0.75, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.autoTask_INFO [18.743475758] <Event name="StateInfo" time="18.743186133" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [18.753876592] <Event name="StateInfo" time="18.753518134" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [18.778678762] <Event name="StateInfo" time="18.778289095" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [18.811355932] <Event name="StateInfo" time="18.810888973" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+TaskAutoScoreChamber.autoTask_INFO [18.881152939] <Event name="StateInfo" time="18.880818105" tag="vvvvv" TaskAutoScoreChamber.state="SCORE_CHAMBER" />
+Elbow.primary.pidCtrlTask_INFO [18.989057074] controlMode: Position onTarget=true(95.01446359663329/95.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+Extender.primary.pidCtrlTask_INFO [19.159264425] controlMode: Position onTarget=true(19.544593740381792/19.5), stalled=false, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [19.166553467] <Event name="StateInfo" time="19.166102842" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [19.167435759] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [19.170400259] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoScoreChamber.autoTask_INFO [19.171182801] <Event name="StateInfo" time="19.170838926" tag="vvvvv" TaskAutoScoreChamber.state="RETRACT_EXTENDER_ARM" />
+TaskExtenderArm.setPosition_INFO [19.171800259] taskParams=(elbowPos=0.0,extenderPos=15.125), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [19.172425009] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [19.183735552] <Event name="StateInfo" time="19.183456136" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoScoreChamber.autoTask_INFO [19.184464136] <Event name="StateInfo" time="19.184112386" tag="vvvvv" TaskAutoScoreChamber.state="DONE" />
+TaskAutoScoreChamber.stopSubsystems_INFO [19.185101719] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [19.186211219] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [19.186806511] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [19.187540636] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [19.188129803] Stopping subsystems.
+TaskAutoScoreChamber.releaseSubsystemsOwnership_INFO [19.19278597] Releasing subsystem ownership (currOwner=scoreChamberTask, robotDrive=scoreChamberTask).
+CmdAutoObservationZone.cmdPeriodic_INFO [19.221701223] <Event name="StateInfo" time="19.221416848" tag="vvvvv" CmdAutoObservationZone.state="PICKUP_SPECIMEN" />
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [19.223027431] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=(CmdAutoObservationZone=SIGNALED)
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [19.224351598] Successfully acquired subsystem ownerships.
+CmdAutoObservationZone.cmdPeriodic_INFO [19.22582539] <Event name="StateInfo" time="19.225485015" tag="^^^^^" CmdAutoObservationZone.state="PICKUP_SPECIMEN" />
+TaskAutoPickupSpecimen.autoTask_INFO [19.227241432] <Event name="StateInfo" time="19.226848265" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [19.250721767] currTiltPos=0.8095238095238102,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [19.266751186] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [19.268945103] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [19.270778519] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [19.283388729] <Event name="StateInfo" time="19.283017437" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [19.284097771] <Event name="StateInfo" time="19.283767896" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [19.29066523] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=4.200,y=-34.221,angle=-179.254),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.080,y=-48.257,angle=180.000),vel=0.0)])
+TaskExtenderArm.autoTask_INFO [19.385621406] <Event name="StateInfo" time="19.385304656" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [19.454475746] <Event name="StateInfo" time="19.453718871" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [19.505370126] <Event name="StateInfo" time="19.50486146" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.pidCtrlTask_INFO [19.902705041] controlMode: Position onTarget=true(18.152813438405463/18.0), stalled=false, expired=false, event=(Extender=SIGNALED)
+Elbow.primary.pidCtrlTask_INFO [20.43746047] controlMode: Position onTarget=true(18.887922754732628/17.85), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [20.463112847] <Event name="StateInfo" time="20.462786181" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [20.463937973] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [20.464933139] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+purePursuitDrive.driveTask_INFO [22.495480218] Done: index=3/4, stalled=false, timeout=false, posOnTarget=true,headingOnTarget=true,robotPose=(x=47.698,y=-48.445,angle=-178.679)
+purePursuitDrive.driveTask_INFO [22.529248805] Signal completion event (TaskAutoPickupSpecimen=CLEARED).
+TaskAutoPickupSpecimen.autoTask_INFO [22.533690014] <Event name="StateInfo" time="22.533247264" tag="vvvvv" TaskAutoPickupSpecimen.state="APPROACH_SPECIMEN" />
+TaskAutoPickupSpecimen.autoTask_INFO [23.479247776] <Event name="StateInfo" time="23.478858692" tag="vvvvv" TaskAutoPickupSpecimen.state="PICKUP_SPECIMEN" />
+TaskExtenderArm.setPosition_INFO [23.535696365] taskParams=(elbowPos=27.85,extenderPos=null), event=(TaskAutoPickupSpecimen=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [23.536401615] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [23.555793658] <Event name="StateInfo" time="23.553997866" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [23.581070077] <Event name="StateInfo" time="23.580629077" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [23.599081663] <Event name="StateInfo" time="23.598755288" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [23.613873831] <Event name="StateInfo" time="23.613553872" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Elbow.primary.pidCtrlTask_INFO [23.921040278] controlMode: Position onTarget=true(28.455066237021114/27.85), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [23.927678321] <Event name="StateInfo" time="23.927361571" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [23.930016613] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [23.933336363] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoPickupSpecimen.autoTask_INFO [23.934581196] <Event name="StateInfo" time="23.933780571" tag="vvvvv" TaskAutoPickupSpecimen.state="RETRACT_ARM" />
+TaskExtenderArm.setPosition_INFO [23.936061113] taskParams=(elbowPos=0.0,extenderPos=15.125), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [23.936794363] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [23.944618906] <Event name="StateInfo" time="23.944277947" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [23.945280406] <Event name="StateInfo" time="23.944988739" tag="vvvvv" TaskAutoPickupSpecimen.state="DONE" />
+TaskAutoPickupSpecimen.stopSubsystems_INFO [23.946296572] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [23.947243031] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [23.948279031] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [23.949092198] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [23.949887864] Stopping subsystems.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [23.95318924] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+CmdAutoObservationZone.cmdPeriodic_INFO [23.973395617] <Event name="StateInfo" time="23.973092575" tag="vvvvv" CmdAutoObservationZone.state="DRIVE_TO_CHAMBER_POS" />
+TaskExtenderArm.setPosition_INFO [23.975654284] taskParams=(elbowPos=95.0,extenderPos=17.5), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [23.976352825] Successfully acquired subsystem ownerships.
+Wrist.performAction_INFO [23.984345951] currTiltPos=-12.880952380952365,currRotatePos=-0.08730158730158166,actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [24.002796786] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+purePursuitDrive.start_INFO [24.008217995] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=47.490,y=-55.761,angle=-177.524),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.491,y=-48.752,angle=-177.524),vel=0.0), Waypoint(simple=true,index=2,pose=(x=7.354,y=-41.892,angle=180.000),vel=0.0), Waypoint(simple=true,index=3,pose=(x=7.354,y=-31.892,angle=180.000),vel=0.0)])
+CmdAutoObservationZone.cmdPeriodic_INFO [24.017696288] <Event name="StateInfo" time="24.01724508" tag="^^^^^" CmdAutoObservationZone.state="DRIVE_TO_CHAMBER_POS" RobotPose=(x=47.491,y=-55.763,angle=-177.523) TargetPose=(x=7.354,y=-31.892,angle=180.000) vel=(x=-0.004,y=0.005,angle=0.046) Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=0.000,y=0.000,angle=0.000),vel=0.0), Waypoint(simple=true,index=1,pose=(x=0.302,y=-7.003,angle=-0.001),vel=70.04720229605778), Waypoint(simple=false,index=-1,timestep=0.4823172588223451,pose=(x=2.419,y=-7.271,angle=-0.130),vel=80.0,encPos=0.0,accel=0.0,jerk=0.0), Waypoint(simple=true,index=2,pose=(x=40.698,y=-12.122,angle=357.524),vel=80.0), Waypoint(simple=false,index=-1,timestep=0.22857142857142856,pose=(x=40.735,y=-12.978,angle=357.524),vel=80.0,encPos=0.0,accel=-350.0,jerk=0.0), Waypoint(simple=true,index=3,pose=(x=41.130,y=-22.113,angle=357.524),vel=0.0)]) />
+TaskExtenderArm.autoTask_INFO [24.086467503] <Event name="StateInfo" time="24.086184003" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [24.142048675] <Event name="StateInfo" time="24.140864217" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [24.196584514] <Event name="StateInfo" time="24.196290514" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [24.262422438] <Event name="StateInfo" time="24.262055813" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.pidCtrlTask_INFO [24.415201245] controlMode: Position onTarget=true(17.6781334016387/17.5), stalled=false, expired=false, event=(Extender=SIGNALED)
+Elbow.primary.pidCtrlTask_INFO [25.263046871] controlMode: Position onTarget=true(94.93234219335184/95.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+TaskExtenderArm.autoTask_INFO [25.312915168] <Event name="StateInfo" time="25.31253221" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [25.313920252] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [25.315629418] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+purePursuitDrive.xPosPid.isStalled_INFO [26.515092956] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [26.516581914] PID stalled.
+purePursuitDrive.turnPid.isStalled_INFO [26.520137623] PID stalled.
+purePursuitDrive.driveTask_INFO [26.521860498] Done: index=5/6, stalled=true, timeout=false, posOnTarget=false,headingOnTarget=true,robotPose=(x=5.432,y=-35.429,angle=-180.320)
+purePursuitDrive.driveTask_INFO [26.54285525] Signal completion event (CmdAutoObservationZone=CLEARED).
+CmdAutoObservationZone.cmdPeriodic_INFO [26.561706544] <Event name="StateInfo" time="26.561326502" tag="vvvvv" CmdAutoObservationZone.state="SCORE_SPECIMEN" />
+TaskAutoScoreChamber.autoScoreChamber_INFO [26.566876044] taskParams=(alliance=RED_ALLIANCE,scorePose=(x=5.432,y=-31.892,angle=180.000),elbowPos=95.0,extenderPos=17.5,wristPos=90.000,noDrive=true), event=(CmdAutoObservationZone=SIGNALED)
+TaskAutoScoreChamber.acquireSubsystemsOwnership_INFO [26.567695336] Successfully acquired subsystem ownerships.
+CmdAutoObservationZone.cmdPeriodic_INFO [26.568507919] <Event name="StateInfo" time="26.568145669" tag="^^^^^" CmdAutoObservationZone.state="SCORE_SPECIMEN" />
+TaskAutoScoreChamber.autoTask_INFO [26.569388753] <Event name="StateInfo" time="26.569037294" tag="vvvvv" TaskAutoScoreChamber.state="GO_TO_SCORE_POSITION" />
+Wrist.performAction_INFO [26.589064005] currTiltPos=90.0714285714286,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [26.618329258] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [26.619397633] taskParams=(elbowPos=95.0,extenderPos=17.5), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [26.620105508] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [26.630589759] <Event name="StateInfo" time="26.630300717" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [26.63826351] <Event name="StateInfo" time="26.637893093" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [26.666937554] <Event name="StateInfo" time="26.666347804" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [26.683804348] <Event name="StateInfo" time="26.683164431" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Elbow.primary.pidCtrlTask_INFO [26.85875099] controlMode: Position onTarget=true(94.97340289499257/95.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+Extender.primary.posPidCtrl.isStalled_INFO [26.886711035] PID stalled.
+Extender.primary.pidCtrlTask_INFO [26.887591576] controlMode: Position onTarget=true(17.609005240944512/17.5), stalled=true, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [26.892267868] <Event name="StateInfo" time="26.891997202" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [26.892951827] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [26.893559369] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoScoreChamber.autoTask_INFO [26.894135994] <Event name="StateInfo" time="26.893857744" tag="vvvvv" TaskAutoScoreChamber.state="SET_EXTENDER" />
+TaskExtenderArm.setPosition_INFO [26.894672077] taskParams=(elbowPos=null,extenderPos=17.5), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [26.89515041] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [26.907080162] <Event name="StateInfo" time="26.906730745" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [26.920327371] <Event name="StateInfo" time="26.919964246" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [26.929089622] <Event name="StateInfo" time="26.928743414" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [26.964004167] <Event name="StateInfo" time="26.963592042" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.posPidCtrl.isStalled_INFO [27.054353468] PID stalled.
+Extender.primary.pidCtrlTask_INFO [27.05536701] controlMode: Position onTarget=false(17.609005240944512/17.5), stalled=true, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [27.06053126] <Event name="StateInfo" time="27.060125844" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [27.063398052] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [27.065689386] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoScoreChamber.autoTask_INFO [27.068191303] <Event name="StateInfo" time="27.067194969" tag="vvvvv" TaskAutoScoreChamber.state="LOWER_ELBOW" />
+TaskExtenderArm.setPosition_INFO [27.073697387] taskParams=(elbowPos=95.0,extenderPos=19.5), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [27.075775804] Successfully acquired subsystem ownerships.
+Wrist.performAction_INFO [27.080868887] currTiltPos=90.0,currRotatePos=0.0,actionParams=(op=SetPosition, owner=null, tiltValue=0.75, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [27.09000243] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=0.75, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.autoTask_INFO [27.106385057] <Event name="StateInfo" time="27.106098057" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [27.119522308] <Event name="StateInfo" time="27.118994975" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [27.154176686] <Event name="StateInfo" time="27.153848853" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [27.170666646] <Event name="StateInfo" time="27.170332688" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+TaskAutoScoreChamber.autoTask_INFO [27.253634446] <Event name="StateInfo" time="27.253315363" tag="vvvvv" TaskAutoScoreChamber.state="SCORE_CHAMBER" />
+Elbow.primary.pidCtrlTask_INFO [27.356534748] controlMode: Position onTarget=true(95.01446359663329/95.0), stalled=false, expired=false, event=(Elbow=SIGNALED)
+Extender.primary.pidCtrlTask_INFO [27.551688643] controlMode: Position onTarget=true(19.24042983332736/19.5), stalled=false, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [27.561497394] <Event name="StateInfo" time="27.561172477" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [27.563228436] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [27.568946561] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskAutoScoreChamber.autoTask_INFO [27.569839645] <Event name="StateInfo" time="27.569432478" tag="vvvvv" TaskAutoScoreChamber.state="RETRACT_EXTENDER_ARM" />
+TaskExtenderArm.setPosition_INFO [27.570480145] taskParams=(elbowPos=0.0,extenderPos=15.125), event=(TaskAutoScoreChamber.event=SIGNALED)
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [27.571023812] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [27.592198522] <Event name="StateInfo" time="27.591847647" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoScoreChamber.autoTask_INFO [27.595815481] <Event name="StateInfo" time="27.595413856" tag="vvvvv" TaskAutoScoreChamber.state="DONE" />
+TaskAutoScoreChamber.stopSubsystems_INFO [27.598441648] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [27.601927065] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [27.605247398] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [27.610534149] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [27.613660233] Stopping subsystems.
+TaskAutoScoreChamber.releaseSubsystemsOwnership_INFO [27.619603817] Releasing subsystem ownership (currOwner=scoreChamberTask, robotDrive=scoreChamberTask).
+CmdAutoObservationZone.cmdPeriodic_INFO [27.631358276] <Event name="StateInfo" time="27.631038901" tag="vvvvv" CmdAutoObservationZone.state="PICKUP_SPECIMEN" />
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [27.631937234] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=(CmdAutoObservationZone=SIGNALED)
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [27.632468068] Successfully acquired subsystem ownerships.
+CmdAutoObservationZone.cmdPeriodic_INFO [27.63328736] <Event name="StateInfo" time="27.632949901" tag="^^^^^" CmdAutoObservationZone.state="PICKUP_SPECIMEN" />
+TaskAutoPickupSpecimen.autoTask_INFO [27.633885568] <Event name="StateInfo" time="27.633565901" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [27.652213903] currTiltPos=0.8095238095238102,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [27.668606155] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [27.670564405] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [27.671806322] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [27.693458782] <Event name="StateInfo" time="27.693122199" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [27.694072449] <Event name="StateInfo" time="27.693765907" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [27.696637366] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=5.439,y=-35.548,angle=-180.127),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.080,y=-48.257,angle=180.000),vel=0.0)])
+TaskExtenderArm.autoTask_INFO [27.771001582] <Event name="StateInfo" time="27.766877998" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [27.851429548] <Event name="StateInfo" time="27.850299923" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [27.915003846] <Event name="StateInfo" time="27.913754929" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.pidCtrlTask_INFO [28.299949052] controlMode: Position onTarget=true(18.162030526498018/18.0), stalled=false, expired=false, event=(Extender=SIGNALED)
+purePursuitDrive.xPosPid.isStalled_INFO [28.509464031] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [28.510948031] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [28.569983704] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [28.570487412] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [28.620415209] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [28.621033251] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [28.678935798] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [28.680530923] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [28.718370885] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [28.719709344] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [28.769660474] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [28.770265682] PID stalled.
+Elbow.primary.pidCtrlTask_INFO [28.838519772] controlMode: Position onTarget=true(18.723679948169746/17.85), stalled=false, expired=false, event=(Elbow=SIGNALED)
+purePursuitDrive.xPosPid.isStalled_INFO [28.840974439] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [28.842909939] PID stalled.
+TaskExtenderArm.autoTask_INFO [28.873107651] <Event name="StateInfo" time="28.872645942" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [28.874526609] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [28.878191693] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+purePursuitDrive.xPosPid.isStalled_INFO [28.914468322] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [28.91502103] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [28.970291286] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [28.971891661] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.018016707] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.020966624] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.071568171] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.073816338] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.116520717] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.123582259] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.191963225] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.193924391] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.252705147] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.253928689] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.307519819] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.308614736] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.379557993] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.380115077] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.445412542] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.446860375] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.496980964] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.498117589] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.558097095] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.558611011] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.605302183] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.606853266] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.671768064] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.67339294] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.715093985] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.715767152] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.778509908] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.780665909] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.837765498] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.838447998] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.904285338] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.907409671] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.959920468] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.960414552] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [29.999067972] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [29.999996639] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [30.067049062] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [30.068208729] PID stalled.
+TaskAutoScoreChamber.cancel_INFO [30.113815775] Canceling auto task operation.
+TaskAutoPickupSpecimen.cancel_INFO [30.115638692] Canceling auto task operation.
+TaskAutoPickupSpecimen.stopSubsystems_INFO [30.116796609] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [30.125937735] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [30.140656403] Stopping subsystems.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [30.145738404] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+TrcDigitalInput.getInput.printElapsedTime_INFO [30.157132655] TrcDigitalInput.getInput: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.getPos.printElapsedTime_INFO [30.157847238] TrcMotor.getPos: avgElapsed=6.23294266604303E-4, minElapsed=4.083E-6, maxElapsed=0.020678002
+TrcMotor.setPower.printElapsedTime_INFO [30.158468488] TrcMotor.setPower: avgElapsed=0.00191339354354067, minElapsed=1.3708E-5, maxElapsed=0.01617146
+TrcMotor.setVel.printElapsedTime_INFO [30.16100803] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [30.162170322] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [30.163448405] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [30.165307489] TrcServo.setPos: avgElapsed=0.008142538772727272, minElapsed=0.002592917, maxElapsed=0.012131876
+Robot.stopMode_INFO [30.167038239] Disabling Webcam SampleVision.
+Robot.stopMode_INFO [30.178130907] Saved robot pose=(x=7.886,y=-36.971,angle=-195.289)
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.178952532] TrcWatchdogMgr: STANDALONE_TASK=1.217651976744186E-4/0.9965807848875968
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.179793699] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=2.145848240507429E-5/0.01122680929628986
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.180621449] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=1.1173013728386481E-5/0.011226806635328872
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.181253782] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=1.0614131332001044E-5/0.0112268049500391
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.181831574] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=1.4304884047267356E-5/0.011226803328134503
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.182383407] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.008602565082077053/0.016832570810161922
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.183284949] purePursuitDrive.driveTask: POST_PERIODIC_TASK=0.04120313269866667/0.07960422888799999
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.183919616] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=1.9668033276858247E-5/0.011226592717233589
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.184951241] blinkin: OUTPUT_TASK=1.7087708988227117E-4/0.011226568845605803
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.185530199] Elbow.primary.pidCtrlTask: OUTPUT_TASK=4.702138989052046E-4/0.011226869928186636
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.186220574] Extender.primary.pidCtrlTask: OUTPUT_TASK=0.0023928230613432964/0.011226794686332437
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.186867783] TaskExtenderArm: POST_PERIODIC_TASK=0.0011227536510067114/0.06444533030201342
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.189214533] Grabber.colorTrigger.triggerTask: PRE_PERIODIC_TASK=0.012922210045735476/0.03709136152410383
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.190761242] Grabber.primary.pidCtrlTask: OUTPUT_TASK=8.711595377731439E-6/0.01122628972292454
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.1916062] Grabber.follower.pidCtrlTask: OUTPUT_TASK=2.736970589513011E-6/0.011226287999695902
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.193413075] null.triggerTask: PRE_PERIODIC_TASK=0.010186270408450705/0.09817835376056337
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.195537867] TaskAutoPickupSpecimen: POST_PERIODIC_TASK=0.0015479058817891374/0.06008532978594249
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [30.199234159] TaskAutoScoreChamber: POST_PERIODIC_TASK=0.0017533044615384615/0.11750638431623932
+FtcOpMode.printPerformanceMetrics_INFO [30.200937784] [FtcAutonomous] Main robot thread average elapsed times:
+       robotInit=9.573976s
+    initPeriodic=0.000001s
+       startMode=0.000125s
+    loopInterval=0.037091s (26.960Hz)
+             sdk=0.000250s
+ prePeriodicTask=0.014809s
+        periodic=0.000579s
+postPeriodicTask=0.020917s
+         loopSum=0.036945s
+        stopMode=0.000000s
+FtcAuto.stopMode_INFO [30.203032534] ***** Stopping autonomous: 20241215@145930 *****

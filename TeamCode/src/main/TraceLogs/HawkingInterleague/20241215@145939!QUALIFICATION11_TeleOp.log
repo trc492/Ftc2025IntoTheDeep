@@ -1,0 +1,516 @@
+FtcTeleOp.startMode_INFO [0.006746251] ***** Starting TeleOp: 20241215@145939 *****
+Robot.startMode_INFO [0.010908626] Enabling Webcam SampleVision for RedAllianceSamples
+Robot.startMode_INFO [0.011599293] Enabling Limelight SampleVision for pipeline 1
+Vision.setLimelightVisionEnabled_INFO [0.017694252] Pipeline 1 is enabled: running=true
+Robot.startMode_INFO [0.040026004] Restore saved RobotPose=(x=7.886,y=-36.971,angle=-195.289)
+FtcTeleOp.operatorButtonEvent_INFO [3.798536965] >>>>> ZeroCalibrating.
+Robot.cancelAll_INFO [3.800222215] Cancel all operations.
+TaskExtenderArm.cancel_INFO [3.801749965] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [3.802965049] Stopping subsystems.
+Wrist.cancel_INFO [3.806078007] owner=null
+Wrist.finish_INFO [3.806561007] completed=false, actionParams=null
+TaskAutoPickupFromGround.cancel_INFO [3.807651841] Canceling auto task operation.
+TaskAutoPickupSpecimen.cancel_INFO [3.808179466] Canceling auto task operation.
+TaskAutoScoreBasket.cancel_INFO [3.808780299] Canceling auto task operation.
+TaskAutoScoreChamber.cancel_INFO [3.809612716] Canceling auto task operation.
+TaskAutoClimb.cancel_INFO [3.810069758] Canceling auto task operation.
+TaskExtenderArm.zeroCalibrate_INFO [3.810619258] Zero Calibrating.
+Elbow.primary.acquireOwnership_INFO [3.81123555] Acquired ownership on behalf of FtcTeleOp
+Extender.primary.acquireOwnership_INFO [3.812019258] Acquired ownership on behalf of FtcTeleOp
+Elbow.primary.pidCtrlTask_INFO [3.825470634] Zero calibration done, event=(Elbow.primary.releaseOwnership=CLEARED)
+Elbow.primary.pidCtrlTask_INFO [3.833032968] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Elbow.primary.releaseOwnership=SIGNALED)
+FtcTeleOp.driverButtonEvent_INFO [3.864622222] >>>>> Enabling FIELD mode.
+FtcTeleOp.setDriveOrientation_INFO [3.865972347] driveOrientation=FIELD
+Elbow.primary.releaseOwnership_INFO [3.872133222] Released ownership on behalf of FtcTeleOp
+FtcTeleOp.driverButtonEvent_INFO [7.768599614] >>>>> DriverAltFunc=true
+FtcTeleOp.driverButtonEvent_INFO [8.477118685] >>>>> Auto pickup specimen.
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [8.481871686] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=null
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [8.483355686] Successfully acquired subsystem ownerships.
+TaskAutoPickupSpecimen.autoTask_INFO [8.573259903] <Event name="StateInfo" time="8.572876653" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [8.586681821] currTiltPos=90.0714285714286,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [8.608560032] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [8.61104649] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_WARN [8.612732324] Failed to acquire subsystem ownership (currOwner=null, elbow=ExtenderArm, extender=FtcTeleOp).
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [8.613488615] Releasing subsystem ownership (currOwner=null, elbow=ExtenderArm, extender=FtcTeleOp).
+TaskExtenderArm.startAutoTask_WARN [8.614121532] Failed to acquire subsystems ownership.
+TaskAutoPickupSpecimen.autoTask_INFO [8.645749285] <Event name="StateInfo" time="8.645438952" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [8.653787036] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=38.483,y=-47.182,angle=182.034),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.080,y=-48.257,angle=180.000),vel=0.0)])
+Extender.primary.isMotorStalled_INFO [8.804517468] Stall detection triggered.
+Extender.primary.zeroCalibratingMotor_WARN [8.817999469] Stalled, lower limit switch might have failed!
+Extender.primary.pidCtrlTask_INFO [8.824429553] Zero calibration done, event=(Extender.primary.releaseOwnership=CLEARED)
+Extender.primary.pidCtrlTask_INFO [8.825399928] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Extender.primary.releaseOwnership=SIGNALED)
+FtcTeleOp.driverButtonEvent_INFO [8.948276774] >>>>> DriverAltFunc=false
+Extender.primary.releaseOwnership_INFO [8.949826108] Released ownership on behalf of FtcTeleOp
+FtcTeleOp.driverButtonEvent_INFO [9.570139045] >>>>> DriverAltFunc=true
+purePursuitDrive.driveTask_INFO [9.663637763] Done: index=1/2, stalled=false, timeout=false, posOnTarget=true,headingOnTarget=true,robotPose=(x=47.725,y=-48.696,angle=179.809)
+purePursuitDrive.driveTask_INFO [9.684412015] Signal completion event (TaskAutoPickupSpecimen=CLEARED).
+TaskAutoPickupSpecimen.autoTask_INFO [9.685034431] <Event name="StateInfo" time="9.684731973" tag="vvvvv" TaskAutoPickupSpecimen.state="APPROACH_SPECIMEN" />
+FtcTeleOp.driverButtonEvent_INFO [10.170569355] >>>>> Cancel all.
+Robot.cancelAll_INFO [10.173461814] Cancel all operations.
+TaskExtenderArm.cancel_INFO [10.174654147] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [10.175891981] Stopping subsystems.
+Wrist.cancel_INFO [10.177266023] owner=null
+Wrist.finish_INFO [10.178502981] completed=false, actionParams=null
+TaskAutoPickupFromGround.cancel_INFO [10.203947692] Canceling auto task operation.
+TaskAutoPickupSpecimen.cancel_INFO [10.20451615] Canceling auto task operation.
+TaskAutoPickupSpecimen.stopSubsystems_INFO [10.205178234] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [10.246118321] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [10.246769613] Stopping subsystems.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [10.248460696] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+TaskAutoScoreBasket.cancel_INFO [10.249025655] Canceling auto task operation.
+TaskAutoScoreChamber.cancel_INFO [10.24947978] Canceling auto task operation.
+TaskAutoClimb.cancel_INFO [10.250366447] Canceling auto task operation.
+FtcTeleOp.driverButtonEvent_INFO [10.358738999] >>>>> DriverAltFunc=false
+FtcTeleOp.driverButtonEvent_INFO [11.060111361] >>>>> DriverAltFunc=true
+FtcTeleOp.driverButtonEvent_INFO [11.272553508] >>>>> Auto pickup specimen.
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [11.273929299] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=null
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [11.275233925] Successfully acquired subsystem ownerships.
+TaskAutoPickupSpecimen.autoTask_INFO [11.300657052] <Event name="StateInfo" time="11.30031026" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [11.30996997] currTiltPos=-12.880952380952365,currRotatePos=-0.08730158730158166,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [11.336340139] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [11.338700598] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [11.341461223] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [11.488398238] <Event name="StateInfo" time="11.487658571" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [11.490021071] <Event name="StateInfo" time="11.489681863" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [11.497693655] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=47.589,y=-54.135,angle=179.758),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.080,y=-48.257,angle=180.000),vel=0.0)])
+TaskExtenderArm.autoTask_INFO [11.606216708] <Event name="StateInfo" time="11.605925041" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [11.787548809] <Event name="StateInfo" time="11.787088268" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+FtcTeleOp.driverButtonEvent_INFO [11.818527313] >>>>> DriverAltFunc=false
+TaskExtenderArm.autoTask_INFO [11.889645861] <Event name="StateInfo" time="11.88925007" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Elbow.primary.pidCtrlTask_INFO [12.053873169] controlMode: Position onTarget=true(19.709136787547095/17.85), stalled=false, expired=false, event=(Elbow=SIGNALED)
+Extender.primary.pidCtrlTask_INFO [12.108678508] controlMode: Position onTarget=true(18.10211945389639/18.0), stalled=false, expired=false, event=(Extender=SIGNALED)
+TaskExtenderArm.autoTask_INFO [12.131261969] <Event name="StateInfo" time="12.130870261" tag="vvvvv" TaskExtenderArm.state="DONE" />
+TaskExtenderArm.stopSubsystems_INFO [12.133024219] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [12.135363969] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+purePursuitDrive.xPosPid.isStalled_INFO [12.318811821] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [12.479109796] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [12.53565376] >>>>> Auto intake.
+purePursuitDrive.xPosPid.isStalled_INFO [12.590465515] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [12.777177701] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [12.863160459] >>>>> DriverAltFunc=true
+FtcTeleOp.driverButtonEvent_INFO [12.96928222] >>>>> DriverAltFunc=false
+purePursuitDrive.xPosPid.isStalled_INFO [13.384785053] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [13.387881679] PID stalled.
+purePursuitDrive.xPosPid.isStalled_INFO [13.565874488] PID stalled.
+purePursuitDrive.yPosPid.isStalled_INFO [13.567983822] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [13.777562093] >>>>> DriverAltFunc=true
+FtcTeleOp.driverButtonEvent_INFO [13.946217485] >>>>> Cancel all.
+Robot.cancelAll_INFO [13.949544818] Cancel all operations.
+TaskExtenderArm.cancel_INFO [13.95100111] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [13.952653985] Stopping subsystems.
+Wrist.cancel_INFO [13.954700319] owner=null
+Wrist.finish_INFO [13.956152819] completed=false, actionParams=null
+TaskAutoPickupFromGround.cancel_INFO [13.993127989] Canceling auto task operation.
+TaskAutoPickupSpecimen.cancel_INFO [13.994602364] Canceling auto task operation.
+TaskAutoPickupSpecimen.stopSubsystems_INFO [13.996212073] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [14.016286617] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [14.0175507] Stopping subsystems.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [14.018857367] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+TaskAutoScoreBasket.cancel_INFO [14.019999534] Canceling auto task operation.
+TaskAutoScoreChamber.cancel_INFO [14.021245826] Canceling auto task operation.
+TaskAutoClimb.cancel_INFO [14.022327326] Canceling auto task operation.
+FtcTeleOp.driverButtonEvent_INFO [14.147761505] >>>>> DriverAltFunc=false
+FtcTeleOp.driverButtonEvent_INFO [14.595844092] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [15.290426161] >>>>> Stop manual intake.
+Extender.primary.posPidCtrl.isStalled_INFO [15.475112722] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [16.330528849] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [17.981959098] >>>>> Auto intake.
+FtcTeleOp.driverButtonEvent_INFO [18.097437235] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [18.284450421] >>>>> Stop manual intake.
+FtcTeleOp.driverButtonEvent_INFO [20.569999942] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [21.645663217] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [21.803815399] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [22.618087856] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [23.07681861] >>>>> Auto dump.
+FtcTeleOp.driverButtonEvent_INFO [23.573092702] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [23.58247037] >>>>> Cancel auto dump.
+Extender.primary.posPidCtrl.isStalled_INFO [24.580001678] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [24.64395456] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [24.645430101] currTiltPos=-12.880952380952365,currRotatePos=-0.08730158730158166,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [24.665174187] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [25.213527408] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [27.076083512] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [27.940953432] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [28.639675419] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [28.964053994] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [29.953336968] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [30.414050764] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [30.551025903] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [31.852259825] >>>>> Auto dump.
+FtcTeleOp.operatorButtonEvent_INFO [32.027884593] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [32.750214957] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [32.755991125] >>>>> Cancel auto dump.
+FtcTeleOp.driverButtonEvent_INFO [34.877306629] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [36.482477957] >>>>> Wrist tilt preset down.
+Wrist.performAction_INFO [36.484896166] currTiltPos=-77.13492063492063,currRotatePos=-0.08730158730156035,actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=-45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [36.511364044] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=-45.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [36.991780217] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [37.202308446] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [37.426335011] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [38.483966575] >>>>> Stop manual intake.
+FtcTeleOp.driverButtonEvent_INFO [38.740609643] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [39.405310168] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [39.668556861] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [39.888536841] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [40.183287329] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [40.87088544] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [41.082718003] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [41.808005867] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [43.182159089] >>>>> Auto dump.
+FtcTeleOp.driverButtonEvent_INFO [43.407040528] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [43.414256362] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [43.966366251] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [43.97278671] >>>>> Cancel auto dump.
+FtcTeleOp.driverButtonEvent_INFO [44.232237944] >>>>> DriverAltFunc=true
+FtcTeleOp.driverButtonEvent_INFO [44.493971179] >>>>> Auto pickup specimen.
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [44.500911096] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=null
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [44.504194097] Successfully acquired subsystem ownerships.
+TaskAutoPickupSpecimen.autoTask_INFO [44.625186775] <Event name="StateInfo" time="44.624868859" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [44.634839485] currTiltPos=-77.13492063492062,currRotatePos=-45.17460317460318,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [44.65794182] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [44.659765321] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [44.660567696] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [44.710945242] <Event name="StateInfo" time="44.710640159" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [44.712114534] <Event name="StateInfo" time="44.711230492" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [44.71972091] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=54.948,y=-40.010,angle=537.480),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.079,y=-48.252,angle=180.013),vel=0.0)])
+TaskExtenderArm.autoTask_INFO [44.88641426] <Event name="StateInfo" time="44.886127843" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+FtcTeleOp.driverButtonEvent_INFO [44.936103473] >>>>> Cancel auto pickup specimen.
+TaskAutoPickupSpecimen.cancel_INFO [44.93676264] Canceling auto task operation.
+TaskAutoPickupSpecimen.stopSubsystems_INFO [44.937794265] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [44.959605392] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [44.963383643] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [44.965619851] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [44.967766227] Stopping subsystems.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [44.972003852] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+FtcTeleOp.driverButtonEvent_INFO [45.08184378] >>>>> DriverAltFunc=false
+FtcTeleOp.driverButtonEvent_INFO [45.313841303] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [45.41372723] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [47.817464471] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [47.993010489] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [49.695067368] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [53.023168703] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [54.886130223] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [54.890828682] >>>>> Manual dump.
+FtcTeleOp.driverButtonEvent_INFO [55.234377925] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [55.242518051] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [55.46414974] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [55.791962106] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [55.793327689] currTiltPos=-12.880952380952365,currRotatePos=-0.08730158730158166,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [55.819379942] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [55.92108091] >>>>> DrivePower slow.
+FtcTeleOp.driverButtonEvent_INFO [56.38529179] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [56.549957182] >>>>> DriverAltFunc=true
+Extender.primary.isMotorStalled_INFO [56.659940026] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [56.762743787] Stall detection triggered.
+FtcTeleOp.driverButtonEvent_INFO [56.815034375] >>>>> Auto pickup specimen.
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [56.828912168] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=null
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [56.837257044] Successfully acquired subsystem ownerships.
+Extender.primary.isMotorStalled_INFO [56.87651159] Stall detection triggered.
+TaskAutoPickupSpecimen.autoTask_INFO [56.955025931] <Event name="StateInfo" time="56.954604473" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [56.965808265] currTiltPos=-77.13492063492063,currRotatePos=-0.08730158730156035,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Extender.primary.isMotorStalled_INFO [56.982975475] Stall detection triggered.
+Wrist.finish_INFO [56.990688601] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [56.991474935] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [56.992008393] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [57.029361563] <Event name="StateInfo" time="57.029062022" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [57.030889897] <Event name="StateInfo" time="57.030525897" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [57.033788189] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=16.600,y=-66.190,angle=746.753),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.080,y=-48.257,angle=180.000),vel=0.0)])
+Extender.primary.isMotorStalled_INFO [57.09838157] Stall detection triggered.
+TaskExtenderArm.autoTask_INFO [57.124003031] <Event name="StateInfo" time="57.123655656" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+FtcTeleOp.driverButtonEvent_INFO [57.170564411] >>>>> Cancel auto pickup specimen.
+TaskAutoPickupSpecimen.cancel_INFO [57.173237245] Canceling auto task operation.
+TaskAutoPickupSpecimen.stopSubsystems_INFO [57.175240411] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [57.195163288] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [57.196261414] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [57.197882789] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [57.201052331] Stopping subsystems.
+Extender.primary.isMotorStalled_INFO [57.205477206] Stall detection triggered.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [57.207468123] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+Extender.primary.isMotorStalled_INFO [57.313352175] Stall detection triggered.
+FtcTeleOp.driverButtonEvent_INFO [57.314928051] >>>>> DriverAltFunc=false
+Extender.primary.isMotorStalled_INFO [57.422863395] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [57.543128948] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [57.645451459] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [57.755455595] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [57.871476231] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [57.974131533] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [58.078452252] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [58.184453555] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [58.290607982] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [58.404526577] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [58.511118796] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [58.62439164] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [58.726376692] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [58.830101536] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [58.931479338] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [59.040746724] Stall detection triggered.
+FtcTeleOp.operatorButtonEvent_INFO [59.11647769] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [59.126173274] currTiltPos=-12.880952380952365,currRotatePos=-0.08730158730158166,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+Extender.primary.isMotorStalled_INFO [59.146266485] Stall detection triggered.
+Wrist.finish_INFO [59.148676818] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [59.221693825] >>>>> DrivePower slow.
+Extender.primary.isMotorStalled_INFO [59.252245037] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [59.362899006] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [59.476121684] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [59.582636028] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [59.689047706] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [59.800500259] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [59.906165561] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [60.014591197] Stall detection triggered.
+Extender.primary.posPidCtrl.isStalled_INFO [60.465472617] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [61.345974997] >>>>> Wrist rotate preset right.
+Wrist.performAction_INFO [61.347206414] currTiltPos=-77.13492063492063,currRotatePos=-0.08730158730156035,actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [61.363507374] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=45.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [61.586201605] >>>>> Wrist rotate preset right.
+Wrist.performAction_INFO [61.591669772] currTiltPos=-77.13492063492065,currRotatePos=44.999999999999986,actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492065, rotateValue=90.0, event=null, timeout=0.0)
+Wrist.finish_INFO [61.599944648] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492065, rotateValue=90.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [61.802778126] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [62.920978655] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [63.132040052] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [63.978983845] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [64.256666581] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [64.751148964] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [64.892309812] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [65.193127259] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [65.197339801] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [66.819434797] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [66.825474339] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [67.381983437] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [67.387198146] >>>>> Stop manual dump.
+FtcTeleOp.driverButtonEvent_INFO [67.772120601] >>>>> DriverAltFunc=true
+FtcTeleOp.driverButtonEvent_INFO [67.836471024] >>>>> Auto pickup specimen.
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [67.844060775] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=null
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [67.846068025] Successfully acquired subsystem ownerships.
+TaskAutoPickupSpecimen.autoTask_INFO [67.973003413] <Event name="StateInfo" time="67.972697746" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [67.983853706] currTiltPos=-77.22619047619047,currRotatePos=56.77380952380953,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [68.015993042] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [68.019803668] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [68.021441668] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [68.069009589] <Event name="StateInfo" time="68.068701881" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [68.070469965] <Event name="StateInfo" time="68.069381464" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [68.076385548] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=45.637,y=-50.946,angle=857.002),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.080,y=-48.257,angle=180.000),vel=0.0)])
+TaskExtenderArm.autoTask_INFO [68.242146148] <Event name="StateInfo" time="68.24183319" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+FtcTeleOp.driverButtonEvent_INFO [68.283785944] >>>>> Cancel auto pickup specimen.
+TaskAutoPickupSpecimen.cancel_INFO [68.285519903] Canceling auto task operation.
+TaskAutoPickupSpecimen.stopSubsystems_INFO [68.288492861] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [68.309876697] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [68.311317239] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [68.312736197] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [68.313927947] Stopping subsystems.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [68.315262031] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+FtcTeleOp.driverButtonEvent_INFO [68.410955249] >>>>> DriverAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [68.462101629] >>>>> Auto intake.
+FtcTeleOp.driverButtonEvent_INFO [68.682721526] >>>>> DrivePower slow.
+FtcTeleOp.driverButtonEvent_INFO [69.318863798] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [69.737890549] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [73.517235845] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [73.714832448] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [75.676264729] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [76.74786217] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [78.460704009] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [81.506198981] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [82.24434993] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [82.317675813] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [82.45664566] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [82.45745241] currTiltPos=-12.880952380952365,currRotatePos=-0.08730158730158166,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [82.478490329] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+Extender.primary.posPidCtrl.isStalled_INFO [83.305376495] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [83.462315636] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [84.682275175] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [86.177679492] >>>>> Wrist rotate preset right.
+Wrist.performAction_INFO [86.183642909] currTiltPos=-77.13492063492063,currRotatePos=-0.08730158730156035,actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [86.210779287] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=45.0, event=null, timeout=0.0)
+Extender.primary.posPidCtrl.isStalled_INFO [86.226242289] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [86.612819369] >>>>> Auto intake.
+FtcTeleOp.driverButtonEvent_INFO [87.28571427] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [87.294436271] >>>>> Stop manual intake.
+FtcTeleOp.operatorButtonEvent_INFO [89.199020962] >>>>> Auto dump.
+FtcTeleOp.operatorButtonEvent_INFO [89.378654981] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [89.874015572] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [89.885727448] >>>>> Cancel auto dump.
+FtcTeleOp.driverButtonEvent_INFO [90.559256432] >>>>> DriverAltFunc=true
+FtcTeleOp.driverButtonEvent_INFO [90.641029274] >>>>> Auto pickup specimen.
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [90.642695274] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=null
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [90.644095566] Successfully acquired subsystem ownerships.
+TaskAutoPickupSpecimen.autoTask_INFO [90.74913116] <Event name="StateInfo" time="90.748795743" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [90.757706161] currTiltPos=-77.13492063492063,currRotatePos=45.00000000000001,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [90.784150122] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [90.785592414] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [90.787413289] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [90.827474001] <Event name="StateInfo" time="90.827186418" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [90.828133459] <Event name="StateInfo" time="90.827810876" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [90.834814377] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=37.154,y=-49.177,angle=1204.716),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.015,y=-48.220,angle=179.991),vel=0.0)])
+TaskExtenderArm.autoTask_INFO [90.985457892] <Event name="StateInfo" time="90.985110809" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+FtcTeleOp.driverButtonEvent_INFO [91.027366605] >>>>> Cancel auto pickup specimen.
+TaskAutoPickupSpecimen.cancel_INFO [91.03082023] Canceling auto task operation.
+TaskAutoPickupSpecimen.stopSubsystems_INFO [91.031666647] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [91.044974815] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [91.046490898] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [91.051414815] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [91.052692899] Stopping subsystems.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [91.054076857] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+FtcTeleOp.driverButtonEvent_INFO [91.166155618] >>>>> DriverAltFunc=false
+FtcTeleOp.driverButtonEvent_INFO [91.423029103] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [91.505427278] >>>>> Auto intake.
+FtcTeleOp.driverButtonEvent_INFO [94.226293134] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [94.231025718] >>>>> Stop manual intake.
+FtcTeleOp.driverButtonEvent_INFO [96.306671468] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [101.454578444] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [101.673756341] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [101.725976346] >>>>> Manual dump.
+FtcTeleOp.driverButtonEvent_INFO [101.885408945] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [102.142341638] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [102.23064723] >>>>> OperatorAltFunc=false
+FtcTeleOp.driverButtonEvent_INFO [102.633020979] >>>>> DriverAltFunc=true
+FtcTeleOp.driverButtonEvent_INFO [102.817547414] >>>>> Auto pickup specimen.
+TaskAutoPickupSpecimen.autoPickupSpecimen_INFO [102.823902831] taskParams=(alliance=RED_ALLIANCE,useVision=false), event=null
+TaskAutoPickupSpecimen.acquireSubsystemsOwnership_INFO [102.82481254] Successfully acquired subsystem ownerships.
+TaskAutoPickupSpecimen.autoTask_INFO [102.835029916] <Event name="StateInfo" time="102.834731833" tag="vvvvv" TaskAutoPickupSpecimen.state="START" />
+Wrist.performAction_INFO [102.843100042] currTiltPos=-12.880952380952365,currRotatePos=-0.08730158730158166,actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [102.866543336] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-12.857, rotateValue=0.0, event=null, timeout=0.0)
+TaskExtenderArm.setPosition_INFO [102.867292336] taskParams=(elbowPos=17.85,extenderPos=18.0), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [102.867922336] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [102.906264256] <Event name="StateInfo" time="102.905878673" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskAutoPickupSpecimen.autoTask_INFO [102.910803757] <Event name="StateInfo" time="102.909639132" tag="vvvvv" TaskAutoPickupSpecimen.state="DRIVE_TO_PICKUP" />
+purePursuitDrive.start_INFO [102.917688258] Path=TrcPath(degrees=true, [Waypoint(simple=true,index=0,pose=(x=2.258,y=-67.108,angle=1470.511),vel=0.0), Waypoint(simple=true,index=1,pose=(x=47.080,y=-48.257,angle=180.000),vel=0.0)])
+Extender.primary.isMotorStalled_INFO [103.054464188] Stall detection triggered.
+TaskExtenderArm.autoTask_INFO [103.082865816] <Event name="StateInfo" time="103.082549066" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+FtcTeleOp.driverButtonEvent_INFO [103.119421278] >>>>> Cancel auto pickup specimen.
+TaskAutoPickupSpecimen.cancel_INFO [103.122238195] Canceling auto task operation.
+TaskAutoPickupSpecimen.stopSubsystems_INFO [103.124393903] Stopping subsystems.
+TaskExtenderArm.cancel_INFO [103.143360989] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [103.144464655] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [103.145463614] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [103.146176447] Stopping subsystems.
+TaskAutoPickupSpecimen.releaseSubsystemsOwnership_INFO [103.147067489] Releasing subsystem ownership (currOwner=pickupSpecimenTask, robotDrive=pickupSpecimenTask).
+Extender.primary.isMotorStalled_INFO [103.156737115] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [103.264130834] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [103.373734512] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [103.477206772] Stall detection triggered.
+FtcTeleOp.driverButtonEvent_INFO [103.503102691] >>>>> DriverAltFunc=false
+Extender.primary.isMotorStalled_INFO [103.582677241] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [103.69297246] Stall detection triggered.
+FtcTeleOp.operatorButtonEvent_INFO [103.721639213] >>>>> Auto intake.
+Extender.primary.isMotorStalled_INFO [103.802108013] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [103.919991817] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [104.026594827] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [104.140648755] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [104.254791059] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [104.374357779] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [104.48248679] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [104.591639551] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [104.703156562] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [104.819737782] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [104.926686709] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [105.030925178] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [105.149363732] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [105.258301243] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [105.37782013] Stall detection triggered.
+FtcTeleOp.driverButtonEvent_INFO [105.425922093] >>>>> DrivePower slow.
+Extender.primary.isMotorStalled_INFO [105.485022807] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [105.591362443] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [105.699849912] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [105.810764632] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [105.926746768] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [106.033869821] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [106.151478291] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [106.259670593] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [106.364306896] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [106.477278449] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [106.585734126] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [106.69136997] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [106.805339606] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [106.916775534] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [107.02610242] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [107.142291057] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [107.253730193] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [107.359466662] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [107.481748799] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [107.590666769] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [107.692003154] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [107.802186957] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [107.911482926] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [108.023732604] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [108.128207031] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [108.235115708] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [108.345716886] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [108.452086564] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [108.5650552] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [108.677145628] Stall detection triggered.
+FtcTeleOp.operatorButtonEvent_INFO [108.76544597] >>>>> Cancel auto intake.
+Extender.primary.isMotorStalled_INFO [108.789758431] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [108.89280865] Stall detection triggered.
+FtcTeleOp.driverButtonEvent_INFO [108.944505988] >>>>> DrivePower normal.
+Extender.primary.isMotorStalled_INFO [108.997947202] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [109.106360004] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [109.207615015] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [109.313998984] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [109.427148745] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [109.52986238] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [109.633812974] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [109.739636943] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [109.861072955] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [109.975973008] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.07692906] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.178457945] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.283522123] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.391710342] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.501848353] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.618359573] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.728515084] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.831419178] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.934871605] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.051866991] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.160031294] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.263122346] Stall detection triggered.
+FtcTeleOp.driverButtonEvent_INFO [111.270613513] >>>>> DrivePower slow.
+Extender.primary.isMotorStalled_INFO [111.380584108] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.484913868] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.589398212] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.692737764] Stall detection triggered.
+Extender.primary.posPidCtrl.isStalled_INFO [112.133181017] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [114.50294288] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [114.507682755] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [114.511697547] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [114.820556828] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [114.99968393] >>>>> OperatorAltFunc=false
+TrcDigitalInput.getInput.printElapsedTime_INFO [151.153502229] TrcDigitalInput.getInput: avgElapsed=0.002112215054095827, minElapsed=4.8708E-5, maxElapsed=0.013744501
+TrcMotor.getPos.printElapsedTime_INFO [151.154310146] TrcMotor.getPos: avgElapsed=5.163758760010333E-4, minElapsed=1.458E-6, maxElapsed=0.012700043
+TrcMotor.setPower.printElapsedTime_INFO [151.155588521] TrcMotor.setPower: avgElapsed=3.3084404952791124E-4, minElapsed=1.3125E-5, maxElapsed=0.025457544
+TrcMotor.setVel.printElapsedTime_INFO [151.156663896] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [151.157825313] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [151.158856063] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [151.160129188] TrcServo.setPos: avgElapsed=0.009048414900000001, minElapsed=0.002249042, maxElapsed=0.013804877
+Robot.stopMode_INFO [151.167352897] Disabling Webcam SampleVision.
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.170443981] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=6.963877628780173E-5/0.013981192397854435
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.173439981] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=6.156941154166281E-5/0.013981193530842503
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.175637106] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=7.062355849440489E-5/0.013981194124202349
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.177299315] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=5.83094163121879E-5/0.013980551601997411
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.179142357] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.007669503006753631/0.013981667905819225
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.18243469] purePursuitDrive.driveTask: POST_PERIODIC_TASK=0.049664509233333334/3.1446811618000003
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.184585441] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=6.466351026447198E-6/0.013980550010726836
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.185292732] blinkin: OUTPUT_TASK=6.953675050859996E-5/0.013980551494174218
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.185971732] Elbow.primary.pidCtrlTask: OUTPUT_TASK=0.004266727309228778/0.013980383166728316
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.186636732] Extender.primary.pidCtrlTask: OUTPUT_TASK=8.713319495098946E-4/0.0139804763793231
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.187490441] TaskExtenderArm: POST_PERIODIC_TASK=0.0053270735625/5.7246804006875
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.188585066] Grabber.colorTrigger.triggerTask: PRE_PERIODIC_TASK=0.012886768115817694/0.08097030538766757
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.189288566] Grabber.primary.pidCtrlTask: OUTPUT_TASK=2.571716543369706E-5/0.013980345514888108
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.189925566] Grabber.follower.pidCtrlTask: OUTPUT_TASK=2.5981892916589605E-6/0.013980346297114851
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.190970316] null.triggerTask: PRE_PERIODIC_TASK=0.010087422135514019/0.4624719263364486
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.191614608] TaskAutoPickupSpecimen: POST_PERIODIC_TASK=0.008610711875/1.9691100658958332
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.192333275] DriverGamepad.buttonEventTask: PRE_PERIODIC_TASK=5.717740064343164E-4/0.08096485911796246
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.193232775] OperatorGamepad.buttonEventTask: PRE_PERIODIC_TASK=0.0011224160246648793/0.08096593664289545
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.193872108] DriverRumble: OUTPUT_TASK=1.5516160332871012E-5/0.013980043152288488
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [151.1944394] OperatorRumble: OUTPUT_TASK=9.758687933425798E-6/0.013980037057235321
+FtcOpMode.printPerformanceMetrics_INFO [151.1953599] [FtcTeleOp] Main robot thread average elapsed times:
+       robotInit=2.297585s
+    initPeriodic=NaNs
+       startMode=0.000797s
+    loopInterval=0.080971s (12.350Hz)
+             sdk=0.000190s
+ prePeriodicTask=0.015875s
+        periodic=0.058745s
+postPeriodicTask=0.001162s
+         loopSum=0.080835s
+        stopMode=0.000000s
+FtcTeleOp.stopMode_INFO [151.196840108] ***** Stopping TeleOp: 20241215@150210 *****

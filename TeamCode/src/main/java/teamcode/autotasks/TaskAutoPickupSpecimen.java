@@ -278,7 +278,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             case APPROACH_SPECIMEN:
                 // Turn on intake and approach specimen slowly.
                 robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event);
-                robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.25, 0.0);
+                robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.3, 0.0);
                 sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN, 0.75); // TO: 0.6
                 break;
 

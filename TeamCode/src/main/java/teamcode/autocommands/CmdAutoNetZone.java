@@ -22,6 +22,8 @@
 
 package teamcode.autocommands;
 
+import java.util.Timer;
+
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
@@ -53,6 +55,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
         SCORE_SAMPLE_BASKET,
         GO_PARK,
         ASCENT,
+        CLEAR_SUB,
         DONE
     }   //enum State
 
@@ -189,7 +192,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_BASKET_CYCLE_TIME)
                     {
                         TrcPose2D spikeMark = RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP.clone();
-                        spikeMark.x -= 8.9 * scoreSampleCount;
+                        spikeMark.x -= 9.0 * scoreSampleCount;
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.extenderArm.setPosition(null, 22.0, null);
 //                        robot.wrist.setPosition(0.0, 15.0);
@@ -208,12 +211,13 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case PICKUP_FLOOR_SAMPLE:
                     // Pick up a sample from the spike marks.
-                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 15.0);
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 16.0 + scoreSampleCount * 1.5);
                     robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, false, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
                     break;
 
                 case SCORE_SAMPLE_BASKET:
+                    robot.robotDrive.purePursuitDrive.cancel();
                     // Score the sample into the basket.
                     robot.scoreBasketTask.autoScoreBasket(autoChoices.alliance, autoChoices.scoreHeight, true, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
@@ -240,15 +244,12 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     else
                     {
                         robot.extenderArm.setPosition(
-                                Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS + 2.0, null);
+                                Elbow.Params.GROUND_PICKUP_POS+2.0, Extender.Params.MIN_POS + 2.0, null);
                         robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 0.0);
-                        TrcPose2D targetPose = RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE.clone();
-                        targetPose.y = -0.2;
-                        targetPose = robot.adjustPoseByAlliance(targetPose, autoChoices.alliance);
-                        TrcPose2D intermediate1 = RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE.clone();
-                        intermediate1.angle = 0.0;
-                        intermediate1.x -= 0.65 * RobotParams.Field.FULL_TILE_INCHES;
-                        intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance);
+                        TrcPose2D targetPose = new TrcPose2D(-1.075, -0.3, 90.0);
+                        targetPose = robot.adjustPoseByAlliance(targetPose, autoChoices.alliance, true);
+                        TrcPose2D intermediate1 = new TrcPose2D(-2.2, -2.0, 30.0);
+                        intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance, true);
                         robot.robotDrive.purePursuitDrive.start(
                                 event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                                 robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
@@ -272,7 +273,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         else
                         {
                             Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                                    Vision.SampleType.RedSample: Vision.SampleType.BlueSample;
+                                    Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
 //                            if (autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE)
 //                            {
 //                                pickupColor = Vision.SampleType.RedAllianceSamples;
@@ -282,12 +283,32 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 //                                pickupColor = Vision.SampleType.BlueAllianceSamples;
 //                            }
                             robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, event);
-                            sm.waitForSingleEvent(event, State.DONE);
+                            sm.waitForSingleEvent(event, State.CLEAR_SUB);
                         }
                     }
                     else
                     {
                         sm.setState(State.DONE);
+                    }
+                    break;
+
+                case CLEAR_SUB:
+                    robot.wrist.setPosition(0.0, null);
+                    robot.elbow.setPosition(0.0,2.0,true, 1.0, null);
+                    timer.set(0.75, event);
+                    robot.robotDrive.purePursuitDrive.start(
+                            null, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, autoChoices.alliance, true),
+                            robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, autoChoices.alliance));
+                    if (robot.grabber.hasObject())
+                    {
+                        sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
+                    }
+                    else
+                    {
+                        autoChoices.parkOption = FtcAuto.ParkOption.PARK;
+                        sm.waitForSingleEvent(event, State.GO_PARK);
                     }
                     break;
 

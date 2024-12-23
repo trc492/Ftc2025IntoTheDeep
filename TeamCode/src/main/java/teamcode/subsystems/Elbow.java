@@ -67,7 +67,7 @@ public class Elbow
         public static final double HIGH_BASKET_SCORE_POS        = 105.0;
         public static final double LOW_CHAMBER_SCORE_POS        = 40.0;
         public static final double HIGH_CHAMBER_SCORE_POS       = 95.0;
-        public static final double PRE_CLIMB_POS                = 55.0;
+        public static final double PRE_CLIMB_POS                = 57.5;
         public static final double ASCENT_LEVEL1_POS            = 45.0;
         public static final double LEVEL2_RETRACT_POS           = 21.0;
         public static final double LEVEL2_TORQUE_POS            = 47.0;

@@ -242,20 +242,20 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
                 // Swing the arm towards the basket in low speed.
                 robot.extenderArm.elbow.setPosition(
-                    0.0, elbowScorePos,true, (taskParams.scoreHeight == Robot.ScoreHeight.HIGH)? 0.6 : 1.0);
+                    0.0, elbowScorePos,true, (taskParams.scoreHeight == Robot.ScoreHeight.HIGH)? 0.7 : 1.0);
                 robot.wrist.setPosition(wristPos, null);
                 // Depending on how the grabber holds the sample, the sensor may or may not see it.
                 if (robot.grabber.hasObject())
                 {
                     // Sensor sees the sample, use autoDump.
                     tracer.traceInfo(moduleName, "Grabber detected sample, auto dump sample.");
-                    robot.grabber.autoDump(null, 0.2, Grabber.Params.DUMP_DELAY, event);
+                    robot.grabber.autoDump(null, 0.03, Grabber.Params.DUMP_DELAY, event);
                 }
                 else
                 {
                     // Sensor doesn't see the sample, manual dump it anyway.
                     tracer.traceInfo(moduleName, "Grabber not detecting sample, manual dump sample.");
-                    robot.grabber.dump(null, 0.2, event);
+                    robot.grabber.dump(null, 0.03, event);
                 }
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
                 break;

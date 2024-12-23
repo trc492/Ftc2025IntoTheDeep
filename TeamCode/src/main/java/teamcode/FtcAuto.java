@@ -82,6 +82,7 @@ public class FtcAuto extends FtcOpMode
 
     public enum ParkOption
     {
+        PARK_SUBMERSIBLE,
         PARK,
         NO_PARK
     }   //enum ParkOption
@@ -390,7 +391,8 @@ public class FtcAuto extends FtcOpMode
         scoreHeightMenu.addChoice("Score High", Robot.ScoreHeight.HIGH, true, parkOptionMenu);
         scoreHeightMenu.addChoice("Score Low", Robot.ScoreHeight.LOW, false, parkOptionMenu);
 
-        parkOptionMenu.addChoice("Park", ParkOption.PARK, true);
+        parkOptionMenu.addChoice("Park Submersible", ParkOption.PARK_SUBMERSIBLE, true);
+        parkOptionMenu.addChoice("Park", ParkOption.PARK, false);
         parkOptionMenu.addChoice("Don't Park", ParkOption.NO_PARK, false);
         //
         // Traverse menus.

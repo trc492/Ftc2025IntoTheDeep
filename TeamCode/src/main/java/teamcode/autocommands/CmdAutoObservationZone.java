@@ -156,7 +156,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case MOVE_SAMPLES:
                     // Herd two samples to the observation zone to be converted to specimens.
-                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 1.0, null, null);
+                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0, null, null);
 //                    robot.wrist.setPosition(-15.0, 90.0);
 //                    robot.robotDrive.purePursuitDrive.setMoveOutputLimit(0);
 //                    TrcEvent event1 = new TrcEvent("Intake Event");
@@ -164,7 +164,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 //                    event1.setCallback(this::elbowCallback, null);
 //                    robot.grabber.autoIntake(null, 6.5, Grabber.Params.FINISH_DELAY, event, 2.5);
                     robot.robotDrive.purePursuitDrive.start(
-                        event, 9.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        event, 8.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH, autoChoices.alliance, true));

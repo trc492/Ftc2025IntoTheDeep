@@ -251,6 +251,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 // Vision found the sample, turn the robot toward it.
                 double extenderLen = robot.getExtenderPosFromSamplePose(samplePose);
                 tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
+                robot.extenderArm.setPosition(null, extenderLen, armEvent);
                 if (!taskParams.noDrive)
                 {
                     // Turning is a lot faster than extending, so just wait for extender event.
@@ -258,8 +259,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         currOwner, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         new TrcPose2D(0.0, 0.0, samplePose.angle));
-                }
-                robot.extenderArm.setPosition(null, extenderLen, armEvent);
+                };
                 sm.waitForSingleEvent(armEvent, State.PICKUP_SAMPLE);
                 break;
 
@@ -267,11 +267,11 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 // Pick up sample from the floor.
                 // We only care about sample color if we pick up from submersible.
                 // We assume the driver would drive up to the correct sample color for picking up from ground.
-                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.65); //TO: 0.5s
+                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.75); //TO: 0.5s
                 sm.addEvent(event);
-                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 5.0, null, armEvent);
-                sm.addEvent(armEvent);
-                sm.waitForEvents(State.RAISE_ARM, true, 0.0);
+                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 5.0, null, null);
+//                sm.addEvent(armEvent);
+                sm.waitForEvents(State.RAISE_ARM, false, 0.0);
                 break;
 
             case RAISE_ARM:

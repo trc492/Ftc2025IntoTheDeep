@@ -1,0 +1,83 @@
+FtcTeleOp.startMode_INFO [0.006691709] ***** Starting TeleOp: 20241208@122258 *****
+Robot.startMode_INFO [0.013745376] Enabling Webcam SampleVision for RedAllianceSamples
+Robot.startMode_INFO [0.015722001] Enabling Limelight SampleVision for pipeline 1
+Vision.setLimelightVisionEnabled_INFO [0.022325627] Pipeline 1 is enabled: running=true
+Robot.startMode_INFO [0.05236613] Restore saved RobotPose=(x=44.644,y=-52.968,angle=-359.340)
+Extender.primary.isMotorStalled_INFO [0.454994795] Stall detection triggered.
+Extender.primary.zeroCalibratingMotor_WARN [0.46579288] Stalled, lower limit switch might have failed!
+Extender.primary.pidCtrlTask_INFO [0.468039005] Zero calibration done, event=(Extender=CLEARED)
+Extender.primary.pidCtrlTask_INFO [0.46865763] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Extender=SIGNALED)
+FtcTeleOp.driverButtonEvent_INFO [1.258634251] >>>>> Enabling FIELD mode.
+FtcTeleOp.setDriveOrientation_INFO [1.259311501] driveOrientation=FIELD
+Elbow.primary.pidCtrlTask_INFO [1.39732614] Zero calibration done, event=(Elbow=CLEARED)
+Elbow.primary.pidCtrlTask_INFO [1.398102557] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Elbow=SIGNALED)
+FtcTeleOp.driverButtonEvent_INFO [2.844522035] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [2.946506212] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [2.948649379] currTiltPos=90.0714285714286,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [2.967144839] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [7.501650212] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [8.82755097] >>>>> Stop manual intake.
+FtcTeleOp.operatorButtonEvent_INFO [9.52850829] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [10.265080448] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [11.167654414] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [11.333483555] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [12.582472389] >>>>> Wrist rotate preset right.
+Wrist.performAction_INFO [12.584738056] currTiltPos=-77.13492063492063,currRotatePos=-0.08730158730156035,actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [12.609863392] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=45.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [13.220219995] >>>>> Auto intake.
+FtcTeleOp.driverButtonEvent_INFO [13.658578705] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [14.021199159] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [16.183762168] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [16.18984196] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [16.738893723] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [16.744527266] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [17.725010947] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [17.727207198] currTiltPos=-77.13492063492063,currRotatePos=45.00000000000001,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [17.745401074] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [17.825806582] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [19.745559692] >>>>> Wrist rotate preset right.
+Wrist.performAction_INFO [19.750018692] currTiltPos=-77.13492063492063,currRotatePos=-0.08730158730156035,actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [19.773082236] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.13492063492063, rotateValue=45.0, event=null, timeout=0.0)
+Extender.primary.posPidCtrl.isStalled_INFO [20.378328256] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [20.518396811] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [21.305812015] >>>>> Stop manual intake.
+FtcTeleOp.driverButtonEvent_INFO [22.658840401] >>>>> DrivePower normal.
+TrcDigitalInput.getInput.printElapsedTime_INFO [26.104824081] TrcDigitalInput.getInput: avgElapsed=0.0027416924126213594, minElapsed=6.8833E-5, maxElapsed=0.010357667
+TrcMotor.getPos.printElapsedTime_INFO [26.107852748] TrcMotor.getPos: avgElapsed=5.188198356271098E-4, minElapsed=2.917E-6, maxElapsed=0.014368085
+TrcMotor.setPower.printElapsedTime_INFO [26.109448165] TrcMotor.setPower: avgElapsed=0.0012207437874160048, minElapsed=1.4875E-5, maxElapsed=0.018853627
+TrcMotor.setVel.printElapsedTime_INFO [26.110919623] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [26.11233654] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [26.113996415] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [26.116241374] TrcServo.setPos: avgElapsed=0.009385214375, minElapsed=0.007235667, maxElapsed=0.014919626
+Robot.stopMode_INFO [26.118046207] Disabling LimelightVision.
+Vision.setLimelightVisionEnabled_INFO [26.119416749] Pipeline 0 is disabled: running=false
+Robot.stopMode_INFO [26.120777082] Disabling Webcam SampleVision.
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.123490749] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=9.128671318681319E-5/0.014351724198351647
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.125348375] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=7.164535714285714E-5/0.01435172451923077
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.127026916] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=1.192742273476112E-4/0.014347161495332236
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.127711167] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=7.49570593080725E-5/0.014347160855024712
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.128239667] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.00779734436123348/0.01435569054845815
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.129068] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=6.630650192202087E-6/0.014347166941241076
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.129702958] blinkin: OUTPUT_TASK=6.63709236683141E-5/0.014347159573311369
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.130260042] Elbow.primary.pidCtrlTask: OUTPUT_TASK=0.0044821446725274725/0.014353871634615383
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.13096675] Extender.primary.pidCtrlTask: OUTPUT_TASK=8.263444708791209E-4/0.014351035255494506
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.132019959] Grabber.colorTrigger.triggerTask: PRE_PERIODIC_TASK=0.013488081573033708/0.09729901461423221
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.132982167] Grabber.primary.pidCtrlTask: OUTPUT_TASK=4.8831732417582414E-5/0.014350431249450549
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.137350459] Grabber.follower.pidCtrlTask: OUTPUT_TASK=2.7658593406593406E-6/0.01435043221098901
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.139220918] null.triggerTask: PRE_PERIODIC_TASK=0.010362493393939394/0.4069316419090909
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.141348918] DriverGamepad.buttonEventTask: PRE_PERIODIC_TASK=2.562461161048689E-4/0.0972660300599251
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.142501001] OperatorGamepad.buttonEventTask: PRE_PERIODIC_TASK=0.002124354936329588/0.09726582359925094
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.14383596] DriverRumble: OUTPUT_TASK=1.9287626234906698E-5/0.014343081481339188
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [26.145255793] OperatorRumble: OUTPUT_TASK=9.846872667398464E-6/0.01434303569813392
+FtcOpMode.printPerformanceMetrics_INFO [26.147200335] [FtcTeleOp] Main robot thread average elapsed times:
+       robotInit=2.255680s
+    initPeriodic=NaNs
+       startMode=0.000059s
+    loopInterval=0.097315s (10.276Hz)
+             sdk=0.000252s
+ prePeriodicTask=0.017280s
+        periodic=0.074940s
+postPeriodicTask=0.000062s
+         loopSum=0.097318s
+        stopMode=0.000000s
+FtcTeleOp.stopMode_INFO [26.154626169] ***** Stopping TeleOp: 20241208@122324 *****

@@ -1,0 +1,58 @@
+FtcTeleOp.startMode_INFO [0.006639209] ***** Starting TeleOp: 20241215@194300 *****
+Robot.startMode_INFO [0.007429917] Enabling Webcam SampleVision for AnySample
+Robot.startMode_INFO [0.009661751] Enabling Limelight SampleVision for pipeline 1
+Elbow.primary.pidCtrlTask_INFO [0.013742751] Zero calibration done, event=(Elbow=CLEARED)
+Elbow.primary.pidCtrlTask_INFO [0.014680752] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Elbow=SIGNALED)
+Vision.setLimelightVisionEnabled_INFO [0.019055752] Pipeline 1 is enabled: running=true
+Extender.primary.isMotorStalled_INFO [3.213746115] Stall detection triggered.
+Extender.primary.zeroCalibratingMotor_WARN [3.222822491] Stalled, lower limit switch might have failed!
+Extender.primary.pidCtrlTask_INFO [3.243625034] Zero calibration done, event=(Extender=CLEARED)
+Extender.primary.pidCtrlTask_INFO [3.244661326] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Extender=SIGNALED)
+FtcTeleOp.operatorButtonEvent_INFO [20.909805059] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [21.312487975] >>>>> Manual intake.
+FtcTeleOp.operatorButtonEvent_INFO [21.343887936] >>>>> Wrist tilt preset up.
+Wrist.performAction_INFO [21.344797645] currTiltPos=90.0714285714286,currRotatePos=-0.08730158730155324,actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=-0.08730158730155324, event=null, timeout=0.0)
+Wrist.finish_INFO [21.365921022] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=90.0, rotateValue=-0.08730158730155324, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [21.441865488] >>>>> Stop manual intake.
+FtcTeleOp.operatorButtonEvent_INFO [21.609116505] >>>>> Manual intake.
+FtcTeleOp.operatorButtonEvent_INFO [21.805019983] >>>>> Stop manual intake.
+FtcTeleOp.operatorButtonEvent_INFO [22.011180795] >>>>> OperatorAltFunc=false
+TrcDigitalInput.getInput.printElapsedTime_INFO [58.882282458] TrcDigitalInput.getInput: avgElapsed=0.0021167159766536966, minElapsed=6.4167E-5, maxElapsed=0.011849251
+TrcMotor.getPos.printElapsedTime_INFO [58.884787583] TrcMotor.getPos: avgElapsed=0.0011539314549653579, minElapsed=1.459E-6, maxElapsed=0.011671626
+TrcMotor.setPower.printElapsedTime_INFO [58.887082709] TrcMotor.setPower: avgElapsed=3.442301641938675E-4, minElapsed=1.9834E-5, maxElapsed=0.014661502
+TrcMotor.setVel.printElapsedTime_INFO [58.889157334] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [58.890781626] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [58.892066417] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [58.893481876] TrcServo.setPos: avgElapsed=0.009424626, minElapsed=0.007701167, maxElapsed=0.011148085
+Robot.stopMode_INFO [58.895190751] Disabling LimelightVision.
+Vision.setLimelightVisionEnabled_INFO [58.896578209] Pipeline 0 is disabled: running=false
+Robot.stopMode_INFO [58.898146793] Disabling Webcam SampleVision.
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.903897585] TrcWatchdogMgr: STANDALONE_TASK=8.9591E-5/0.9836669222711865
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.904681002] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=1.3241661664712777E-5/0.013808891403282533
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.905402294] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=6.001009613130129E-6/0.013808877931066822
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.90602821] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=3.071770691676436E-6/0.013808869793200469
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.906770794] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=7.388978194607268E-6/0.013808861313247362
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.907414502] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.008665519159314877/0.013809007008916001
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.908285419] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=1.8303828879512425E-5/0.013806882091186122
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.908868169] blinkin: OUTPUT_TASK=9.27863715424285E-5/0.013806766340834506
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.909848752] Elbow.primary.pidCtrlTask: OUTPUT_TASK=4.746250117205814E-6/0.013806127149085795
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.910405836] Extender.primary.pidCtrlTask: OUTPUT_TASK=0.004227403338569754/0.013808271962016413
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.911139961] Grabber.colorTrigger.triggerTask: PRE_PERIODIC_TASK=0.010203003555555555/0.01751596253857611
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.911661461] Grabber.primary.pidCtrlTask: OUTPUT_TASK=1.2926795827473043E-5/0.013804946329582747
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.912253253] Grabber.follower.pidCtrlTask: OUTPUT_TASK=4.474200890764182E-6/0.013804937646741679
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.91602917] DriverGamepad.buttonEventTask: PRE_PERIODIC_TASK=2.347938069705094E-5/0.017517553195114687
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.91699167] OperatorGamepad.buttonEventTask: PRE_PERIODIC_TASK=3.641992672028597E-5/0.01751750601727733
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.917854712] DriverRumble: OUTPUT_TASK=1.331534317862166E-5/0.013804918092827004
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [58.919033628] OperatorRumble: OUTPUT_TASK=6.27309423347398E-6/0.013804839809188936
+FtcOpMode.printPerformanceMetrics_INFO [58.920501587] [FtcTeleOp] Main robot thread average elapsed times:
+       robotInit=2.182776s
+    initPeriodic=NaNs
+       startMode=0.000309s
+    loopInterval=0.017516s (57.091Hz)
+             sdk=0.000186s
+ prePeriodicTask=0.010368s
+        periodic=0.006511s
+postPeriodicTask=0.000085s
+         loopSum=0.017344s
+        stopMode=0.000000s
+FtcTeleOp.stopMode_INFO [58.922808379] ***** Stopping TeleOp: 20241215@194359 *****

@@ -1,0 +1,44 @@
+FtcTeleOp.startMode_INFO [0.009406835] ***** Starting TeleOp: 20241215@181656 *****
+Robot.startMode_INFO [0.016067919] Enabling Webcam SampleVision for RedAllianceSamples
+Robot.startMode_INFO [0.017234294] Enabling Limelight SampleVision for pipeline 1
+Vision.setLimelightVisionEnabled_INFO [0.023247003] Pipeline 1 is enabled: running=true
+Robot.startMode_INFO [0.041926505] Restore saved RobotPose=(x=-41.835,y=-38.291,angle=86.273)
+TrcDigitalInput.getInput.printElapsedTime_INFO [0.043750297] TrcDigitalInput.getInput: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.getPos.printElapsedTime_INFO [0.044732047] TrcMotor.getPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPower.printElapsedTime_INFO [0.045225838] TrcMotor.setPower: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setVel.printElapsedTime_INFO [0.045624255] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [0.045975713] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [0.046334463] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [0.049197172] TrcServo.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+Robot.stopMode_INFO [0.050446672] Disabling LimelightVision.
+Vision.setLimelightVisionEnabled_INFO [0.051569297] Pipeline 0 is disabled: running=false
+Robot.stopMode_INFO [0.052705047] Disabling Webcam SampleVision.
+Extender.primary.isMotorStalled_INFO [0.104574178] Stall detection triggered.
+Extender.primary.zeroCalibratingMotor_WARN [0.112860428] Stalled, lower limit switch might have failed!
+Extender.primary.pidCtrlTask_INFO [0.116799096] Zero calibration done, event=(Extender=CLEARED)
+Extender.primary.pidCtrlTask_INFO [0.117495304] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Extender=SIGNALED)
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.777354137] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=9.238941176470588E-6/0.010662455102941176
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.779155471] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=4.3621029411764705E-6/0.010662425088235294
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.780495679] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=4.182E-6/0.010662395073529412
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.781864179] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=4.4951323529411764E-6/0.010662356455882354
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.783364221] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.00634992578125/0.01073640603125
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.785064055] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=1.0435676470588236E-5/0.01066221492647059
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.786326388] blinkin: OUTPUT_TASK=6.712201470588234E-5/0.01066227067647059
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.787603013] Elbow.primary.pidCtrlTask: OUTPUT_TASK=6.231804411764706E-5/0.01062628844117647
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.788695889] Extender.primary.pidCtrlTask: OUTPUT_TASK=0.002481208588235294/0.010568495544117646
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.790550305] Grabber.primary.pidCtrlTask: OUTPUT_TASK=7.806338235294119E-6/0.010570228397058824
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.791562681] Grabber.follower.pidCtrlTask: OUTPUT_TASK=5.614573529411765E-6/0.01057015119117647
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.795047806] DriverRumble: OUTPUT_TASK=3.9400808823529415E-5/0.010570146897058824
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [1.796231973] OperatorRumble: OUTPUT_TASK=2.619858823529412E-5/0.010568671411764706
+FtcOpMode.printPerformanceMetrics_INFO [1.797965639] [FtcTeleOp] Main robot thread average elapsed times:
+       robotInit=0.443279s
+    initPeriodic=NaNs
+       startMode=0.000052s
+    loopInterval=NaNs (NaNHz)
+             sdk=NaNs
+ prePeriodicTask=NaNs
+        periodic=NaNs
+postPeriodicTask=NaNs
+         loopSum=NaNs
+        stopMode=0.000000s
+FtcTeleOp.stopMode_INFO [1.80022664] ***** Stopping TeleOp: 20241215@181657 *****

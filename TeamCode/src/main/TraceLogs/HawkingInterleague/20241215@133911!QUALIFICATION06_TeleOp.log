@@ -1,0 +1,94 @@
+FtcTeleOp.startMode_INFO [0.007628251] ***** Starting TeleOp: 20241215@133911 *****
+Robot.startMode_INFO [0.013299126] Enabling Webcam SampleVision for RedAllianceSamples
+Robot.startMode_INFO [0.014119876] Enabling Limelight SampleVision for pipeline 1
+Vision.setLimelightVisionEnabled_INFO [0.022703919] Pipeline 1 is enabled: running=true
+Robot.startMode_INFO [0.054096297] Restore saved RobotPose=(x=-26.380,y=-14.160,angle=90.485)
+FtcTeleOp.operatorButtonEvent_INFO [0.286928862] >>>>> Turtle.
+TaskExtenderArm.setPosition_INFO [0.287739696] taskParams=(elbowPos=0.0,extenderPos=15.125), event=null
+TaskExtenderArm.acquireSubsystemsOwnership_INFO [0.288721446] Successfully acquired subsystem ownerships.
+TaskExtenderArm.autoTask_INFO [0.314785073] <Event name="StateInfo" time="0.314467448" tag="vvvvv" TaskExtenderArm.state="SET_POSITION" />
+TaskExtenderArm.autoTask_INFO [0.362357078] <Event name="StateInfo" time="0.362047036" tag="vvvvv" TaskExtenderArm.state="SET_ELBOW_ANGLE" />
+TaskExtenderArm.autoTask_INFO [0.421540917] <Event name="StateInfo" time="0.421219501" tag="vvvvv" TaskExtenderArm.state="SET_EXTENDER_POSITION" />
+TaskExtenderArm.autoTask_INFO [0.461928588] <Event name="StateInfo" time="0.461433046" tag="vvvvv" TaskExtenderArm.state="WAIT_FOR_COMPLETION" />
+Extender.primary.pidCtrlTask_INFO [0.940181761] controlMode: Position onTarget=true(15.152651264277676/15.125), stalled=false, expired=false, event=(Extender=SIGNALED)
+FtcTeleOp.operatorButtonEvent_INFO [2.076762542] >>>>> ZeroCalibrating.
+Robot.cancelAll_INFO [2.077988709] Cancel all operations.
+TaskExtenderArm.cancel_INFO [2.079023834] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [2.081408209] Stopping subsystems.
+TaskExtenderArm.releaseSubsystemsOwnership_INFO [2.084200626] Releasing subsystem ownership (currOwner=ExtenderArm, elbow=null, extender=null).
+TaskExtenderArm.stopSubsystems_INFO [2.085665376] Stopping subsystems.
+Wrist.cancel_INFO [2.088285127] owner=null
+Wrist.finish_INFO [2.091197419] completed=false, actionParams=null
+TaskAutoPickupFromGround.cancel_INFO [2.092097794] Canceling auto task operation.
+TaskAutoPickupSpecimen.cancel_INFO [2.092553377] Canceling auto task operation.
+TaskAutoScoreBasket.cancel_INFO [2.092969877] Canceling auto task operation.
+TaskAutoScoreChamber.cancel_INFO [2.093779835] Canceling auto task operation.
+TaskAutoClimb.cancel_INFO [2.094339252] Canceling auto task operation.
+TaskExtenderArm.zeroCalibrate_INFO [2.094774127] Zero Calibrating.
+Elbow.primary.acquireOwnership_INFO [2.095275794] Acquired ownership on behalf of FtcTeleOp
+Extender.primary.acquireOwnership_INFO [2.099339878] Acquired ownership on behalf of FtcTeleOp
+Extender.primary.isMotorStalled_INFO [3.581123652] Stall detection triggered.
+Extender.primary.zeroCalibratingMotor_WARN [3.589662194] Stalled, lower limit switch might have failed!
+Extender.primary.pidCtrlTask_INFO [3.598849695] Zero calibration done, event=(Extender.primary.releaseOwnership=CLEARED)
+Extender.primary.pidCtrlTask_INFO [3.599514695] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Extender.primary.releaseOwnership=SIGNALED)
+Extender.primary.releaseOwnership_INFO [3.642037366] Released ownership on behalf of FtcTeleOp
+FtcTeleOp.operatorButtonEvent_INFO [4.069441951] >>>>> ZeroCalibrating.
+Robot.cancelAll_INFO [4.069965492] Cancel all operations.
+TaskExtenderArm.cancel_INFO [4.070419617] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [4.071008201] Stopping subsystems.
+Wrist.cancel_INFO [4.073379159] owner=null
+Wrist.finish_INFO [4.074565076] completed=false, actionParams=null
+TaskAutoPickupFromGround.cancel_INFO [4.118352122] Canceling auto task operation.
+TaskAutoPickupSpecimen.cancel_INFO [4.119670747] Canceling auto task operation.
+TaskAutoScoreBasket.cancel_INFO [4.121778039] Canceling auto task operation.
+TaskAutoScoreChamber.cancel_INFO [4.122840581] Canceling auto task operation.
+TaskAutoClimb.cancel_INFO [4.123840123] Canceling auto task operation.
+TaskExtenderArm.zeroCalibrate_INFO [4.125171581] Zero Calibrating.
+Elbow.primary.acquireOwnership_INFO [4.12627729] Acquired ownership on behalf of FtcTeleOp
+Extender.primary.acquireOwnership_INFO [4.138327208] Acquired ownership on behalf of FtcTeleOp
+Extender.primary.isMotorStalled_INFO [5.050199507] Stall detection triggered.
+Extender.primary.zeroCalibratingMotor_WARN [5.064062426] Stalled, lower limit switch might have failed!
+Extender.primary.pidCtrlTask_INFO [5.069433468] Zero calibration done, event=(Extender.primary.releaseOwnership=CLEARED)
+Extender.primary.pidCtrlTask_INFO [5.070092051] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Extender.primary.releaseOwnership=SIGNALED)
+Extender.primary.releaseOwnership_INFO [5.084843386] Released ownership on behalf of FtcTeleOp
+Extender.primary.posPidCtrl.isStalled_INFO [7.762425905] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [8.597652864] PID stalled.
+TrcDigitalInput.getInput.printElapsedTime_INFO [13.500974565] TrcDigitalInput.getInput: avgElapsed=0.002978013470938897, minElapsed=5.425E-5, maxElapsed=0.010893459
+TrcMotor.getPos.printElapsedTime_INFO [13.50234044] TrcMotor.getPos: avgElapsed=3.545755507883174E-4, minElapsed=1.75E-6, maxElapsed=0.009869126
+TrcMotor.setPower.printElapsedTime_INFO [13.503508857] TrcMotor.setPower: avgElapsed=0.0011633375202464789, minElapsed=1.4E-5, maxElapsed=0.02017896
+TrcMotor.setVel.printElapsedTime_INFO [13.504955815] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [13.506072024] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [13.506884607] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [13.507439941] TrcServo.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+Robot.stopMode_INFO [13.508874066] Disabling LimelightVision.
+Vision.setLimelightVisionEnabled_INFO [13.510070191] Pipeline 0 is disabled: running=false
+Robot.stopMode_INFO [13.510533649] Disabling Webcam SampleVision.
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.515215191] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=7.47714738771769E-5/0.012370270835013748
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.516104483] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=5.166831897341888E-5/0.012370274310724105
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.51688965] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=4.382638827838828E-5/0.012381320153846154
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.51770515] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=3.203180860805861E-5/0.012381321757326006
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.518695358] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.00714263401194853/0.012379258099264705
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.519531275] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=6.076121794871795E-6/0.012381326831501832
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.520617442] blinkin: OUTPUT_TASK=1.7287310155535226E-5/0.012373726350411712
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.52133115] Elbow.primary.pidCtrlTask: OUTPUT_TASK=0.0031797436373626376/0.012383398947802196
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.521935775] Extender.primary.pidCtrlTask: OUTPUT_TASK=7.837669084249084E-4/0.012379364224358974
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.522518817] TaskExtenderArm: POST_PERIODIC_TASK=1.8179222988505745E-4/0.020012033149425287
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.523289401] Grabber.colorTrigger.triggerTask: PRE_PERIODIC_TASK=0.008472211069204151/0.023236643121107264
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.523884692] Grabber.primary.pidCtrlTask: OUTPUT_TASK=5.639951465201465E-6/0.012377873305860806
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.524559317] Grabber.follower.pidCtrlTask: OUTPUT_TASK=2.884625457875458E-6/0.01237787196978022
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.525658026] DriverGamepad.buttonEventTask: PRE_PERIODIC_TASK=5.652780795847751E-5/0.02323261832352941
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.526260317] OperatorGamepad.buttonEventTask: PRE_PERIODIC_TASK=2.564552837370242E-4/0.02323245634256055
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.526855901] DriverRumble: OUTPUT_TASK=1.930071637694419E-5/0.01237136473010064
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [13.527708151] OperatorRumble: OUTPUT_TASK=1.0248619396157364E-5/0.01237130175388838
+FtcOpMode.printPerformanceMetrics_INFO [13.528774193] [FtcTeleOp] Main robot thread average elapsed times:
+       robotInit=2.231738s
+    initPeriodic=NaNs
+       startMode=0.000048s
+    loopInterval=0.023251s (43.008Hz)
+             sdk=0.000197s
+ prePeriodicTask=0.008885s
+        periodic=0.012036s
+postPeriodicTask=0.000075s
+         loopSum=0.023065s
+        stopMode=0.000000s
+FtcTeleOp.stopMode_INFO [13.530401401] ***** Stopping TeleOp: 20241215@133924 *****

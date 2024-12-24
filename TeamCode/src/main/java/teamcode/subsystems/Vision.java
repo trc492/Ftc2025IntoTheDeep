@@ -102,6 +102,8 @@ public class Vision
      */
     public static class LimelightParams extends FtcRobotDrive.VisionInfo
     {
+        public static final int NUM_PIPELINES = 4;
+
         public LimelightParams()
         {
             camName = "Limelight3a";

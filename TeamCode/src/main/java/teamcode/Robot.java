@@ -127,10 +127,6 @@ public class Robot
         RobotBase robotBase = new RobotBase();
         robotInfo = robotBase.getRobotInfo();
         robotDrive = robotBase.getRobotDrive();
-        if (robotDrive != null)
-        {
-            robotDrive.purePursuitDrive.getYPosPidCtrl().setNoOscillation(true);
-        }
         // Create and initialize vision subsystems.
         if (RobotParams.Preferences.useVision &&
             (RobotParams.Preferences.tuneColorBlobVision ||

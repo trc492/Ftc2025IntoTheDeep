@@ -55,11 +55,13 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         RAISE_ARM,
         DONE
     }   //enum State
+
     private static class TaskParams
     {
         final Vision.SampleType sampleType;
         final boolean useVision;
         final boolean noDrive;
+
         TaskParams(Vision.SampleType sampleType, boolean useVision, boolean noDrive)
         {
             this.sampleType = sampleType;

@@ -630,7 +630,8 @@ public class FtcTest extends FtcTeleOp
                 {
                     if (pressed)
                     {
-                        int pipelineIndex = (robot.vision.limelightVision.getPipeline() + 1) % 4;
+                        int pipelineIndex = (robot.vision.limelightVision.getPipeline() + 1) %
+                                            Vision.LimelightParams.NUM_PIPELINES;
                         robot.vision.limelightVision.setPipeline(pipelineIndex);
                         robot.globalTracer.traceInfo(moduleName, "Switch Limelight pipeline to " + pipelineIndex);
                     }

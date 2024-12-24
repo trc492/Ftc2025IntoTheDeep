@@ -262,6 +262,11 @@ public class RobotBase
                 robotDrive = null;
                 break;
         }
+
+        if (robotDrive != null)
+        {
+            robotDrive.purePursuitDrive.getYPosPidCtrl().setNoOscillation(true);
+        }
     }   //RobotBase
 
     /**

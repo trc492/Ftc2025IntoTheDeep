@@ -55,6 +55,7 @@ public class FtcTeleOp extends FtcOpMode
     private double turnPowerScale;
     private boolean driverAltFunc = false;
     private boolean operatorAltFunc = false;
+    private boolean statusUpdateOn = false;
     private boolean relocalizing = false;
     private TrcPose2D robotFieldPose = null;
     private Integer savedLimelightPipeline = null;
@@ -252,34 +253,36 @@ public class FtcTeleOp extends FtcOpMode
                 // Only do this if there is an extender and elbow angle is below the restricted position threshold.
                 if (robot.extender != null && elbowPos < Elbow.Params.RESTRICTED_POS_THRESHOLD)
                 {
-                    // When operating the elbow up and down, the extender is smart enough to make sure it is
-                    // within the 42-inch expansion rule. The following math is basically calculating the
-                    // extender length limit at the current elbow angle:
-                    // eo = elbowPivotOffset
-                    // y = extenderLen
-                    // il = intakeLen
-                    // theta = elbowAngle
-                    // xl = y + il
-                    // xd = distance of (extender + intake) from pivot
-                    // xpl = extender projected length on the floor (horizontal length limit)
-                    // alpha = atan(eo / xl)
-                    // beta = theta - alpha
-                    // sin(alpha) = eo / xd
-                    // xd = eo / sin(alpha)
-                    // xpl = xd * cos(beta)
-                    // xpl = eo * cos(theta - alpha) / sin(alpha)
-                    // Note: cos(a - b) = cos(a)*cos(b) + sin(a)*sin(b)
-                    // xpl = eo * (cos(theta) * cos(alpha) + sin(theta) * sin(alpha)) / sin(alpha)
-                    // xpl = eo * (cos(theta) * cos(alpha) / sin(alpha) + sin(theta))
-                    // xpl = eo * (cos(theta) / tan(alpha) + sin(theta))
-                    // xpl = eo * (cos(theta) / tan(atan(eo / xl)) + sin(theta))
-                    // xpl = eo * (cos(theta) / (eo / xl) + sin(theta))
-                    // xpl = eo * (cos(theta) * xl / eo + sin(theta))
-                    // xpl / eo = cos(theta) * xl / eo + sin(theta)
-                        // xpl = cos(theta) * xl + sin(theta) * eo
-                    // xl = (xpl - sin(theta) * eo)) / cos(theta)
-                    // y + il = (xpl - sin(theta) * eo) / cos(theta)
-                    // y = (xpl - sin(theta) * eo) / cos(theta) - il
+                    /*
+                     When operating the elbow up and down, the extender is smart enough to make sure it is
+                     within the 42-inch expansion rule. The following math is basically calculating the
+                     extender length limit at the current elbow angle:
+                     eo = elbowPivotOffset
+                     y = extenderLen
+                     il = intakeLen
+                     theta = elbowAngle
+                     xl = y + il
+                     xd = distance of (extender + intake) from pivot
+                     xpl = extender projected length on the floor (horizontal length limit)
+                     alpha = atan(eo / xl)
+                     beta = theta - alpha
+                     sin(alpha) = eo / xd
+                     xd = eo / sin(alpha)
+                     xpl = xd * cos(beta)
+                     xpl = eo * cos(theta - alpha) / sin(alpha)
+                     Note: cos(a - b) = cos(a)*cos(b) + sin(a)*sin(b)
+                     xpl = eo * (cos(theta) * cos(alpha) + sin(theta) * sin(alpha)) / sin(alpha)
+                     xpl = eo * (cos(theta) * cos(alpha) / sin(alpha) + sin(theta))
+                     xpl = eo * (cos(theta) / tan(alpha) + sin(theta))
+                     xpl = eo * (cos(theta) / tan(atan(eo / xl)) + sin(theta))
+                     xpl = eo * (cos(theta) / (eo / xl) + sin(theta))
+                     xpl = eo * (cos(theta) * xl / eo + sin(theta))
+                     xpl / eo = cos(theta) * xl / eo + sin(theta)
+                     xpl = cos(theta) * xl + sin(theta) * eo
+                     xl = (xpl - sin(theta) * eo)) / cos(theta)
+                     y + il = (xpl - sin(theta) * eo) / cos(theta)
+                     y = (xpl - sin(theta) * eo) / cos(theta) - il
+                     */
                     double elbowPosRadians = Math.toRadians(elbowPos);
                     // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
                     double grabberAngleRadians = Math.toRadians(robot.wrist.getTiltPosition());
@@ -326,7 +329,7 @@ public class FtcTeleOp extends FtcOpMode
                 }
             }
             // Display subsystem status.
-            if (RobotParams.Preferences.doStatusUpdate)
+            if (RobotParams.Preferences.doStatusUpdate || statusUpdateOn)
             {
                 robot.updateStatus(2);
             }
@@ -449,18 +452,29 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case RightBumper:
-                // Press and hold for slow drive.
-                if (pressed)
+                if (driverAltFunc)
                 {
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> DrivePower slow.");
-                    drivePowerScale = RobotParams.Robot.DRIVE_SLOW_SCALE;
-                    turnPowerScale = RobotParams.Robot.TURN_SLOW_SCALE;
+                    if (!RobotParams.Preferences.doStatusUpdate)
+                    {
+                        // Toggle status update ON/OFF.
+                        statusUpdateOn = !statusUpdateOn;
+                    }
                 }
                 else
                 {
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> DrivePower normal.");
-                    drivePowerScale = RobotParams.Robot.DRIVE_NORMAL_SCALE;
-                    turnPowerScale = RobotParams.Robot.TURN_NORMAL_SCALE;
+                    // Press and hold for slow drive.
+                    if (pressed)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> DrivePower slow.");
+                        drivePowerScale = RobotParams.Robot.DRIVE_SLOW_SCALE;
+                        turnPowerScale = RobotParams.Robot.TURN_SLOW_SCALE;
+                    }
+                    else
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> DrivePower normal.");
+                        drivePowerScale = RobotParams.Robot.DRIVE_NORMAL_SCALE;
+                        turnPowerScale = RobotParams.Robot.TURN_NORMAL_SCALE;
+                    }
                 }
                 break;
 

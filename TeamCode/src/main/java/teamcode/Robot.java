@@ -180,9 +180,9 @@ public class Robot
                     grabber = new Grabber(this);
                 }
                 // Zero calibrate all subsystems only at init time.
-                zeroCalibrateEvent = new TrcEvent("zeroCalibrate");
                 if (runMode == TrcRobot.RunMode.AUTO_MODE)
                 {
+                    zeroCalibrateEvent = new TrcEvent("zeroCalibrate");
                     stagedZeroCalibrate(null, zeroCalibrateEvent);
                 }
 //                else
@@ -466,6 +466,14 @@ public class Robot
 
     /**
      * This method zero calibrates all subsystems.
+     */
+    public void zeroCalibrate()
+    {
+        zeroCalibrate(null, null);
+    }   //zeroCalibrate
+
+    /**
+     * This method zero calibrates all subsystems.
      *
      * @param owner specifies the owner ID to check if the caller has ownership of the motor.
      * @param event specifies the event to signal when the extender arm zero calibration is done.
@@ -476,14 +484,6 @@ public class Robot
         {
             extenderArm.stagedZeroCalibrate(owner, event);
         }
-    }   //zeroCalibrate
-
-    /**
-     * This method zero calibrates all subsystems.
-     */
-    public void zeroCalibrate()
-    {
-        zeroCalibrate(null, null);
     }   //zeroCalibrate
 
     /**

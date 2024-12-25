@@ -147,6 +147,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
             elbow.zeroCalibrate(null, Elbow.Params.ZERO_CAL_POWER, elbowEvent);
         }
     }
+
     /**
      * This method is called when either elbow or extender zero calibration is done.
      *

@@ -589,10 +589,13 @@ public class FtcTeleOp extends FtcOpMode
 
                         if (!hasAprilTagVision && robot.vision.limelightVision != null)
                         {
-                            // Webcam AprilTag vision is not enable, enable Limelight AprilTag pipeline instead.
-                            savedLimelightPipeline = robot.vision.limelightVision.getPipeline();
-                            robot.vision.setLimelightVisionEnabled(0, true);
                             hasAprilTagVision = true;
+                            if (pressed)
+                            {
+                                // Webcam AprilTag vision is not enable, enable Limelight AprilTag pipeline instead.
+                                savedLimelightPipeline = robot.vision.limelightVision.getPipeline();
+                                robot.vision.setLimelightVisionEnabled(0, true);
+                            }
                         }
 
                         if (hasAprilTagVision)

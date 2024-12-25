@@ -427,6 +427,11 @@ public class Vision
                 colorBlobInfo.detectedObj.label, colorBlobInfo.detectedObj.getRotatedRectVertices());
         }
 
+        if (colorBlobInfo != null && robot.ledIndicator != null)
+        {
+            robot.ledIndicator.setDetectedPattern(colorBlobInfo.detectedObj.label);
+        }
+
         if (lineNum != -1)
         {
             robot.dashboard.displayPrintf(
@@ -848,6 +853,11 @@ public class Vision
         {
             cameraStreamProcessor.addRectInfo(
                 sampleInfo.detectedObj.label, sampleInfo.detectedObj.getRotatedRectVertices());
+        }
+
+        if (sampleInfo != null && robot.ledIndicator != null)
+        {
+            robot.ledIndicator.setDetectedPattern(sampleInfo.detectedObj.label);
         }
 
         if (lineNum != -1)

@@ -179,16 +179,13 @@ public class Robot
                 {
                     grabber = new Grabber(this);
                 }
-                // Zero calibrate all subsystems only at init time.
-                if (runMode == TrcRobot.RunMode.AUTO_MODE)
+                // Zero calibrate all subsystems only in Auto or if TeleOp is run standalone without prior Auto.
+                // There is no reason to zero calibrate again if Auto was run right before TeleOp.
+                if (runMode == TrcRobot.RunMode.AUTO_MODE || FtcAuto.autoChoices.alliance == null)
                 {
-                    zeroCalibrateEvent = new TrcEvent("zeroCalibrate");
+                    zeroCalibrateEvent = new TrcEvent("ZeroCalibrate");
                     stagedZeroCalibrate(null, zeroCalibrateEvent);
                 }
-//                else
-//                {
-//                    zeroCalibrate(null, zeroCalibrateEvent);
-//                }
                 // Create autotasks.
                 pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
                 pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);
@@ -462,14 +459,6 @@ public class Robot
         {
             extenderArm.zeroCalibrate(owner, event);
         }
-    }   //zeroCalibrate
-
-    /**
-     * This method zero calibrates all subsystems.
-     */
-    public void zeroCalibrate()
-    {
-        zeroCalibrate(null, null);
     }   //zeroCalibrate
 
     /**

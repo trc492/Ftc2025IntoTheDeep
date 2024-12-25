@@ -130,7 +130,7 @@ public class Robot
         // Create and initialize vision subsystems.
         if (RobotParams.Preferences.useVision &&
             (RobotParams.Preferences.tuneColorBlobVision ||
-             RobotParams.Preferences.useAprilTagVision ||
+             RobotParams.Preferences.useWebcamAprilTagVision ||
              RobotParams.Preferences.useColorBlobVision ||
              RobotParams.Preferences.useLimelightVision))
         {

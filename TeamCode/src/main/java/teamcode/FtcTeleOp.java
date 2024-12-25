@@ -576,7 +576,7 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrating.");
                     robot.cancelAll();
-                    robot.zeroCalibrate();
+                    robot.zeroCalibrate(moduleName, null);
                 }
                 break;
 

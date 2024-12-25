@@ -163,9 +163,9 @@ public class FtcTeleOp extends FtcOpMode
         // Tell robot object opmode is about to stop so it can do the necessary cleanup for the mode.
         //
         robot.stopMode(prevMode);
-        printPerformanceMetrics();
         robot.globalTracer.traceInfo(
             moduleName, "***** Stopping TeleOp: " + TrcTimer.getCurrentTimeString() + " *****");
+        printPerformanceMetrics();
 
         if (TrcDbgTrace.isTraceLogOpened())
         {
@@ -187,6 +187,7 @@ public class FtcTeleOp extends FtcOpMode
     {
         if (slowPeriodicLoop)
         {
+            int lineNum = 1;
             robot.getDetectedSamplePose(Robot.sampleType, 0.0, false);
             //
             // DriveBase subsystem.
@@ -215,9 +216,13 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         robot.robotDrive.driveBase.arcadeDrive(inputs[1], inputs[2]);
                     }
-                    robot.dashboard.displayPrintf(
-                        1, "RobotDrive: Power=(%.2f,y=%.2f,rot=%.2f),Mode:%s",
-                        inputs[0], inputs[1], inputs[2], robot.robotDrive.driveBase.getDriveOrientation());
+
+                    if (RobotParams.Preferences.doStatusUpdate || statusUpdateOn)
+                    {
+                        robot.dashboard.displayPrintf(
+                            lineNum++, "RobotDrive: Power=(%.2f,y=%.2f,rot=%.2f),Mode:%s",
+                            inputs[0], inputs[1], inputs[2], robot.robotDrive.driveBase.getDriveOrientation());
+                    }
                 }
 
                 if (elapsedTime > RobotParams.Game.LEVEL1_ASCENT_DEADLINE)
@@ -331,7 +336,7 @@ public class FtcTeleOp extends FtcOpMode
             // Display subsystem status.
             if (RobotParams.Preferences.doStatusUpdate || statusUpdateOn)
             {
-                robot.updateStatus(2);
+                robot.updateStatus(lineNum);
             }
         }
     }   //periodic
@@ -487,7 +492,7 @@ public class FtcTeleOp extends FtcOpMode
                         scoreHeight = Robot.ScoreHeight.LOW;
                         if (robot.ledIndicator != null)
                         {
-                            robot.ledIndicator.setDetectedPattern(LEDIndicator.SCORE_HEIGHT_HIGH);
+                            robot.ledIndicator.setDetectedPattern(LEDIndicator.SCORE_HEIGHT_LOW);
                         }
                     }
                     else
@@ -496,7 +501,7 @@ public class FtcTeleOp extends FtcOpMode
                         scoreHeight = Robot.ScoreHeight.HIGH;
                         if (robot.ledIndicator != null)
                         {
-                            robot.ledIndicator.setDetectedPattern(LEDIndicator.SCORE_HEIGHT_LOW);
+                            robot.ledIndicator.setDetectedPattern(LEDIndicator.SCORE_HEIGHT_HIGH);
                         }
                     }
                 }

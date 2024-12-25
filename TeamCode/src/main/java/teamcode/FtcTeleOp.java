@@ -142,10 +142,18 @@ public class FtcTeleOp extends FtcOpMode
         //
         // Enable AprilTag vision for re-localization.
         //
-        if (robot.vision != null && robot.vision.aprilTagVision != null)
+        if (robot.vision != null)
         {
-            robot.globalTracer.traceInfo(moduleName, "Enabling WebCam AprilTagVision.");
-            robot.vision.setAprilTagVisionEnabled(true);
+            if (robot.vision.aprilTagVision != null)
+            {
+                robot.globalTracer.traceInfo(moduleName, "Enabling WebCam AprilTagVision.");
+                robot.vision.setAprilTagVisionEnabled(true);
+            }
+            else if (robot.vision.limelightVision != null)
+            {
+                robot.globalTracer.traceInfo(moduleName, "Enabling Limelight AprilTagVision.");
+                robot.vision.setLimelightVisionEnabled(0, true);
+            }
         }
     }   //startMode
 

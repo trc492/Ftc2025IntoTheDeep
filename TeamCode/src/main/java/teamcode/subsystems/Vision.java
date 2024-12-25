@@ -248,7 +248,7 @@ public class Vision
 //                FtcDashboard.getInstance().startCameraStream(cameraStreamProcessor, 0);
             }
 
-            if (RobotParams.Preferences.useAprilTagVision)
+            if (RobotParams.Preferences.useWebcamAprilTagVision)
             {
                 tracer.traceInfo(moduleName, "Starting Webcam AprilTagVision...");
                 FtcVisionAprilTag.Parameters aprilTagParams = new FtcVisionAprilTag.Parameters()

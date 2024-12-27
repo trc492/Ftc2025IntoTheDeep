@@ -545,7 +545,7 @@ public class FtcTeleOp extends FtcOpMode
                     if (!robot.pickupFromGroundTask.isActive())
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup from ground.");
-                        robot.pickupFromGroundTask.autoPickupFromGround(Robot.sampleType, true, false, null);
+                        robot.pickupFromGroundTask.autoPickupFromGround(Robot.sampleType, true, false, null, null);
                     }
                     else
                     {
@@ -656,7 +656,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high basket scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.LOW_BASKET_SCORE_POS, null);
+                    robot.wrist.setPosition(Wrist.Params.LOW_BASKET_SCORE_POS, 0.0);
                 }
                 break;
 
@@ -664,7 +664,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high chamber scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.LOW_CHAMBER_SCORE_POS, null);
+                    robot.wrist.setPosition(Wrist.Params.LOW_CHAMBER_SCORE_POS, 0.0);
                 }
                 break;
 
@@ -672,6 +672,8 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to ground pickup position.");
+                    // Don't change rotate position in case the driver has aligned the wrist already.
+                    // Code Review: The code to rotate the wrist in periodic is commented out, why???
                     robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, null);
                 }
                 break;

@@ -108,6 +108,9 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         if (alliance == null)
         {
             // Caller is TeleOp, let's determine the alliance color by robot's location.
+            // Caveat: this assumes odemetry is current in TeleOp. If odometry is not setup correctly, this would be
+            // wrong. In other words, if TeleOp is run without prior Auto, the driver must do an AprilTag
+            // relocalization to make odometry current before this would work.
             alliance = robot.robotDrive.driveBase.getFieldPosition().x < 0.0?
                 FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         }
@@ -241,9 +244,13 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
                 // Swing the arm towards the basket in low speed.
-                robot.extenderArm.elbow.setPosition(
-                    0.0, elbowScorePos,true, (taskParams.scoreHeight == Robot.ScoreHeight.HIGH)? 0.7 : 1.0);
-                robot.wrist.setPosition(wristPos, null);
+                // Code Review: the elbow and extender are already in position by the SET_EXTENDER_ARM state?! Why
+                // do it again? Was it because in SET_EXTENDER_ARM, you are doing fire-and-forget and this is to make
+                // sure it will be there at a lower speed? In any case, this elbow.setPosition is not going to do
+                // anything anyway because you did not provide currOwner.
+                robot.elbow.setPosition(
+                    0.0, elbowScorePos, true, (taskParams.scoreHeight == Robot.ScoreHeight.HIGH)? 0.7 : 1.0);
+                robot.wrist.setPosition(wristPos, 0.0);
                 // Depending on how the grabber holds the sample, the sensor may or may not see it.
                 if (robot.grabber.hasObject())
                 {
@@ -262,7 +269,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
             case RETRACT_EXTENDER_ARM:
                 // Retract the arm. Fire and forget to save time.
-                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, null);
+                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 0.0);
                 robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, null);
                 sm.setState(State.DONE);
                 break;

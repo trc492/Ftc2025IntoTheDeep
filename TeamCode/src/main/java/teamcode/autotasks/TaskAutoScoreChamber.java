@@ -91,7 +91,6 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
-    private final TrcEvent event2;
 
     private String currOwner = null;
 
@@ -107,8 +106,6 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         this.ownerName = ownerName;
         this.robot = robot;
         this.event = new TrcEvent(moduleName + ".event");
-        this.event2 = new TrcEvent(moduleName + ".event2");
-//        this.timer = new TrcTimer(moduleName);
     }   //TaskAutoScoreChamber
 
     /**
@@ -119,6 +116,10 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
      */
     public void autoScoreChamber(Robot.ScoreHeight scoreHeight, boolean noDrive, TrcEvent completionEvent)
     {
+        // If caller is TeleOp, let's determine the alliance color by robot's location.
+        // Caveat: this assumes odemetry is current in TeleOp. If odometry is not setup correctly, this would be
+        // wrong. In other words, if TeleOp is run without prior Auto, the driver must do an AprilTag
+        // relocalization to make odometry current before this would work.
         TrcPose2D robotPose = robot.robotDrive.driveBase.getFieldPosition();
         FtcAuto.Alliance alliance = robotPose.y < 0.0? FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         boolean nearNetZone = alliance == FtcAuto.Alliance.RED_ALLIANCE ^ robotPose.x > 0.0;
@@ -247,12 +248,12 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(intermediate1, taskParams.alliance),
                         robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance));
-                    robot.wrist.setPosition(taskParams.wristPos, null);
+                    robot.wrist.setPosition(taskParams.wristPos, 0.0);
                     robot.extenderArm.setPosition(taskParams.elbowAngle, taskParams.extenderPos, null);
                 }
                 else
                 {
-                    robot.wrist.setPosition(taskParams.wristPos, null);
+                    robot.wrist.setPosition(taskParams.wristPos, 0.0);
                     robot.extenderArm.setPosition(taskParams.elbowAngle, taskParams.extenderPos, event);
                 }
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);
@@ -291,19 +292,19 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 ////                    sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
 //                    sm.setState(State.RETRACT_EXTENDER_ARM);
 //                }
+//                sm.setState(State.RETRACT_EXTENDER_ARM);
                 robot.grabber.dump(null, 0.0, event);
                 sm.waitForSingleEvent(event, State.RETRACT_EXTENDER_ARM);
-//                sm.setState(State.RETRACT_EXTENDER_ARM);
                 break;
 
             case RETRACT_EXTENDER_ARM:
                 // Swing the arm up and retract extender.
 //                robot.extenderArm.elbow.setPosition(0.0, Elbow.Params.HIGH_CHAMBER_SCORE_POS, true, 1.0, event2);
-                robot.extenderArm.setPosition(Elbow.Params.MIN_POS,Extender.Params.MIN_POS, event);
 //                sm.addEvent(event);
 //                sm.addEvent(event2);
-                sm.setState(State.DONE);
 //                sm.waitForEvents(State.DONE);
+                robot.extenderArm.setPosition(Elbow.Params.MIN_POS,Extender.Params.MIN_POS, event);
+                sm.setState(State.DONE);
                 break;
 
             default:

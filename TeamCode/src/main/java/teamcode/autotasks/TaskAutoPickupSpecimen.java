@@ -111,6 +111,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         if (alliance == null)
         {
             // Caller is TeleOp, let's determine the alliance color by robot's location.
+            // Caveat: this assumes odemetry is current in TeleOp. If odometry is not setup correctly, this would be
+            // wrong. In other words, if TeleOp is run without prior Auto, the driver must do an AprilTag
+            // relocalization to make odometry current before this would work.
             alliance = robot.robotDrive.driveBase.getFieldPosition().y < 0.0?
                 FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         }
@@ -213,14 +216,17 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     tracer.traceInfo(moduleName, "Arm or grabber doesn't exist, we are done.");
                     sm.setState(State.DONE);
                 }
-                else {
-                    if (robot.grabber.hasObject()) {
+                else
+                {
+                    // Code Review: Why would we call autoPickupSpecimen if we already has a specimen???
+                    if (robot.grabber.hasObject())
+                    {
                         sm.setState(State.DONE);
                     }
                     else
                     {
                         // Fire and forget to save time.
-                        robot.wrist.setPosition(Wrist.Params.SPECIMEN_PICKUP_POS, null);
+                        robot.wrist.setPosition(Wrist.Params.SPECIMEN_PICKUP_POS, 0.0);
                         robot.extenderArm.setPosition(
                             Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
                         sm.setState(State.DRIVE_TO_PICKUP);

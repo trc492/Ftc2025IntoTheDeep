@@ -153,7 +153,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     }
                     else
                     {
-                        robot.wrist.setPosition(-15.0, null);
+                        robot.wrist.setPosition(-15.0, 0.0);
                         robot.scoreBasketTask.autoScoreBasket(
                             autoChoices.alliance, autoChoices.scoreHeight, true, event);
                     }
@@ -201,8 +201,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case PICKUP_FLOOR_SAMPLE:
                     // Pick up a sample from the spike marks.
-                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 16.0 + spikeMarkSampleCount*1.5);
-                    robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, false, event);
+                    robot.pickupFromGroundTask.autoPickupFromGround(
+                        Vision.SampleType.YellowSample, true, false, 16.0 + spikeMarkSampleCount*1.5, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
                     break;
 
@@ -259,7 +259,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                         {
                             // Do level 1 ascent.
-                            robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, null);
+                            robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
                             robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
                             robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
                             sm.waitForSingleEvent(event, State.DONE);
@@ -268,7 +268,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         {
                             Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
                                 Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
-                            robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, event);
+                            // Code Review: what wrist angle should you use?
+                            robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, 0.0, event);
                             sm.waitForSingleEvent(event, State.CLEAR_SUB);
                         }
                     }
@@ -279,7 +280,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case CLEAR_SUB:
-                    robot.wrist.setPosition(0.0, null);
+                    robot.wrist.setPosition(0.0, 0.0);
                     robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
                     // Code Review: you are reusing event for both timer and purePursuit??? This is either a bug or
                     // very tricky code. What are you trying to do? If you want to timeout purepursuit, why don't you

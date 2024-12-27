@@ -61,12 +61,14 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         final Vision.SampleType sampleType;
         final boolean useVision;
         final boolean noDrive;
+        final Double wristRotatePos;
 
-        TaskParams(Vision.SampleType sampleType, boolean useVision, boolean noDrive)
+        TaskParams(Vision.SampleType sampleType, boolean useVision, boolean noDrive, Double wristRotatePos)
         {
             this.sampleType = sampleType;
             this.useVision = useVision;
             this.noDrive = noDrive;
+            this.wristRotatePos = wristRotatePos;
         }   //TaskParams
 
         @NonNull
@@ -74,7 +76,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         {
             return "sampleType=" + sampleType +
                    ",useVision=" + useVision +
-                   ",noDrive=" + noDrive;
+                   ",noDrive=" + noDrive +
+                   ",wristRotatePos=" + wristRotatePos;
         }   //toString
     }   //class TaskParams
 
@@ -108,11 +111,13 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      * @param useVision specifies true to use vision to locate sample, false otherwise.
      * @param noDrive specifies true to not drive the robot to the sample, false otherwise.
+     * @param wristRotatePos specifies differential wrist rotate position, null if no change.
      */
     public void autoPickupFromGround(
-        Vision.SampleType sampleType, boolean useVision, boolean noDrive, TrcEvent completionEvent)
+        Vision.SampleType sampleType, boolean useVision, boolean noDrive, Double wristRotatePos,
+        TrcEvent completionEvent)
     {
-        TaskParams taskParams = new TaskParams(sampleType, useVision, noDrive);
+        TaskParams taskParams = new TaskParams(sampleType, useVision, noDrive, wristRotatePos);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         startAutoTask(State.START, taskParams, completionEvent);
     }   //autoPickupFromGround
@@ -217,7 +222,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         taskParams.useVision && robot.vision != null &&
                         robot.vision.isSampleVisionEnabled(taskParams.sampleType)?
                             State.FIND_SAMPLE: State.PICKUP_SAMPLE;
-                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, robot.wrist.getRotatePosition());
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, taskParams.wristRotatePos);
                     robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, armEvent);
                     sm.waitForSingleEvent(armEvent, nextState);
                 }
@@ -268,12 +273,11 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case PICKUP_SAMPLE:
                 // Pick up sample from the floor.
                 // We only care about sample color if we pick up from submersible.
-                // We assume the driver would drive up to the correct sample color for picking up from ground.
+                // We assume the driver would drive up to the correct sample color and orient the differential wrist
+                // for picking up from ground.
                 robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.75); //TO: 0.5s
-                sm.addEvent(event);
                 robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 5.0, null, null);
-//                sm.addEvent(armEvent);
-                sm.waitForEvents(State.RAISE_ARM, false, 0.0);
+                sm.waitForSingleEvent(event, State.RAISE_ARM);
                 break;
 
             case RAISE_ARM:

@@ -25,7 +25,6 @@ package teamcode.autocommands;
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
-import teamcode.autotasks.TaskAutoPickupSpecimen;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Grabber;
@@ -45,10 +44,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
     private enum State
     {
         START,
-        DO_DELAY,
         SCORE_PRELOAD,
         MOVE_SAMPLES,
-        PICKUP_PRELOAD,
+        APPROACH_SPECIMEN,
         PICKUP_SPECIMEN,
         DRIVE_TO_CHAMBER_POS,
         SCORE_SPECIMEN,
@@ -61,7 +59,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
     private final TrcTimer timer;
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
-    private int scoreSpecimenCount = 0;
+    private int pickupSpecimenCount = 0;
 
     /**
      * Constructor: Create an instance of the object.
@@ -126,15 +124,13 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
         {
             robot.dashboard.displayPrintf(8, "State: " + state);
             robot.globalTracer.tracePreStateInfo(sm.toString(), state);
+
+            TrcPose2D intermediate1, intermediate2;
             switch (state)
             {
                 case START:
                     // Set robot location according to auto choices.
                     robot.setRobotStartPosition(autoChoices);
-                    //
-                    // Intentionally fall to next state.
-                    //
-                case DO_DELAY:
                     // Do delay if there is one.
                     if (autoChoices.delay > 0.0)
                     {
@@ -156,25 +152,28 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case MOVE_SAMPLES:
                     // Herd two samples to the observation zone to be converted to specimens.
-                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0, null, null);
-//                    robot.wrist.setPosition(-15.0, 90.0);
-//                    robot.robotDrive.purePursuitDrive.setMoveOutputLimit(0);
-//                    TrcEvent event1 = new TrcEvent("Intake Event");
+
+                    // Code Review: This is very tricky code. Need to document it. You are setting extenderArm position
+                    // and then immediately call extender setPosition with 4 sec delay. On the surface, the extender
+                    // setPosition may interfere with the previous extenderArm setPosition but you are counting on
+                    // the fact that you are passing a null on extenderPos, and then delay 4 sec so it won't cancel it.
+                    // This is too tricky and making dangerous assumptions. It is better to set Elbow explicitly
+                    // instead.
+//                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0, null, null);
+
+                    robot.elbow.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0);
                     robot.extender.setPosition(4.0, Extender.Params.SPECIMEN_PICKUP_POS, true, 1.0);
-//                    event1.setCallback(this::elbowCallback, null);
-//                    robot.grabber.autoIntake(null, 6.5, Grabber.Params.FINISH_DELAY, event, 2.5);
                     robot.robotDrive.purePursuitDrive.start(
                         event, 8.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH, autoChoices.alliance, true));
-                    sm.waitForSingleEvent(event, State.PICKUP_PRELOAD);
-//                    sm.addEvent(event);
-//                    sm.addEvent(event1);
-//                    sm.waitForEvents(State.RAISE_ELBOW, false);
+                    sm.waitForSingleEvent(event, State.APPROACH_SPECIMEN);
                     break;
 
-                case PICKUP_PRELOAD:
+                case APPROACH_SPECIMEN:
+                    // Code Review: Why do you have this state? Shouldn't autoPickupSpecimen task approach the specimen
+                    // for you?
                     robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.85); // TO: 0.75
                     robot.robotDrive.driveBase.holonomicDrive(null, 0.0, 0.3, 0.0);
                     sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN, 0.0);
@@ -183,9 +182,10 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                 case PICKUP_SPECIMEN:
                     // Pick up a specimen from the wall.
                     robot.robotDrive.driveBase.stop(null);
-                    if (scoreSpecimenCount < 3)
+                    if (pickupSpecimenCount < 3)
                     {
                         robot.pickupSpecimenTask.autoPickupSpecimen(autoChoices.alliance, false, event);
+                        pickupSpecimenCount++;
                         sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER_POS);
                     }
                     else
@@ -195,31 +195,30 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_TO_CHAMBER_POS:
-                    scoreSpecimenCount++;
                     // Drive to the specimen scoring position.
                     TrcPose2D scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
-                    scorePose.x += 2.5 * scoreSpecimenCount;
+                    scorePose.x += 2.5 * pickupSpecimenCount;
 //                    scorePose.y += 1.7 * scoreSpecimenCount; // Because I gave up on PID
-                    TrcPose2D intermediate1 = scorePose.clone();
-                    TrcPose2D intermediate2 = robot.robotDrive.driveBase.getFieldPosition();
+                    intermediate1 = robot.robotDrive.driveBase.getFieldPosition();
                     if (autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE)
                     {
-                        intermediate2.y += 7.0;
+                        intermediate1.y += 7.0;
                     }
                     else
                     {
-                        intermediate2.y -= 7.0;
+                        intermediate1.y -= 7.0;
                     }
+                    intermediate2 = scorePose.clone();
+                    intermediate2.y -= 10.0;
 
-                    intermediate1.y -= 10.0;
                     robot.extenderArm.setPosition(
                         Elbow.Params.HIGH_CHAMBER_SCORE_POS, Extender.Params.HIGH_CHAMBER_SCORE_POS, null);
                     robot.wrist.setPosition(90.0, 0.0);
                     robot.robotDrive.purePursuitDrive.start(
                         event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        intermediate2,
-                        robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance),
+                        intermediate1,
+                        robot.adjustPoseByAlliance(intermediate2, autoChoices.alliance),
                         robot.adjustPoseByAlliance(scorePose, autoChoices.alliance));
                     sm.waitForSingleEvent(event, State.SCORE_SPECIMEN);
                     break;
@@ -232,9 +231,10 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case PARK:
                     // Park at the observation zone.
+                    // Code Review: this doesn't work. The second elbow.setPosition will immediately cancel the first
+                    // one even though it was delayed for 1 sec.
                     robot.elbow.setPosition(90.0, true);
                     robot.elbow.setPosition(1.0, 105.0, true, 1.0);
-//                    robot.extenderArm.setPosition(, null, null);
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
                         intermediate1 = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
@@ -243,8 +243,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            robot.adjustPoseByAlliance(
-                                    intermediate1, autoChoices.alliance),
+                            robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance),
                             robot.adjustPoseByAlliance(
                                 RobotParams.Game.RED_OBSERVATION_ZONE_PARK_POSE, autoChoices.alliance));
                         sm.waitForSingleEvent(event, State.DONE);
@@ -269,9 +268,5 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
         return !sm.isEnabled();
     }   //cmdPeriodic
-
-//    public void elbowCallback(Object context) {
-//        robot.wrist.setPosition(45.0, null);
-//    }
 
 }   //class CmdAuto

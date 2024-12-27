@@ -22,8 +22,6 @@
 
 package teamcode.autocommands;
 
-import java.util.Timer;
-
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
@@ -47,7 +45,6 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private enum State
     {
         START,
-        DO_DELAY,
         SCORE_PRELOAD,
         TURN_TO_PARTNER,
         DRIVE_TO_SPIKE_MARKS,
@@ -64,8 +61,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private final TrcTimer timer;
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
-    private int scoreSampleCount = 0;
-    private int maxSampleCount = 3;
+    private int spikeMarkSampleCount = 0;
 
     /**
      * Constructor: Create an instance of the object.
@@ -136,10 +132,6 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case START:
                     // Set robot location according to auto choices.
                     robot.setRobotStartPosition(autoChoices);
-                    //
-                    // Intentionally fall to next state.
-                    //
-                case DO_DELAY:
                     // Do delay if there is one.
                     if (autoChoices.delay > 0.0)
                     {
@@ -171,13 +163,12 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case TURN_TO_PARTNER:
                     if (autoChoices.scorePartnerSample == FtcAuto.ScorePartnerSample.YES)
                     {
-                        robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS,null,null);
+                        robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                             new TrcPose2D(2.5, -2.25, 155.0));
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
-                        maxSampleCount++;
                     }
                     else
                     {
@@ -188,19 +179,18 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case DRIVE_TO_SPIKE_MARKS:
                     // Drive to the spike marks to pick up a sample.
                     // Make sure remaining time is long enough to score a cycle, or else go park.
-                    if (scoreSampleCount < maxSampleCount &&
+                    if (spikeMarkSampleCount < 3 &&
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_BASKET_CYCLE_TIME)
                     {
                         TrcPose2D spikeMark = RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP.clone();
-                        spikeMark.x -= 9.0 * scoreSampleCount;
+                        spikeMark.x -= 9.0*spikeMarkSampleCount;
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.extenderArm.setPosition(null, 22.0, null);
-//                        robot.wrist.setPosition(0.0, 15.0);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                             spikeMark);
-                        scoreSampleCount++;
+                        spikeMarkSampleCount++;
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     }
                     else
@@ -211,12 +201,14 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case PICKUP_FLOOR_SAMPLE:
                     // Pick up a sample from the spike marks.
-                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 16.0 + scoreSampleCount * 1.5);
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 16.0 + spikeMarkSampleCount*1.5);
                     robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, false, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
                     break;
 
                 case SCORE_SAMPLE_BASKET:
+                    // Code Review: you are trying to cancel PurePursuit if you were picking up sample from
+                    // submersible and PurePursuit timed out. But why do you do that?
                     robot.robotDrive.purePursuitDrive.cancel();
                     // Score the sample into the basket.
                     robot.scoreBasketTask.autoScoreBasket(autoChoices.alliance, autoChoices.scoreHeight, true, event);
@@ -244,22 +236,24 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     else
                     {
                         robot.extenderArm.setPosition(
-                                Elbow.Params.GROUND_PICKUP_POS+2.0, Extender.Params.MIN_POS + 2.0, null);
+                            Elbow.Params.GROUND_PICKUP_POS+2.0, Extender.Params.MIN_POS + 2.0, null);
                         robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 0.0);
                         TrcPose2D targetPose = new TrcPose2D(-1.075, -0.3, 90.0);
                         targetPose = robot.adjustPoseByAlliance(targetPose, autoChoices.alliance, true);
                         TrcPose2D intermediate1 = new TrcPose2D(-2.2, -2.0, 30.0);
                         intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance, true);
                         robot.robotDrive.purePursuitDrive.start(
-                                event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                                robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                                intermediate1, targetPose);
+                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            intermediate1, targetPose);
                         sm.waitForSingleEvent(event, State.ASCENT);
                         sm.setState(State.DONE);
                     }
                     break;
 
                 case ASCENT:
+                    // Code Review: Do you really check extenderArm exist? You've been using the extenderArm
+                    // everywhere, so if the code did not crash at this point, extenderArm must exist!
                     if (robot.extenderArm != null)
                     {
                         if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
@@ -273,15 +267,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         else
                         {
                             Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                                    Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
-//                            if (autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE)
-//                            {
-//                                pickupColor = Vision.SampleType.RedAllianceSamples;
-//                            }
-//                            else
-//                            {
-//                                pickupColor = Vision.SampleType.BlueAllianceSamples;
-//                            }
+                                Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
                             robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, event);
                             sm.waitForSingleEvent(event, State.CLEAR_SUB);
                         }
@@ -294,13 +280,16 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case CLEAR_SUB:
                     robot.wrist.setPosition(0.0, null);
-                    robot.elbow.setPosition(0.0,2.0,true, 1.0, null);
+                    robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
+                    // Code Review: you are reusing event for both timer and purePursuit??? This is either a bug or
+                    // very tricky code. What are you trying to do? If you want to timeout purepursuit, why don't you
+                    // set a 0.75 sec timeout on the PurePursuit call instead of setting a timer???
                     timer.set(0.75, event);
                     robot.robotDrive.purePursuitDrive.start(
-                            null, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, autoChoices.alliance, true),
-                            robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, autoChoices.alliance));
+                        null, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, autoChoices.alliance, true),
+                        robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, autoChoices.alliance));
                     if (robot.grabber.hasObject())
                     {
                         sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);

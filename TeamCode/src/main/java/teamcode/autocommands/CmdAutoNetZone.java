@@ -161,6 +161,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case TURN_TO_PARTNER:
+                    // If we're doing partner scoring, turn to their sample
                     if (autoChoices.scorePartnerSample == FtcAuto.ScorePartnerSample.YES)
                     {
                         robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null);
@@ -209,7 +210,10 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case SCORE_SAMPLE_BASKET:
                     // Code Review: you are trying to cancel PurePursuit if you were picking up sample from
                     // submersible and PurePursuit timed out. But why do you do that?
+
+                    // Cancel any previous drive done by CLEAR_SUB
                     robot.robotDrive.purePursuitDrive.cancel();
+                    
                     // Score the sample into the basket.
                     robot.scoreBasketTask.autoScoreBasket(autoChoices.alliance, autoChoices.scoreHeight, true, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
@@ -280,6 +284,9 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case CLEAR_SUB:
+                    // Set the elbow and wrist to a safe position and start a pure pursuit drive in order to clear
+                    // the submersible before handing over control to auto score basket. 
+                    // OPTIMIZATION: Can we not pause between states? So keep the same purePursuitDrive between states and auto tasks
                     robot.wrist.setPosition(0.0, 0.0);
                     robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
                     // Code Review: you are reusing event for both timer and purePursuit??? This is either a bug or
@@ -287,7 +294,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     // set a 0.75 sec timeout on the PurePursuit call instead of setting a timer???
                     timer.set(0.75, event);
                     robot.robotDrive.purePursuitDrive.start(
-                        null, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                        null, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, autoChoices.alliance, true),
                         robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, autoChoices.alliance));

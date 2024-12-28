@@ -152,6 +152,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case MOVE_SAMPLES:
                     // Herd two samples to the observation zone to be converted to specimens.
+                    // The extenderArm is set to min pos after Auto Score Chamber keep this in order to not bump into the
+                    // wall when herding samples, set the extender pos to SPECIMEN PICKUP POS after 4 seconds to get ready
+                    // to grab it in the next state.
 
                     // Code Review: This is very tricky code. Need to document it. You are setting extenderArm position
                     // and then immediately call extender setPosition with 4 sec delay. On the surface, the extender
@@ -159,6 +162,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     // the fact that you are passing a null on extenderPos, and then delay 4 sec so it won't cancel it.
                     // This is too tricky and making dangerous assumptions. It is better to set Elbow explicitly
                     // instead.
+
 //                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0, null, null);
 
                     robot.elbow.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0);
@@ -172,8 +176,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     break;
 
                 case APPROACH_SPECIMEN:
-                    // Code Review: Why do you have this state? Shouldn't autoPickupSpecimen task approach the specimen
-                    // for you?
+                    // Approach the specimen from the end of herd samples, don't use auto pickup because it will drive to 
+                    // another location ( Pickup specimen will set to done if we already have one so if this works it will
+                    // pass auto pickup.
                     robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.85); // TO: 0.75
                     robot.robotDrive.driveBase.holonomicDrive(null, 0.0, 0.3, 0.0);
                     sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN, 0.0);
@@ -231,9 +236,10 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case PARK:
                     // Park at the observation zone.
+                    // Set the elbow position to 105.0 in order to keep it upright. (Not needed as it's gravity driven? TO REVISE).
+                    
                     // Code Review: this doesn't work. The second elbow.setPosition will immediately cancel the first
                     // one even though it was delayed for 1 sec.
-                    robot.elbow.setPosition(90.0, true);
                     robot.elbow.setPosition(1.0, 105.0, true, 1.0);
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {

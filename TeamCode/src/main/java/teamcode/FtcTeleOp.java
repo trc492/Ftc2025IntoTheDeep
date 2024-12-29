@@ -441,7 +441,8 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         robot.globalTracer.traceInfo(
                             moduleName, ">>>>> Auto score basket (scoreHeight=%s).", scoreHeight);
-                        robot.scoreBasketTask.autoScoreBasket(null, scoreHeight, !driverAltFunc, null);
+                        // Code Review: what should we set the "fromSubmersible" to? Do the driver has the say?
+                        robot.scoreBasketTask.autoScoreBasket(null, scoreHeight, !driverAltFunc, false, null);
                     }
                     else
                     {

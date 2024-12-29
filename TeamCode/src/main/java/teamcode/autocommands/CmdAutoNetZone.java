@@ -52,7 +52,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
         SCORE_SAMPLE_BASKET,
         GO_PARK,
         ASCENT,
-        CLEAR_SUB,
+        SCORE_SUBMERSIBLE_SAMPLE,
+//        CLEAR_SUB,
         DONE
     }   //enum State
 
@@ -62,6 +63,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
     private int spikeMarkSampleCount = 0;
+    private boolean scoredSubmersibleSample = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -155,7 +157,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     {
                         robot.wrist.setPosition(-15.0, 0.0);
                         robot.scoreBasketTask.autoScoreBasket(
-                            autoChoices.alliance, autoChoices.scoreHeight, true, event);
+                            autoChoices.alliance, autoChoices.scoreHeight, true, false, event);
                     }
                     sm.waitForSingleEvent(event, State.TURN_TO_PARTNER);
                     break;
@@ -211,17 +213,18 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     // Code Review: you are trying to cancel PurePursuit if you were picking up sample from
                     // submersible and PurePursuit timed out. But why do you do that?
 
-                    // Cancel any previous drive done by CLEAR_SUB
-                    robot.robotDrive.purePursuitDrive.cancel();
+//                    // Cancel any previous drive done by CLEAR_SUB
+//                    robot.robotDrive.purePursuitDrive.cancel();
                     
                     // Score the sample into the basket.
-                    robot.scoreBasketTask.autoScoreBasket(autoChoices.alliance, autoChoices.scoreHeight, true, event);
+                    robot.scoreBasketTask.autoScoreBasket(
+                        autoChoices.alliance, autoChoices.scoreHeight, true, false, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
                     break;
 
                 case GO_PARK:
                     // Go to the ascent zone.
-                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
+                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || scoredSubmersibleSample)
                     {
                         robot.extenderArm.setPosition(
                             Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
@@ -268,13 +271,18 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                             robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
                             sm.waitForSingleEvent(event, State.DONE);
                         }
-                        else
+                        else if (autoChoices.parkOption == FtcAuto.ParkOption.SCORE_SUBMERSIBLE_AND_PARK)
                         {
                             Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
                                 Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
                             // Code Review: what wrist angle should you use?
                             robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, 0.0, event);
-                            sm.waitForSingleEvent(event, State.CLEAR_SUB);
+                            sm.waitForSingleEvent(event, State.SCORE_SUBMERSIBLE_SAMPLE);
+//                            sm.waitForSingleEvent(event, State.CLEAR_SUB);
+                        }
+                        else
+                        {
+                            sm.setState(State.DONE);
                         }
                     }
                     else
@@ -283,31 +291,35 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     }
                     break;
 
-                case CLEAR_SUB:
+                case SCORE_SUBMERSIBLE_SAMPLE:
                     // Set the elbow and wrist to a safe position and start a pure pursuit drive in order to clear
-                    // the submersible before handing over control to auto score basket. 
+                    // the submersible before handing over control to auto score basket.
                     // OPTIMIZATION: Can we not pause between states? So keep the same purePursuitDrive between states and auto tasks
                     robot.wrist.setPosition(0.0, 0.0);
                     robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
-                    // Code Review: you are reusing event for both timer and purePursuit??? This is either a bug or
-                    // very tricky code. What are you trying to do? If you want to timeout purepursuit, why don't you
-                    // set a 0.75 sec timeout on the PurePursuit call instead of setting a timer???
-                    timer.set(0.75, event);
-                    robot.robotDrive.purePursuitDrive.start(
-                        null, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, autoChoices.alliance, true),
-                        robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, autoChoices.alliance));
-                    if (robot.grabber.hasObject())
-                    {
-                        sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
-                    }
-                    else
-                    {
-                        autoChoices.parkOption = FtcAuto.ParkOption.PARK;
-                        sm.waitForSingleEvent(event, State.GO_PARK);
-                    }
+                    robot.scoreBasketTask.autoScoreBasket(
+                        autoChoices.alliance, autoChoices.scoreHeight, true, true, event);
+                    scoredSubmersibleSample = true;
+                    sm.waitForSingleEvent(event, State.GO_PARK);
                     break;
+
+//                case CLEAR_SUB:
+//                    timer.set(0.75, event);
+//                    robot.robotDrive.purePursuitDrive.start(
+//                        null, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+//                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+//                        robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, autoChoices.alliance, true),
+//                        robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, autoChoices.alliance));
+//                    if (robot.grabber.hasObject())
+//                    {
+//                        sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
+//                    }
+//                    else
+//                    {
+//                        autoChoices.parkOption = FtcAuto.ParkOption.PARK;
+//                        sm.waitForSingleEvent(event, State.GO_PARK);
+//                    }
+//                    break;
 
                 default:
                 case DONE:

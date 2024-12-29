@@ -46,7 +46,6 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
     public enum State
     {
-        SET_EXTENDER_ARM,
         GO_TO_SCORE_POSITION,
         SCORE_BASKET,
         RETRACT_EXTENDER_ARM,
@@ -58,18 +57,23 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         final FtcAuto.Alliance alliance;
         final Robot.ScoreHeight scoreHeight;
         final boolean doDrive;
+        final boolean fromSubmersible;
 
-        TaskParams(FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive)
+        TaskParams(FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive, boolean fromSubmersible)
         {
             this.alliance = alliance;
             this.scoreHeight = scoreHeight;
             this.doDrive = doDrive;
+            this.fromSubmersible = fromSubmersible;
         }   //TaskParams
 
         @NonNull
         public String toString()
         {
-            return "alliance=" + alliance + ",scoreHeight=" + scoreHeight + ",doDrive=" + doDrive;
+            return "alliance=" + alliance +
+                   ",scoreHeight=" + scoreHeight +
+                   ",doDrive=" + doDrive +
+                   ",fromSubmersible=" + fromSubmersible;
         }   //toString
     }   //class TaskParams
 
@@ -78,7 +82,6 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     private final TrcEvent event;
 
     private String currOwner = null;
-    private double elbowScorePos = 0.0;
 
     /**
      * Constructor: Create an instance of the object.
@@ -100,10 +103,12 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
      * @param alliance specifies the alliance color.
      * @param scoreHeight specifies the scoring height in inches.
      * @param doDrive specifies true to drive to scoring location, false to stay at current location.
+     * @param fromSubmersible specifies true if the robot is coming from the submersible area, false otherwise.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
     public void autoScoreBasket(
-        FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive, TrcEvent completionEvent)
+        FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive, boolean fromSubmersible,
+        TrcEvent completionEvent)
     {
         if (alliance == null)
         {
@@ -115,9 +120,9 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         }
 
-        TaskParams taskParams = new TaskParams(alliance, scoreHeight, doDrive);
+        TaskParams taskParams = new TaskParams(alliance, scoreHeight, doDrive, fromSubmersible);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
-        startAutoTask(State.SET_EXTENDER_ARM, new TaskParams(alliance, scoreHeight, doDrive), completionEvent);
+        startAutoTask(State.GO_TO_SCORE_POSITION, taskParams, completionEvent);
     }   //autoScoreBasket
 
     //
@@ -204,9 +209,9 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
         switch (state)
         {
-            case SET_EXTENDER_ARM:
+            case GO_TO_SCORE_POSITION:
                 // Extend the arm to the correct height and angle for scoring.
-                double extenderScorePos;
+                double elbowScorePos, extenderScorePos;
                 if (taskParams.scoreHeight == Robot.ScoreHeight.LOW)
                 {
                     elbowScorePos = Elbow.Params.LOW_BASKET_SCORE_POS;
@@ -218,11 +223,10 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     extenderScorePos = Extender.Params.HIGH_BASKET_SCORE_POS;
                 }
                 // Fire and forget to save time.
-                robot.extenderArm.setPosition(elbowScorePos, extenderScorePos, null);
-                sm.setState(State.GO_TO_SCORE_POSITION);
-                break;
+                // If the robot is from submersible, delay the extenderArm movement until it clears from the area.
+                robot.extenderArm.setPosition(
+                    taskParams.fromSubmersible? 2.0: 0.0, elbowScorePos, extenderScorePos, null);
 
-            case GO_TO_SCORE_POSITION:
                 // Drive the robot to the scoring location.
                 if (taskParams.doDrive)
                 {

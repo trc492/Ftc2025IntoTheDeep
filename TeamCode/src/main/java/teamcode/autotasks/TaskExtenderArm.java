@@ -32,6 +32,7 @@ import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
+import trclib.timer.TrcTimer;
 
 /**
  * This class implements auto-assist task.
@@ -42,6 +43,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
 
     public enum State
     {
+        DO_DELAY,
         SET_POSITION,
         RETRACT_EXTENDER,
         SET_ELBOW_ANGLE,
@@ -52,11 +54,15 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
 
     private static class TaskParams
     {
+        boolean safeSequence;
+        double delay;
         Double elbowAngle;
         Double extenderPosition;
 
-        TaskParams(Double elbowAngle, Double extenderPosition)
+        TaskParams(boolean safeSequence, double delay, Double elbowAngle, Double extenderPosition)
         {
+            this.safeSequence = safeSequence;
+            this.delay = delay;
             this.elbowAngle = elbowAngle;
             this.extenderPosition = extenderPosition;
         }   //TaskParams
@@ -64,18 +70,22 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         @NonNull
         public String toString()
         {
-            return "elbowPos=" + elbowAngle + ",extenderPos=" + extenderPosition ;
+            return "safeSequence=" + safeSequence +
+                   ",delay=" + delay +
+                   ",elbowPos=" + elbowAngle +
+                   ",extenderPos=" + extenderPosition ;
         }   //toString
     }   //class TaskParams
 
     private final String ownerName;
     public final TrcMotor elbow;
     public final TrcMotor extender;
+    private final TrcTimer timer;
+    private final TrcEvent event;
     private final TrcEvent elbowEvent;
     private final TrcEvent extenderEvent;
 
     private String currOwner = null;
-    private boolean safeSequence = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -90,6 +100,8 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         this.ownerName = ownerName;
         this.elbow = elbow;
         this.extender = extender;
+        this.timer = new TrcTimer(moduleName);
+        this.event = new TrcEvent(moduleName);
         this.elbowEvent = new TrcEvent(Elbow.Params.SUBSYSTEM_NAME);
         this.extenderEvent = new TrcEvent(Extender.Params.SUBSYSTEM_NAME);
     }   //TaskExtenderArm
@@ -165,17 +177,30 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      * This method sets the Elbow and Extender to their specifies positions.
      *
      * @param safeSequence specifies true to perform safe sequence so that robot won't tip over, false to do parallel.
+     * @param delay specifies the delay in seconds for starting the operation.
      * @param elbowAngle specifies the elbow angle, null if not moving elbow.
      * @param extenderPosition specifies the extender position, null if not moving extender.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
     public void setPosition(
-        boolean safeSequence, Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
+        boolean safeSequence, double delay, Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
     {
-        TaskParams taskParams = new TaskParams(elbowAngle, extenderPosition);
+        TaskParams taskParams = new TaskParams(safeSequence, delay, elbowAngle, extenderPosition);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
-        this.safeSequence = safeSequence;
-        startAutoTask(State.SET_POSITION, taskParams, completionEvent);
+        startAutoTask(State.DO_DELAY, taskParams, completionEvent);
+    }   //setPosition
+
+    /**
+     * This method sets the Elbow and Extender to their specifies positions.
+     *
+     * @param delay specifies the delay in seconds for starting the operation.
+     * @param elbowAngle specifies the elbow angle, null if not moving elbow.
+     * @param extenderPosition specifies the extender position, null if not moving extender.
+     * @param completionEvent specifies the event to signal when completed, can be null if not provided.
+     */
+    public void setPosition(double delay, Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
+    {
+        setPosition(false, delay, elbowAngle, extenderPosition, completionEvent);
     }   //setPosition
 
     /**
@@ -187,18 +212,19 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     public void setPosition(Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
     {
-        setPosition(false, elbowAngle, extenderPosition, completionEvent);
+        setPosition(false, 0.0, elbowAngle, extenderPosition, completionEvent);
     }   //setPosition
 
     /**
      * This method retracts everything.
      *
      * @param safeSequence specifies true to perform safe sequence so that robot won't tip over, false to do parallel.
+     * @param delay specifies the delay in seconds for starting the operation.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
-    public void retract(boolean safeSequence, TrcEvent completionEvent)
+    public void retract(boolean safeSequence, double delay, TrcEvent completionEvent)
     {
-        setPosition(safeSequence, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
+        setPosition(safeSequence, delay, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
     }   //retract
 
     /**
@@ -208,7 +234,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     public void retract(TrcEvent completionEvent)
     {
-        setPosition(false, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
+        setPosition(false, 0.0, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
     }   //retract
 
     /**
@@ -311,10 +337,22 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
 
         switch (state)
         {
+            case DO_DELAY:
+                if (taskParams.delay > 0.0)
+                {
+                    timer.set(taskParams.delay, event);
+                    sm.waitForSingleEvent(event, State.SET_POSITION);
+                }
+                else
+                {
+                    sm.setState(State.SET_POSITION);
+                }
+                break;
+
             case SET_POSITION:
                 elbowEvent.clear();
                 extenderEvent.clear();
-                sm.setState(safeSequence? State.RETRACT_EXTENDER: State.SET_ELBOW_ANGLE);
+                sm.setState(taskParams.safeSequence? State.RETRACT_EXTENDER: State.SET_ELBOW_ANGLE);
                 break;
 
             case RETRACT_EXTENDER:
@@ -340,7 +378,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                     // We are setting elbow angle, go do it.
                     elbow.setPosition(
                         currOwner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 4.0);
-                    if (safeSequence)
+                    if (taskParams.safeSequence)
                     {
                         sm.waitForSingleEvent(elbowEvent, State.SET_EXTENDER_POSITION);
                     }
@@ -365,7 +403,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                     extender.setPosition(
                         currOwner, 0.0, taskParams.extenderPosition, true, Extender.Params.POWER_LIMIT, extenderEvent,
                         4.0);
-                    if (safeSequence)
+                    if (taskParams.safeSequence)
                     {
                         sm.waitForSingleEvent(extenderEvent, State.WAIT_FOR_COMPLETION);
                     }
@@ -384,7 +422,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                 break;
 
             case WAIT_FOR_COMPLETION:
-                if (safeSequence)
+                if (taskParams.safeSequence)
                 {
                     // If we performed safe sequence and came here, it means both events are already signaled.
                     sm.setState(State.DONE);

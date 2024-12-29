@@ -70,7 +70,7 @@ public class Extender
         public static final TrcPidController.PidCoefficients posPidCoeffs =
             new TrcPidController.PidCoefficients(1.5, 0.0, 0.0, 0.0, 0.0);
         public static final double POS_PID_TOLERANCE            = 0.5;
-        public static final double GRAVITY_COMP_MAX_POWER       = -0.15;
+        public static final double SPRING_COMP_MAX_POWER        = -0.15;
         public static final double STALL_MIN_POWER              = Math.abs(ZERO_CAL_POWER);
         public static final double STALL_TOLERANCE              = 0.1;
         public static final double STALL_TIMEOUT                = 0.1;
@@ -112,14 +112,15 @@ public class Extender
     }   //getMotor
 
     /**
-     * This method is called to compute the power compensation to counteract the spring on the Extender.
+     * This method is called to compute the power compensation to counteract the spring on the Extender. That's why
+     * the compensation power is negative. It's not really compensating for gravity.
      *
      * @param currPower specifies the current motor power (not used).
      * @return compensation power for the extender.
      */
     private double getExtenderPowerComp(double currPower)
     {
-        return Params.GRAVITY_COMP_MAX_POWER;
+        return Params.SPRING_COMP_MAX_POWER;
     }   //getExtenderPowerComp
 
 }   //class Extender

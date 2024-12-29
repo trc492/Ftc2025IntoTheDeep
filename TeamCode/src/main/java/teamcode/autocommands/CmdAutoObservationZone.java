@@ -215,10 +215,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case PARK:
                     // Park at the observation zone.
-                    // Set the elbow position to 105.0 in order to keep it upright. (Not needed as it's gravity driven? TO REVISE).
-                    
-                    // Code Review: this doesn't work. The second elbow.setPosition will immediately cancel the first
-                    // one even though it was delayed for 1 sec.
+                    // Set the elbow position to 105.0 in order to keep it upright.
+                    // (Not needed as it's gravity driven? TO REVISE).
                     robot.elbow.setPosition(1.0, 105.0, true, 1.0);
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {

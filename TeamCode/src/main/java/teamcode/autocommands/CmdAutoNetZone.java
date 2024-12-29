@@ -287,24 +287,6 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     sm.waitForSingleEvent(event, State.GO_PARK);
                     break;
 
-//                case CLEAR_SUB:
-//                    timer.set(0.75, event);
-//                    robot.robotDrive.purePursuitDrive.start(
-//                        null, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-//                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-//                        robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, autoChoices.alliance, true),
-//                        robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, autoChoices.alliance));
-//                    if (robot.grabber.hasObject())
-//                    {
-//                        sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
-//                    }
-//                    else
-//                    {
-//                        autoChoices.parkOption = FtcAuto.ParkOption.PARK;
-//                        sm.waitForSingleEvent(event, State.GO_PARK);
-//                    }
-//                    break;
-
                 default:
                 case DONE:
                     // We are done.

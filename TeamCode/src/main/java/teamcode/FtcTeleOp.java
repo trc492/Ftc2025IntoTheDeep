@@ -674,7 +674,6 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to ground pickup position.");
                     // Don't change rotate position in case the driver has aligned the wrist already.
-                    // Code Review: The code to rotate the wrist in periodic is commented out, why???
                     robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, null);
                 }
                 break;

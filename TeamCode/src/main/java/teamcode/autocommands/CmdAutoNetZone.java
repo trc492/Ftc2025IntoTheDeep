@@ -210,12 +210,6 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case SCORE_SAMPLE_BASKET:
-                    // Code Review: you are trying to cancel PurePursuit if you were picking up sample from
-                    // submersible and PurePursuit timed out. But why do you do that?
-
-//                    // Cancel any previous drive done by CLEAR_SUB
-//                    robot.robotDrive.purePursuitDrive.cancel();
-                    
                     // Score the sample into the basket.
                     robot.scoreBasketTask.autoScoreBasket(
                         autoChoices.alliance, autoChoices.scoreHeight, true, false, event);
@@ -259,31 +253,21 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case ASCENT:
-                    // Code Review: Do you really check extenderArm exist? You've been using the extenderArm
-                    // everywhere, so if the code did not crash at this point, extenderArm must exist!
-                    if (robot.extenderArm != null)
+                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
-                        if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
-                        {
-                            // Do level 1 ascent.
-                            robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
-                            robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
-                            robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
-                            sm.waitForSingleEvent(event, State.DONE);
-                        }
-                        else if (autoChoices.parkOption == FtcAuto.ParkOption.SCORE_SUBMERSIBLE_AND_PARK)
-                        {
-                            Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                                Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
-                            // Code Review: what wrist angle should you use?
-                            robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, 0.0, event);
-                            sm.waitForSingleEvent(event, State.SCORE_SUBMERSIBLE_SAMPLE);
-//                            sm.waitForSingleEvent(event, State.CLEAR_SUB);
-                        }
-                        else
-                        {
-                            sm.setState(State.DONE);
-                        }
+                        // Do level 1 ascent.
+                        robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
+                        robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
+                        robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
+                        sm.waitForSingleEvent(event, State.DONE);
+                    }
+                    else if (autoChoices.parkOption == FtcAuto.ParkOption.SCORE_SUBMERSIBLE_AND_PARK)
+                    {
+                        Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
+                            Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
+                        // Code Review: what wrist angle should you use?
+                        robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, 0.0, event);
+                        sm.waitForSingleEvent(event, State.SCORE_SUBMERSIBLE_SAMPLE);
                     }
                     else
                     {

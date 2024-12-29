@@ -64,16 +64,18 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     {
         final FtcAuto.Alliance alliance;
         final boolean useVision;
-        TaskParams(FtcAuto.Alliance alliance, boolean useVision)
+        final boolean noDrive;
+        TaskParams(FtcAuto.Alliance alliance, boolean useVision, boolean noDrive)
         {
             this.alliance = alliance;
             this.useVision = useVision;
+            this.noDrive = noDrive;
         }   //TaskParams
 
         @NonNull
         public String toString()
         {
-            return "alliance=" + alliance + ",useVision=" + useVision;
+            return "alliance=" + alliance + ",useVision=" + useVision + ",noDrive=" + noDrive;
         }   //toString
     }   //class TaskParams
 
@@ -104,9 +106,11 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
      *
      * @param alliance specifies the alliance color, can be null if caller is TeleOp.
      * @param useVision specifies true to use Vision, false otherwise.
+     * @param noDrive specifies true if the robot is already right in front of the specimen, false otherwise.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoPickupSpecimen(FtcAuto.Alliance alliance, boolean useVision, TrcEvent completionEvent)
+    public void autoPickupSpecimen(
+        FtcAuto.Alliance alliance, boolean useVision, boolean noDrive, TrcEvent completionEvent)
     {
         if (alliance == null)
         {
@@ -118,7 +122,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         }
 
-        TaskParams taskParams = new TaskParams(alliance, useVision);
+        TaskParams taskParams = new TaskParams(alliance, useVision, noDrive);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         startAutoTask(State.START, taskParams, completionEvent);
     }   //autoPickupSpecimen
@@ -216,21 +220,17 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     tracer.traceInfo(moduleName, "Arm or grabber doesn't exist, we are done.");
                     sm.setState(State.DONE);
                 }
+                else if (taskParams.noDrive)
+                {
+                    sm.setState(State.APPROACH_SPECIMEN);
+                }
                 else
                 {
-                    // Code Review: Why would we call autoPickupSpecimen if we already has a specimen???
-                    if (robot.grabber.hasObject())
-                    {
-                        sm.setState(State.DONE);
-                    }
-                    else
-                    {
-                        // Fire and forget to save time.
-                        robot.wrist.setPosition(Wrist.Params.SPECIMEN_PICKUP_POS, 0.0);
-                        robot.extenderArm.setPosition(
-                            Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
-                        sm.setState(State.DRIVE_TO_PICKUP);
-                    }
+                    // Fire and forget to save time.
+                    robot.wrist.setPosition(Wrist.Params.SPECIMEN_PICKUP_POS, 0.0);
+                    robot.extenderArm.setPosition(
+                        Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
+                    sm.setState(State.DRIVE_TO_PICKUP);
                 }
                 break;
 
@@ -283,9 +283,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 
             case APPROACH_SPECIMEN:
                 // Turn on intake and approach specimen slowly.
-                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event);
+                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.85);
                 robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.3, 0.0);
-                sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN, 0.75); // TO: 0.6
+                sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
                 break;
 
             case PICKUP_SPECIMEN:
@@ -298,6 +298,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 
             case RETRACT_ARM:
                 // Retract the arm with "fire and forget".
+                // Code Review: the retract won't finish because DONE state will cancel it.
                 robot.extenderArm.retract(null);
                 sm.setState(State.DONE);
                 break;

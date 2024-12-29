@@ -27,7 +27,6 @@ import teamcode.Robot;
 import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Grabber;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
@@ -46,7 +45,6 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
         START,
         SCORE_PRELOAD,
         MOVE_SAMPLES,
-        APPROACH_SPECIMEN,
         PICKUP_SPECIMEN,
         DRIVE_TO_CHAMBER_POS,
         SCORE_SPECIMEN,
@@ -152,19 +150,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
 
                 case MOVE_SAMPLES:
                     // Herd two samples to the observation zone to be converted to specimens.
-                    // The extenderArm is set to min pos after Auto Score Chamber keep this in order to not bump into the
-                    // wall when herding samples, set the extender pos to SPECIMEN PICKUP POS after 4 seconds to get ready
-                    // to grab it in the next state.
-
-                    // Code Review: This is very tricky code. Need to document it. You are setting extenderArm position
-                    // and then immediately call extender setPosition with 4 sec delay. On the surface, the extender
-                    // setPosition may interfere with the previous extenderArm setPosition but you are counting on
-                    // the fact that you are passing a null on extenderPos, and then delay 4 sec so it won't cancel it.
-                    // This is too tricky and making dangerous assumptions. It is better to set Elbow explicitly
-                    // instead.
-
-//                    robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0, null, null);
-
+                    // The extenderArm is set to min pos after Auto Score Chamber keep this in order to not bump into
+                    // the wall when herding samples, set the extender pos to SPECIMEN PICKUP POS after 4 seconds to
+                    // get ready to grab it in the next state.
                     robot.elbow.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0);
                     robot.extender.setPosition(4.0, Extender.Params.SPECIMEN_PICKUP_POS, true, 1.0);
                     robot.robotDrive.purePursuitDrive.start(
@@ -172,24 +160,15 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                         robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH, autoChoices.alliance, true));
-                    sm.waitForSingleEvent(event, State.APPROACH_SPECIMEN);
-                    break;
-
-                case APPROACH_SPECIMEN:
-                    // Approach the specimen from the end of herd samples, don't use auto pickup because it will drive to 
-                    // another location ( Pickup specimen will set to done if we already have one so if this works it will
-                    // pass auto pickup.
-                    robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.85); // TO: 0.75
-                    robot.robotDrive.driveBase.holonomicDrive(null, 0.0, 0.3, 0.0);
-                    sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN, 0.0);
+                    sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
                     break;
 
                 case PICKUP_SPECIMEN:
                     // Pick up a specimen from the wall.
-                    robot.robotDrive.driveBase.stop(null);
                     if (pickupSpecimenCount < 3)
                     {
-                        robot.pickupSpecimenTask.autoPickupSpecimen(autoChoices.alliance, false, event);
+                        robot.pickupSpecimenTask.autoPickupSpecimen(
+                            autoChoices.alliance, false, pickupSpecimenCount == 0, event);
                         pickupSpecimenCount++;
                         sm.waitForSingleEvent(event, State.DRIVE_TO_CHAMBER_POS);
                     }

@@ -225,16 +225,28 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 // Fire and forget to save time.
                 // If the robot is from submersible, delay the extenderArm movement until it clears from the area.
                 robot.extenderArm.setPosition(
-                    taskParams.fromSubmersible? 2.0: 0.0, elbowScorePos, extenderScorePos, null);
+                    taskParams.doDrive && taskParams.fromSubmersible? 2.0: 0.0, elbowScorePos, extenderScorePos, null);
 
                 // Drive the robot to the scoring location.
                 if (taskParams.doDrive)
                 {
-                    robot.robotDrive.purePursuitDrive.start(
-                        currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
-                        robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
+                    if (taskParams.fromSubmersible)
+                    {
+                        robot.robotDrive.purePursuitDrive.start(
+                            currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
+                    }
+                    else
+                    {
+                        robot.robotDrive.purePursuitDrive.start(
+                            currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
+                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
+                    }
                     sm.waitForSingleEvent(event, State.SCORE_BASKET);
                 }
                 else

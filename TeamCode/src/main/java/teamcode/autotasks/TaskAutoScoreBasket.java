@@ -235,16 +235,17 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                         robot.robotDrive.purePursuitDrive.start(
                             currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
-                            robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
-                            robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
+                            robot.adjustPoseByAlliance(-2.15, -2.15, 0.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(-2.15, -2.15, 0.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(-2.2, -2.6, 45.0, taskParams.alliance, true));
+                            //custom pose instead of RED_BASKET_SCORE_POSE just for the bonus sample
                     }
                     else
                     {
                         robot.robotDrive.purePursuitDrive.start(
                             currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(-2.15, -2.15, 0.0, taskParams.alliance, true),
                             robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
                     }
                     sm.waitForSingleEvent(event, State.SCORE_BASKET);
@@ -261,14 +262,11 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
                 robot.wrist.setPosition(wristPos, 0.0);
                 // Depending on how the grabber holds the sample, the sensor may or may not see it.
-                if (robot.grabber.hasObject())
-                {
+                if (robot.grabber.hasObject()) {
                     // Sensor sees the sample, use autoDump.
                     tracer.traceInfo(moduleName, "Grabber detected sample, auto dump sample.");
                     robot.grabber.autoDump(null, 0.03, Grabber.Params.DUMP_DELAY, event);
-                }
-                else
-                {
+                } else {
                     // Sensor doesn't see the sample, manual dump it anyway.
                     tracer.traceInfo(moduleName, "Grabber not detecting sample, manual dump sample.");
                     robot.grabber.dump(null, 0.03, event);

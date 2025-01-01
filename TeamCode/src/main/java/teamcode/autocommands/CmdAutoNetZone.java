@@ -276,9 +276,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case SCORE_SUBMERSIBLE_SAMPLE:
-                    // Set the elbow and wrist to a safe position and start a pure pursuit drive in order to clear
-                    // the submersible before handing over control to auto score basket.
-                    // OPTIMIZATION: Can we not pause between states? So keep the same purePursuitDrive between states and auto tasks
+                    // Set the elbow and wrist to a safe position before handing over control to auto score basket.
                     robot.wrist.setPosition(0.0, 0.0);
                     robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
                     robot.scoreBasketTask.autoScoreBasket(

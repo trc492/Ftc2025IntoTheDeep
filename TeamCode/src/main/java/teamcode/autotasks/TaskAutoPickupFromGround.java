@@ -290,14 +290,14 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             default:
             case DONE:
                 // Stop task.
-                if (robot.grabber != null)
-                {
-                    if (robot.ledIndicator != null)
-                    {
-                        // Flash the LED to show whether we got the sample and what type.
-                        robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
-                    }
-                }
+//                if (robot.grabber != null)
+//                {
+//                    if (robot.ledIndicator != null)
+//                    {
+//                        // Flash the LED to show whether we got the sample and what type.
+//                        robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
+//                    }
+//                }
                 stopAutoTask(true);
                 break;
         }

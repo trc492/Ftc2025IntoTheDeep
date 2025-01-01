@@ -306,11 +306,11 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             default:
             case DONE:
                 // Stop task.
-                if (robot.grabber != null && robot.ledIndicator != null)
-                {
-                    // Flash the LED to show whether we got the specimen and what type.
-                    robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
-                }
+//                if (robot.grabber != null && robot.ledIndicator != null)
+//                {
+//                    // Flash the LED to show whether we got the specimen and what type.
+//                    robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
+//                }
                 stopAutoTask(true);
                 break;
         }

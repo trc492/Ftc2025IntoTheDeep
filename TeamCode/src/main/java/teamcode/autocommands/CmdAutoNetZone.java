@@ -204,8 +204,10 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case PICKUP_FLOOR_SAMPLE:
                     // Pick up a sample from the spike marks.
+//                    robot.pickupFromGroundTask.autoPickupFromGround(
+//                        Vision.SampleType.YellowSample, true, false, 16.0 + spikeMarkSampleCount*1.5, event);
                     robot.pickupFromGroundTask.autoPickupFromGround(
-                        Vision.SampleType.YellowSample, true, false, 16.0 + spikeMarkSampleCount*1.5, event);
+                        Vision.SampleType.YellowSample, true, false, true, null, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
                     break;
 
@@ -266,7 +268,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
                             Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
                         // Code Review: what wrist angle should you use?
-                        robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, 0.0, event);
+                        robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, false, 0.0, event);
                         sm.waitForSingleEvent(event, State.SCORE_SUBMERSIBLE_SAMPLE);
                     }
                     else

@@ -225,7 +225,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 // Fire and forget to save time.
                 // If the robot is from submersible, delay the extenderArm movement until it clears from the area.
                 robot.extenderArm.setPosition(
-                    taskParams.doDrive && taskParams.fromSubmersible? 2.0: 0.0, elbowScorePos, extenderScorePos, null);
+                    taskParams.doDrive && taskParams.fromSubmersible? 1.0: 0.0, elbowScorePos, extenderScorePos, null);
 
                 // Drive the robot to the scoring location.
                 if (taskParams.doDrive)

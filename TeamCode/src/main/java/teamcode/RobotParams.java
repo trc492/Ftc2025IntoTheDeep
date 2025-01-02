@@ -141,7 +141,9 @@ public class RobotParams
         public static final double CHAMBER_MAX_SCORE_POS_X          = (CHAMBER_LENGTH / 2.0) - 3.0;
         // Score poses (Net zone side).
         public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-            new TrcPose2D(-2.43 * Field.FULL_TILE_INCHES, -2.43 * Field.FULL_TILE_INCHES, 45.0);
+            new TrcPose2D(-2.4 * Field.FULL_TILE_INCHES, -2.5 * Field.FULL_TILE_INCHES, 45.0);
+//        public static final TrcPose2D RED_BASKET_SCORE_POSE         =
+//                new TrcPose2D(-2.43 * Field.FULL_TILE_INCHES, -2.43 * Field.FULL_TILE_INCHES, 45.0);
         public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE    =
             new TrcPose2D(-0.1 * Field.FULL_TILE_INCHES, -1.34 * Field.FULL_TILE_INCHES, 180.0);
         // Score pose (Observation zone side).

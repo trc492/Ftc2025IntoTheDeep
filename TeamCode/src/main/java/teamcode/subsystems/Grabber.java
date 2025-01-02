@@ -37,6 +37,7 @@ import ftclib.subsystem.FtcMotorGrabber;
 import ftclib.subsystem.FtcServoGrabber;
 import teamcode.Robot;
 import teamcode.RobotParams;
+import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
 import trclib.sensor.TrcTrigger;
@@ -128,6 +129,7 @@ public class Grabber
                 .setAnalogSensorTrigger(
                     this::getSensorDistance, Params.SENSOR_TRIGGER_INVERTED, Params.SENSOR_TRIGGER_THRESHOLD);
             motorGrabber = new FtcMotorGrabber(Params.SUBSYSTEM_NAME, grabberParams).getGrabber();
+            motorGrabber.tracer.setTraceLevel(TrcDbgTrace.MsgLevel.DEBUG);
             servoGrabber = null;
         }
         else

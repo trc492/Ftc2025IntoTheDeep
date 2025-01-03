@@ -40,6 +40,7 @@ import ftclib.vision.FtcLimelightVision;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Vision;
+import teamcode.subsystems.Wrist;
 import trclib.command.CmdDriveMotorsTest;
 import trclib.command.CmdPidDrive;
 import trclib.command.CmdTimedDrive;
@@ -50,6 +51,8 @@ import trclib.robotcore.TrcPidController;
 import trclib.robotcore.TrcRobot;
 import trclib.timer.TrcElapsedTimer;
 import trclib.timer.TrcTimer;
+import trclib.vision.TrcOpenCvColorBlobPipeline;
+import trclib.vision.TrcVisionTargetInfo;
 
 /**
  * This class contains the Test Mode program. It extends FtcTeleOp so that we can teleop control the robot for
@@ -1152,7 +1155,16 @@ public class FtcTest extends FtcTeleOp
 
             if (robot.vision.isSampleVisionEnabled(Vision.SampleType.AnySample))
             {
-                robot.vision.getDetectedSample(Vision.SampleType.AnySample, 0.0, lineNum++);
+                TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo =
+                    robot.vision.getDetectedSample(Vision.SampleType.AnySample, 0.0, lineNum++);
+                if (sampleInfo != null)
+                {
+                    robot.getDetectedSamplePose(sampleInfo, true);
+                    if (robot.wrist != null)
+                    {
+                        robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle);
+                    }
+                }
             }
 
             if (robot.vision.vision != null)

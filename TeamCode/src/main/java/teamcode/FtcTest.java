@@ -1162,7 +1162,7 @@ public class FtcTest extends FtcTeleOp
                     robot.getDetectedSamplePose(sampleInfo, true);
                     if (robot.wrist != null)
                     {
-                        robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle);
+                        robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle + 90.0);
                     }
                 }
             }

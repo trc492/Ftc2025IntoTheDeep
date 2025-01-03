@@ -183,17 +183,23 @@ public class Wrist
     {
         if (differentialWrist != null)
         {
-            rotatePos %= 180.0;
-            if (rotatePos > 90.0)
+            if (rotatePos != null)
             {
-                rotatePos -= 180.0;
+                rotatePos %= 180.0;
+                if (rotatePos > 90.0)
+                {
+                    rotatePos -= 180.0;
+                }
+                else if (rotatePos < -90.0)
+                {
+                    rotatePos += 180.0;
+                }
             }
-            else if (rotatePos < -90.0)
+            else
             {
-                rotatePos += 180.0;
+                rotatePos = getRotatePosition();
             }
-            differentialWrist.setPosition(
-                owner, delay, tiltPos, rotatePos != null? rotatePos: getRotatePosition(), completionEvent, timeout);
+            differentialWrist.setPosition(owner, delay, tiltPos, rotatePos, completionEvent, timeout);
         }
         else
         {

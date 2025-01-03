@@ -864,9 +864,7 @@ public class Vision
         {
             if (sampleInfo != null)
             {
-                robot.dashboard.displayPrintf(
-                    lineNum, "%s: %s (rotatedAngle=%.1f)",
-                    sampleInfo.detectedObj.label, sampleInfo, sampleInfo.detectedObj.rotatedRect.angle);
+                robot.dashboard.displayPrintf(lineNum, "%s: %s", sampleInfo.detectedObj.label, sampleInfo);
             }
             else
             {

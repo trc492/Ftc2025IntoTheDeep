@@ -38,6 +38,8 @@ import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
 import trclib.timer.TrcTimer;
+import trclib.vision.TrcOpenCvColorBlobPipeline;
+import trclib.vision.TrcVisionTargetInfo;
 
 /**
  * This class implements auto-assist task to pick up a sample from ground.
@@ -92,6 +94,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     private final TrcEvent armEvent;
 
     private String currOwner = null;
+    private TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo = null;
     private TrcPose2D samplePose = null;
     private Double visionExpiredTime = null;
 
@@ -236,13 +239,15 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
 
             case FIND_SAMPLE:
                 // Use vision to find the sample on the floor.
-                samplePose = robot.getDetectedSamplePose(taskParams.sampleType, 0.0, true);
-                if (samplePose != null)
+                sampleInfo = robot.vision.getDetectedSample(taskParams.sampleType, 0.0, -1);
+                if (sampleInfo != null)
                 {
+                    samplePose = robot.getDetectedSamplePose(sampleInfo, true);
                     // Vision found the sample.
                     String msg = String.format(
-                        Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
-                        taskParams.sampleType, samplePose.x, samplePose.y, samplePose.angle);
+                        Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f, rotatedAngle=%.1f",
+                        taskParams.sampleType, samplePose.x, samplePose.y, samplePose.angle,
+                        sampleInfo.objRotatedAngle);
                     tracer.traceInfo(moduleName, msg);
                     robot.speak(msg);
                     sm.setState(State.TURN_TO_SAMPLE);
@@ -265,6 +270,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 double extenderLen = robot.getExtenderPosFromSamplePose(samplePose);
                 tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                 robot.extenderArm.setPosition(null, extenderLen, armEvent);
+                // Vision found the sample, use the reported rotated angle.
+                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle);
                 if (!taskParams.noDrive)
                 {
                     if (taskParams.spikeMarkSample)

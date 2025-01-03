@@ -505,18 +505,35 @@ public class Robot
                 vision.getDetectedSample(sampleType, sampleGroundOffset, -1);
             if (sampleInfo != null)
             {
-                samplePose = robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose);
-                samplePose.angle = Math.toDegrees(Math.atan(samplePose.x/samplePose.y));
-                if (ledIndicator != null && getExtenderPosFromSamplePose(samplePose) < Extender.Params.MAX_POS)
-                {
-                    ledIndicator.setDetectedPattern(sampleInfo.detectedObj.label);
-                }
-                if (logInfo)
-                {
-                    globalTracer.traceInfo(
-                        moduleName, "detectedSamplePose=%s, adjustedSamplePose=%s", sampleInfo.objPose, samplePose);
-                }
+                samplePose = getDetectedSamplePose(sampleInfo, logInfo);
             }
+        }
+
+        return samplePose;
+    }   //getDetectedSamplePose
+
+    /**
+     * This method calculates the sample pose from the vision detected sample info.
+     *
+     * @param sampleInfo specifies the detected sample info.
+     * @param logInfo specifies true to log detected info into tracelog, false otherwise.
+     * @return detected sample pose.
+     */
+    public TrcPose2D getDetectedSamplePose(
+        TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo, boolean logInfo)
+    {
+        TrcPose2D samplePose = robotInfo.webCam1.camPose.toPose2D().addRelativePose(sampleInfo.objPose);
+        samplePose.angle = Math.toDegrees(Math.atan(samplePose.x/samplePose.y));
+
+        if (ledIndicator != null && getExtenderPosFromSamplePose(samplePose) < Extender.Params.MAX_POS)
+        {
+            ledIndicator.setDetectedPattern(sampleInfo.detectedObj.label);
+        }
+
+        if (logInfo)
+        {
+            globalTracer.traceInfo(
+                moduleName, "detectedSamplePose=%s, adjustedSamplePose=%s", sampleInfo.objPose, samplePose);
         }
 
         return samplePose;

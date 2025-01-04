@@ -271,7 +271,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                 robot.extenderArm.setPosition(null, extenderLen, armEvent);
                 // Vision found the sample, use the reported rotated angle.
-                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle + 90.0);
+                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle);
                 if (!taskParams.noDrive)
                 {
                     if (taskParams.spikeMarkSample)

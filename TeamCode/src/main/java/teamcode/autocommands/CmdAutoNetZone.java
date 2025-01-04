@@ -186,7 +186,13 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_BASKET_CYCLE_TIME)
                     {
                         TrcPose2D spikeMark = RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP.clone();
-                        spikeMark.x -= 9.0*spikeMarkSampleCount;
+                        if (spikeMarkSampleCount < 2)
+                        {
+                            spikeMark.x -= 9.0 * spikeMarkSampleCount;
+                        } else {
+                            spikeMark.x -= 15.0;
+                            spikeMark.angle -= 5.0;
+                        }
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.extenderArm.setPosition(null, 22.0, null);
                         robot.robotDrive.purePursuitDrive.start(

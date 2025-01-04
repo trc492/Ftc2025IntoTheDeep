@@ -295,7 +295,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 // We assume the driver would drive up to the correct sample color and orient the differential wrist
                 // for picking up from ground.
                 robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 1.0); //TO: 0.5s
-                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 5.0, null, null);
+                robot.elbow.setPosition(0.0,Elbow.Params.MIN_POS + 5.0, true, 0.75);
                 sm.waitForSingleEvent(event, State.RAISE_ARM);
                 break;
 

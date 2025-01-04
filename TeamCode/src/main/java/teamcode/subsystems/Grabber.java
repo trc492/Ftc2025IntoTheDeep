@@ -88,7 +88,7 @@ public class Grabber
             BLUE_THRESHOLD_HIGH, RED_THRESHOLD_HIGH};
 
         public static final double INTAKE_POWER                 = 1.0;
-        public static final double EJECT_POWER                  = -0.25;
+        public static final double EJECT_POWER                  = -0.225;
         public static final double RETAIN_POWER                 = 0.0;
         public static final double FINISH_DELAY                 = 0.0; // OLD: 0.08s
         public static final double DUMP_TIME                    = 0.5; // TO: 0.45s

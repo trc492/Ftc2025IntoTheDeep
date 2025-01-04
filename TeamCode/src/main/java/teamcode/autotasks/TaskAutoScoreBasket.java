@@ -47,6 +47,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     public enum State
     {
         GO_TO_SCORE_POSITION,
+        WAIT_FOR_DRIVE,
         SCORE_BASKET,
         RETRACT_EXTENDER_ARM,
         DONE
@@ -80,6 +81,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
+    private final TrcEvent event2;
+    private double elbowScorePos = 0;
 
     private String currOwner = null;
 
@@ -95,6 +98,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         this.ownerName = ownerName;
         this.robot = robot;
         this.event = new TrcEvent(moduleName);
+        this.event2 = new TrcEvent(moduleName);
     }   //TaskAutoScoreBasket
 
     /**
@@ -211,7 +215,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         {
             case GO_TO_SCORE_POSITION:
                 // Extend the arm to the correct height and angle for scoring.
-                double elbowScorePos, extenderScorePos;
+                double extenderScorePos;
                 if (taskParams.scoreHeight == Robot.ScoreHeight.LOW)
                 {
                     elbowScorePos = Elbow.Params.LOW_BASKET_SCORE_POS;
@@ -222,22 +226,20 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     elbowScorePos = Elbow.Params.HIGH_BASKET_SCORE_POS;
                     extenderScorePos = Extender.Params.HIGH_BASKET_SCORE_POS;
                 }
-                // Fire and forget to save time.
-                // If the robot is from submersible, delay the extenderArm movement until it clears from the area.
-                robot.extenderArm.setPosition(
-                    taskParams.doDrive && taskParams.fromSubmersible? 1.0: 0.0, elbowScorePos, extenderScorePos, null);
-
                 // Drive the robot to the scoring location.
                 if (taskParams.doDrive)
                 {
+                    robot.elbow.zeroCalibrate(Elbow.Params.ZERO_CAL_POWER, event2);
+                    robot.wrist.setPosition(0.0, 0.0);
+                    robot.extender.setPosition(taskParams.fromSubmersible? 1.0: 0.0, extenderScorePos, true, 1.0);
                     if (taskParams.fromSubmersible)
                     {
                         robot.robotDrive.purePursuitDrive.start(
                             currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
                             robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
                             robot.adjustPoseByAlliance(-2.15, -2.15, 0.0, taskParams.alliance, true),
-                            robot.adjustPoseByAlliance(-2.15, -2.15, 0.0, taskParams.alliance, true),
-                            robot.adjustPoseByAlliance(-2.2, -2.6, 45.0, taskParams.alliance, true));
+//                            robot.adjustPoseByAlliance(-2.15, -2.15, 0.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(-2.43, -2.55, 45.0, taskParams.alliance, true));
                             //custom pose instead of RED_BASKET_SCORE_POSE just for the bonus sample
                     }
                     else
@@ -248,12 +250,18 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                             robot.adjustPoseByAlliance(-2.15, -2.15, 0.0, taskParams.alliance, true),
                             robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
                     }
-                    sm.waitForSingleEvent(event, State.SCORE_BASKET);
+                    sm.waitForSingleEvent(event2, State.WAIT_FOR_DRIVE);
                 }
                 else
                 {
+                    robot.extenderArm.setPosition(0.0, elbowScorePos, extenderScorePos, null);
                     sm.setState(State.SCORE_BASKET);
                 }
+                break;
+
+            case WAIT_FOR_DRIVE:
+                robot.elbow.setPosition(elbowScorePos);
+                sm.waitForSingleEvent(event, State.SCORE_BASKET, false, 0.0);
                 break;
 
             case SCORE_BASKET:

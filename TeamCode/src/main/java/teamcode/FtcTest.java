@@ -1159,10 +1159,11 @@ public class FtcTest extends FtcTeleOp
                     robot.vision.getDetectedSample(Vision.SampleType.AnySample, 0.0, lineNum++);
                 if (sampleInfo != null)
                 {
-                    robot.getDetectedSamplePose(sampleInfo, true);
+                    TrcPose2D samplePose = robot.getDetectedSamplePose(sampleInfo, true);
                     if (robot.wrist != null)
                     {
-                        robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle);
+                        robot.wrist.setPosition(
+                            Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle - samplePose.angle);
                     }
                 }
             }
@@ -1183,7 +1184,8 @@ public class FtcTest extends FtcTeleOp
     private boolean allowTeleOp()
     {
         return teleOpControlEnabled &&
-               (testChoices.test == Test.SUBSYSTEMS_TEST || testChoices.test == Test.DRIVE_SPEED_TEST);
+               (testChoices.test == Test.SUBSYSTEMS_TEST || testChoices.test == Test.DRIVE_SPEED_TEST ||
+                testChoices.test == Test.VISION_TEST);
     }   //allowTeleOp
 
 }   //class FtcTest

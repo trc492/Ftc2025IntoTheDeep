@@ -53,8 +53,8 @@ public class FtcTeleOp extends FtcOpMode
     protected FtcGamepad operatorGamepad;
     private double drivePowerScale;
     private double turnPowerScale;
-    private boolean driverAltFunc = false;
-    private boolean operatorAltFunc = false;
+    protected boolean driverAltFunc = false;
+    protected boolean operatorAltFunc = false;
     private boolean statusUpdateOn = false;
     private boolean relocalizing = false;
     private TrcPose2D robotFieldPose = null;

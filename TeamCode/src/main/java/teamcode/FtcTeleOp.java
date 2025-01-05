@@ -546,8 +546,7 @@ public class FtcTeleOp extends FtcOpMode
                     if (!robot.pickupFromGroundTask.isActive())
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup from ground.");
-                        robot.pickupFromGroundTask.autoPickupFromGround(
-                            Robot.sampleType, true, false, false, null, null);
+                        robot.pickupFromGroundTask.autoPickupFromGround(Robot.sampleType, true, null, null);
                     }
                     else
                     {

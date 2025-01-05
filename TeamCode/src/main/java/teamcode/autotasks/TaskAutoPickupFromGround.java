@@ -62,18 +62,12 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     {
         final Vision.SampleType sampleType;
         final boolean useVision;
-        final boolean noDrive;
-        final boolean spikeMarkSample;
         final Double wristRotatePos;
 
-        TaskParams(
-            Vision.SampleType sampleType, boolean useVision, boolean noDrive, boolean spikeMarkSample,
-            Double wristRotatePos)
+        TaskParams(Vision.SampleType sampleType, boolean useVision, Double wristRotatePos)
         {
             this.sampleType = sampleType;
             this.useVision = useVision;
-            this.noDrive = noDrive;
-            this.spikeMarkSample = spikeMarkSample;
             this.wristRotatePos = wristRotatePos;
         }   //TaskParams
 
@@ -82,8 +76,6 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         {
             return "sampleType=" + sampleType +
                    ",useVision=" + useVision +
-                   ",noDrive=" + noDrive +
-                   ",spikeMarkSample=" + spikeMarkSample +
                    ",wristRotatePos=" + wristRotatePos;
         }   //toString
     }   //class TaskParams
@@ -118,15 +110,12 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
      *
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      * @param useVision specifies true to use vision to locate sample, false otherwise.
-     * @param noDrive specifies true to not drive the robot to the sample, false otherwise.
-     * @param spikeMarkSample specifies true to pick up spike mark sample, false otherwise.
      * @param wristRotatePos specifies differential wrist rotate position, null if no change.
      */
     public void autoPickupFromGround(
-        Vision.SampleType sampleType, boolean useVision, boolean noDrive, boolean spikeMarkSample,
-        Double wristRotatePos, TrcEvent completionEvent)
+        Vision.SampleType sampleType, boolean useVision, Double wristRotatePos, TrcEvent completionEvent)
     {
-        TaskParams taskParams = new TaskParams(sampleType, useVision, noDrive, spikeMarkSample, wristRotatePos);
+        TaskParams taskParams = new TaskParams(sampleType, useVision, wristRotatePos);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         startAutoTask(State.START, taskParams, completionEvent);
     }   //autoPickupFromGround
@@ -266,26 +255,19 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 break;
 
             case TURN_TO_SAMPLE:
-                // Vision found the sample, turn the robot toward it.
+                // Vision found the sample, turn the robot toward it and use the reported rotated sample angle.
                 double extenderLen = robot.getExtenderPosFromSamplePose(samplePose);
-                tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                 robot.extenderArm.setPosition(null, extenderLen, armEvent);
-                // Vision found the sample, use the reported rotated angle.
-                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle - samplePose.angle);
-                if (!taskParams.noDrive)
-                {
-                    if (taskParams.spikeMarkSample)
-                    {
-                        tracer.traceInfo(
-                            moduleName, "adjusting wrist angle for spike mark sample (angle=", -samplePose.angle);
-                        robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, -samplePose.angle);
-                    }
-                    // Turning is a lot faster than extending, so just wait for extender event.
-                    robot.robotDrive.purePursuitDrive.start(
-                        currOwner, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        new TrcPose2D(0.0, 0.0, samplePose.angle));
-                };
+                robot.wrist.setPosition(
+                    Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle - samplePose.angle);
+                tracer.traceInfo(
+                    moduleName, "samplePose=%s, extenderLen=%.1f, sampleAngle=%.1f, wristAngle=%.1f",
+                    samplePose, extenderLen, sampleInfo.objRotatedAngle, sampleInfo.objRotatedAngle - samplePose.angle);
+                // Turning is a lot faster than extending, so just wait for extender event.
+                robot.robotDrive.purePursuitDrive.start(
+                    currOwner, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
+                    robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                    new TrcPose2D(0.0, 0.0, samplePose.angle));
                 sm.waitForSingleEvent(armEvent, State.PICKUP_SAMPLE);
                 break;
 

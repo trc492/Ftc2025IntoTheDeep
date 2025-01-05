@@ -145,6 +145,7 @@ public class FtcTest extends FtcTeleOp
     private boolean teleOpControlEnabled = true;
     private long exposure;
     private boolean fpsMeterEnabled = false;
+    private boolean allowVisionControlOnWrist = false;
 
     //
     // Overrides FtcOpMode abstract method.
@@ -569,8 +570,13 @@ public class FtcTest extends FtcTeleOp
                             // Stop steer calibration.
                             swerveDrive.stopSteeringCalibration();
                         }
+                        passToTeleOp = false;
                     }
-                    passToTeleOp = false;
+                    else if (testChoices.test == Test.VISION_TEST)
+                    {
+                        allowVisionControlOnWrist = pressed;
+                        passToTeleOp = false;
+                    }
                 }
                 break;
 
@@ -1160,7 +1166,7 @@ public class FtcTest extends FtcTeleOp
                 if (sampleInfo != null)
                 {
                     TrcPose2D samplePose = robot.getDetectedSamplePose(sampleInfo, true);
-                    if (robot.wrist != null)
+                    if (robot.wrist != null && allowVisionControlOnWrist)
                     {
                         robot.wrist.setPosition(
                             Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle - samplePose.angle);
@@ -1184,8 +1190,7 @@ public class FtcTest extends FtcTeleOp
     private boolean allowTeleOp()
     {
         return teleOpControlEnabled &&
-               (testChoices.test == Test.SUBSYSTEMS_TEST || testChoices.test == Test.DRIVE_SPEED_TEST ||
-                testChoices.test == Test.VISION_TEST);
+               (testChoices.test == Test.SUBSYSTEMS_TEST || testChoices.test == Test.DRIVE_SPEED_TEST);
     }   //allowTeleOp
 
 }   //class FtcTest

@@ -232,8 +232,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     if (taskParams.fromSubmersible)
                     {
                         robot.robotDrive.purePursuitDrive.start(
-                            currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            currOwner, event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             robot.adjustPoseByAlliance(-2.15, -2.15, 0.0, taskParams.alliance, true),
                             robot.adjustPoseByAlliance(-2.43, -2.55, 45.0, taskParams.alliance, true));
                             //custom pose instead of RED_BASKET_SCORE_POSE just for the bonus sample
@@ -241,8 +241,8 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     else
                     {
                         robot.robotDrive.purePursuitDrive.start(
-                            currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            currOwner, event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             robot.adjustPoseByAlliance(-2.15, -2.15, 0.0, taskParams.alliance, true),
                             robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
                     }

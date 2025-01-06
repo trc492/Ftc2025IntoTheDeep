@@ -119,6 +119,7 @@ public class RobotBase
             robotMaxTurnRate = 80.0;        // degrees/sec
             profiledMaxVelocity = robotMaxVelocity;
             profiledMaxAcceleration = robotMaxAcceleration;
+            profiledMaxDeceleration = robotMaxAcceleration - 50.0;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
             drivePidTolerance = 2.5;
@@ -194,6 +195,7 @@ public class RobotBase
             robotMaxTurnRate = 100.0;       // degrees/sec
             profiledMaxVelocity = robotMaxVelocity;
             profiledMaxAcceleration = robotMaxAcceleration;
+            profiledMaxDeceleration = robotMaxAcceleration;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
             drivePidTolerance = 1.0;

@@ -265,8 +265,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                     samplePose, extenderLen, sampleInfo.objRotatedAngle, sampleInfo.objRotatedAngle - samplePose.angle);
                 // Turning is a lot faster than extending, so just wait for extender event.
                 robot.robotDrive.purePursuitDrive.start(
-                    currOwner, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
-                    robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                    currOwner, null, 0.0, true, robot.robotInfo.profiledMaxVelocity,
+                    robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                     new TrcPose2D(0.0, 0.0, samplePose.angle));
                 sm.waitForSingleEvent(armEvent, State.PICKUP_SAMPLE);
                 break;

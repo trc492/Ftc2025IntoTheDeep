@@ -168,8 +168,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     {
                         robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null);
                         robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            event, 0.0, true, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             new TrcPose2D(2.5, -2.25, 155.0));
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     }
@@ -196,8 +196,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.extenderArm.setPosition(null, 22.0, null);
                         robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             spikeMark);
                         spikeMarkSampleCount++;
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
@@ -234,8 +234,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         intermediate1.x -= 0.65 * RobotParams.Field.FULL_TILE_INCHES;
                         intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance);
                         robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             intermediate1, targetPose);
                         sm.waitForSingleEvent(event, State.ASCENT);
                     }
@@ -249,8 +249,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         TrcPose2D intermediate1 = new TrcPose2D(-2.2, -2.0, 30.0);
                         intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance, true);
                         robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             intermediate1, targetPose);
                         sm.waitForSingleEvent(event, State.ASCENT);
                         sm.setState(State.DONE);

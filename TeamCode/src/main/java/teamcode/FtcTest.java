@@ -331,9 +331,8 @@ public class FtcTest extends FtcTeleOp
                     // Doing a 48x48-inch square box with robot heading always pointing to the center of the box.
                     //
                     // Set the current position as the absolute field origin so the path can be an absolute path.
-                    TrcPose2D startPose = new TrcPose2D(0.0, 0.0, 0.0);
-                    robot.robotDrive.driveBase.setFieldPosition(startPose);
-                    robot.robotDrive.purePursuitDrive.start(startPose, false, new TrcPose2D(0.0, 48.0, 90.0));
+                    robot.robotDrive.driveBase.resetOdometry();
+                    robot.robotDrive.purePursuitDrive.start(false, new TrcPose2D(0.0, 48.0, 90.0));
                 }
                 break;
         }
@@ -570,13 +569,13 @@ public class FtcTest extends FtcTeleOp
                             // Stop steer calibration.
                             swerveDrive.stopSteeringCalibration();
                         }
-                        passToTeleOp = false;
                     }
-                    else if (testChoices.test == Test.VISION_TEST)
-                    {
-                        allowVisionControlOnWrist = pressed;
-                        passToTeleOp = false;
-                    }
+                    passToTeleOp = false;
+                }
+                else if (testChoices.test == Test.VISION_TEST)
+                {
+                    allowVisionControlOnWrist = pressed;
+                    passToTeleOp = false;
                 }
                 break;
 

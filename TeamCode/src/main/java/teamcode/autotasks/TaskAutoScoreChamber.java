@@ -31,7 +31,6 @@ import teamcode.Robot;
 import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
@@ -244,8 +243,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                     TrcPose2D intermediate1 = taskParams.scorePose.clone();
                     intermediate1.y -= 8.0;
                     robot.robotDrive.purePursuitDrive.start(
-                        currOwner, event, 1.75, robot.robotDrive.driveBase.getFieldPosition(), false,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        currOwner, event, 1.75, false, robot.robotInfo.profiledMaxVelocity,
+                        robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                         robot.adjustPoseByAlliance(intermediate1, taskParams.alliance),
                         robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance));
                     robot.wrist.setPosition(taskParams.wristPos, 0.0);

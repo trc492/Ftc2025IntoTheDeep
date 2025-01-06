@@ -156,8 +156,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     robot.elbow.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0);
                     robot.extender.setPosition(4.0, Extender.Params.SPECIMEN_PICKUP_POS, true, 1.0);
                     robot.robotDrive.purePursuitDrive.start(
-                        event, 8.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        event, 8.0, false, robot.robotInfo.profiledMaxVelocity,
+                        robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                         robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH, autoChoices.alliance, true));
                     sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
@@ -199,8 +199,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         Elbow.Params.HIGH_CHAMBER_SCORE_POS, Extender.Params.HIGH_CHAMBER_SCORE_POS, null);
                     robot.wrist.setPosition(90.0, 0.0);
                     robot.robotDrive.purePursuitDrive.start(
-                        event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                        event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                        robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                         intermediate1,
                         robot.adjustPoseByAlliance(intermediate2, autoChoices.alliance),
                         robot.adjustPoseByAlliance(scorePose, autoChoices.alliance));
@@ -224,8 +224,8 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         intermediate1.y -= 6.0;
                         intermediate1.x += 2.5 * 3;
                         robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance),
                             robot.adjustPoseByAlliance(
                                 RobotParams.Game.RED_OBSERVATION_ZONE_PARK_POSE, autoChoices.alliance));

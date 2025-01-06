@@ -131,6 +131,7 @@ public class FtcTest extends FtcTeleOp
     // Drive Speed Test.
     private double maxDriveVelocity = 0.0;
     private double maxDriveAcceleration = 0.0;
+    private double maxDriveDeceleration = 0.0;
     private double maxTurnVelocity = 0.0;
     private double prevTime = 0.0;
     private double prevVelocity = 0.0;
@@ -392,10 +393,19 @@ public class FtcTest extends FtcTeleOp
                     TrcPose2D velPose = robot.robotDrive.driveBase.getFieldVelocity();
                     double velocity = TrcUtil.magnitude(velPose.x, velPose.y);
                     double acceleration = 0.0;
+                    double deceleration = 0.0;
+                    double deltaTime = currTime - prevTime;
 
                     if (prevTime != 0.0)
                     {
-                        acceleration = (velocity - prevVelocity)/(currTime - prevTime);
+                        if (velocity > prevVelocity)
+                        {
+                            acceleration = (velocity - prevVelocity)/deltaTime;
+                        }
+                        else
+                        {
+                            deceleration = (prevVelocity - velocity)/deltaTime;
+                        }
                     }
 
                     if (velocity > maxDriveVelocity)
@@ -406,6 +416,11 @@ public class FtcTest extends FtcTeleOp
                     if (acceleration > maxDriveAcceleration)
                     {
                         maxDriveAcceleration = acceleration;
+                    }
+
+                    if (deceleration > maxDriveDeceleration)
+                    {
+                        maxDriveDeceleration = deceleration;
                     }
 
                     if (velPose.angle > maxTurnVelocity)
@@ -419,6 +434,8 @@ public class FtcTest extends FtcTeleOp
                     robot.dashboard.displayPrintf(lineNum++, "Drive Vel: (%.1f/%.1f)", velocity, maxDriveVelocity);
                     robot.dashboard.displayPrintf(
                         lineNum++, "Drive Accel: (%.1f/%.1f)", acceleration, maxDriveAcceleration);
+                    robot.dashboard.displayPrintf(
+                        lineNum++, "Drive Decel: (%.1f/%.1f)", deceleration, maxDriveDeceleration);
                     robot.dashboard.displayPrintf(
                         lineNum++, "Turn Vel: (%.1f/%.1f)", velPose.angle, maxTurnVelocity);
                 }

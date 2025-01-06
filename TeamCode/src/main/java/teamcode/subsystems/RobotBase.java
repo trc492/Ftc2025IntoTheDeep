@@ -116,10 +116,11 @@ public class RobotBase
             // Robot Drive Characteristics
             robotMaxVelocity = 80.0;        // inches/sec
             robotMaxAcceleration  = 350.0;  // inches/sec2
+            robotMaxDeceleration = 300.0;
             robotMaxTurnRate = 80.0;        // degrees/sec
             profiledMaxVelocity = robotMaxVelocity;
             profiledMaxAcceleration = robotMaxAcceleration;
-            profiledMaxDeceleration = robotMaxAcceleration - 50.0;
+            profiledMaxDeceleration = robotMaxDeceleration;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
             drivePidTolerance = 2.5;
@@ -192,10 +193,11 @@ public class RobotBase
             // Robot Drive Characteristics
             robotMaxVelocity = 72.0;        // inches/sec
             robotMaxAcceleration  = 530.0;  // inches/sec2
+            robotMaxDeceleration = 300.0;   // inches/sec2
             robotMaxTurnRate = 100.0;       // degrees/sec
             profiledMaxVelocity = robotMaxVelocity;
             profiledMaxAcceleration = robotMaxAcceleration;
-            profiledMaxDeceleration = robotMaxAcceleration;
+            profiledMaxDeceleration = robotMaxDeceleration;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
             drivePidTolerance = 1.0;

@@ -62,7 +62,7 @@ public class Elbow
         public static final double START_POS                    = MIN_POS;
         public static final double RESTRICTED_POS_THRESHOLD     = 40.0;
         public static final double GROUND_PICKUP_POS            = 20.5;
-        public static final double SPECIMEN_PICKUP_POS          = 17.85;
+        public static final double SPECIMEN_PICKUP_POS          = 19.0;
         public static final double LOW_BASKET_SCORE_POS         = 105.0;
         public static final double HIGH_BASKET_SCORE_POS        = 105.0;
         public static final double LOW_CHAMBER_SCORE_POS        = 40.0;
@@ -76,7 +76,7 @@ public class Elbow
         public static final double POS_PRESET_TOLERANCE         = 10.0;
 
         public static final TrcPidController.PidCoefficients posPidCoeffs =
-            new TrcPidController.PidCoefficients(0.125, 0.0, 0.002, 0.0, 0.0);
+            new TrcPidController.PidCoefficients(0.15, 0.0, 0.002, 0.0, 0.0);
         public static final double POS_PID_TOLERANCE            = 3.0;
         public static final double GRAVITY_COMP_MAX_POWER       = 0.2/Extender.Params.POS_OFFSET;
     }   //class Params

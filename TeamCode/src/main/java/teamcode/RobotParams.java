@@ -141,7 +141,7 @@ public class RobotParams
         public static final double CHAMBER_MAX_SCORE_POS_X          = (CHAMBER_LENGTH / 2.0) - 3.0;
         // Score poses (Net zone side).
         public static final TrcPose2D RED_BASKET_SCORE_POSE         =
-            new TrcPose2D(-2.435 * Field.FULL_TILE_INCHES, -2.46 * Field.FULL_TILE_INCHES, 45.0);
+            new TrcPose2D(-2.42 * Field.FULL_TILE_INCHES, -2.42 * Field.FULL_TILE_INCHES, 45.0);
 //        public static final TrcPose2D RED_BASKET_SCORE_POSE         =
 //                new TrcPose2D(-2.43 * Field.FULL_TILE_INCHES, -2.43 * Field.FULL_TILE_INCHES, 45.0);
         public static final TrcPose2D RED_NET_CHAMBER_SCORE_POSE    =
@@ -151,7 +151,10 @@ public class RobotParams
             new TrcPose2D(0.1 * Field.FULL_TILE_INCHES, -1.34 * Field.FULL_TILE_INCHES, 180.0);
         // Pickup pose (Net zone side).
         public static final TrcPose2D RED_NET_ZONE_SPIKEMARK_PICKUP =
-            new TrcPose2D(-1.685 * Field.FULL_TILE_INCHES, -1.895 * Field.FULL_TILE_INCHES, -7.0);
+            new TrcPose2D(-1.7 * Field.FULL_TILE_INCHES, -1.85 * Field.FULL_TILE_INCHES, -7.0);
+        // Spikemark Pickup pose (Observation zone side).
+        public static final TrcPose2D RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP   =
+                new TrcPose2D(1.3 * Field.FULL_TILE_INCHES, -1.55 * Field.FULL_TILE_INCHES, 80.0);
         // Pickup pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
             new TrcPose2D(2.0 * Field.FULL_TILE_INCHES, -2.05 * Field.FULL_TILE_INCHES, 180.0);
@@ -173,10 +176,10 @@ public class RobotParams
             new TrcPose2D(1.92, -1.875, 180.0),
 //            new TrcPose2D(2.0, -2.65, 0.0),
 //            new TrcPose2D(1.,-0.7, 180.0),
-            new TrcPose2D(1.92,-1.0, 180.0),
+            new TrcPose2D(1.9,-1.0, 180.0),
 //            new TrcPose2D(2.075,-0.8, 180.0),
-            new TrcPose2D(1.96 + 10.0/Field.FULL_TILE_INCHES, -0.8, 180.0),
-            new TrcPose2D(1.96 + 10.0/Field.FULL_TILE_INCHES, -1.675, 180.0),
+            new TrcPose2D(1.92 + 10.0/Field.FULL_TILE_INCHES, -0.8, 180.0),
+            new TrcPose2D(1.92 + 10.0/Field.FULL_TILE_INCHES, -1.675, 180.0),
 //            new TrcPose2D(1.975 + 9.5/Field.FULL_TILE_INCHES, -0.7, 180.0),
 //            new TrcPose2D(1.975 + 19/Field.FULL_TILE_INCHES, -0.7, 180.0),
 //            new TrcPose2D(1.975 + 19/Field.FULL_TILE_INCHES, -2.2, 180.0),

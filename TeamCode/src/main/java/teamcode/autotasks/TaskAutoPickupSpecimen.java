@@ -236,10 +236,12 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 
             case DRIVE_TO_PICKUP:
                 // Drive to the specimen pickup location.
+                TrcPose2D intermediate1 = new TrcPose2D(2.0, -1.85, 180.0);
+                intermediate1 = robot.adjustPoseByAlliance(intermediate1, taskParams.alliance, true);
                 robot.robotDrive.purePursuitDrive.start(
                     currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
                     robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                    robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
+                    intermediate1, robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                 sm.waitForSingleEvent(event, taskParams.useVision? State.FIND_SPECIMEN: State.APPROACH_SPECIMEN);
                 break;
 

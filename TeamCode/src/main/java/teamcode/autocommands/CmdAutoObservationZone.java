@@ -27,6 +27,8 @@ import teamcode.Robot;
 import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
+import teamcode.subsystems.Grabber;
+import teamcode.subsystems.Vision;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcRobot;
@@ -44,6 +46,10 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
     {
         START,
         SCORE_PRELOAD,
+        DRIVE_TO_SPIKEMARK,
+        PICKUP_SPIKEMARK,
+        ROTATE_POS,
+        SETDOWN_SAMPLE,
         MOVE_SAMPLES,
         PICKUP_SPECIMEN,
         DRIVE_TO_CHAMBER_POS,
@@ -57,6 +63,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
     private final TrcTimer timer;
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
+    private int spikeMarkSampleCount = 0;
     private int pickupSpecimenCount = 0;
 
     /**
@@ -145,23 +152,58 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                 case SCORE_PRELOAD:
                     // Score the preloaded specimen.
                     robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, false, event);
-                    sm.waitForSingleEvent(event, State.MOVE_SAMPLES);
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKEMARK);
                     break;
-
-                case MOVE_SAMPLES:
-                    // Herd two samples to the observation zone to be converted to specimens.
-                    // The extenderArm is set to min pos after Auto Score Chamber keep this in order to not bump into
-                    // the wall when herding samples, set the extender pos to SPECIMEN PICKUP POS after 4 seconds to
-                    // get ready to grab it in the next state.
-                    robot.elbow.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0);
-                    robot.extender.setPosition(4.0, Extender.Params.SPECIMEN_PICKUP_POS, true, 1.0);
+                case DRIVE_TO_SPIKEMARK:
+                    if (spikeMarkSampleCount < 2)
+                    {
+                        TrcPose2D spikeMark = RobotParams.Game.RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP.clone();
+                        spikeMark.x += 10.0 * spikeMarkSampleCount;
+                        spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
+                        robot.extenderArm.setPosition(null, 25.0, null);
+                        robot.robotDrive.purePursuitDrive.start(
+                                event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                                robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                                spikeMark);
+                        spikeMarkSampleCount++;
+                        sm.waitForSingleEvent(event, State.PICKUP_SPIKEMARK);
+                    }
+                    else
+                    {
+                        sm.setState(State.PICKUP_SPECIMEN);
+                    }
+                    break;
+                case PICKUP_SPIKEMARK:
+                    robot.pickupFromGroundTask.autoPickupFromGround(autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ? Vision.SampleType.RedSample : Vision.SampleType.BlueSample, true, null, event);
+                    sm.waitForSingleEvent(event, State.ROTATE_POS);
+                    break;
+                case ROTATE_POS:
                     robot.robotDrive.purePursuitDrive.start(
-                        event, 8.0, false, robot.robotInfo.profiledMaxVelocity,
-                        robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                        robot.adjustPoseByAlliance(
-                            RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH, autoChoices.alliance, true));
-                    sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
+                            event, 0.0, true, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                            new TrcPose2D(5.0, -5.0, 120.0));
+                    robot.extender.setPosition(30.0);
+                    sm.waitForSingleEvent(event, State.SETDOWN_SAMPLE);
                     break;
+                case SETDOWN_SAMPLE:
+                    robot.grabber.dump(null, 0.0, event);
+//                    robot.grabber.autoDump(moduleName, 0.0, Grabber.Params.FINISH_DELAY, event);
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKEMARK);
+                    break;
+//                case MOVE_SAMPLES:
+//                    // Herd two samples to the observation zone to be converted to specimens.
+//                    // The extenderArm is set to min pos after Auto Score Chamber keep this in order to not bump into
+//                    // the wall when herding samples, set the extender pos to SPECIMEN PICKUP POS after 4 seconds to
+//                    // get ready to grab it in the next state.
+//                    robot.elbow.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS - 2.0);
+//                    robot.extender.setPosition(4.0, Extender.Params.SPECIMEN_PICKUP_POS, true, 1.0);
+//                    robot.robotDrive.purePursuitDrive.start(
+//                        event, 8.0, false, robot.robotInfo.profiledMaxVelocity,
+//                        robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+//                        robot.adjustPoseByAlliance(
+//                            RobotParams.Game.RED_OBSERVATION_ZONE_SAMPLE_MOVE_PATH, autoChoices.alliance, true));
+//                    sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
+//                    break;
 
                 case PICKUP_SPECIMEN:
                     // Pick up a specimen from the wall.

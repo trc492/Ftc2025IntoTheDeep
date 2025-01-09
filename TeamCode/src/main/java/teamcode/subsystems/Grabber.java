@@ -72,7 +72,7 @@ public class Grabber
 
         public static final String SENSOR_NAME                  = SUBSYSTEM_NAME + ".sensor";
         public static final boolean SENSOR_TRIGGER_INVERTED     = true;
-        public static final double SENSOR_TRIGGER_THRESHOLD     = 0.95;
+        public static final double SENSOR_TRIGGER_THRESHOLD     = 0.9;
         public static final double RED_THRESHOLD_LOW            = 30.0;
         public static final double RED_THRESHOLD_HIGH           = 340.0;
         public static final double YELLOW_THRESHOLD_LOW         = 60.0;
@@ -88,9 +88,9 @@ public class Grabber
             BLUE_THRESHOLD_HIGH, RED_THRESHOLD_HIGH};
 
         public static final double INTAKE_POWER                 = 1.0;
-        public static final double EJECT_POWER                  = -0.225;
+        public static final double EJECT_POWER                  = -0.3;
         public static final double RETAIN_POWER                 = 0.0;
-        public static final double FINISH_DELAY                 = 0.0; // OLD: 0.08s
+        public static final double FINISH_DELAY                 = 0.06; // OLD: 0.08s
         public static final double DUMP_TIME                    = 0.5; // TO: 0.45s
         public static final double DUMP_DELAY                   = 0.0; // OLD: 0.4s
 

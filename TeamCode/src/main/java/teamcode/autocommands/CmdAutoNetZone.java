@@ -63,7 +63,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
     private int spikeMarkSampleCount = 0;
-    private boolean scoredSubmersibleSample = false;
+    private boolean finishedSubPickup = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -188,9 +188,9 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         TrcPose2D spikeMark = RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP.clone();
                         if (spikeMarkSampleCount < 2)
                         {
-                            spikeMark.x -= 9.0 * spikeMarkSampleCount;
+                            spikeMark.x -= 10.0 * spikeMarkSampleCount;
                         } else {
-                            spikeMark.x -= 15.0;
+                            spikeMark.x -= 18.0;
                             spikeMark.angle -= 5.0;
                         }
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
@@ -223,7 +223,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case GO_PARK:
                     // Go to the ascent zone.
-                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || scoredSubmersibleSample)
+                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup)
                     {
                         robot.extenderArm.setPosition(
                             Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
@@ -246,19 +246,21 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 0.0);
                         TrcPose2D targetPose = new TrcPose2D(-1.075, -0.3, 90.0);
                         targetPose = robot.adjustPoseByAlliance(targetPose, autoChoices.alliance, true);
-                        TrcPose2D intermediate1 = new TrcPose2D(-2.2, -2.0, 30.0);
+                        TrcPose2D intermediate1 = new TrcPose2D(-2.4, -2.0, 30.0);
                         intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance, true);
+                        TrcPose2D intermediate2 = new TrcPose2D(-1.75, -0.75, 60.0);
+                        intermediate2 = robot.adjustPoseByAlliance(intermediate2, autoChoices.alliance, true);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
                             robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                            intermediate1, targetPose);
+                            intermediate1, intermediate2, targetPose);
                         sm.waitForSingleEvent(event, State.ASCENT);
                         sm.setState(State.DONE);
                     }
                     break;
 
                 case ASCENT:
-                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
+                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup)
                     {
                         // Do level 1 ascent.
                         robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
@@ -281,12 +283,24 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case SCORE_SUBMERSIBLE_SAMPLE:
                     // Set the elbow and wrist to a safe position before handing over control to auto score basket.
-                    robot.wrist.setPosition(0.0, 0.0);
-                    robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
-                    robot.scoreBasketTask.autoScoreBasket(
-                        autoChoices.alliance, autoChoices.scoreHeight, true, true, event);
-                    scoredSubmersibleSample = true;
-                    sm.waitForSingleEvent(event, State.GO_PARK);
+                    if (robot.grabber.hasObject() &&
+                            robot.grabber.getSampleType() != (autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
+                                    Vision.SampleType.BlueSample :
+                                    Vision.SampleType.RedSample))
+                    {
+
+                        robot.wrist.setPosition(0.0, 0.0);
+                        robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
+                        robot.scoreBasketTask.autoScoreBasket(
+                                autoChoices.alliance, autoChoices.scoreHeight, true, true, event);
+                        finishedSubPickup = true;
+                        sm.waitForSingleEvent(event, State.GO_PARK);
+                    }
+                    else
+                    {
+                        finishedSubPickup = true;
+                        sm.setState(State.GO_PARK);
+                    }
                     break;
 
                 default:

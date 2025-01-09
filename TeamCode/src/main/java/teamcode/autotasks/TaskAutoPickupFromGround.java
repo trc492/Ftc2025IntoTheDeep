@@ -259,7 +259,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 double extenderLen = robot.getExtenderPosFromSamplePose(samplePose);
                 robot.extenderArm.setPosition(null, extenderLen, armEvent);
                 robot.wrist.setPosition(
-                    Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle - samplePose.angle);
+                    Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle * 0.8 - samplePose.angle);
                 tracer.traceInfo(
                     moduleName, "samplePose=%s, extenderLen=%.1f, sampleAngle=%.1f, wristAngle=%.1f",
                     samplePose, extenderLen, sampleInfo.objRotatedAngle, sampleInfo.objRotatedAngle - samplePose.angle);

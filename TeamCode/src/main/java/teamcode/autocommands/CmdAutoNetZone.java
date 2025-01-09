@@ -53,7 +53,6 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
         GO_PARK,
         ASCENT,
         SCORE_SUBMERSIBLE_SAMPLE,
-//        CLEAR_SUB,
         DONE
     }   //enum State
 
@@ -189,7 +188,9 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         if (spikeMarkSampleCount < 2)
                         {
                             spikeMark.x -= 10.0 * spikeMarkSampleCount;
-                        } else {
+                        }
+                        else
+                        {
                             spikeMark.x -= 18.0;
                             spikeMark.angle -= 5.0;
                         }
@@ -283,16 +284,15 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case SCORE_SUBMERSIBLE_SAMPLE:
                     // Set the elbow and wrist to a safe position before handing over control to auto score basket.
-                    if (robot.grabber.hasObject() &&
-                            robot.grabber.getSampleType() != (autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
-                                    Vision.SampleType.BlueSample :
-                                    Vision.SampleType.RedSample))
+                    Vision.SampleType sampleTypeToLookFor =
+                        autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
+                            Vision.SampleType.RedSample : Vision.SampleType.BlueSample;
+                    if (robot.grabber.hasObject() && robot.grabber.getSampleType() == sampleTypeToLookFor)
                     {
-
                         robot.wrist.setPosition(0.0, 0.0);
                         robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
                         robot.scoreBasketTask.autoScoreBasket(
-                                autoChoices.alliance, autoChoices.scoreHeight, true, true, event);
+                            autoChoices.alliance, autoChoices.scoreHeight, true, true, event);
                         finishedSubPickup = true;
                         sm.waitForSingleEvent(event, State.GO_PARK);
                     }

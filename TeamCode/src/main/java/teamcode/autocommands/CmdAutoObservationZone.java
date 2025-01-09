@@ -154,6 +154,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, false, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKEMARK);
                     break;
+
                 case DRIVE_TO_SPIKEMARK:
                     if (spikeMarkSampleCount < 2)
                     {
@@ -162,9 +163,9 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.extenderArm.setPosition(null, 25.0, null);
                         robot.robotDrive.purePursuitDrive.start(
-                                event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
-                                robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                                spikeMark);
+                            event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                            spikeMark);
                         spikeMarkSampleCount++;
                         sm.waitForSingleEvent(event, State.PICKUP_SPIKEMARK);
                     }
@@ -173,23 +174,29 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                         sm.setState(State.PICKUP_SPECIMEN);
                     }
                     break;
+
                 case PICKUP_SPIKEMARK:
-                    robot.pickupFromGroundTask.autoPickupFromGround(autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ? Vision.SampleType.RedSample : Vision.SampleType.BlueSample, true, null, event);
+                    robot.pickupFromGroundTask.autoPickupFromGround(
+                        autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
+                            Vision.SampleType.RedSample : Vision.SampleType.BlueSample,
+                        true, null, event);
                     sm.waitForSingleEvent(event, State.ROTATE_POS);
                     break;
+
                 case ROTATE_POS:
                     robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, true, robot.robotInfo.profiledMaxVelocity,
-                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                            new TrcPose2D(5.0, -5.0, 120.0));
+                        event, 0.0, true, robot.robotInfo.profiledMaxVelocity,
+                        robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                        new TrcPose2D(5.0, -5.0, 120.0));
                     robot.extender.setPosition(30.0);
                     sm.waitForSingleEvent(event, State.SETDOWN_SAMPLE);
                     break;
+
                 case SETDOWN_SAMPLE:
                     robot.grabber.dump(null, 0.0, event);
-//                    robot.grabber.autoDump(moduleName, 0.0, Grabber.Params.FINISH_DELAY, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKEMARK);
                     break;
+
 //                case MOVE_SAMPLES:
 //                    // Herd two samples to the observation zone to be converted to specimens.
 //                    // The extenderArm is set to min pos after Auto Score Chamber keep this in order to not bump into
@@ -224,7 +231,6 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     // Drive to the specimen scoring position.
                     TrcPose2D scorePose = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
                     scorePose.x += 2.5 * pickupSpecimenCount;
-//                    scorePose.y += 1.7 * scoreSpecimenCount; // Because I gave up on PID
                     intermediate1 = robot.robotDrive.driveBase.getFieldPosition();
                     if (autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE)
                     {

@@ -63,6 +63,7 @@ public class FtcTeleOp extends FtcOpMode
     private double extenderPrevPower = 0.0;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
     private int climbedLevel = 0;
+    private boolean redAlliance = true;
 
     //
     // Implements FtcOpMode abstract method.
@@ -573,11 +574,27 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case Back:
-                if (pressed)
+                if (driverAltFunc)
                 {
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrating.");
-                    robot.cancelAll();
-                    robot.zeroCalibrate(moduleName, null);
+                    if (FtcAuto.autoChoices.alliance == null && pressed)
+                    {
+                        // There was no prior auto run, so we don't know the alliance.
+                        redAlliance = !redAlliance;
+                        if (robot.ledIndicator != null)
+                        {
+                            robot.ledIndicator.setDetectedPattern(
+                                redAlliance? LEDIndicator.RED_SAMPLE: LEDIndicator.BLUE_SAMPLE);
+                        }
+                    }
+                }
+                else
+                {
+                    if (pressed)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrating.");
+                        robot.cancelAll();
+                        robot.zeroCalibrate(moduleName, null);
+                    }
                 }
                 break;
 
@@ -633,8 +650,11 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     if (pressed)
                     {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Set start position to RED_NET_ZONE.");
-                        robot.robotDrive.driveBase.setFieldPosition(RobotParams.Game.STARTPOSE_RED_NET_ZONE);
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Set start position to RED_OBSERVATION_ZONE.");
+                        robot.robotDrive.driveBase.setFieldPosition(
+                            robot.adjustPoseByAlliance(
+                                RobotParams.Game.STARTPOSE_RED_OBSERVATION_ZONE,
+                                redAlliance? FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE));
                     }
                 }
                 break;

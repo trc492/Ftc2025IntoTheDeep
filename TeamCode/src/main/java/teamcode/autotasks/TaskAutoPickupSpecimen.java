@@ -64,18 +64,18 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     {
         final FtcAuto.Alliance alliance;
         final boolean useVision;
-        final boolean noDrive;
-        TaskParams(FtcAuto.Alliance alliance, boolean useVision, boolean noDrive)
+        final boolean fromObservation;
+        TaskParams(FtcAuto.Alliance alliance, boolean useVision, boolean fromObservation)
         {
             this.alliance = alliance;
             this.useVision = useVision;
-            this.noDrive = noDrive;
+            this.fromObservation = fromObservation;
         }   //TaskParams
 
         @NonNull
         public String toString()
         {
-            return "alliance=" + alliance + ",useVision=" + useVision + ",noDrive=" + noDrive;
+            return "alliance=" + alliance + ",useVision=" + useVision + ",noDrive=" + fromObservation;
         }   //toString
     }   //class TaskParams
 
@@ -106,11 +106,11 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
      *
      * @param alliance specifies the alliance color, can be null if caller is TeleOp.
      * @param useVision specifies true to use Vision, false otherwise.
-     * @param noDrive specifies true if the robot is already right in front of the specimen, false otherwise.
+     * @param fromObservation specifies true if the robot is already right in front of the specimen, false otherwise.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
     public void autoPickupSpecimen(
-        FtcAuto.Alliance alliance, boolean useVision, boolean noDrive, TrcEvent completionEvent)
+        FtcAuto.Alliance alliance, boolean useVision, boolean fromObservation, TrcEvent completionEvent)
     {
         if (alliance == null)
         {
@@ -122,7 +122,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         }
 
-        TaskParams taskParams = new TaskParams(alliance, useVision, noDrive);
+        TaskParams taskParams = new TaskParams(alliance, useVision, fromObservation);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         startAutoTask(State.START, taskParams, completionEvent);
     }   //autoPickupSpecimen
@@ -220,10 +220,13 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     tracer.traceInfo(moduleName, "Arm or grabber doesn't exist, we are done.");
                     sm.setState(State.DONE);
                 }
-                else if (taskParams.noDrive)
-                {
-                    sm.setState(State.APPROACH_SPECIMEN);
-                }
+//                else if (taskParams.fromObservation)
+//                {
+//                    robot.wrist.setPosition(Wrist.Params.SPECIMEN_PICKUP_POS, 0.0);
+//                    robot.extenderArm.setPosition(
+//                            Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
+//                    sm.setState(State.APPROACH_SPECIMEN);
+//                }
                 else
                 {
                     // Fire and forget to save time.
@@ -236,12 +239,35 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 
             case DRIVE_TO_PICKUP:
                 // Drive to the specimen pickup location.
-                TrcPose2D intermediate1 = new TrcPose2D(2.0, -1.85, 180.0);
-                intermediate1 = robot.adjustPoseByAlliance(intermediate1, taskParams.alliance, true);
-                robot.robotDrive.purePursuitDrive.start(
-                    currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
-                    robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                    intermediate1, robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
+
+//
+                if (!taskParams.fromObservation)
+                {
+                    TrcPose2D intermediate1 = RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP;
+                    intermediate1.y += 2.5;
+                    robot.robotDrive.purePursuitDrive.start(
+                            currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                            robot.adjustPoseByAlliance(intermediate1, taskParams.alliance),
+                            robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
+                }
+                else
+                {
+                    TrcPose2D intermediate1 = robot.robotDrive.driveBase.getFieldPosition();
+                    intermediate1.y -= 10.0;
+                    intermediate1.angle = 90.0;
+                    TrcPose2D intermediate2 = RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP.clone();
+                    intermediate2.y += 6.0;
+                    intermediate2.angle = 180.0;
+
+                    robot.robotDrive.purePursuitDrive.start(
+                            currOwner, event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                            robot.adjustPoseByAlliance(intermediate1,taskParams.alliance),
+                            robot.adjustPoseByAlliance(intermediate2, taskParams.alliance),
+                            robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
+//                intermediate1 = robot.adjustPoseByAlliance(intermediate1, taskParams.alliance, true);
+                }
                 sm.waitForSingleEvent(event, taskParams.useVision? State.FIND_SPECIMEN: State.APPROACH_SPECIMEN);
                 break;
 

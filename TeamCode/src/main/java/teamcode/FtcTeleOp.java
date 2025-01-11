@@ -558,18 +558,22 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadRight:
-                if (robot.pickupSpecimenTask != null && pressed)
+//                if (robot.pickupSpecimenTask != null && pressed)
+                if (pressed)
                 {
-                    if (!robot.pickupSpecimenTask.isActive())
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup specimen.");
-                        robot.pickupSpecimenTask.autoPickupSpecimen(null, !driverAltFunc, false, null);
-                    }
-                    else
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto pickup specimen.");
-                        robot.pickupSpecimenTask.cancel();
-                    }
+                    robot.wrist.setPosition(0.0, 0.0);
+                    robot.extenderArm.setPosition(
+                            Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
+//                    if (!robot.pickupSpecimenTask.isActive())
+//                    {
+//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup specimen.");
+//                        robot.pickupSpecimenTask.autoPickupSpecimen(null, !driverAltFunc, false, null);
+//                    }
+//                    else
+//                    {
+//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto pickup specimen.");
+//                        robot.pickupSpecimenTask.cancel();
+//                    }
                 }
                 break;
 
@@ -677,7 +681,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high basket scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.LOW_BASKET_SCORE_POS, 0.0);
+                    robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS, 0.0);
                 }
                 break;
 

@@ -270,13 +270,13 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     robot.wrist.setPosition(-10.0,0.0);
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
                     {
-                        intermediate1 = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
-                        intermediate1.y -= 6.0;
-                        intermediate1.x += 2.5 * 3;
+//                        intermediate1 = RobotParams.Game.RED_OBSERVATION_CHAMBER_SCORE_POSE.clone();
+//                        intermediate1.y -= 6.0;
+//                        intermediate1.x += 2.5 * 3;
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
                             robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                            robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance),
+//                            robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance),
                             robot.adjustPoseByAlliance(
                                 RobotParams.Game.RED_OBSERVATION_ZONE_PARK_POSE, autoChoices.alliance));
                         sm.waitForSingleEvent(event, State.DONE);

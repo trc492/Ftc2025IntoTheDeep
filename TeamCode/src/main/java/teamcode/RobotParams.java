@@ -152,7 +152,7 @@ public class RobotParams
             new TrcPose2D(-1.7 * Field.FULL_TILE_INCHES, -1.85 * Field.FULL_TILE_INCHES, -7.0);
         // Spikemark Pickup pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP   =
-            new TrcPose2D(1.29 * Field.FULL_TILE_INCHES, -1.55 * Field.FULL_TILE_INCHES, 70.0);
+            new TrcPose2D(1.33 * Field.FULL_TILE_INCHES, -1.55 * Field.FULL_TILE_INCHES, 70.0);
         // Pickup pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
             new TrcPose2D(2.0 * Field.FULL_TILE_INCHES, -2.05 * Field.FULL_TILE_INCHES, 180.0);

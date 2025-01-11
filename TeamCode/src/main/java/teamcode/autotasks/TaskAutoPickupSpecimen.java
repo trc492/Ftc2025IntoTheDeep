@@ -244,7 +244,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 if (!taskParams.fromObservation)
                 {
                     TrcPose2D intermediate1 = RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP;
-                    intermediate1.y += 2.5;
+                    intermediate1.y += 2.0;
                     robot.robotDrive.purePursuitDrive.start(
                             currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
                             robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
@@ -253,18 +253,22 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 }
                 else
                 {
-                    TrcPose2D intermediate1 = robot.robotDrive.driveBase.getFieldPosition();
-                    intermediate1.y -= 10.0;
-                    intermediate1.angle = 90.0;
-                    TrcPose2D intermediate2 = RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP.clone();
-                    intermediate2.y += 6.0;
-                    intermediate2.angle = 180.0;
-
+//                    TrcPose2D intermediate1 = robot.robotDrive.driveBase.getFieldPosition();
+//                    intermediate1.y -= 10.0;
+//                    intermediate1.angle = 90.0;
+//                    TrcPose2D intermediate2 = RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP.clone();
+//                    intermediate2.y += 6.0;
+//                    intermediate2.angle = 180.0;
+//
+//                    robot.robotDrive.purePursuitDrive.start(
+//                            currOwner, event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+//                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+//                            robot.adjustPoseByAlliance(intermediate1,taskParams.alliance),
+//                            robot.adjustPoseByAlliance(intermediate2, taskParams.alliance),
+//                            robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                     robot.robotDrive.purePursuitDrive.start(
-                            currOwner, event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            currOwner, event, 5.5, false, robot.robotInfo.profiledMaxVelocity,
                             robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                            robot.adjustPoseByAlliance(intermediate1,taskParams.alliance),
-                            robot.adjustPoseByAlliance(intermediate2, taskParams.alliance),
                             robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
 //                intermediate1 = robot.adjustPoseByAlliance(intermediate1, taskParams.alliance, true);
                 }

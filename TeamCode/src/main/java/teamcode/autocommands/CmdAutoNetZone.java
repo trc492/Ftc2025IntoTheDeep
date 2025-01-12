@@ -22,8 +22,6 @@
 
 package teamcode.autocommands;
 
-import java.util.Timer;
-
 import teamcode.FtcAuto;
 import teamcode.Robot;
 import teamcode.RobotParams;
@@ -47,7 +45,6 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private enum State
     {
         START,
-        DO_DELAY,
         SCORE_PRELOAD,
         TURN_TO_PARTNER,
         DRIVE_TO_SPIKE_MARKS,
@@ -55,7 +52,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
         SCORE_SAMPLE_BASKET,
         GO_PARK,
         ASCENT,
-        CLEAR_SUB,
+        SCORE_SUBMERSIBLE_SAMPLE,
         DONE
     }   //enum State
 
@@ -64,8 +61,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
     private final TrcTimer timer;
     private final TrcEvent event;
     private final TrcStateMachine<State> sm;
-    private int scoreSampleCount = 0;
-    private int maxSampleCount = 3;
+    private int spikeMarkSampleCount = 0;
+    private boolean finishedSubPickup = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -136,10 +133,6 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case START:
                     // Set robot location according to auto choices.
                     robot.setRobotStartPosition(autoChoices);
-                    //
-                    // Intentionally fall to next state.
-                    //
-                case DO_DELAY:
                     // Do delay if there is one.
                     if (autoChoices.delay > 0.0)
                     {
@@ -161,23 +154,23 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     }
                     else
                     {
-                        robot.wrist.setPosition(-15.0, null);
+                        robot.wrist.setPosition(-15.0, 0.0);
                         robot.scoreBasketTask.autoScoreBasket(
-                            autoChoices.alliance, autoChoices.scoreHeight, true, event);
+                            autoChoices.alliance, autoChoices.scoreHeight, true, false, event);
                     }
                     sm.waitForSingleEvent(event, State.TURN_TO_PARTNER);
                     break;
 
                 case TURN_TO_PARTNER:
+                    // If we're doing partner scoring, turn to their sample
                     if (autoChoices.scorePartnerSample == FtcAuto.ScorePartnerSample.YES)
                     {
-                        robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS,null,null);
+                        robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null);
                         robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            event, 0.0, true, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             new TrcPose2D(2.5, -2.25, 155.0));
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
-                        maxSampleCount++;
                     }
                     else
                     {
@@ -188,19 +181,26 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                 case DRIVE_TO_SPIKE_MARKS:
                     // Drive to the spike marks to pick up a sample.
                     // Make sure remaining time is long enough to score a cycle, or else go park.
-                    if (scoreSampleCount < maxSampleCount &&
+                    if (spikeMarkSampleCount < 3 &&
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) > RobotParams.Game.SCORE_BASKET_CYCLE_TIME)
                     {
                         TrcPose2D spikeMark = RobotParams.Game.RED_NET_ZONE_SPIKEMARK_PICKUP.clone();
-                        spikeMark.x -= 9.0 * scoreSampleCount;
+                        if (spikeMarkSampleCount < 2)
+                        {
+                            spikeMark.x -= 10.0 * spikeMarkSampleCount;
+                        }
+                        else
+                        {
+                            spikeMark.x -= 18.0;
+                            spikeMark.angle -= 5.0;
+                        }
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.extenderArm.setPosition(null, 22.0, null);
-//                        robot.wrist.setPosition(0.0, 15.0);
                         robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             spikeMark);
-                        scoreSampleCount++;
+                        spikeMarkSampleCount++;
                         sm.waitForSingleEvent(event, State.PICKUP_FLOOR_SAMPLE);
                     }
                     else
@@ -211,21 +211,20 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case PICKUP_FLOOR_SAMPLE:
                     // Pick up a sample from the spike marks.
-                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 16.0 + scoreSampleCount * 1.5);
-                    robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, false, event);
+                    robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, null, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
                     break;
 
                 case SCORE_SAMPLE_BASKET:
-                    robot.robotDrive.purePursuitDrive.cancel();
                     // Score the sample into the basket.
-                    robot.scoreBasketTask.autoScoreBasket(autoChoices.alliance, autoChoices.scoreHeight, true, event);
+                    robot.scoreBasketTask.autoScoreBasket(
+                        autoChoices.alliance, autoChoices.scoreHeight, true, false, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
                     break;
 
                 case GO_PARK:
                     // Go to the ascent zone.
-                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
+                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup)
                     {
                         robot.extenderArm.setPosition(
                             Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
@@ -236,55 +235,46 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         intermediate1.x -= 0.65 * RobotParams.Field.FULL_TILE_INCHES;
                         intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance);
                         robot.robotDrive.purePursuitDrive.start(
-                            event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
+                            event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             intermediate1, targetPose);
                         sm.waitForSingleEvent(event, State.ASCENT);
                     }
                     else
                     {
                         robot.extenderArm.setPosition(
-                                Elbow.Params.GROUND_PICKUP_POS+2.0, Extender.Params.MIN_POS + 2.0, null);
+                            Elbow.Params.GROUND_PICKUP_POS+2.0, Extender.Params.MIN_POS + 2.0, null);
                         robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 0.0);
                         TrcPose2D targetPose = new TrcPose2D(-1.075, -0.3, 90.0);
                         targetPose = robot.adjustPoseByAlliance(targetPose, autoChoices.alliance, true);
-                        TrcPose2D intermediate1 = new TrcPose2D(-2.2, -2.0, 30.0);
+                        TrcPose2D intermediate1 = new TrcPose2D(-2.4, -2.0, 30.0);
                         intermediate1 = robot.adjustPoseByAlliance(intermediate1, autoChoices.alliance, true);
+                        TrcPose2D intermediate2 = new TrcPose2D(-1.75, -0.75, 60.0);
+                        intermediate2 = robot.adjustPoseByAlliance(intermediate2, autoChoices.alliance, true);
                         robot.robotDrive.purePursuitDrive.start(
-                                event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                                robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                                intermediate1, targetPose);
+                            event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                            intermediate1, intermediate2, targetPose);
                         sm.waitForSingleEvent(event, State.ASCENT);
                         sm.setState(State.DONE);
                     }
                     break;
 
                 case ASCENT:
-                    if (robot.extenderArm != null)
+                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup)
                     {
-                        if (autoChoices.parkOption == FtcAuto.ParkOption.PARK)
-                        {
-                            // Do level 1 ascent.
-                            robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, null);
-                            robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
-                            robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
-                            sm.waitForSingleEvent(event, State.DONE);
-                        }
-                        else
-                        {
-                            Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
-                                    Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
-//                            if (autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE)
-//                            {
-//                                pickupColor = Vision.SampleType.RedAllianceSamples;
-//                            }
-//                            else
-//                            {
-//                                pickupColor = Vision.SampleType.BlueAllianceSamples;
-//                            }
-                            robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, true, event);
-                            sm.waitForSingleEvent(event, State.CLEAR_SUB);
-                        }
+                        // Do level 1 ascent.
+//                        robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
+                        robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
+                        robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
+                        sm.waitForSingleEvent(event, State.DONE);
+                    }
+                    else if (autoChoices.parkOption == FtcAuto.ParkOption.SCORE_SUBMERSIBLE_AND_PARK)
+                    {
+                        Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
+                            Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
+                        robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, null, event);
+                        sm.waitForSingleEvent(event, State.SCORE_SUBMERSIBLE_SAMPLE);
                     }
                     else
                     {
@@ -292,23 +282,24 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     }
                     break;
 
-                case CLEAR_SUB:
-                    robot.wrist.setPosition(0.0, null);
-                    robot.elbow.setPosition(0.0,2.0,true, 1.0, null);
-                    timer.set(0.75, event);
-                    robot.robotDrive.purePursuitDrive.start(
-                            null, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                            robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                            robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, autoChoices.alliance, true),
-                            robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, autoChoices.alliance));
-                    if (robot.grabber.hasObject())
+                case SCORE_SUBMERSIBLE_SAMPLE:
+                    // Set the elbow and wrist to a safe position before handing over control to auto score basket.
+                    Vision.SampleType sampleTypeToLookFor =
+                        autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE ?
+                            Vision.SampleType.RedSample : Vision.SampleType.BlueSample;
+                    if (robot.grabber.hasObject() && robot.grabber.getSampleType() == sampleTypeToLookFor)
                     {
-                        sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
+                        robot.wrist.setPosition(0.0, 0.0);
+                        robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
+                        robot.scoreBasketTask.autoScoreBasket(
+                            autoChoices.alliance, autoChoices.scoreHeight, true, true, event);
+                        finishedSubPickup = true;
+                        sm.waitForSingleEvent(event, State.GO_PARK);
                     }
                     else
                     {
-                        autoChoices.parkOption = FtcAuto.ParkOption.PARK;
-                        sm.waitForSingleEvent(event, State.GO_PARK);
+                        finishedSubPickup = true;
+                        sm.setState(State.GO_PARK);
                     }
                     break;
 

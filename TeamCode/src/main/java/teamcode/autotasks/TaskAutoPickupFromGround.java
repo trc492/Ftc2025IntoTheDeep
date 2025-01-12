@@ -38,6 +38,8 @@ import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
 import trclib.timer.TrcTimer;
+import trclib.vision.TrcOpenCvColorBlobPipeline;
+import trclib.vision.TrcVisionTargetInfo;
 
 /**
  * This class implements auto-assist task to pick up a sample from ground.
@@ -60,13 +62,13 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     {
         final Vision.SampleType sampleType;
         final boolean useVision;
-        final boolean noDrive;
+        final Double wristRotatePos;
 
-        TaskParams(Vision.SampleType sampleType, boolean useVision, boolean noDrive)
+        TaskParams(Vision.SampleType sampleType, boolean useVision, Double wristRotatePos)
         {
             this.sampleType = sampleType;
             this.useVision = useVision;
-            this.noDrive = noDrive;
+            this.wristRotatePos = wristRotatePos;
         }   //TaskParams
 
         @NonNull
@@ -74,7 +76,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         {
             return "sampleType=" + sampleType +
                    ",useVision=" + useVision +
-                   ",noDrive=" + noDrive;
+                   ",wristRotatePos=" + wristRotatePos;
         }   //toString
     }   //class TaskParams
 
@@ -84,6 +86,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     private final TrcEvent armEvent;
 
     private String currOwner = null;
+    private TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo = null;
     private TrcPose2D samplePose = null;
     private Double visionExpiredTime = null;
 
@@ -107,12 +110,12 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
      *
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      * @param useVision specifies true to use vision to locate sample, false otherwise.
-     * @param noDrive specifies true to not drive the robot to the sample, false otherwise.
+     * @param wristRotatePos specifies differential wrist rotate position, null if no change.
      */
     public void autoPickupFromGround(
-        Vision.SampleType sampleType, boolean useVision, boolean noDrive, TrcEvent completionEvent)
+        Vision.SampleType sampleType, boolean useVision, Double wristRotatePos, TrcEvent completionEvent)
     {
-        TaskParams taskParams = new TaskParams(sampleType, useVision, noDrive);
+        TaskParams taskParams = new TaskParams(sampleType, useVision, wristRotatePos);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
         startAutoTask(State.START, taskParams, completionEvent);
     }   //autoPickupFromGround
@@ -217,7 +220,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         taskParams.useVision && robot.vision != null &&
                         robot.vision.isSampleVisionEnabled(taskParams.sampleType)?
                             State.FIND_SAMPLE: State.PICKUP_SAMPLE;
-                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, robot.wrist.getRotatePosition());
+                    robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, taskParams.wristRotatePos);
                     robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, armEvent);
                     sm.waitForSingleEvent(armEvent, nextState);
                 }
@@ -225,13 +228,15 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
 
             case FIND_SAMPLE:
                 // Use vision to find the sample on the floor.
-                samplePose = robot.getDetectedSamplePose(taskParams.sampleType, 0.0, true);
-                if (samplePose != null)
+                sampleInfo = robot.vision.getDetectedSample(taskParams.sampleType, 0.0, -1);
+                if (sampleInfo != null)
                 {
+                    samplePose = robot.getDetectedSamplePose(sampleInfo, true);
                     // Vision found the sample.
                     String msg = String.format(
-                        Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f",
-                        taskParams.sampleType, samplePose.x, samplePose.y, samplePose.angle);
+                        Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f, rotatedAngle=%.1f",
+                        taskParams.sampleType, samplePose.x, samplePose.y, samplePose.angle,
+                        sampleInfo.objRotatedAngle);
                     tracer.traceInfo(moduleName, msg);
                     robot.speak(msg);
                     sm.setState(State.TURN_TO_SAMPLE);
@@ -250,30 +255,30 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 break;
 
             case TURN_TO_SAMPLE:
-                // Vision found the sample, turn the robot toward it.
+                // Vision found the sample, turn the robot toward it and use the reported rotated sample angle.
                 double extenderLen = robot.getExtenderPosFromSamplePose(samplePose);
-                tracer.traceInfo(moduleName, "samplePose=%s, extenderLen=%.1f", samplePose, extenderLen);
                 robot.extenderArm.setPosition(null, extenderLen, armEvent);
-                if (!taskParams.noDrive)
-                {
-                    // Turning is a lot faster than extending, so just wait for extender event.
-                    robot.robotDrive.purePursuitDrive.start(
-                        currOwner, null, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        new TrcPose2D(0.0, 0.0, samplePose.angle));
-                };
+                robot.wrist.setPosition(
+                    Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle * 0.8 - samplePose.angle);
+                tracer.traceInfo(
+                    moduleName, "samplePose=%s, extenderLen=%.1f, sampleAngle=%.1f, wristAngle=%.1f",
+                    samplePose, extenderLen, sampleInfo.objRotatedAngle, sampleInfo.objRotatedAngle - samplePose.angle);
+                // Turning is a lot faster than extending, so just wait for extender event.
+                robot.robotDrive.purePursuitDrive.start(
+                    currOwner, null, 0.0, true, robot.robotInfo.profiledMaxVelocity,
+                    robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                    new TrcPose2D(0.0, 0.0, samplePose.angle));
                 sm.waitForSingleEvent(armEvent, State.PICKUP_SAMPLE);
                 break;
 
             case PICKUP_SAMPLE:
                 // Pick up sample from the floor.
                 // We only care about sample color if we pick up from submersible.
-                // We assume the driver would drive up to the correct sample color for picking up from ground.
-                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 0.75); //TO: 0.5s
-                sm.addEvent(event);
-                robot.extenderArm.setPosition(Elbow.Params.MIN_POS + 5.0, null, null);
-//                sm.addEvent(armEvent);
-                sm.waitForEvents(State.RAISE_ARM, false, 0.0);
+                // We assume the driver would drive up to the correct sample color and orient the differential wrist
+                // for picking up from ground.
+                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 1.0); //TO: 0.5s
+                robot.elbow.setPosition(0.0,Elbow.Params.MIN_POS + 5.0, true, 0.75);
+                sm.waitForSingleEvent(event, State.RAISE_ARM);
                 break;
 
             case RAISE_ARM:
@@ -286,14 +291,14 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             default:
             case DONE:
                 // Stop task.
-                if (robot.grabber != null)
-                {
-                    if (robot.ledIndicator != null)
-                    {
-                        // Flash the LED to show whether we got the sample and what type.
-                        robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
-                    }
-                }
+//                if (robot.grabber != null)
+//                {
+//                    if (robot.ledIndicator != null)
+//                    {
+//                        // Flash the LED to show whether we got the sample and what type.
+//                        robot.ledIndicator.setDetectedSample(robot.grabber.getSampleType(), true);
+//                    }
+//                }
                 stopAutoTask(true);
                 break;
         }

@@ -40,6 +40,7 @@ import ftclib.vision.FtcLimelightVision;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
 import teamcode.subsystems.Vision;
+import teamcode.subsystems.Wrist;
 import trclib.command.CmdDriveMotorsTest;
 import trclib.command.CmdPidDrive;
 import trclib.command.CmdTimedDrive;
@@ -50,6 +51,8 @@ import trclib.robotcore.TrcPidController;
 import trclib.robotcore.TrcRobot;
 import trclib.timer.TrcElapsedTimer;
 import trclib.timer.TrcTimer;
+import trclib.vision.TrcOpenCvColorBlobPipeline;
+import trclib.vision.TrcVisionTargetInfo;
 
 /**
  * This class contains the Test Mode program. It extends FtcTeleOp so that we can teleop control the robot for
@@ -128,6 +131,7 @@ public class FtcTest extends FtcTeleOp
     // Drive Speed Test.
     private double maxDriveVelocity = 0.0;
     private double maxDriveAcceleration = 0.0;
+    private double maxDriveDeceleration = 0.0;
     private double maxTurnVelocity = 0.0;
     private double prevTime = 0.0;
     private double prevVelocity = 0.0;
@@ -142,6 +146,7 @@ public class FtcTest extends FtcTeleOp
     private boolean teleOpControlEnabled = true;
     private long exposure;
     private boolean fpsMeterEnabled = false;
+    private boolean allowVisionControlOnWrist = false;
 
     //
     // Overrides FtcOpMode abstract method.
@@ -327,9 +332,8 @@ public class FtcTest extends FtcTeleOp
                     // Doing a 48x48-inch square box with robot heading always pointing to the center of the box.
                     //
                     // Set the current position as the absolute field origin so the path can be an absolute path.
-                    TrcPose2D startPose = new TrcPose2D(0.0, 0.0, 0.0);
-                    robot.robotDrive.driveBase.setFieldPosition(startPose);
-                    robot.robotDrive.purePursuitDrive.start(startPose, false, new TrcPose2D(0.0, 48.0, 90.0));
+                    robot.robotDrive.driveBase.resetOdometry();
+                    robot.robotDrive.purePursuitDrive.start(false, new TrcPose2D(0.0, 48.0, 90.0));
                 }
                 break;
         }
@@ -389,10 +393,19 @@ public class FtcTest extends FtcTeleOp
                     TrcPose2D velPose = robot.robotDrive.driveBase.getFieldVelocity();
                     double velocity = TrcUtil.magnitude(velPose.x, velPose.y);
                     double acceleration = 0.0;
+                    double deceleration = 0.0;
+                    double deltaTime = currTime - prevTime;
 
                     if (prevTime != 0.0)
                     {
-                        acceleration = (velocity - prevVelocity)/(currTime - prevTime);
+                        if (velocity > prevVelocity)
+                        {
+                            acceleration = (velocity - prevVelocity)/deltaTime;
+                        }
+                        else
+                        {
+                            deceleration = (prevVelocity - velocity)/deltaTime;
+                        }
                     }
 
                     if (velocity > maxDriveVelocity)
@@ -403,6 +416,11 @@ public class FtcTest extends FtcTeleOp
                     if (acceleration > maxDriveAcceleration)
                     {
                         maxDriveAcceleration = acceleration;
+                    }
+
+                    if (deceleration > maxDriveDeceleration)
+                    {
+                        maxDriveDeceleration = deceleration;
                     }
 
                     if (velPose.angle > maxTurnVelocity)
@@ -416,6 +434,8 @@ public class FtcTest extends FtcTeleOp
                     robot.dashboard.displayPrintf(lineNum++, "Drive Vel: (%.1f/%.1f)", velocity, maxDriveVelocity);
                     robot.dashboard.displayPrintf(
                         lineNum++, "Drive Accel: (%.1f/%.1f)", acceleration, maxDriveAcceleration);
+                    robot.dashboard.displayPrintf(
+                        lineNum++, "Drive Decel: (%.1f/%.1f)", deceleration, maxDriveDeceleration);
                     robot.dashboard.displayPrintf(
                         lineNum++, "Turn Vel: (%.1f/%.1f)", velPose.angle, maxTurnVelocity);
                 }
@@ -567,6 +587,11 @@ public class FtcTest extends FtcTeleOp
                             swerveDrive.stopSteeringCalibration();
                         }
                     }
+                    passToTeleOp = false;
+                }
+                else if (testChoices.test == Test.VISION_TEST)
+                {
+                    allowVisionControlOnWrist = pressed;
                     passToTeleOp = false;
                 }
                 break;
@@ -1152,7 +1177,17 @@ public class FtcTest extends FtcTeleOp
 
             if (robot.vision.isSampleVisionEnabled(Vision.SampleType.AnySample))
             {
-                robot.vision.getDetectedSample(Vision.SampleType.AnySample, 0.0, lineNum++);
+                TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo =
+                    robot.vision.getDetectedSample(Vision.SampleType.AnySample, 0.0, lineNum++);
+                if (sampleInfo != null)
+                {
+                    TrcPose2D samplePose = robot.getDetectedSamplePose(sampleInfo, true);
+                    if (robot.wrist != null && allowVisionControlOnWrist)
+                    {
+                        robot.wrist.setPosition(
+                            Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle - samplePose.angle);
+                    }
+                }
             }
 
             if (robot.vision.vision != null)

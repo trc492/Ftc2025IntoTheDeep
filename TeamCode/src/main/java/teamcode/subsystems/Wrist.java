@@ -173,8 +173,8 @@ public class Wrist
      * @param delay specifies the delay in seconds before setting the tilt position of the wrist, can be zero if no
      *        delay.
      * @param tiltPos specifies the physical tilt position of the wrist in degrees.
-     * @param rotatePos specifies the physical rotate position of the wrist in degrees, null if not provided to
-     *        specify zero degree.
+     * @param rotatePos specifies the physical rotate position of the wrist in degrees, null if not provided for no
+     *        change.
      * @param completionEvent specifies an event object to signal when the timeout event has expired.
      * @param timeout specifies a maximum time value the operation should be completed in seconds.
      */
@@ -183,8 +183,23 @@ public class Wrist
     {
         if (differentialWrist != null)
         {
-            differentialWrist.setPosition(
-                owner, delay, tiltPos, rotatePos != null? rotatePos: 0.0, completionEvent, timeout);
+            if (rotatePos != null)
+            {
+                rotatePos %= 180.0;
+                if (rotatePos > 90.0)
+                {
+                    rotatePos -= 180.0;
+                }
+                else if (rotatePos < -90.0)
+                {
+                    rotatePos += 180.0;
+                }
+            }
+            else
+            {
+                rotatePos = getRotatePosition();
+            }
+            differentialWrist.setPosition(owner, delay, tiltPos, rotatePos, completionEvent, timeout);
         }
         else
         {
@@ -198,8 +213,8 @@ public class Wrist
      * @param delay specifies the delay in seconds before setting the tilt position of the wrist, can be zero if no
      *        delay.
      * @param tiltPos specifies the physical tilt position of the wrist in degrees.
-     * @param rotatePos specifies the physical rotate position of the wrist in degrees, null if not provided to
-     *        specify zero degree.
+     * @param rotatePos specifies the physical rotate position of the wrist in degrees, null if not provided for no
+     *        change.
      * @param completionEvent specifies an event object to signal when the timeout event has expired.
      * @param timeout specifies a maximum time value the operation should be completed in seconds.
      */
@@ -212,8 +227,8 @@ public class Wrist
      * This method sets the wrist position.
      *
      * @param tiltPos specifies the physical tilt position of the wrist in degrees.
-     * @param rotatePos specifies the physical rotate position of the wrist in degrees, null if not provided to
-     *        specify zero degree.
+     * @param rotatePos specifies the physical rotate position of the wrist in degrees, null if not provided for no
+     *        change.
      * @param completionEvent specifies an event object to signal when the timeout event has expired.
      * @param timeout specifies a maximum time value the operation should be completed in seconds.
      */
@@ -226,8 +241,8 @@ public class Wrist
      * This method sets the wrist position.
      *
      * @param tiltPos specifies the physical tilt position of the wrist in degrees.
-     * @param rotatePos specifies the physical rotate position of the wrist in degrees, null if not provided to
-     *        specify zero degree.
+     * @param rotatePos specifies the physical rotate position of the wrist in degrees, null if not provided for no
+     *        change.
      */
     public void setPosition(double tiltPos, Double rotatePos)
     {

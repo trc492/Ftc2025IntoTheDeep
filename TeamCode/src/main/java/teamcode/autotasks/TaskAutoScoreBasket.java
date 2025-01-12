@@ -46,7 +46,6 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
     public enum State
     {
-        SET_EXTENDER_ARM,
         GO_TO_SCORE_POSITION,
         SCORE_BASKET,
         RETRACT_EXTENDER_ARM,
@@ -58,18 +57,23 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
         final FtcAuto.Alliance alliance;
         final Robot.ScoreHeight scoreHeight;
         final boolean doDrive;
+        final boolean fromSubmersible;
 
-        TaskParams(FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive)
+        TaskParams(FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive, boolean fromSubmersible)
         {
             this.alliance = alliance;
             this.scoreHeight = scoreHeight;
             this.doDrive = doDrive;
+            this.fromSubmersible = fromSubmersible;
         }   //TaskParams
 
         @NonNull
         public String toString()
         {
-            return "alliance=" + alliance + ",scoreHeight=" + scoreHeight + ",doDrive=" + doDrive;
+            return "alliance=" + alliance +
+                   ",scoreHeight=" + scoreHeight +
+                   ",doDrive=" + doDrive +
+                   ",fromSubmersible=" + fromSubmersible;
         }   //toString
     }   //class TaskParams
 
@@ -78,7 +82,6 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
     private final TrcEvent event;
 
     private String currOwner = null;
-    private double elbowScorePos = 0.0;
 
     /**
      * Constructor: Create an instance of the object.
@@ -100,21 +103,26 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
      * @param alliance specifies the alliance color.
      * @param scoreHeight specifies the scoring height in inches.
      * @param doDrive specifies true to drive to scoring location, false to stay at current location.
+     * @param fromSubmersible specifies true if the robot is coming from the submersible area, false otherwise.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
     public void autoScoreBasket(
-        FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive, TrcEvent completionEvent)
+        FtcAuto.Alliance alliance, Robot.ScoreHeight scoreHeight, boolean doDrive, boolean fromSubmersible,
+        TrcEvent completionEvent)
     {
         if (alliance == null)
         {
             // Caller is TeleOp, let's determine the alliance color by robot's location.
+            // Caveat: this assumes odemetry is current in TeleOp. If odometry is not setup correctly, this would be
+            // wrong. In other words, if TeleOp is run without prior Auto, the driver must do an AprilTag
+            // relocalization to make odometry current before this would work.
             alliance = robot.robotDrive.driveBase.getFieldPosition().x < 0.0?
                 FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE;
         }
 
-        TaskParams taskParams = new TaskParams(alliance, scoreHeight, doDrive);
+        TaskParams taskParams = new TaskParams(alliance, scoreHeight, doDrive, fromSubmersible);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
-        startAutoTask(State.SET_EXTENDER_ARM, new TaskParams(alliance, scoreHeight, doDrive), completionEvent);
+        startAutoTask(State.GO_TO_SCORE_POSITION, taskParams, completionEvent);
     }   //autoScoreBasket
 
     //
@@ -201,9 +209,9 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
         switch (state)
         {
-            case SET_EXTENDER_ARM:
+            case GO_TO_SCORE_POSITION:
                 // Extend the arm to the correct height and angle for scoring.
-                double extenderScorePos;
+                double elbowScorePos, extenderScorePos;
                 if (taskParams.scoreHeight == Robot.ScoreHeight.LOW)
                 {
                     elbowScorePos = Elbow.Params.LOW_BASKET_SCORE_POS;
@@ -215,19 +223,30 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                     extenderScorePos = Extender.Params.HIGH_BASKET_SCORE_POS;
                 }
                 // Fire and forget to save time.
-                robot.extenderArm.setPosition(elbowScorePos, extenderScorePos, null);
-                sm.setState(State.GO_TO_SCORE_POSITION);
-                break;
-
-            case GO_TO_SCORE_POSITION:
+                // If the robot is from submersible, delay the extenderArm movement until it clears from the area.
+                robot.extenderArm.setPosition(
+                    taskParams.doDrive && taskParams.fromSubmersible? 1.0 : 0.0, elbowScorePos, extenderScorePos, null);
                 // Drive the robot to the scoring location.
                 if (taskParams.doDrive)
                 {
-                    robot.robotDrive.purePursuitDrive.start(
-                        currOwner, event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), false,
-                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
-                        robot.adjustPoseByAlliance(-2.15, -2.0, 0.0, taskParams.alliance, true),
-                        robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
+                    if (taskParams.fromSubmersible)
+                    {
+                        robot.robotDrive.purePursuitDrive.start(
+                            currOwner, event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                            robot.adjustPoseByAlliance(-1.5, -0.5, 0.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(-2.3, -2.15, 30.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(-2.55, -2.3, 50.0, taskParams.alliance, true));
+                            //custom pose instead of RED_BASKET_SCORE_POSE just for the bonus sample
+                    }
+                    else
+                    {
+                        robot.robotDrive.purePursuitDrive.start(
+                            currOwner, event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
+                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                            robot.adjustPoseByAlliance(-2.15, -2.15, 15.0, taskParams.alliance, true),
+                            robot.adjustPoseByAlliance(RobotParams.Game.RED_BASKET_SCORE_POSE, taskParams.alliance));
+                    }
                     sm.waitForSingleEvent(event, State.SCORE_BASKET);
                 }
                 else
@@ -240,10 +259,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
                 // Score the sample into the basket.
                 double wristPos = taskParams.scoreHeight == Robot.ScoreHeight.LOW?
                     Wrist.Params.LOW_BASKET_SCORE_POS: Wrist.Params.HIGH_BASKET_SCORE_POS;
-                // Swing the arm towards the basket in low speed.
-                robot.extenderArm.elbow.setPosition(
-                    0.0, elbowScorePos,true, (taskParams.scoreHeight == Robot.ScoreHeight.HIGH)? 0.7 : 1.0);
-                robot.wrist.setPosition(wristPos, null);
+                robot.wrist.setPosition(wristPos, 0.0);
                 // Depending on how the grabber holds the sample, the sensor may or may not see it.
                 if (robot.grabber.hasObject())
                 {
@@ -262,7 +278,7 @@ public class TaskAutoScoreBasket extends TrcAutoTask<TaskAutoScoreBasket.State>
 
             case RETRACT_EXTENDER_ARM:
                 // Retract the arm. Fire and forget to save time.
-                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, null);
+                robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 0.0);
                 robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, Extender.Params.MIN_POS, null);
                 sm.setState(State.DONE);
                 break;

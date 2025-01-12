@@ -116,17 +116,19 @@ public class RobotBase
             // Robot Drive Characteristics
             robotMaxVelocity = 80.0;        // inches/sec
             robotMaxAcceleration  = 350.0;  // inches/sec2
+            robotMaxDeceleration = 300.0;
             robotMaxTurnRate = 80.0;        // degrees/sec
             profiledMaxVelocity = robotMaxVelocity;
             profiledMaxAcceleration = robotMaxAcceleration;
+            profiledMaxDeceleration = robotMaxDeceleration;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
-            drivePidTolerance = 2.5;
-            turnPidTolerance = 1.5;
+            drivePidTolerance = 3.5;
+            turnPidTolerance = 2.5;
             xDrivePidCoeffs = new TrcPidController.PidCoefficients(0.072, 0.001, 0.0065, 0.0, 2.0);
             xDrivePidPowerLimit = 1.0;
             xDriveMaxPidRampRate = null;
-            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.02, 0.002, 0.002, 0.0, 2.0);
+            yDrivePidCoeffs = new TrcPidController.PidCoefficients(0.02, 0.00175, 0.002, 0.0, 2.0);
             yDrivePidPowerLimit = 1.0;
             yDriveMaxPidRampRate = null;
             turnPidCoeffs = new TrcPidController.PidCoefficients(0.032, 0.1, 0.0025, 0.0, 5.0);
@@ -191,9 +193,11 @@ public class RobotBase
             // Robot Drive Characteristics
             robotMaxVelocity = 72.0;        // inches/sec
             robotMaxAcceleration  = 530.0;  // inches/sec2
+            robotMaxDeceleration = 300.0;   // inches/sec2
             robotMaxTurnRate = 100.0;       // degrees/sec
             profiledMaxVelocity = robotMaxVelocity;
             profiledMaxAcceleration = robotMaxAcceleration;
+            profiledMaxDeceleration = robotMaxDeceleration;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
             drivePidTolerance = 1.0;

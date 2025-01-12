@@ -144,11 +144,11 @@ public class Vision
         new TrcOpenCvColorBlobPipeline.FilterContourParams()
             .setMinArea(500.0)
             .setMinPerimeter(100.0)
-            .setWidthRange(10.0, 1000.0)
-            .setHeightRange(10.0, 1000.0)
+            .setWidthRange(40.0, 160.0)
+            .setHeightRange(40.0, 160.0)
             .setSolidityRange(0.0, 100.0)
             .setVerticesRange(0.0, 1000.0)
-            .setAspectRatioRange(0.5, 2.5);
+            .setAspectRatioRange(0.5, 2.0);
     private static final TrcOpenCvColorBlobPipeline.FilterContourParams tuneFilterContourParams =
         new TrcOpenCvColorBlobPipeline.FilterContourParams()
             .setMinArea(10.0)

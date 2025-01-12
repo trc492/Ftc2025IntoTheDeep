@@ -29,7 +29,6 @@ import teamcode.subsystems.Wrist;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;
-import trclib.robotcore.TrcPidController;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
 
@@ -121,6 +120,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
     @Override
     protected boolean acquireSubsystemsOwnership()
     {
+        // ExtenderArm is an AutoTask and is not an ExclusiveSubsystem so we don't need to acquire its ownership.
         currOwner = ownerName;
         tracer.traceInfo(moduleName, "Successfully acquired subsystem ownerships.");
         return true;
@@ -182,7 +182,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case LEVEL1_ASCENT:
-                robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, null);
+                robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
                 robot.extenderArm.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, null, event);
                 sm.waitForSingleEvent(event, State.DONE);
                 break;
@@ -203,6 +203,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 break;
 
             case ELBOW_TORQUE:
+                // Code Review: why set extender position separately and not using extenderArm? This will not work.
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_TORQUE_POS, null, event);
                 robot.extender.setPosition(Extender.Params.MIN_POS, true);
                 sm.waitForSingleEvent(event, State.ARM_RETRACT);

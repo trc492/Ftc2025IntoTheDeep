@@ -53,8 +53,8 @@ public class FtcTeleOp extends FtcOpMode
     protected FtcGamepad operatorGamepad;
     private double drivePowerScale;
     private double turnPowerScale;
-    private boolean driverAltFunc = false;
-    private boolean operatorAltFunc = false;
+    protected boolean driverAltFunc = false;
+    protected boolean operatorAltFunc = false;
     private boolean statusUpdateOn = false;
     private boolean relocalizing = false;
     private TrcPose2D robotFieldPose = null;
@@ -63,6 +63,7 @@ public class FtcTeleOp extends FtcOpMode
     private double extenderPrevPower = 0.0;
     private Robot.ScoreHeight scoreHeight = Robot.ScoreHeight.HIGH;
     private int climbedLevel = 0;
+    private boolean redAlliance = true;
 
     //
     // Implements FtcOpMode abstract method.
@@ -441,7 +442,8 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         robot.globalTracer.traceInfo(
                             moduleName, ">>>>> Auto score basket (scoreHeight=%s).", scoreHeight);
-                        robot.scoreBasketTask.autoScoreBasket(null, scoreHeight, !driverAltFunc, null);
+                        // Code Review: what should we set the "fromSubmersible" to? Do the driver has the say?
+                        robot.scoreBasketTask.autoScoreBasket(null, scoreHeight, !driverAltFunc, false, null);
                     }
                     else
                     {
@@ -545,7 +547,7 @@ public class FtcTeleOp extends FtcOpMode
                     if (!robot.pickupFromGroundTask.isActive())
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup from ground.");
-                        robot.pickupFromGroundTask.autoPickupFromGround(Robot.sampleType, true, false, null);
+                        robot.pickupFromGroundTask.autoPickupFromGround(Robot.sampleType, true, null, null);
                     }
                     else
                     {
@@ -556,27 +558,49 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadRight:
-                if (robot.pickupSpecimenTask != null && pressed)
+                if (robot.wrist != null && robot.extenderArm != null && pressed)
                 {
-                    if (!robot.pickupSpecimenTask.isActive())
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup specimen.");
-                        robot.pickupSpecimenTask.autoPickupSpecimen(null, !driverAltFunc, null);
-                    }
-                    else
-                    {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto pickup specimen.");
-                        robot.pickupSpecimenTask.cancel();
-                    }
+                    robot.wrist.setPosition(0.0, 0.0);
+                    robot.extenderArm.setPosition(
+                        Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
                 }
+//                if (robot.pickupSpecimenTask != null && pressed)
+//                {
+//                    if (!robot.pickupSpecimenTask.isActive())
+//                    {
+//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup specimen.");
+//                        robot.pickupSpecimenTask.autoPickupSpecimen(null, !driverAltFunc, false, null);
+//                    }
+//                    else
+//                    {
+//                        robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto pickup specimen.");
+//                        robot.pickupSpecimenTask.cancel();
+//                    }
+//                }
                 break;
 
             case Back:
-                if (pressed)
+                if (driverAltFunc)
                 {
-                    robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrating.");
-                    robot.cancelAll();
-                    robot.zeroCalibrate(moduleName, null);
+                    if (FtcAuto.autoChoices.alliance == null && pressed)
+                    {
+                        // There was no prior auto run, so we don't know the alliance.
+                        redAlliance = !redAlliance;
+                        if (robot.ledIndicator != null)
+                        {
+                            robot.ledIndicator.setDetectedPattern(
+                                redAlliance? LEDIndicator.RED_SAMPLE: LEDIndicator.BLUE_SAMPLE);
+                        }
+                    }
+                }
+                else
+                {
+                    if (pressed)
+                    {
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> ZeroCalibrating.");
+                        robot.cancelAll();
+                        robot.zeroCalibrate(moduleName, null);
+                    }
                 }
                 break;
 
@@ -632,8 +656,11 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     if (pressed)
                     {
-                        robot.globalTracer.traceInfo(moduleName, ">>>>> Set start position to RED_NET_ZONE.");
-                        robot.robotDrive.driveBase.setFieldPosition(RobotParams.Game.STARTPOSE_RED_NET_ZONE);
+                        robot.globalTracer.traceInfo(moduleName, ">>>>> Set start position to RED_OBSERVATION_ZONE.");
+                        robot.robotDrive.driveBase.setFieldPosition(
+                            robot.adjustPoseByAlliance(
+                                RobotParams.Game.STARTPOSE_RED_OBSERVATION_ZONE,
+                                redAlliance? FtcAuto.Alliance.RED_ALLIANCE: FtcAuto.Alliance.BLUE_ALLIANCE));
                     }
                 }
                 break;
@@ -656,7 +683,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high basket scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.LOW_BASKET_SCORE_POS, null);
+                    robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS, 0.0);
                 }
                 break;
 
@@ -664,7 +691,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high chamber scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.LOW_CHAMBER_SCORE_POS, null);
+                    robot.wrist.setPosition(Wrist.Params.LOW_CHAMBER_SCORE_POS, 0.0);
                 }
                 break;
 
@@ -672,6 +699,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to ground pickup position.");
+                    // Don't change rotate position in case the driver has aligned the wrist already.
                     robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, null);
                 }
                 break;

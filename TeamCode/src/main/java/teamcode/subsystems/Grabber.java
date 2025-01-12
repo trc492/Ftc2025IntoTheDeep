@@ -129,7 +129,7 @@ public class Grabber
                 .setAnalogSensorTrigger(
                     this::getSensorDistance, Params.SENSOR_TRIGGER_INVERTED, Params.SENSOR_TRIGGER_THRESHOLD);
             motorGrabber = new FtcMotorGrabber(Params.SUBSYSTEM_NAME, grabberParams).getGrabber();
-            motorGrabber.tracer.setTraceLevel(TrcDbgTrace.MsgLevel.DEBUG);
+            motorGrabber.tracer.setTraceLevel(TrcDbgTrace.MsgLevel.ERR);
             servoGrabber = null;
         }
         else

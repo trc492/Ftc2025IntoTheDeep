@@ -159,7 +159,7 @@ public class CmdAutoObservationZone implements TrcRobot.RobotCommand
                     if (spikeMarkSampleCount < 2)
                     {
                         TrcPose2D spikeMark = RobotParams.Game.RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP.clone();
-                        spikeMark.x += 10.0 * spikeMarkSampleCount;
+                        spikeMark.x += 11.0 * spikeMarkSampleCount;
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
                         robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, 25.0, null);
                         robot.robotDrive.purePursuitDrive.start(

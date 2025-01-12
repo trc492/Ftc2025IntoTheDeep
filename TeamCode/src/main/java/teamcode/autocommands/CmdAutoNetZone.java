@@ -191,7 +191,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         }
                         else
                         {
-                            spikeMark.x -= 18.0;
+                            spikeMark.x -= 17.0;
+                            spikeMark.y += 1.5;
                             spikeMark.angle -= 5.0;
                         }
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
@@ -224,10 +225,11 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case GO_PARK:
                     // Go to the ascent zone.
-                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup)
+                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup ||
+                            (RobotParams.Game.AUTO_PERIOD - elapsedTime) < 6.5)
                     {
                         robot.extenderArm.setPosition(
-                            Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
+                            1.0, Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
                         robot.wrist.setPosition(10.0, 0.0);
                         TrcPose2D targetPose = robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE, autoChoices.alliance);
@@ -261,7 +263,8 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     break;
 
                 case ASCENT:
-                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup)
+                    if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup ||
+                            (RobotParams.Game.AUTO_PERIOD - elapsedTime) < 6.5)
                     {
                         // Do level 1 ascent.
 //                        robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);

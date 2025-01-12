@@ -297,7 +297,8 @@ public class FtcTeleOp extends FtcOpMode
                      y + il = (xpl - sin(theta) * eo) / cos(theta)
                      y = (xpl - sin(theta) * eo) / cos(theta) - il
                      */
-                    double elbowPosRadians = Math.toRadians(elbowPos);
+//                    double elbowPosRadians = Math.toRadians(elbowPos);
+                    double elbowPosRadians = Math.toRadians(5.0);
                     // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
                     double grabberAngleRadians = Math.toRadians(robot.wrist.getTiltPosition());
                     double grabberLength = Grabber.Params.GRABBER_LENGTH * Math.cos(grabberAngleRadians);
@@ -683,7 +684,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.wrist != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high basket scoring position.");
-                    robot.wrist.setPosition(Wrist.Params.HIGH_BASKET_SCORE_POS, 0.0);
+                    robot.wrist.setPosition(Wrist.Params.LOW_BASKET_SCORE_POS, 0.0);
                 }
                 break;
 

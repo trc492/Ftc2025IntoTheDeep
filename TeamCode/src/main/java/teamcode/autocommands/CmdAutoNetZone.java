@@ -264,7 +264,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup)
                     {
                         // Do level 1 ascent.
-                        robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
+//                        robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
                         robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
                         robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
                         sm.waitForSingleEvent(event, State.DONE);

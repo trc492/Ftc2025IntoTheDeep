@@ -244,10 +244,10 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     TrcPose2D intermediate1 = RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP;
                     intermediate1.y += 1.0;
                     robot.robotDrive.purePursuitDrive.start(
-                            currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
-                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                            robot.adjustPoseByAlliance(intermediate1, taskParams.alliance),
-                            robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
+                        currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
+                        robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                        robot.adjustPoseByAlliance(intermediate1, taskParams.alliance),
+                        robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                 }
                 else
                 {
@@ -265,10 +265,9 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 //                            robot.adjustPoseByAlliance(intermediate2, taskParams.alliance),
 //                            robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                     robot.robotDrive.purePursuitDrive.start(
-                            currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
-                            robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
-                            robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
-//                intermediate1 = robot.adjustPoseByAlliance(intermediate1, taskParams.alliance, true);
+                        currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
+                        robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
+                        robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                 }
                 sm.waitForSingleEvent(event, taskParams.useVision? State.FIND_SPECIMEN: State.APPROACH_SPECIMEN);
                 break;

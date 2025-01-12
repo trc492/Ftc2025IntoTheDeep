@@ -558,12 +558,14 @@ public class FtcTeleOp extends FtcOpMode
                 break;
 
             case DpadRight:
-//                if (robot.pickupSpecimenTask != null && pressed)
-                if (pressed)
+                if (robot.wrist != null && robot.extenderArm != null && pressed)
                 {
                     robot.wrist.setPosition(0.0, 0.0);
                     robot.extenderArm.setPosition(
-                            Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
+                        Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
+                }
+//                if (robot.pickupSpecimenTask != null && pressed)
+//                {
 //                    if (!robot.pickupSpecimenTask.isActive())
 //                    {
 //                        robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup specimen.");
@@ -574,7 +576,7 @@ public class FtcTeleOp extends FtcOpMode
 //                        robot.globalTracer.traceInfo(moduleName, ">>>>> Cancel auto pickup specimen.");
 //                        robot.pickupSpecimenTask.cancel();
 //                    }
-                }
+//                }
                 break;
 
             case Back:

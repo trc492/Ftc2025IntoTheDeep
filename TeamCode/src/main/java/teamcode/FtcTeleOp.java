@@ -297,6 +297,14 @@ public class FtcTeleOp extends FtcOpMode
                      y + il = (xpl - sin(theta) * eo) / cos(theta)
                      y = (xpl - sin(theta) * eo) / cos(theta) - il
                      */
+                    // The following math will calculate the extender's projected length on the floor and will retract
+                    // it progressively as the elbow comes down.
+                    // However, if the extender comes down too fast, it is possible to exceed the restriction because
+                    // the extender is not retracting fast enough.
+                    // We failed robot inspection during semi-final because the robot inspector insisted that our
+                    // extender must be within the restriction all the time whether it comes down fast or slow.
+                    // Therefore, we had no choice but to retract the extender to minimum floor length when the elbow
+                    // is below a certain threshold angle.
 //                    double elbowPosRadians = Math.toRadians(elbowPos);
                     double elbowPosRadians = Math.toRadians(5.0);
                     // Assuming grabber MIN_POS is 0-degree, MAX_POS is 180-degree.
@@ -683,6 +691,7 @@ public class FtcTeleOp extends FtcOpMode
             case A:
                 if (robot.wrist != null && pressed)
                 {
+                    // Code Review: Are you setting it to high or low position? Tracing doesn't match the code.
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high basket scoring position.");
                     robot.wrist.setPosition(Wrist.Params.LOW_BASKET_SCORE_POS, 0.0);
                 }
@@ -691,6 +700,7 @@ public class FtcTeleOp extends FtcOpMode
             case B:
                 if (robot.wrist != null && pressed)
                 {
+                    // Code Review: Are you setting it to high or low position? Tracing doesn't match the code.
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Set wrist to high chamber scoring position.");
                     robot.wrist.setPosition(Wrist.Params.LOW_CHAMBER_SCORE_POS, 0.0);
                 }

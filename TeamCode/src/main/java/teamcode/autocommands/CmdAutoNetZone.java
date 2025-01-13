@@ -225,8 +225,9 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case GO_PARK:
                     // Go to the ascent zone.
+                    // Code Review: Don't understand this time check logic.
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup ||
-                            (RobotParams.Game.AUTO_PERIOD - elapsedTime) < 6.5)
+                        (RobotParams.Game.AUTO_PERIOD - elapsedTime) < 6.5)
                     {
                         robot.extenderArm.setPosition(
                             1.0, Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
@@ -257,14 +258,17 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                             event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
                             robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                             intermediate1, intermediate2, targetPose);
+                        // Code Review: What is this logic? You are waiting for PurePursuit to finish to go to ASCENT
+                        // but yet you are immediately setting state to DONE???
                         sm.waitForSingleEvent(event, State.ASCENT);
                         sm.setState(State.DONE);
                     }
                     break;
 
                 case ASCENT:
+                    // Code Review: Don't understand this time check logic.
                     if (autoChoices.parkOption == FtcAuto.ParkOption.PARK || finishedSubPickup ||
-                            (RobotParams.Game.AUTO_PERIOD - elapsedTime) < 6.5)
+                        (RobotParams.Game.AUTO_PERIOD - elapsedTime) < 6.5)
                     {
                         // Do level 1 ascent.
 //                        robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);

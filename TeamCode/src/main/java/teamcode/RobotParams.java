@@ -44,7 +44,7 @@ public class RobotParams
     {
         // Global config
         public static final RobotBase.RobotType robotType       = RobotBase.RobotType.IntoTheDeepRobot;
-        public static final boolean inCompetition               = false;
+        public static final boolean inCompetition               = true;
         public static final boolean useTraceLog                 = true;
         public static final boolean useLoopPerformanceMonitor   = true;
         public static final boolean useBatteryMonitor           = false;
@@ -152,7 +152,7 @@ public class RobotParams
             new TrcPose2D(-1.7 * Field.FULL_TILE_INCHES, -1.85 * Field.FULL_TILE_INCHES, -7.0);
         // Spikemark Pickup pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_ZONE_SPIKEMARK_PICKUP   =
-            new TrcPose2D(1.32 * Field.FULL_TILE_INCHES, -1.55 * Field.FULL_TILE_INCHES, 70.0);
+            new TrcPose2D(1.2975 * Field.FULL_TILE_INCHES, -1.55 * Field.FULL_TILE_INCHES, 70.0);
         // Pickup pose (Observation zone side).
         public static final TrcPose2D RED_OBSERVATION_ZONE_PICKUP   =
             new TrcPose2D(2.0 * Field.FULL_TILE_INCHES, -2.05 * Field.FULL_TILE_INCHES, 180.0);

@@ -241,8 +241,8 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 // Drive to the specimen pickup location.
                 if (!taskParams.fromObservation)
                 {
-                    TrcPose2D intermediate1 = RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP;
-                    intermediate1.y += 1.0;
+                    TrcPose2D intermediate1 = RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP.clone();
+                    intermediate1.y += 2.0;
                     robot.robotDrive.purePursuitDrive.start(
                         currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
                         robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
@@ -312,7 +312,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 
             case APPROACH_SPECIMEN:
                 // Turn on intake and approach specimen slowly.
-                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 1.0);
+                robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 1.5);
                 robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.3, 0.0);
                 sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
                 break;

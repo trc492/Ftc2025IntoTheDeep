@@ -1,0 +1,762 @@
+FtcTeleOp.startMode_INFO [0.003742667] ***** Starting TeleOp: 20250112@161915 *****
+Robot.startMode_INFO [0.007123084] Enabling Webcam SampleVision for BlueAllianceSamples
+Robot.startMode_INFO [0.007726251] Enabling Limelight SampleVision for pipeline 1
+Vision.setLimelightVisionEnabled_INFO [0.014021876] Pipeline 1 is enabled: running=true
+Robot.startMode_INFO [0.03044242] Restore saved RobotPose=(x=46.209212,y=16.285659,angle=-91.453245)
+FtcTeleOp.startMode_INFO [0.031321795] Enabling Limelight AprilTagVision.
+Vision.setLimelightVisionEnabled_INFO [0.037476545] Pipeline 0 is enabled: running=true
+FtcTeleOp.operatorButtonEvent_INFO [1.116504195] >>>>> ZeroCalibrating.
+Robot.cancelAll_INFO [1.118679154] Cancel all operations.
+TaskExtenderArm.cancel_INFO [1.120564196] Canceling AutoTask
+TaskExtenderArm.stopSubsystems_INFO [1.121124196] Stopping subsystems.
+Wrist.cancel_INFO [1.122131321] owner=null
+Wrist.finish_INFO [1.122706196] completed=false, actionParams=null
+TaskAutoPickupFromGround.cancel_INFO [1.145815532] Canceling auto task operation.
+TaskAutoPickupSpecimen.cancel_INFO [1.14634899] Canceling auto task operation.
+TaskAutoScoreBasket.cancel_INFO [1.147122782] Canceling auto task operation.
+TaskAutoScoreChamber.cancel_INFO [1.14794674] Canceling auto task operation.
+TaskAutoClimb.cancel_INFO [1.148575282] Canceling auto task operation.
+TaskExtenderArm.zeroCalibrate_INFO [1.14955499] Zero Calibrating.
+Elbow.primary.acquireOwnership_INFO [1.15016924] Acquired ownership on behalf of FtcTeleOp
+Extender.primary.acquireOwnership_INFO [1.164088742] Acquired ownership on behalf of FtcTeleOp
+Elbow.primary.pidCtrlTask_INFO [1.180923743] Zero calibration done, event=(Elbow.primary.releaseOwnership=CLEARED)
+Elbow.primary.pidCtrlTask_INFO [1.181518452] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Elbow.primary.releaseOwnership=SIGNALED)
+Elbow.primary.releaseOwnership_INFO [1.237328582] Released ownership on behalf of FtcTeleOp
+FtcTeleOp.driverButtonEvent_INFO [1.76271976] >>>>> Enabling FIELD mode.
+FtcTeleOp.setDriveOrientation_INFO [1.764943135] driveOrientation=FIELD
+FtcTeleOp.driverButtonEvent_INFO [2.674849602] >>>>> DrivePower slow.
+FtcTeleOp.driverButtonEvent_INFO [4.554337832] >>>>> DrivePower normal.
+Extender.primary.isMotorStalled_INFO [5.460015132] Stall detection triggered.
+Extender.primary.zeroCalibratingMotor_WARN [5.478607134] Stalled, lower limit switch might have failed!
+Extender.primary.pidCtrlTask_INFO [5.49075301] Zero calibration done, event=(Extender.primary.releaseOwnership=CLEARED)
+Extender.primary.pidCtrlTask_INFO [5.491512802] controlMode: Power onTarget=false(0.0/null), stalled=false, expired=false, event=(Extender.primary.releaseOwnership=SIGNALED)
+Extender.primary.releaseOwnership_INFO [5.49405351] Released ownership on behalf of FtcTeleOp
+FtcTeleOp.operatorButtonEvent_INFO [6.924293654] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [6.928250988] currTiltPos=90.0,currRotatePos=0.0,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [6.948755448] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Extender.primary.posPidCtrl.isStalled_INFO [8.066428352] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [8.270743497] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [9.462404659] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [9.466620118] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [9.96892471] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [9.973379335] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [10.161834229] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [10.163515688] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [10.180726939] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Extender.primary.posPidCtrl.isStalled_INFO [11.408497313] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [12.021614249] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [13.053319561] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [13.66642104] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [13.738813589] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [14.365454527] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [14.366956902] currTiltPos=-77.143,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [14.382757362] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [15.465718429] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [17.524539386] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [17.534042762] >>>>> Manual dump.
+Extender.primary.posPidCtrl.isStalled_INFO [17.55581393] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [18.115498987] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [18.118951737] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [18.261925876] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [18.264527252] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [18.286158129] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [18.315976382] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [22.459240048] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [23.319955468] >>>>> Wrist tilt preset down.
+Wrist.performAction_INFO [23.324205927] currTiltPos=-77.143,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [23.346371721] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+Extender.primary.posPidCtrl.isStalled_INFO [23.39506635] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [23.713100882] >>>>> Wrist tilt preset down.
+Wrist.performAction_INFO [23.714556008] currTiltPos=-77.143,currRotatePos=-45.0,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-90.0, event=null, timeout=0.0)
+Wrist.finish_INFO [23.723393217] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-90.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [24.692931523] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [25.412892387] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [25.700303082] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [26.158074253] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [26.158836961] currTiltPos=-77.143,currRotatePos=-58.857,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [26.178209463] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [27.231388444] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [29.455660834] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [29.461809752] >>>>> Manual dump.
+FtcTeleOp.driverButtonEvent_INFO [29.962791052] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [30.016582849] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [30.058245103] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [30.110911359] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [30.1124499] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [30.127065319] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Extender.primary.posPidCtrl.isStalled_INFO [31.385379903] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [32.126406978] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [33.718001513] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [35.421610934] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [35.518427069] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [36.118309629] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [36.119963087] currTiltPos=-77.143,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [36.137825339] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [37.200158571] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [39.454629839] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [39.461311631] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [40.10600878] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [40.11187128] >>>>> Stop manual dump.
+FtcTeleOp.driverButtonEvent_INFO [40.165508785] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [40.257796211] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [40.25998692] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [40.28022188] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [41.989997135] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [42.545556858] >>>>> Wrist tilt preset down.
+Wrist.performAction_INFO [42.547798317] currTiltPos=-77.143,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [42.565280818] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [42.715707625] >>>>> Wrist tilt preset down.
+Wrist.performAction_INFO [42.717283792] currTiltPos=-77.143,currRotatePos=-45.0,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-90.0, event=null, timeout=0.0)
+Wrist.finish_INFO [42.725084709] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-90.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [44.202633774] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [45.317366095] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [45.580286996] >>>>> Wrist rotate preset right.
+Wrist.performAction_INFO [45.584820372] currTiltPos=-77.143,currRotatePos=-58.857,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [45.605909624] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+Extender.primary.posPidCtrl.isStalled_INFO [46.918000547] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [47.063079062] >>>>> Wrist rotate preset right.
+Wrist.performAction_INFO [47.065239437] currTiltPos=-77.143,currRotatePos=-45.0,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [47.088253981] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [47.618935118] >>>>> Wrist tilt preset down.
+Wrist.performAction_INFO [47.62086391] currTiltPos=-77.143,currRotatePos=1.0658141036401503E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [47.644762204] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [47.966899903] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [48.573313755] >>>>> Stop manual intake.
+FtcTeleOp.driverButtonEvent_INFO [48.83331099] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [49.266287575] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [49.2673577] currTiltPos=-77.143,currRotatePos=-45.0,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [49.283862827] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [50.364004352] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [52.651675457] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [52.656324916] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [53.319886482] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [53.326301691] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [53.366119445] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [53.369158904] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [53.385854197] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [53.562704548] >>>>> DrivePower normal.
+Extender.primary.posPidCtrl.isStalled_INFO [54.774175128] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [55.001579193] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [56.510791886] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [57.168994952] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [57.417999852] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [57.851186146] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [57.852664021] currTiltPos=-77.143,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [57.870888814] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [58.777712656] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [58.865649289] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [60.568465377] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [60.572384503] >>>>> Manual dump.
+Extender.primary.posPidCtrl.isStalled_INFO [60.604095381] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [61.126888975] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [61.130329184] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [61.135240267] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [61.2095129] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [61.211665692] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [61.237486944] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [63.06887817] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [64.760555507] >>>>> Wrist tilt preset down.
+Wrist.performAction_INFO [64.762414882] currTiltPos=-77.143,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+Wrist.finish_INFO [64.782486509] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=-45.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [65.363714359] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [66.073585597] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [66.346154249] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [70.633657597] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [70.63608193] currTiltPos=-77.143,currRotatePos=-45.0,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [70.653669724] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [71.216977864] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [71.748303292] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [73.217367481] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [73.30703749] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [73.310139074] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [73.910007343] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [73.96264939] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [74.161837326] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [74.162874785] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [74.184484079] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [74.361709221] >>>>> DrivePower normal.
+Extender.primary.posPidCtrl.isStalled_INFO [75.151975467] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [75.318280901] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [76.885377183] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [78.297567242] PID stalled.
+Extender.primary.posPidCtrl.isStalled_INFO [78.470447718] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [78.776896957] >>>>> Auto intake.
+Extender.primary.posPidCtrl.isStalled_INFO [78.812384335] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [79.416120688] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [79.420777146] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [80.982457178] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [81.59990624] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [81.600670407] currTiltPos=-77.143,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [81.6156717] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.operatorButtonEvent_INFO [83.5227586] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [83.528774226] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [84.224340962] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [84.23072438] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [84.320248264] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [84.32144293] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [84.340023266] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [84.822942231] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [86.27168221] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [88.003368634] >>>>> Auto intake.
+FtcTeleOp.driverButtonEvent_INFO [88.263908077] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [88.354164044] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [88.689139453] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [88.69139112] currTiltPos=-77.143,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [88.707760038] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [89.796195981] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [91.142661866] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [91.709377548] >>>>> Auto dump.
+FtcTeleOp.operatorButtonEvent_INFO [91.789147514] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [92.213323932] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [92.217357974] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [92.369862906] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [92.373045573] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [92.390124408] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [92.511050587] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [94.406110902] >>>>> DrivePower slow.
+FtcTeleOp.operatorButtonEvent_INFO [96.162944537] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [96.949912033] >>>>> Cancel auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [97.52166159] >>>>> Auto intake.
+FtcTeleOp.operatorButtonEvent_INFO [98.569936195] >>>>> Cancel auto intake.
+FtcTeleOp.driverButtonEvent_INFO [98.692097583] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [99.379558318] >>>>> Set wrist to high basket scoring position.
+Wrist.performAction_INFO [99.38117911] currTiltPos=-77.143,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+Wrist.finish_INFO [99.400873904] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=45.429, rotateValue=0.0, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [100.348461374] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [100.555111603] PID stalled.
+FtcTeleOp.operatorButtonEvent_INFO [102.323308281] >>>>> Auto dump.
+FtcTeleOp.operatorButtonEvent_INFO [102.384258745] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [102.918136257] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [102.959963887] >>>>> Manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [103.065673231] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [103.162768782] >>>>> OperatorAltFunc=true
+FtcTeleOp.operatorButtonEvent_INFO [103.314827464] >>>>> OperatorAltFunc=false
+FtcTeleOp.operatorButtonEvent_INFO [103.322061965] >>>>> Stop manual dump.
+FtcTeleOp.operatorButtonEvent_INFO [103.410147057] >>>>> Set wrist to ground pickup position.
+Wrist.performAction_INFO [103.411717682] currTiltPos=45.429000000000016,currRotatePos=1.4210854715202004E-14,actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+Wrist.finish_INFO [103.428381184] completed=true, actionParams=(op=SetPosition, owner=null, tiltValue=-77.143, rotateValue=1.4210854715202004E-14, event=null, timeout=0.0)
+FtcTeleOp.driverButtonEvent_INFO [103.452329353] >>>>> DrivePower normal.
+FtcTeleOp.driverButtonEvent_INFO [105.861942803] >>>>> DrivePower slow.
+Extender.primary.posPidCtrl.isStalled_INFO [107.563821182] PID stalled.
+FtcTeleOp.driverButtonEvent_INFO [108.288521047] >>>>> DrivePower normal.
+FtcTeleOp.operatorButtonEvent_INFO [109.075056293] >>>>> OperatorAltFunc=true
+Extender.primary.isMotorStalled_INFO [110.461614974] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.72790725] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.839179845] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [110.946668647] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.57452671] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.683516138] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.799186483] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [111.910724203] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [112.028808089] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [112.136092142] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [112.245106069] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [112.35281158] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [112.460071716] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [112.568364352] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [112.684988739] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [112.795090875] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [112.899389135] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [113.00935973] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [113.120376241] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [113.226878626] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [113.34476068] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [113.455331524] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [113.562412285] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [113.671869546] Stall detection triggered.
+FtcTeleOp.operatorButtonEvent_INFO [113.759893972] >>>>> OperatorAltFunc=false
+Extender.primary.isMotorStalled_INFO [113.781557807] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [113.893981902] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.000803079] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.110227965] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.212685809] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.330565821] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.439960665] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.546283676] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.65044952] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.758960905] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.873798542] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [114.991345179] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [115.102908857] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [115.209814617] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [115.317689587] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [115.429304598] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [115.533924275] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [115.642484953] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [115.754691755] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [115.862222558] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [115.970206902] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [116.090656206] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [116.20196555] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [116.322027812] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [116.432925615] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [116.545018085] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [116.653497679] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [116.761027607] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [116.864912867] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [116.97588242] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [117.082479889] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [117.197557275] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [117.306159078] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [117.415014339] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [117.530766934] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [117.646564446] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [117.750234456] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [117.855853967] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [117.966775686] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [118.083092364] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [118.202438293] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [118.316030804] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [118.426507441] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [118.538989577] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [118.654936714] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [118.761892641] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [118.870497652] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [118.978584371] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [119.090610341] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [119.200465435] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [119.310845821] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [119.420242707] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [119.526311384] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [119.640515229] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [119.757800824] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [119.861345126] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [119.963980595] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [120.076314273] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [120.185917076] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [120.300583212] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [120.412026432] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [120.52660886] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [120.641803205] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [120.754626008] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [120.858538102] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [120.966247112] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [121.081285124] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [121.188670676] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [121.306022188] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [121.417742783] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [121.526046794] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [121.634203805] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [121.740080274] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [121.852237201] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [121.966469046] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [122.067016473] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [122.178814651] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [122.294188954] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [122.404158382] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [122.510875726] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [122.611913736] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [122.724540831] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [122.839831134] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [122.948027228] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [123.058008614] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [123.16831725] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [123.286692221] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [123.393678481] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [123.506211951] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [123.61275342] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [123.724381556] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [123.829721067] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [123.936907411] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [124.048785797] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [124.153151433] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [124.257347318] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [124.370619871] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [124.481862716] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [124.592591643] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [124.705004655] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [124.819200625] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [124.920277426] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [125.033817146] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [125.141826282] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [125.253535793] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [125.368192013] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [125.481752441] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [125.592228494] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [125.698810796] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [125.80439589] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [125.91787961] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [126.034437205] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [126.145523716] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [126.256726602] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [126.36839878] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [126.473890541] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [126.580677302] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [126.687273312] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [126.796962448] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [126.904863376] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [127.01772147] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [127.130397273] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [127.24087916] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [127.353907296] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [127.465994807] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [127.579152152] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [127.689719788] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [127.794772299] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [127.906634643] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [128.014449237] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [128.12601204] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [128.24014851] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [128.351148396] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [128.46110499] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [128.570219835] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [128.678101221] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [128.786014398] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [128.897299826] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [129.005087003] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [129.109738764] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [129.229229068] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [129.34001662] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [129.447983173] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [129.55587535] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [129.67186332] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [129.788086374] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [129.900914718] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [130.009893354] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [130.119937741] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [130.231092502] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [130.344219513] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [130.449546482] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [130.556059368] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [130.664136462] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [130.781086349] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [130.895952277] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [131.007999246] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [131.113660757] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [131.227166643] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [131.343783447] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [131.449295041] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [131.560412469] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [131.671002855] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [131.78728045] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [131.899524003] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.008607639] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.112623566] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.232578494] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.341984714] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.450334516] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.558428819] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.663062204] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.773566257] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.889522435] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [132.996810571] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [133.101923748] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [133.211780593] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [133.316811812] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [133.431207865] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [133.538217459] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [133.64723197] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [133.750397105] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [133.868350617] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [133.985966962] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [134.106014349] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [134.21237761] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [134.318332246] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [134.426177757] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [134.533760476] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [134.645124654] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [134.757025498] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [134.87585226] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [134.985952938] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [135.096490824] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [135.201400418] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [135.312124971] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [135.427226274] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [135.545376077] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [135.660413214] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [135.777902392] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [135.886202612] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [135.999856956] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [136.109692217] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [136.214231686] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [136.320898864] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [136.426479582] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [136.531530926] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [136.638907437] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [136.743989698] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [136.854615959] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [136.968075179] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [137.073622939] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [137.188164826] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [137.308674504] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [137.417717307] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [137.530792693] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [137.646266747] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [137.748916215] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [137.860956768] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [137.966749529] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [138.078778124] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [138.19291226] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [138.301413438] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [138.412590657] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [138.528878752] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [138.643220555] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [138.7539489] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [138.856605952] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [138.962191629] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [139.063325889] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [139.179028609] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [139.292745954] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [139.404061423] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [139.506754934] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [139.614327444] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [139.725863706] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [139.832596216] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [139.947633353] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [140.056915614] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [140.176338251] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [140.28198197] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [140.394284731] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [140.501495284] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [140.609609711] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [140.722075222] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [140.822972358] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [140.933405827] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [141.052039214] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [141.161618975] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [141.26281011] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [141.368236829] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [141.480329007] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [141.595308977] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [141.710789447] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [141.818905333] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [141.932807302] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [142.042072355] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [142.15470645] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [142.267888878] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [142.381946014] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [142.493969359] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [142.60966537] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [142.721435548] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [142.833886185] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [142.950605071] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [143.054241832] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [143.164822301] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [143.266429353] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [143.380861573] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [143.492575459] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [143.608902637] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [143.717747107] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [143.827807243] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [143.945015255] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [144.052966057] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [144.165083902] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [144.269895787] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [144.388188799] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [144.504130686] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [144.611426988] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [144.722822374] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [144.832208469] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [144.94191598] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [145.050644949] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [145.161569877] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [145.271136221] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [145.379861982] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [145.493834535] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [145.601921546] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [145.708614682] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [145.812421484] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [145.922160787] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [146.03673709] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [146.153780893] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [146.256541487] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [146.366668706] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [146.471593758] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [146.58330852] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [146.688765572] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [146.802036667] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [146.909859136] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [147.022436355] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [147.134814367] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [147.239668252] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [147.344426179] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [147.457960649] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [147.564249243] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [147.673001546] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [147.786914891] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [147.894283818] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.001734121] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.108331298] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.219908684] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.325961028] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.435065664] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.540756341] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.653384894] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.764875072] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.880163917] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [148.993715595] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [149.102346273] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [149.212404951] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [149.32242892] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [149.437123931] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [149.546557567] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [149.660818287] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [149.762204547] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [149.877701059] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [149.990149945] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [150.095968373] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [150.202681925] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [150.311127978] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [150.425458989] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [150.543424751] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [150.656376179] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [150.774040649] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [150.890201869] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.007044714] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.1184646] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.233329945] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.341562789] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.4441373] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.558150395] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.663427197] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.768519082] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.873502468] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [151.984742104] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [152.089960573] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [152.204870543] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [152.317284721] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [152.428325732] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [152.54530916] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [152.65319463] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [152.760014349] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [152.876423194] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [152.986718413] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [153.094214507] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [153.203264018] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [153.309176362] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [153.420270457] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [153.530173968] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [153.634502562] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [153.739347697] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [153.843283999] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [153.948004301] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [154.056515687] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [154.173301074] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [154.283970793] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [154.398100847] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [154.508975316] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [154.620075536] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [154.726882421] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [154.839992224] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [154.949353527] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [155.064354205] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [155.172480299] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [155.286993894] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [155.400345781] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [155.514027834] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [155.621621636] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [155.728964314] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [155.835133908] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [155.948244294] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [156.060879555] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [156.174016192] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [156.289990453] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [156.397036797] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [156.5023906] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [156.60942411] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [156.720570122] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [156.833132175] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [156.93850406] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [157.055546114] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [157.161327791] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [157.268622052] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [157.374602646] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [157.481404573] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [157.590273542] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [157.701180095] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [157.808463856] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [157.916405617] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.03008942] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.138746347] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.244307816] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.350257494] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.457183379] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.560286973] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.6667144] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.772232703] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.881114214] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [158.991700516] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [159.103094153] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [159.213463747] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [159.325707008] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [159.431341686] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [159.542285863] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [159.653076041] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [159.757874802] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [159.867353646] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [159.980629407] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [160.086278085] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [160.199301554] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [160.306578315] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [160.409142617] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [160.517743253] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [160.63428189] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [160.750449526] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [160.862345996] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [160.975948132] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [161.08614156] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [161.192994821] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [161.305371957] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [161.416588552] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [161.525727604] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [161.63197799] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [161.74652046] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [161.858586388] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [161.970347524] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [162.077248326] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [162.185863546] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [162.298872724] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [162.405641401] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [162.523263288] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [162.632479632] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [162.740230643] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [162.844311029] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [162.950277914] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [163.061352467] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [163.164541227] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [163.273364113] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [163.389759542] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [163.496128052] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [163.601925188] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [163.70709699] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [163.819734293] Stall detection triggered.
+Extender.primary.isMotorStalled_INFO [163.928419512] Stall detection triggered.
+TrcDigitalInput.getInput.printElapsedTime_INFO [163.981183184] TrcDigitalInput.getInput: avgElapsed=0.006526626, minElapsed=0.006526626, maxElapsed=0.006526626
+TrcMotor.getPos.printElapsedTime_INFO [163.98223231] TrcMotor.getPos: avgElapsed=0.002543905774522293, minElapsed=2.042E-6, maxElapsed=0.015015876
+TrcMotor.setPower.printElapsedTime_INFO [163.984515768] TrcMotor.setPower: avgElapsed=0.0017588668751099385, minElapsed=2.625E-6, maxElapsed=0.017529752
+TrcMotor.setVel.printElapsedTime_INFO [163.985273227] TrcMotor.setVel: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setPos.printElapsedTime_INFO [163.985714227] TrcMotor.setPos: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcMotor.setCurrent.printElapsedTime_INFO [163.986133352] TrcMotor.setCurrent: avgElapsed=0.0, minElapsed=0.0, maxElapsed=0.0
+TrcServo.setPos.printElapsedTime_INFO [163.986601768] TrcServo.setPos: avgElapsed=0.007947162321428572, minElapsed=0.002157459, maxElapsed=0.013158252
+Robot.stopMode_INFO [163.987132602] Disabling LimelightVision.
+Vision.setLimelightVisionEnabled_INFO [163.987873727] Pipeline 0 is disabled: running=false
+Robot.stopMode_INFO [163.988281768] Disabling Webcam SampleVision.
+FtcTeleOp.stopMode_INFO [163.991291185] ***** Stopping TeleOp: 20250112@162159 *****
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [163.992055352] lfDriveMotor.pidCtrlTask: OUTPUT_TASK=5.0746589609513365E-5/0.013834718881167243
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [163.992783644] rfDriveMotor.pidCtrlTask: OUTPUT_TASK=5.834406021759298E-5/0.013834719274774395
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [163.993484227] lbDriveMotor.pidCtrlTask: OUTPUT_TASK=4.334107286834781E-5/0.013834719397655394
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [163.994111894] rbDriveMotor.pidCtrlTask: OUTPUT_TASK=4.8699460571814115E-5/0.01383471984051615
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [163.994687352] TrcMecanumDriveBase.odometryTask: INPUT_TASK=0.007514173716347371/0.013837607893661912
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [163.995693019] TrcMecanumDriveBase.absOdoHeadingWrap.converterTask: INPUT_TASK=6.074771105675972E-6/0.013834718831913636
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [163.996382519] blinkin: OUTPUT_TASK=7.218461954963314E-5/0.013834720455427173
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.000978895] Elbow.primary.pidCtrlTask: OUTPUT_TASK=0.003295928750801147/0.01383537041322314
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.003374062] Extender.primary.pidCtrlTask: OUTPUT_TASK=0.0021402499414741104/0.013835370585343228
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.00567327] Grabber.colorTrigger.triggerTask: PRE_PERIODIC_TASK=0.009656707459674587/0.019188974083577198
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.006274104] Grabber.primary.pidCtrlTask: OUTPUT_TASK=2.3061398600219243E-5/0.01383452933999494
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.006916937] Grabber.follower.pidCtrlTask: OUTPUT_TASK=4.677440762290243E-6/0.013834529758074036
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.007554229] null.triggerTask: PRE_PERIODIC_TASK=0.008848199128205128/0.38270339902991457
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.008451396] DriverGamepad.buttonEventTask: PRE_PERIODIC_TASK=4.730644223340747E-5/0.01918774145639705
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.009049312] OperatorGamepad.buttonEventTask: PRE_PERIODIC_TASK=2.7246298724101605E-4/0.019187725034648252
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.009618646] DriverRumble: OUTPUT_TASK=1.709528054642044E-5/0.013834530225398432
+TrcTaskMgr.printTaskPerformanceMetrics_INFO [164.010288021] OperatorRumble: OUTPUT_TASK=8.712619529471287E-6/0.013834523904629397
+FtcOpMode.printPerformanceMetrics_INFO [164.011277937] [FtcTeleOp] Main robot thread average elapsed times:
+       robotInit=2.288756s
+    initPeriodic=0.006099s
+       startMode=0.000042s
+    loopInterval=0.019189s (52.112Hz)
+             sdk=0.000093s
+ prePeriodicTask=0.010309s
+        periodic=0.007122s
+postPeriodicTask=0.000065s
+         loopSum=0.019097s
+        stopMode=0.000000s

@@ -154,10 +154,8 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
         robot.extender.setPidStallDetectionEnabled(true);
         robot.extender.setPidStallDetectionEnabled(
             Extender.Params.STALL_RESET_TIMEOUT, Extender.Params.STALL_TIMEOUT, Extender.Params.STALL_TOLERANCE);
-        robot.extender.setPositionPidParameters(
-            Extender.Params.posPidCoeffs, Extender.Params.POS_PID_TOLERANCE, true, false);
-        robot.elbow.setPositionPidParameters(
-            Elbow.Params.posPidCoeffs, Elbow.Params.POS_PID_TOLERANCE, true, false);
+        robot.extender.setPositionPidParameters(Extender.Params.posPidCoeffs, Extender.Params.POS_PID_TOLERANCE, true);
+        robot.elbow.setPositionPidParameters(Elbow.Params.posPidCoeffs, Elbow.Params.POS_PID_TOLERANCE, true);
         robot.extenderArm.cancel();
     }   //stopSubsystems
 
@@ -192,9 +190,8 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
             case LEVEL2_START:
                 robot.extender.setPidStallDetectionEnabled(false);
                 robot.extender.setStallProtection(0.0, 0.0, 0.0, 0.0);
-                robot.elbow.setPositionPidParameters(2.5, 1.0, 0.01, 0.0, Elbow.Params.POS_PID_TOLERANCE, true, false);
-                robot.extender.setPositionPidParameters(
-                    3.0, 0.0, 0.01, 0.0, Extender.Params.POS_PID_TOLERANCE, true, false);
+                robot.elbow.setPositionPidParameters(2.5, 1.0, 0.01, 0.0, Elbow.Params.POS_PID_TOLERANCE, true);
+                robot.extender.setPositionPidParameters(3.0, 0.0, 0.01, 0.0, Extender.Params.POS_PID_TOLERANCE, true);
 
                 robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);
@@ -219,7 +216,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
 
             case ELBOW_RETRACT:
 //                robot.elbow.setPower(-1.0);
-                robot.elbow.setPositionPidParameters(8, 0.0, 0.0, 0.0, Elbow.Params.POS_PID_TOLERANCE, true, false);
+                robot.elbow.setPositionPidParameters(8, 0.0, 0.0, 0.0, Elbow.Params.POS_PID_TOLERANCE, true);
 //                if (robot.elbow.getPosition() <= Elbow.Params.LEVEL2_FINAL_POS + 2 && robot.elbow.getPosition() >= Elbow.Params.LEVEL2_FINAL_POS - 2)
 //                {
 //                    sm.setState(State.LEVEL2_ASCENT);

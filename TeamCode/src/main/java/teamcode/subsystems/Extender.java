@@ -89,7 +89,7 @@ public class Extender
             .setPositionScaleAndOffset(Params.INCHES_PER_COUNT, Params.POS_OFFSET)
             .setPositionPresets(Params.POS_PRESET_TOLERANCE, Params.posPresets);
         extender = new FtcMotorActuator(extenderParams).getMotor();
-        extender.setPositionPidParameters(Params.posPidCoeffs, Params.POS_PID_TOLERANCE, true, false);
+        extender.setPositionPidParameters(Params.posPidCoeffs, Params.POS_PID_TOLERANCE, true);
         // There is no lower limit switch, so we do zero calibration by motor stall.
         extender.setStallProtection(
             Params.STALL_MIN_POWER, Params.STALL_TOLERANCE, Params.STALL_TIMEOUT, Params.STALL_RESET_TIMEOUT);

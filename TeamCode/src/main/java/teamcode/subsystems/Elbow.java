@@ -96,7 +96,7 @@ public class Elbow
             .setPositionScaleAndOffset(Params.DEG_SCALE, Params.POS_OFFSET, Params.ZERO_OFFSET)
             .setPositionPresets(Params.POS_PRESET_TOLERANCE, Params.posPresets);
         elbow = new FtcMotorActuator(elbowParams).getMotor();
-        elbow.setPositionPidParameters(Params.posPidCoeffs, Params.POS_PID_TOLERANCE, true, false);
+        elbow.setPositionPidParameters(Params.posPidCoeffs, Params.POS_PID_TOLERANCE, true);
         elbow.setPositionPidPowerComp(this::getElbowPowerComp);
         elbow.setTraceLevel(TrcDbgTrace.MsgLevel.INFO, false, false, null);
     }   //Elbow

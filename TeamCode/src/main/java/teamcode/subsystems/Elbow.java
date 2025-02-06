@@ -25,10 +25,10 @@ package teamcode.subsystems;
 import ftclib.motor.FtcMotorActuator;
 import teamcode.Robot;
 import teamcode.RobotParams;
+import trclib.controller.TrcPidController;
 import trclib.dataprocessor.TrcUtil;
 import trclib.motor.TrcMotor;
 import trclib.robotcore.TrcDbgTrace;
-import trclib.robotcore.TrcPidController;
 
 /**
  * This class creates the Elbow subsystem of the Extender Arm.

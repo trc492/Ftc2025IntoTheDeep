@@ -30,9 +30,9 @@ import ftclib.motor.FtcMotorActuator;
 import ftclib.sensor.FtcPinpointOdometry;
 import ftclib.sensor.FtcSparkFunOtos;
 import teamcode.RobotParams;
+import trclib.controller.TrcPidController;
 import trclib.dataprocessor.TrcUtil;
 import trclib.drivebase.TrcDriveBase;
-import trclib.robotcore.TrcPidController;
 
 /**
  * This class creates the appropriate Robot Drive Base according to the specified robot type.

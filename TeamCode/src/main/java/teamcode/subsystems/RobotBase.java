@@ -123,10 +123,6 @@ public class RobotBase
             profiledMaxDeceleration = robotMaxDeceleration;
             profiledMaxTurnRate = robotMaxTurnRate;
             // DriveBase PID Parameters
-            usePidDrive = true;
-            enablePidDriveSquareRootPid = true;
-            usePurePursuitDrive = true;
-            enablePurePursuitDriveSquareRootPid = true;
             drivePidTolerance = 3.5;
             turnPidTolerance = 2.5;
             xDrivePidCoeffs = new TrcPidController.PidCoefficients(0.072, 0.001, 0.0065, 0.0, 2.0);
@@ -140,9 +136,15 @@ public class RobotBase
             turnMaxPidRampRate = null;
             // PID Stall Detection
             pidStallDetectionEnabled = true;
-            // PurePursuit Parameters
+            // PidDrive Parameters
+            usePidDrive = true;
+            enablePidDriveSquareRootPid = true;
+            // PurePursuit Parameters.
+            usePurePursuitDrive = true;
+            enablePurePursuitDriveSquareRootPid = true;
             ppdFollowingDistance = 6.0;
             velPidCoeffs = new TrcPidController.PidCoefficients(0.0, 0.0, 0.0, 1.0/profiledMaxVelocity, 0.0);
+            fastModeEnabled = true;
             // Vision
             webCam1 = new Vision.SampleCamParams();
             webCam2 = null;

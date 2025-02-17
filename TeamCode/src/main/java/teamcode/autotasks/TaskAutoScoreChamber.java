@@ -131,6 +131,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
             robotPose.x <= RobotParams.Game.CHAMBER_MAX_SCORE_POS_X)
         {
             // If robot current position is within the chamber zone, use its X position.
+//            scorePose.x = alliance == FtcAuto.Alliance.RED_ALLIANCE? robotPose.x: -robotPose.x;
             scorePose.x = robotPose.x;
         }
 

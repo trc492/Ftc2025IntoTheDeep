@@ -27,7 +27,7 @@ import teamcode.Robot;
 import teamcode.RobotParams;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Vision;
+import teamcode.vision.Vision;
 import teamcode.subsystems.Wrist;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcEvent;

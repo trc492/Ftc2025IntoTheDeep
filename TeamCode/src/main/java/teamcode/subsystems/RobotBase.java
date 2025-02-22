@@ -30,6 +30,7 @@ import ftclib.motor.FtcMotorActuator;
 import ftclib.sensor.FtcPinpointOdometry;
 import ftclib.sensor.FtcSparkFunOtos;
 import teamcode.RobotParams;
+import teamcode.vision.Vision;
 import trclib.controller.TrcPidController;
 import trclib.dataprocessor.TrcUtil;
 import trclib.drivebase.TrcDriveBase;

@@ -39,7 +39,7 @@ import ftclib.robotcore.FtcPidCoeffCache;
 import ftclib.vision.FtcLimelightVision;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Vision;
+import teamcode.vision.Vision;
 import teamcode.subsystems.Wrist;
 import trclib.command.CmdDriveMotorsTest;
 import trclib.command.CmdPidDrive;
@@ -1185,7 +1185,7 @@ public class FtcTest extends FtcTeleOp
                     if (robot.wrist != null && allowVisionControlOnWrist)
                     {
                         robot.wrist.setPosition(
-                            Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle - samplePose.angle);
+                            Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedRectAngle - samplePose.angle);
                     }
                 }
             }

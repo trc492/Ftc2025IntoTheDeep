@@ -37,7 +37,7 @@ import teamcode.autocommands.CmdAutoNetZone;
 import teamcode.autocommands.CmdAutoObservationZone;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Extender;
-import teamcode.subsystems.Vision;
+import teamcode.vision.Vision;
 import teamcode.subsystems.Wrist;
 import trclib.command.CmdPidDrive;
 import trclib.command.CmdTimedDrive;

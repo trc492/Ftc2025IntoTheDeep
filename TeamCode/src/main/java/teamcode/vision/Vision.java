@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package teamcode.subsystems;
+package teamcode.vision;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -28,6 +28,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfDouble;
+import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -47,6 +51,7 @@ import ftclib.vision.FtcVisionAprilTag;
 import ftclib.vision.FtcVisionEocvColorBlob;
 import teamcode.Robot;
 import teamcode.RobotParams;
+import teamcode.subsystems.LEDIndicator;
 import trclib.dataprocessor.TrcUtil;
 import trclib.pathdrive.TrcPose2D;
 import trclib.pathdrive.TrcPose3D;
@@ -84,6 +89,8 @@ public class Vision
             camPose = new TrcPose3D(camXOffset, camYOffset, camZOffset, camYaw, camPitch, camRoll);
             camOrientation = OpenCvCameraRotation.UPRIGHT;
             // Homography: cameraRect in pixels, worldRect in inches
+            cameraRect = null;
+            worldRect = null;
             cameraRect = new TrcHomographyMapper.Rectangle(
                 14.0, 28.0,                     // Camera Top Left
                 612.0, 33.0,                    // Camera Top Right
@@ -158,9 +165,18 @@ public class Vision
             .setSolidityRange(0.0, 100.0)
             .setVerticesRange(0.0, 1000.0)
             .setAspectRatioRange(0.5, 2.5);
+    private static final double sampleWidth = 3.5;
+    private static final double sampleHeight = 1.5;
+    // Logitech C920
+    private static final double fx = 622.001;
+    private static final double fy = 622.001;
+    private static final double cx = 319.803;
+    private static final double cy = 241.251;
+    private static final MatOfDouble distCoeffs = new MatOfDouble(0.1208, -0.261599, 0, 0, 0.10308, 0, 0, 0);
 
     private final TrcDbgTrace tracer;
     private final Robot robot;
+    private final Mat cameraMatrix = new Mat(3, 3, CvType.CV_64FC1);
     private FtcRawEocvColorBlobPipeline rawColorBlobPipeline;
     public FtcRawEocvVision rawColorBlobVision;
     public FtcLimelightVision limelightVision;
@@ -197,6 +213,13 @@ public class Vision
             opMode.hardwareMap.get(WebcamName.class, robot.robotInfo.webCam1.camName): null;
         webcam2 = robot.robotInfo.webCam2 != null?
             opMode.hardwareMap.get(WebcamName.class, robot.robotInfo.webCam2.camName): null;
+        cameraMatrix.put(0, 0,
+                         fx, 0, cx,
+                         0, fy, cy,
+                         0, 0, 1);
+        //
+        // TuneColorBlobVision: must use webcam1.
+        //
         if (RobotParams.Preferences.tuneColorBlobVision && webcam1 != null)
         {
             OpenCvCamera openCvCamera;
@@ -219,7 +242,8 @@ public class Vision
 
             tracer.traceInfo(moduleName, "Starting RawEocvColorBlobVision...");
             rawColorBlobPipeline = new FtcRawEocvColorBlobPipeline(
-                "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, tuneFilterContourParams, true);
+                "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, tuneFilterContourParams, true,
+                sampleWidth, sampleHeight, RobotParams.Preferences.useSolvePnp? cameraMatrix: null, distCoeffs);
             // By default, display original Mat.
             rawColorBlobPipeline.setVideoOutput(0);
             rawColorBlobPipeline.setAnnotateEnabled(true);
@@ -232,6 +256,9 @@ public class Vision
         }
         else
         {
+            //
+            // LimelightVision (not a Vision Processor).
+            //
             if (RobotParams.Preferences.useLimelightVision && robot.robotInfo.limelight != null)
             {
                 limelightVision = new FtcLimelightVision(
@@ -268,19 +295,22 @@ public class Vision
 
                 redSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams,
-                    true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    true, sampleWidth, sampleHeight, RobotParams.Preferences.useSolvePnp? cameraMatrix: null,
+                    distCoeffs, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 redSampleProcessor = redSampleVision.getVisionProcessor();
                 visionProcessorsList.add(redSampleProcessor);
 
                 blueSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.BLUE_SAMPLE, colorConversion, blueSampleColorThresholds, sampleFilterContourParams,
-                    true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    true, sampleWidth, sampleHeight, RobotParams.Preferences.useSolvePnp? cameraMatrix: null,
+                    distCoeffs, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 blueSampleProcessor = blueSampleVision.getVisionProcessor();
                 visionProcessorsList.add(blueSampleProcessor);
 
                 yellowSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.YELLOW_SAMPLE, colorConversion, yellowSampleColorThresholds, sampleFilterContourParams,
-                    true, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
+                    true, sampleWidth, sampleHeight, RobotParams.Preferences.useSolvePnp? cameraMatrix: null,
+                    distCoeffs, robot.robotInfo.webCam1.cameraRect, robot.robotInfo.webCam1.worldRect, true);
                 yellowSampleProcessor = yellowSampleVision.getVisionProcessor();
                 visionProcessorsList.add(yellowSampleProcessor);
             }
@@ -874,6 +904,72 @@ public class Vision
 
         return sampleInfo;
     }   //getDetectedSample
+
+    private Point[] orderPoints(Point[] pts)
+    {
+        // Orders the array of 4 points in the order: top-left, top-right, bottom-right, bottom-left
+        Point[] orderedPts = new Point[4];
+
+        // Sum and difference of x and y coordinates
+        double[] sum = new double[4];
+        double[] diff = new double[4];
+
+        for (int i = 0; i < 4; i++)
+        {
+            sum[i] = pts[i].x + pts[i].y;
+            diff[i] = pts[i].y - pts[i].x;
+        }
+
+        // Top-left point has the smallest sum
+        int tlIndex = indexOfMin(sum);
+        orderedPts[0] = pts[tlIndex];
+
+        // Bottom-right point has the largest sum
+        int brIndex = indexOfMax(sum);
+        orderedPts[2] = pts[brIndex];
+
+        // Top-right point has the smallest difference
+        int trIndex = indexOfMin(diff);
+        orderedPts[1] = pts[trIndex];
+
+        // Bottom-left point has the largest difference
+        int blIndex = indexOfMax(diff);
+        orderedPts[3] = pts[blIndex];
+
+        return orderedPts;
+    }
+
+    private int indexOfMin(double[] array)
+    {
+        int index = 0;
+        double min = array[0];
+
+        for (int i = 1; i < array.length; i++)
+        {
+            if (array[i] < min)
+            {
+                min = array[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    private int indexOfMax(double[] array)
+    {
+        int index = 0;
+        double max = array[0];
+
+        for (int i = 1; i < array.length; i++)
+        {
+            if (array[i] > max)
+            {
+                max = array[i];
+                index = i;
+            }
+        }
+        return index;
+    }
 
     /**
      * This method returns the target Z offset from ground.

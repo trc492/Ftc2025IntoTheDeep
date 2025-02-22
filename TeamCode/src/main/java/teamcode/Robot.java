@@ -44,7 +44,7 @@ import teamcode.subsystems.Grabber;
 import teamcode.subsystems.RobotBase;
 import teamcode.subsystems.RumbleIndicator;
 import teamcode.subsystems.Wrist;
-import teamcode.subsystems.Vision;
+import teamcode.vision.Vision;
 import trclib.dataprocessor.TrcUtil;
 import trclib.motor.TrcMotor;
 import trclib.motor.TrcServo;

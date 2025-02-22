@@ -30,7 +30,7 @@ import teamcode.Robot;
 import teamcode.subsystems.Elbow;
 import teamcode.subsystems.Grabber;
 import teamcode.subsystems.Wrist;
-import teamcode.subsystems.Vision;
+import teamcode.vision.Vision;
 import trclib.pathdrive.TrcPose2D;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
@@ -236,7 +236,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                     String msg = String.format(
                         Locale.US, "%s is found at x %.1f, y %.1f, angle=%.1f, rotatedAngle=%.1f",
                         taskParams.sampleType, samplePose.x, samplePose.y, samplePose.angle,
-                        sampleInfo.objRotatedAngle);
+                        sampleInfo.objRotatedRectAngle);
                     tracer.traceInfo(moduleName, msg);
                     robot.speak(msg);
                     sm.setState(State.TURN_TO_SAMPLE);
@@ -259,10 +259,11 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                 double extenderLen = robot.getExtenderPosFromSamplePose(samplePose);
                 robot.extenderArm.setPosition(null, extenderLen, armEvent);
                 robot.wrist.setPosition(
-                    Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedAngle * 0.8 - samplePose.angle);
+                    Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedRectAngle * 0.8 - samplePose.angle);
                 tracer.traceInfo(
                     moduleName, "samplePose=%s, extenderLen=%.1f, sampleAngle=%.1f, wristAngle=%.1f",
-                    samplePose, extenderLen, sampleInfo.objRotatedAngle, sampleInfo.objRotatedAngle - samplePose.angle);
+                    samplePose, extenderLen, sampleInfo.objRotatedRectAngle,
+                    sampleInfo.objRotatedRectAngle - samplePose.angle);
                 // Turning is a lot faster than extending, so just wait for extender event.
                 robot.robotDrive.purePursuitDrive.start(
                     currOwner, null, 0.0, true, robot.robotInfo.profiledMaxVelocity,

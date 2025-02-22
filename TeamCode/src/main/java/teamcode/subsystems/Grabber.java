@@ -37,6 +37,7 @@ import ftclib.subsystem.FtcMotorGrabber;
 import ftclib.subsystem.FtcServoGrabber;
 import teamcode.Robot;
 import teamcode.RobotParams;
+import teamcode.vision.Vision;
 import trclib.robotcore.TrcDbgTrace;
 import trclib.robotcore.TrcEvent;
 import trclib.robotcore.TrcOwnershipMgr;

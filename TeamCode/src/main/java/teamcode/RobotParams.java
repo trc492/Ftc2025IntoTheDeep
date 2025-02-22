@@ -44,7 +44,7 @@ public class RobotParams
     {
         // Global config
         public static final RobotBase.RobotType robotType       = RobotBase.RobotType.IntoTheDeepRobot;
-        public static final boolean inCompetition               = true;
+        public static final boolean inCompetition               = false;
         public static final boolean useTraceLog                 = true;
         public static final boolean useLoopPerformanceMonitor   = true;
         public static final boolean useBatteryMonitor           = false;
@@ -64,6 +64,7 @@ public class RobotParams
         public static final boolean useCameraStreamProcessor    = false;
         public static final boolean useWebcamAprilTagVision     = false;
         public static final boolean useColorBlobVision          = true;
+        public static final boolean useSolvePnp                 = true;
         public static final boolean showVisionView              = !inCompetition;
         public static final boolean showVisionStat              = false;
         // Drive Base

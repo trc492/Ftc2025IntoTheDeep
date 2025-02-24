@@ -243,7 +243,8 @@ public class Vision
             tracer.traceInfo(moduleName, "Starting RawEocvColorBlobVision...");
             rawColorBlobPipeline = new FtcRawEocvColorBlobPipeline(
                 "rawColorBlobPipeline", colorConversion, redSampleColorThresholds, tuneFilterContourParams, true,
-                sampleWidth, sampleHeight, RobotParams.Preferences.useSolvePnp? cameraMatrix: null, distCoeffs);
+                sampleWidth, sampleHeight, RobotParams.Preferences.useSolvePnp? cameraMatrix: null, distCoeffs,
+                robot.robotInfo.webCam1.camPose);
             // By default, display original Mat.
             rawColorBlobPipeline.setVideoOutput(0);
             rawColorBlobPipeline.setAnnotateEnabled(true);
@@ -310,19 +311,22 @@ public class Vision
                 tracer.traceInfo(moduleName, "Starting Webcam SampleVision...");
                 redSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.RED_SAMPLE, colorConversion, redSampleColorThresholds, sampleFilterContourParams,
-                    true, sampleWidth, sampleHeight, camMatrix, distCoeffs, camRect, worldRect, true);
+                    true, sampleWidth, sampleHeight, camMatrix, distCoeffs, robot.robotInfo.webCam1.camPose, camRect,
+                    worldRect, true);
                 redSampleProcessor = redSampleVision.getVisionProcessor();
                 visionProcessorsList.add(redSampleProcessor);
 
                 blueSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.BLUE_SAMPLE, colorConversion, blueSampleColorThresholds, sampleFilterContourParams,
-                    true, sampleWidth, sampleHeight, camMatrix, distCoeffs, camRect, worldRect, true);
+                    true, sampleWidth, sampleHeight, camMatrix, distCoeffs, robot.robotInfo.webCam1.camPose, camRect,
+                    worldRect, true);
                 blueSampleProcessor = blueSampleVision.getVisionProcessor();
                 visionProcessorsList.add(blueSampleProcessor);
 
                 yellowSampleVision = new FtcVisionEocvColorBlob(
                     LEDIndicator.YELLOW_SAMPLE, colorConversion, yellowSampleColorThresholds, sampleFilterContourParams,
-                    true, sampleWidth, sampleHeight, camMatrix, distCoeffs, camRect, worldRect, true);
+                    true, sampleWidth, sampleHeight, camMatrix, distCoeffs, robot.robotInfo.webCam1.camPose, camRect,
+                    worldRect, true);
                 yellowSampleProcessor = yellowSampleVision.getVisionProcessor();
                 visionProcessorsList.add(yellowSampleProcessor);
             }

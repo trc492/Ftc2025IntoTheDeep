@@ -77,7 +77,6 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
         }   //toString
     }   //class TaskParams
 
-    private final String ownerName;
     public final TrcMotor elbow;
     public final TrcMotor extender;
     private final TrcTimer timer;
@@ -85,19 +84,15 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     private final TrcEvent elbowEvent;
     private final TrcEvent extenderEvent;
 
-    private String currOwner = null;
-
     /**
      * Constructor: Create an instance of the object.
      *
-     * @param ownerName specifies the owner name to take subsystem ownership, can be null if no ownership required.
      * @param elbow specifies the elbow object.
      * @param extender specifies the extender object.
      */
-    public TaskExtenderArm(String ownerName, TrcMotor elbow, TrcMotor extender)
+    public TaskExtenderArm(TrcMotor elbow, TrcMotor extender)
     {
-        super(moduleName, ownerName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
-        this.ownerName = ownerName;
+        super(moduleName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
         this.elbow = elbow;
         this.extender = extender;
         this.timer = new TrcTimer(moduleName);
@@ -109,7 +104,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     /**
      * This method zero calibrates the ExtenderArm. This includes zero calibrating both the elbow and the extender.
      *
-     * @param owner specifies the owner ID to check if the caller has ownership of the motor.
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param completionEvent specifies the completion event to signal if provided.
      */
     public void zeroCalibrate(String owner, TrcEvent completionEvent)
@@ -135,7 +130,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     /**
      * This method zero calibrates the ExtenderArm. This includes zero calibrating both the elbow and the extender.
      *
-     * @param owner specifies the owner ID to check if the caller has ownership of the motor.
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param completionEvent specifies the completion event to signal if provided.
      */
     public void stagedZeroCalibrate(String owner, TrcEvent completionEvent)
@@ -176,6 +171,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     /**
      * This method sets the Elbow and Extender to their specifies positions.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param safeSequence specifies true to perform safe sequence so that robot won't tip over, false to do parallel.
      * @param delay specifies the delay in seconds for starting the operation.
      * @param elbowAngle specifies the elbow angle, null if not moving elbow.
@@ -183,71 +179,77 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
     public void setPosition(
-        boolean safeSequence, double delay, Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
+        String owner, boolean safeSequence, double delay, Double elbowAngle, Double extenderPosition,
+        TrcEvent completionEvent)
     {
         TaskParams taskParams = new TaskParams(safeSequence, delay, elbowAngle, extenderPosition);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
-        startAutoTask(State.DO_DELAY, taskParams, completionEvent);
+        startAutoTask(owner, State.DO_DELAY, taskParams, completionEvent);
     }   //setPosition
 
     /**
      * This method sets the Elbow and Extender to their specifies positions.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param delay specifies the delay in seconds for starting the operation.
      * @param elbowAngle specifies the elbow angle, null if not moving elbow.
      * @param extenderPosition specifies the extender position, null if not moving extender.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
-    public void setPosition(double delay, Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
+    public void setPosition(
+        String owner, double delay, Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
     {
-        setPosition(false, delay, elbowAngle, extenderPosition, completionEvent);
+        setPosition(owner, false, delay, elbowAngle, extenderPosition, completionEvent);
     }   //setPosition
 
     /**
      * This method sets the Elbow and Extender to their specifies positions.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param elbowAngle specifies the elbow angle, null if not moving elbow.
      * @param extenderPosition specifies the extender position, null if not moving extender.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
-    public void setPosition(Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
+    public void setPosition(String owner, Double elbowAngle, Double extenderPosition, TrcEvent completionEvent)
     {
-        setPosition(false, 0.0, elbowAngle, extenderPosition, completionEvent);
+        setPosition(owner, false, 0.0, elbowAngle, extenderPosition, completionEvent);
     }   //setPosition
 
     /**
      * This method retracts everything.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param safeSequence specifies true to perform safe sequence so that robot won't tip over, false to do parallel.
      * @param delay specifies the delay in seconds for starting the operation.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
-    public void retract(boolean safeSequence, double delay, TrcEvent completionEvent)
+    public void retract(String owner, boolean safeSequence, double delay, TrcEvent completionEvent)
     {
-        setPosition(safeSequence, delay, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
+        setPosition(owner, safeSequence, delay, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
     }   //retract
 
     /**
      * This method retracts everything.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param completionEvent specifies the event to signal when completed, can be null if not provided.
      */
-    public void retract(TrcEvent completionEvent)
+    public void retract(String owner, TrcEvent completionEvent)
     {
-        setPosition(false, 0.0, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
+        setPosition(owner, false, 0.0, Elbow.Params.MIN_POS, Extender.Params.MIN_POS, completionEvent);
     }   //retract
 
     /**
      * This method cancels the ExtenderArm AutoTask.
      */
+    @Override
     public void cancel()
     {
-        tracer.traceInfo(moduleName, "Canceling AutoTask");
-        stopAutoTask(false);
+        super.cancel();
         // stopAutoTask only stop subsystems if auto task is active.
         // If subsystems are active not as part of AutoTask operation (e.g. zeroCalibrate), stopAutoTask won't do
         // anything. Let's cancel the subsystems explicitly.
-        stopSubsystems();
+        stopSubsystems(null);
     }   //cancel
 
     //
@@ -258,61 +260,47 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      * This method is called by the super class to acquire ownership of all subsystems involved in the auto-assist
      * operation. This is typically done before starting an auto-assist operation.
      *
+     * @param owner specifies the owner to acquire the subsystem ownerships.
      * @return true if acquired all subsystems ownership, false otherwise. It releases all ownership if any acquire
      *         failed.
      */
     @Override
-    protected boolean acquireSubsystemsOwnership()
+    protected boolean acquireSubsystemsOwnership(String owner)
     {
-        boolean success = ownerName == null ||
-                          elbow.acquireExclusiveAccess(ownerName) &&
-                          extender.acquireExclusiveAccess(ownerName);
-
-        if (success)
-        {
-            currOwner = ownerName;
-            tracer.traceInfo(moduleName, "Successfully acquired subsystem ownerships.");
-        }
-        else
-        {
-            TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
-            tracer.traceWarn(
-                moduleName,
-                "Failed to acquire subsystem ownership (currOwner=" + currOwner +
-                ", elbow=" + ownershipMgr.getOwner(elbow) +
-                ", extender=" + ownershipMgr.getOwner(extender) + ").");
-            releaseSubsystemsOwnership();
-        }
-
-        return success;
+        return owner == null ||
+                        elbow.acquireExclusiveAccess(owner) &&
+                        extender.acquireExclusiveAccess(owner);
     }   //acquireSubsystemsOwnership
 
     /**
      * This method is called by the super class to release ownership of all subsystems involved in the auto-assist
      * operation. This is typically done if the auto-assist operation is completed or canceled.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void releaseSubsystemsOwnership()
+    protected void releaseSubsystemsOwnership(String owner)
     {
-        if (ownerName != null)
+        if (owner != null)
         {
             TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
             tracer.traceInfo(
                 moduleName,
-                "Releasing subsystem ownership (currOwner=" + currOwner +
-                ", elbow=" + ownershipMgr.getOwner(elbow) +
-                ", extender=" + ownershipMgr.getOwner(extender) + ").");
-            elbow.releaseExclusiveAccess(currOwner);
-            extender.releaseExclusiveAccess(currOwner);
-            currOwner = null;
+                "Releasing subsystem ownership on behalf of " + owner +
+                "\n\telbowOwner=" + ownershipMgr.getOwner(elbow) +
+                "\n\textenderOwner=" + ownershipMgr.getOwner(extender));
+            elbow.releaseExclusiveAccess(owner);
+            extender.releaseExclusiveAccess(owner);
         }
     }   //releaseSubsystemsOwnership
 
     /**
      * This method is called by the super class to stop all the subsystems.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void stopSubsystems()
+    protected void stopSubsystems(String owner)
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
         elbow.cancel();
@@ -322,6 +310,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
     /**
      * This methods is called periodically to run the auto-assist task.
      *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      * @param params specifies the task parameters.
      * @param state specifies the current state of the task.
      * @param taskType specifies the type of task being run.
@@ -331,7 +320,8 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
      */
     @Override
     protected void runTaskState(
-        Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode, boolean slowPeriodicLoop)
+        String owner, Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode,
+        boolean slowPeriodicLoop)
     {
         TaskParams taskParams = (TaskParams) params;
 
@@ -362,7 +352,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                 {
                     // We are setting the elbow angle and the extender is extended, retract it first.
                     extender.setPosition(
-                        currOwner, 0.0, Extender.Params.MIN_POS, true, Extender.Params.POWER_LIMIT, extenderEvent, 0.0);
+                        owner, 0.0, Extender.Params.MIN_POS, true, Extender.Params.POWER_LIMIT, extenderEvent, 0.0);
                     sm.waitForSingleEvent(extenderEvent, State.SET_ELBOW_ANGLE);
                 }
                 else
@@ -377,7 +367,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                 {
                     // We are setting elbow angle, go do it.
                     elbow.setPosition(
-                        currOwner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 4.0);
+                        owner, 0.0, taskParams.elbowAngle, true, Elbow.Params.POWER_LIMIT, elbowEvent, 4.0);
                     if (taskParams.safeSequence)
                     {
                         sm.waitForSingleEvent(elbowEvent, State.SET_EXTENDER_POSITION);
@@ -401,7 +391,7 @@ public class TaskExtenderArm extends TrcAutoTask<TaskExtenderArm.State>
                 {
                     // We are setting extender position, go do it.
                     extender.setPosition(
-                        currOwner, 0.0, taskParams.extenderPosition, true, Extender.Params.POWER_LIMIT, extenderEvent,
+                        owner, 0.0, taskParams.extenderPosition, true, Extender.Params.POWER_LIMIT, extenderEvent,
                         4.0);
                     if (taskParams.safeSequence)
                     {

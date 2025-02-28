@@ -434,7 +434,7 @@ public class FtcTeleOp extends FtcOpMode
                     {
                         robot.globalTracer.traceInfo(
                             moduleName, ">>>>> Auto score chamber (scoreHeight=%s).", scoreHeight);
-                        robot.scoreChamberTask.autoScoreChamber(scoreHeight, driverAltFunc, null);
+                        robot.scoreChamberTask.autoScoreChamber(moduleName, scoreHeight, driverAltFunc, null);
                     }
                     else
                     {
@@ -452,7 +452,8 @@ public class FtcTeleOp extends FtcOpMode
                         robot.globalTracer.traceInfo(
                             moduleName, ">>>>> Auto score basket (scoreHeight=%s).", scoreHeight);
                         // Code Review: what should we set the "fromSubmersible" to? Do the driver has the say?
-                        robot.scoreBasketTask.autoScoreBasket(null, scoreHeight, !driverAltFunc, false, null);
+                        robot.scoreBasketTask.autoScoreBasket(
+                            moduleName, null, scoreHeight, !driverAltFunc, false, null);
                     }
                     else
                     {
@@ -532,19 +533,19 @@ public class FtcTeleOp extends FtcOpMode
                     if (climbedLevel == 0)
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Auto climb level 1.");
-                        robot.autoClimbTask.autoClimbLevel1(null);
+                        robot.autoClimbTask.autoClimbLevel1(moduleName, null);
                         climbedLevel++;
                     }
                     else if (climbedLevel == 1)
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Auto climb level 2.");
-                        robot.autoClimbTask.autoClimbLevel2(null);
+                        robot.autoClimbTask.autoClimbLevel2(moduleName, null);
                         climbedLevel++;
                     }
                     else if (climbedLevel == 2)
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Auto climb level 3.");
-                        robot.autoClimbTask.autoClimbLevel3(null);
+                        robot.autoClimbTask.autoClimbLevel3(moduleName, null);
                         climbedLevel++;
                     }
                 }
@@ -556,7 +557,7 @@ public class FtcTeleOp extends FtcOpMode
                     if (!robot.pickupFromGroundTask.isActive())
                     {
                         robot.globalTracer.traceInfo(moduleName, ">>>>> Auto pickup from ground.");
-                        robot.pickupFromGroundTask.autoPickupFromGround(Robot.sampleType, true, null, null);
+                        robot.pickupFromGroundTask.autoPickupFromGround(moduleName, Robot.sampleType, true, null, null);
                     }
                     else
                     {
@@ -571,7 +572,7 @@ public class FtcTeleOp extends FtcOpMode
                 {
                     robot.wrist.setPosition(0.0, 0.0);
                     robot.extenderArm.setPosition(
-                        Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
+                        moduleName, Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
                 }
 //                if (robot.pickupSpecimenTask != null && pressed)
 //                {
@@ -732,7 +733,7 @@ public class FtcTeleOp extends FtcOpMode
                 if (robot.extenderArm != null && pressed)
                 {
                     robot.globalTracer.traceInfo(moduleName, ">>>>> Turtle.");
-                    robot.extenderArm.retract(null);
+                    robot.extenderArm.retract(moduleName, null);
                 }
                 break;
 

@@ -167,7 +167,7 @@ public class Robot
 
                 if (elbow != null && extender != null)
                 {
-                    extenderArm = new TaskExtenderArm("ExtenderArm", elbow, extender);
+                    extenderArm = new TaskExtenderArm(elbow, extender);
                 }
 
                 if (RobotParams.Preferences.useWrist)
@@ -187,11 +187,11 @@ public class Robot
                     stagedZeroCalibrate(null, zeroCalibrateEvent);
                 }
                 // Create autotasks.
-                pickupFromGroundTask = new TaskAutoPickupFromGround("pickupFromGroundTask", this);
-                pickupSpecimenTask = new TaskAutoPickupSpecimen("pickupSpecimenTask", this);
-                scoreBasketTask = new TaskAutoScoreBasket("scoreBasketTask", this);
-                scoreChamberTask = new TaskAutoScoreChamber("scoreChamberTask", this);
-                autoClimbTask = new TaskAutoClimb("autoClimbTask", this);
+                pickupFromGroundTask = new TaskAutoPickupFromGround(this);
+                pickupSpecimenTask = new TaskAutoPickupSpecimen(this);
+                scoreBasketTask = new TaskAutoScoreBasket(this);
+                scoreChamberTask = new TaskAutoScoreChamber(this);
+                autoClimbTask = new TaskAutoClimb(this);
             }
         }
 

@@ -80,12 +80,10 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
         }   //toString
     }   //class TaskParams
 
-    private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
     private final TrcEvent armEvent;
 
-    private String currOwner = null;
     private TrcVisionTargetInfo<TrcOpenCvColorBlobPipeline.DetectedObject> sampleInfo = null;
     private TrcPose2D samplePose = null;
     private Double visionExpiredTime = null;
@@ -93,13 +91,11 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     /**
      * Constructor: Create an instance of the object.
      *
-     * @param ownerName specifies the owner name to take subsystem ownership, can be null if no ownership required.
      * @param robot specifies the robot object that contains all the necessary subsystems.
      */
-    public TaskAutoPickupFromGround(String ownerName, Robot robot)
+    public TaskAutoPickupFromGround(Robot robot)
     {
-        super(moduleName, ownerName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
-        this.ownerName = ownerName;
+        super(moduleName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
         this.robot = robot;
         event = new TrcEvent(moduleName);
         armEvent = new TrcEvent(moduleName + ".armEvent");
@@ -108,16 +104,17 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     /**
      * This method starts the auto-assist operation.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      * @param useVision specifies true to use vision to locate sample, false otherwise.
      * @param wristRotatePos specifies differential wrist rotate position, null if no change.
      */
     public void autoPickupFromGround(
-        Vision.SampleType sampleType, boolean useVision, Double wristRotatePos, TrcEvent completionEvent)
+        String owner, Vision.SampleType sampleType, boolean useVision, Double wristRotatePos, TrcEvent completionEvent)
     {
         TaskParams taskParams = new TaskParams(sampleType, useVision, wristRotatePos);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
-        startAutoTask(State.START, taskParams, completionEvent);
+        startAutoTask(owner, State.START, taskParams, completionEvent);
     }   //autoPickupFromGround
 
     //
@@ -128,61 +125,47 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
      * This method is called by the super class to acquire ownership of all subsystems involved in the auto-assist
      * operation. This is typically done before starting an auto-assist operation.
      *
+     * @param owner specifies the owner to acquire the subsystem ownerships.
      * @return true if acquired all subsystems ownership, false otherwise. It releases all ownership if any acquire
      *         failed.
      */
     @Override
-    protected boolean acquireSubsystemsOwnership()
+    protected boolean acquireSubsystemsOwnership(String owner)
     {
         // ExtenderArm is an AutoTask and is not an ExclusiveSubsystem.
-        boolean success = ownerName == null ||
-                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName);
-
-        if (success)
-        {
-            currOwner = ownerName;
-            tracer.traceInfo(moduleName, "Successfully acquired subsystem ownerships.");
-        }
-        else
-        {
-            TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
-            tracer.traceWarn(
-                moduleName,
-                "Failed to acquire subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
-            releaseSubsystemsOwnership();
-        }
-
-        return success;
+        return owner == null || robot.robotDrive.driveBase.acquireExclusiveAccess(owner);
     }   //acquireSubsystemsOwnership
 
     /**
      * This method is called by the super class to release ownership of all subsystems involved in the auto-assist
      * operation. This is typically done if the auto-assist operation is completed or canceled.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void releaseSubsystemsOwnership()
+    protected void releaseSubsystemsOwnership(String owner)
     {
-        if (ownerName != null)
+        if (owner != null)
         {
             TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
             tracer.traceInfo(
                 moduleName,
-                "Releasing subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
-            robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
-            currOwner = null;
+                "Releasing subsystem ownership on behalf of " + owner +
+                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase));
+            robot.robotDrive.driveBase.releaseExclusiveAccess(owner);
         }
     }   //releaseSubsystemsOwnership
 
     /**
      * This method is called by the super class to stop all the subsystems.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void stopSubsystems()
+    protected void stopSubsystems(String owner)
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
-        robot.robotDrive.cancel(currOwner);
+        robot.robotDrive.cancel(owner);
         robot.grabber.cancel();
         robot.extenderArm.cancel();
     }   //stopSubsystems
@@ -190,6 +173,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
     /**
      * This methods is called periodically to run the auto-assist task.
      *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      * @param params specifies the task parameters.
      * @param state specifies the current state of the task.
      * @param taskType specifies the type of task being run.
@@ -199,7 +183,8 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
      */
     @Override
     protected void runTaskState(
-        Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode, boolean slowPeriodicLoop)
+        String owner, Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode,
+        boolean slowPeriodicLoop)
     {
         TaskParams taskParams = (TaskParams) params;
         State nextState;
@@ -221,7 +206,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                         robot.vision.isSampleVisionEnabled(taskParams.sampleType)?
                             State.FIND_SAMPLE: State.PICKUP_SAMPLE;
                     robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, taskParams.wristRotatePos);
-                    robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, armEvent);
+                    robot.extenderArm.setPosition(owner, Elbow.Params.GROUND_PICKUP_POS, null, armEvent);
                     sm.waitForSingleEvent(armEvent, nextState);
                 }
                 break;
@@ -257,7 +242,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case TURN_TO_SAMPLE:
                 // Vision found the sample, turn the robot toward it and use the reported rotated sample angle.
                 double extenderLen = robot.getExtenderPosFromSamplePose(samplePose);
-                robot.extenderArm.setPosition(null, extenderLen, armEvent);
+                robot.extenderArm.setPosition(owner, null, extenderLen, armEvent);
                 robot.wrist.setPosition(
                     Wrist.Params.GROUND_PICKUP_POS, sampleInfo.objRotatedRectAngle * 0.8 - samplePose.angle);
                 tracer.traceInfo(
@@ -266,7 +251,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
                     sampleInfo.objRotatedRectAngle - samplePose.angle);
                 // Turning is a lot faster than extending, so just wait for extender event.
                 robot.robotDrive.purePursuitDrive.start(
-                    currOwner, null, 0.0, true, robot.robotInfo.profiledMaxVelocity,
+                    owner, null, 0.0, true, robot.robotInfo.profiledMaxVelocity,
                     robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                     new TrcPose2D(0.0, 0.0, samplePose.angle));
                 sm.waitForSingleEvent(armEvent, State.PICKUP_SAMPLE);
@@ -285,7 +270,7 @@ public class TaskAutoPickupFromGround extends TrcAutoTask<TaskAutoPickupFromGrou
             case RAISE_ARM:
                 // We may or may not get the sample. Either way, raise the arm by "fire and forget" to save time.
                 robot.extenderArm.cancel();
-                robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null);
+                robot.extenderArm.setPosition(owner, Elbow.Params.GROUND_PICKUP_POS, null, null);
                 sm.setState(State.DONE);
                 break;
 

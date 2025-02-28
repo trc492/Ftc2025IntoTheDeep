@@ -79,24 +79,20 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
         }   //toString
     }   //class TaskParams
 
-    private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
 
-    private String currOwner = null;
     private TrcPose2D specimenPose = null;
     private Double visionExpiredTime = null;
 
     /**
      * Constructor: Create an instance of the object.
      *
-     * @param ownerName specifies the owner name to take subsystem ownership, can be null if no ownership required.
      * @param robot specifies the robot object that contains all the necessary subsystems.
      */
-    public TaskAutoPickupSpecimen(String ownerName, Robot robot)
+    public TaskAutoPickupSpecimen(Robot robot)
     {
-        super(moduleName, ownerName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
-        this.ownerName = ownerName;
+        super(moduleName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
         this.robot = robot;
         event = new TrcEvent(moduleName);
     }   //TaskAutoPickupSpecimen
@@ -104,13 +100,14 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     /**
      * This method starts the auto-assist operation.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param alliance specifies the alliance color, can be null if caller is TeleOp.
      * @param useVision specifies true to use Vision, false otherwise.
      * @param fromObservation specifies true if the robot is already right in front of the specimen, false otherwise.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
     public void autoPickupSpecimen(
-        FtcAuto.Alliance alliance, boolean useVision, boolean fromObservation, TrcEvent completionEvent)
+        String owner, FtcAuto.Alliance alliance, boolean useVision, boolean fromObservation, TrcEvent completionEvent)
     {
         if (alliance == null)
         {
@@ -124,7 +121,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 
         TaskParams taskParams = new TaskParams(alliance, useVision, fromObservation);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
-        startAutoTask(State.START, taskParams, completionEvent);
+        startAutoTask(owner, State.START, taskParams, completionEvent);
     }   //autoPickupSpecimen
 
     //
@@ -135,61 +132,47 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
      * This method is called by the super class to acquire ownership of all subsystems involved in the auto-assist
      * operation. This is typically done before starting an auto-assist operation.
      *
+     * @param owner specifies the owner to acquire the subsystem ownerships.
      * @return true if acquired all subsystems ownership, false otherwise. It releases all ownership if any acquire
      *         failed.
      */
     @Override
-    protected boolean acquireSubsystemsOwnership()
+    protected boolean acquireSubsystemsOwnership(String owner)
     {
         // ExtenderArm is an AutoTask and is not an ExclusiveSubsystem.
-        boolean success = ownerName == null ||
-                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName);
-
-        if (success)
-        {
-            currOwner = ownerName;
-            tracer.traceInfo(moduleName, "Successfully acquired subsystem ownerships.");
-        }
-        else
-        {
-            TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
-            tracer.traceWarn(
-                moduleName,
-                "Failed to acquire subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
-            releaseSubsystemsOwnership();
-        }
-
-        return success;
+        return owner == null || robot.robotDrive.driveBase.acquireExclusiveAccess(owner);
     }   //acquireSubsystemsOwnership
 
     /**
      * This method is called by the super class to release ownership of all subsystems involved in the auto-assist
      * operation. This is typically done if the auto-assist operation is completed or canceled.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void releaseSubsystemsOwnership()
+    protected void releaseSubsystemsOwnership(String owner)
     {
-        if (ownerName != null)
+        if (owner != null)
         {
             TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
             tracer.traceInfo(
                 moduleName,
-                "Releasing subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
-            robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
-            currOwner = null;
+                "Releasing subsystem ownership on behalf of " + owner +
+                "\n\trobotDriveOwner=" + ownershipMgr.getOwner(robot.robotDrive.driveBase));
+            robot.robotDrive.driveBase.releaseExclusiveAccess(owner);
         }
     }   //releaseSubsystemsOwnership
 
     /**
      * This method is called by the super class to stop all the subsystems.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void stopSubsystems()
+    protected void stopSubsystems(String owner)
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
-        robot.robotDrive.cancel(currOwner);
+        robot.robotDrive.cancel(owner);
         robot.grabber.cancel();
         robot.extenderArm.cancel();
     }   //stopSubsystems
@@ -197,6 +180,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
     /**
      * This methods is called periodically to run the auto-assist task.
      *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      * @param params specifies the task parameters.
      * @param state specifies the current state of the task.
      * @param taskType specifies the type of task being run.
@@ -206,7 +190,8 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
      */
     @Override
     protected void runTaskState(
-        Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode, boolean slowPeriodicLoop)
+        String owner, Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode,
+        boolean slowPeriodicLoop)
     {
         TaskParams taskParams = (TaskParams) params;
 
@@ -232,7 +217,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     // Fire and forget to save time.
                     robot.wrist.setPosition(Wrist.Params.SPECIMEN_PICKUP_POS, 0.0);
                     robot.extenderArm.setPosition(
-                        Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
+                        owner, Elbow.Params.SPECIMEN_PICKUP_POS, Extender.Params.SPECIMEN_PICKUP_POS, null);
                     sm.setState(State.DRIVE_TO_PICKUP);
                 }
                 break;
@@ -244,7 +229,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                     TrcPose2D intermediate1 = RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP.clone();
                     intermediate1.y += 2.0;
                     robot.robotDrive.purePursuitDrive.start(
-                        currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
+                        owner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
                         robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                         robot.adjustPoseByAlliance(intermediate1, taskParams.alliance),
                         robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
@@ -265,7 +250,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
 //                            robot.adjustPoseByAlliance(intermediate2, taskParams.alliance),
 //                            robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                     robot.robotDrive.purePursuitDrive.start(
-                        currOwner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
+                        owner, event, 5.0, false, robot.robotInfo.profiledMaxVelocity,
                         robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                         robot.adjustPoseByAlliance(RobotParams.Game.RED_OBSERVATION_ZONE_PICKUP, taskParams.alliance));
                 }
@@ -304,7 +289,7 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
                 TrcPose2D robotPose = robot.robotDrive.driveBase.getFieldPosition();
                 double targetHeading = taskParams.alliance == FtcAuto.Alliance.RED_ALLIANCE? 180.0: 0.0;
                 robot.robotDrive.purePursuitDrive.start(
-                    currOwner, null, 0.0, true, robot.robotInfo.profiledMaxVelocity,
+                    owner, null, 0.0, true, robot.robotInfo.profiledMaxVelocity,
                     robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                     new TrcPose2D(specimenPose.x, 0.0, targetHeading - robotPose.angle));
                 sm.waitForSingleEvent(event, State.APPROACH_SPECIMEN);
@@ -313,22 +298,22 @@ public class TaskAutoPickupSpecimen extends TrcAutoTask<TaskAutoPickupSpecimen.S
             case APPROACH_SPECIMEN:
                 // Turn on intake and approach specimen slowly.
                 robot.grabber.autoIntake(null, 0.0, Grabber.Params.FINISH_DELAY, event, 1.5);
-                robot.robotDrive.driveBase.holonomicDrive(currOwner, 0.0, 0.3, 0.0);
+                robot.robotDrive.driveBase.holonomicDrive(owner, 0.0, 0.3, 0.0);
                 sm.waitForSingleEvent(event, State.PICKUP_SPECIMEN);
                 break;
 
             case PICKUP_SPECIMEN:
                 // Grabber got the specimen, stop the drive and raise the arm to pick it up.
-                robot.robotDrive.driveBase.stop(currOwner);
+                robot.robotDrive.driveBase.stop(owner);
                 robot.grabber.cancel();
-                robot.extenderArm.setPosition(Elbow.Params.SPECIMEN_PICKUP_POS + 10.0, null, event);
+                robot.extenderArm.setPosition(owner, Elbow.Params.SPECIMEN_PICKUP_POS + 10.0, null, event);
                 sm.waitForSingleEvent(event, State.RETRACT_ARM);
                 break;
 
             case RETRACT_ARM:
                 // Retract the arm with "fire and forget".
                 // Code Review: the retract won't finish because DONE state will cancel it.
-                robot.extenderArm.retract(null);
+                robot.extenderArm.retract(owner, null);
                 sm.setState(State.DONE);
                 break;
 

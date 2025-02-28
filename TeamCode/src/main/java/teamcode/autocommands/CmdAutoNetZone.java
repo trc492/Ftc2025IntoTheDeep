@@ -150,13 +150,13 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     // Score the preloaded sample or specimen.
                     if (autoChoices.preloadType == Robot.GamePieceType.SPECIMEN)
                     {
-                        robot.scoreChamberTask.autoScoreChamber(autoChoices.scoreHeight, false, event);
+                        robot.scoreChamberTask.autoScoreChamber(null, autoChoices.scoreHeight, false, event);
                     }
                     else
                     {
                         robot.wrist.setPosition(-15.0, 0.0);
                         robot.scoreBasketTask.autoScoreBasket(
-                            autoChoices.alliance, autoChoices.scoreHeight, true, false, event);
+                            null, autoChoices.alliance, autoChoices.scoreHeight, true, false, event);
                     }
                     sm.waitForSingleEvent(event, State.TURN_TO_PARTNER);
                     break;
@@ -165,7 +165,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     // If we're doing partner scoring, turn to their sample
                     if (autoChoices.scorePartnerSample == FtcAuto.ScorePartnerSample.YES)
                     {
-                        robot.extenderArm.setPosition(Elbow.Params.GROUND_PICKUP_POS, null, null);
+                        robot.extenderArm.setPosition(null, Elbow.Params.GROUND_PICKUP_POS, null, null);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, true, robot.robotInfo.profiledMaxVelocity,
                             robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
@@ -196,7 +196,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                             spikeMark.angle -= 5.0;
                         }
                         spikeMark = robot.adjustPoseByAlliance(spikeMark, autoChoices.alliance);
-                        robot.extenderArm.setPosition(null, 22.0, null);
+                        robot.extenderArm.setPosition(null, null, 22.0, null);
                         robot.robotDrive.purePursuitDrive.start(
                             event, 0.0, false, robot.robotInfo.profiledMaxVelocity,
                             robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
@@ -212,14 +212,15 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
 
                 case PICKUP_FLOOR_SAMPLE:
                     // Pick up a sample from the spike marks.
-                    robot.pickupFromGroundTask.autoPickupFromGround(Vision.SampleType.YellowSample, true, null, event);
+                    robot.pickupFromGroundTask.autoPickupFromGround(
+                        null, Vision.SampleType.YellowSample, true, null, event);
                     sm.waitForSingleEvent(event, State.SCORE_SAMPLE_BASKET);
                     break;
 
                 case SCORE_SAMPLE_BASKET:
                     // Score the sample into the basket.
                     robot.scoreBasketTask.autoScoreBasket(
-                        autoChoices.alliance, autoChoices.scoreHeight, true, false, event);
+                        null, autoChoices.alliance, autoChoices.scoreHeight, true, false, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_SPIKE_MARKS);
                     break;
 
@@ -230,7 +231,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         (RobotParams.Game.AUTO_PERIOD - elapsedTime) < 6.5)
                     {
                         robot.extenderArm.setPosition(
-                            1.0, Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
+                            null, 1.0, Elbow.Params.PRE_CLIMB_POS, Extender.Params.PRE_CLIMB_POS, null);
                         robot.wrist.setPosition(10.0, 0.0);
                         TrcPose2D targetPose = robot.adjustPoseByAlliance(
                             RobotParams.Game.RED_ASCENT_ZONE_PARK_POSE, autoChoices.alliance);
@@ -246,7 +247,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     else
                     {
                         robot.extenderArm.setPosition(
-                            Elbow.Params.GROUND_PICKUP_POS+2.0, Extender.Params.MIN_POS + 2.0, null);
+                            null, Elbow.Params.GROUND_PICKUP_POS+2.0, Extender.Params.MIN_POS + 2.0, null);
                         robot.wrist.setPosition(Wrist.Params.GROUND_PICKUP_POS, 0.0);
                         TrcPose2D targetPose = new TrcPose2D(-1.075, -0.3, 90.0);
                         targetPose = robot.adjustPoseByAlliance(targetPose, autoChoices.alliance, true);
@@ -272,7 +273,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     {
                         // Do level 1 ascent.
 //                        robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
-                        robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL1_POS, event);
+                        robot.extenderArm.setPosition(null, null, Extender.Params.ASCENT_LEVEL1_POS, event);
                         robot.elbow.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, true, 0.6);
                         sm.waitForSingleEvent(event, State.DONE);
                     }
@@ -280,7 +281,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                     {
                         Vision.SampleType pickupColor = autoChoices.alliance == FtcAuto.Alliance.RED_ALLIANCE?
                             Vision.SampleType.RedAllianceSamples: Vision.SampleType.BlueAllianceSamples;
-                        robot.pickupFromGroundTask.autoPickupFromGround(pickupColor, true, null, event);
+                        robot.pickupFromGroundTask.autoPickupFromGround(null, pickupColor, true, null, event);
                         sm.waitForSingleEvent(event, State.SCORE_SUBMERSIBLE_SAMPLE);
                     }
                     else
@@ -299,7 +300,7 @@ public class CmdAutoNetZone implements TrcRobot.RobotCommand
                         robot.wrist.setPosition(0.0, 0.0);
                         robot.elbow.setPosition(0.0, 2.0, true, 1.0, null);
                         robot.scoreBasketTask.autoScoreBasket(
-                            autoChoices.alliance, autoChoices.scoreHeight, true, true, event);
+                            null, autoChoices.alliance, autoChoices.scoreHeight, true, true, event);
                         finishedSubPickup = true;
                         sm.waitForSingleEvent(event, State.GO_PARK);
                     }

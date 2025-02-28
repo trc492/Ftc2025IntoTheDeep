@@ -87,22 +87,17 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
         }   //toString
     }   //class TaskParams
 
-    private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
-
-    private String currOwner = null;
 
     /**
      * Constructor: Create an instance of the object.
      *
-     * @param ownerName specifies the owner name to take subsystem ownership, can be null if no ownership required.
      * @param robot specifies the robot object that contains all the necessary subsystems.
      */
-    public TaskAutoScoreChamber(String ownerName, Robot robot)
+    public TaskAutoScoreChamber(Robot robot)
     {
-        super(moduleName, ownerName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
-        this.ownerName = ownerName;
+        super(moduleName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
         this.robot = robot;
         this.event = new TrcEvent(moduleName + ".event");
     }   //TaskAutoScoreChamber
@@ -110,10 +105,11 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
     /**
      * This method starts the auto-assist operation.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param scoreHeight specifies the scoring height.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoScoreChamber(Robot.ScoreHeight scoreHeight, boolean noDrive, TrcEvent completionEvent)
+    public void autoScoreChamber(String owner, Robot.ScoreHeight scoreHeight, boolean noDrive, TrcEvent completionEvent)
     {
         // If caller is TeleOp, let's determine the alliance color by robot's location.
         // Caveat: this assumes odemetry is current in TeleOp. If odometry is not setup correctly, this would be
@@ -150,7 +146,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 
         TaskParams taskParams = new TaskParams(alliance, scorePose, elbowAngle, extenderPos, wristPos, noDrive);
         tracer.traceInfo(moduleName, "taskParams=(" + taskParams + "), event=" + completionEvent);
-        startAutoTask(State.GO_TO_SCORE_POSITION, taskParams, completionEvent);
+        startAutoTask(owner, State.GO_TO_SCORE_POSITION, taskParams, completionEvent);
     }   //autoScoreChamber
 
     //
@@ -161,60 +157,46 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
      * This method is called by the super class to acquire ownership of all subsystems involved in the auto-assist
      * operation. This is typically done before starting an auto-assist operation.
      *
+     * @param owner specifies the owner to acquire the subsystem ownerships.
      * @return true if acquired all subsystems ownership, false otherwise. It releases all ownership if any acquire
      *         failed.
      */
     @Override
-    protected boolean acquireSubsystemsOwnership()
+    protected boolean acquireSubsystemsOwnership(String owner)
     {
-        boolean success = ownerName == null ||
-                          robot.robotDrive.driveBase.acquireExclusiveAccess(ownerName);
-
-        if (success)
-        {
-            currOwner = ownerName;
-            tracer.traceInfo(moduleName, "Successfully acquired subsystem ownerships.");
-        }
-        else
-        {
-            TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
-            tracer.traceWarn(
-                moduleName,
-                "Failed to acquire subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
-            releaseSubsystemsOwnership();
-        }
-
-        return success;
+        return owner == null || robot.robotDrive.driveBase.acquireExclusiveAccess(owner);
     }   //acquireSubsystemsOwnership
 
     /**
      * This method is called by the super class to release ownership of all subsystems involved in the auto-assist
      * operation. This is typically done if the auto-assist operation is completed or canceled.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void releaseSubsystemsOwnership()
+    protected void releaseSubsystemsOwnership(String owner)
     {
-        if (ownerName != null)
+        if (owner != null)
         {
             TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
             tracer.traceInfo(
                 moduleName,
-                "Releasing subsystem ownership (currOwner=" + currOwner +
-                ", robotDrive=" + ownershipMgr.getOwner(robot.robotDrive.driveBase) + ").");
-            robot.robotDrive.driveBase.releaseExclusiveAccess(currOwner);
-            currOwner = null;
+                "Releasing subsystem ownership on behalf of " + owner +
+                "\n\trobotDriveOwner=" + ownershipMgr.getOwner(robot.robotDrive.driveBase));
+            robot.robotDrive.driveBase.releaseExclusiveAccess(owner);
         }
     }   //releaseSubsystemsOwnership
 
     /**
      * This method is called by the super class to stop all the subsystems.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void stopSubsystems()
+    protected void stopSubsystems(String owner)
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
-        robot.robotDrive.cancel(currOwner);
+        robot.robotDrive.cancel(owner);
         robot.grabber.cancel();
         robot.extenderArm.cancel();
     }   //stopSubsystems
@@ -222,6 +204,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
     /**
      * This methods is called periodically to run the auto-assist task.
      *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      * @param params specifies the task parameters.
      * @param state specifies the current state of the task.
      * @param taskType specifies the type of task being run.
@@ -231,7 +214,8 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
      */
     @Override
     protected void runTaskState(
-        Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode, boolean slowPeriodicLoop)
+        String owner, Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode,
+        boolean slowPeriodicLoop)
     {
         TaskParams taskParams = (TaskParams) params;
 
@@ -244,24 +228,24 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
                     TrcPose2D intermediate1 = taskParams.scorePose.clone();
                     intermediate1.y -= 8.0;
                     robot.robotDrive.purePursuitDrive.start(
-                        currOwner, event, 1.75, false, robot.robotInfo.profiledMaxVelocity,
+                        owner, event, 1.75, false, robot.robotInfo.profiledMaxVelocity,
                         robot.robotInfo.profiledMaxAcceleration, robot.robotInfo.profiledMaxDeceleration,
                         robot.adjustPoseByAlliance(intermediate1, taskParams.alliance),
                         robot.adjustPoseByAlliance(taskParams.scorePose, taskParams.alliance));
                     robot.wrist.setPosition(taskParams.wristPos, 0.0);
-                    robot.extenderArm.setPosition(taskParams.elbowAngle, taskParams.extenderPos, null);
+                    robot.extenderArm.setPosition(owner, taskParams.elbowAngle, taskParams.extenderPos, null);
                 }
                 else
                 {
                     robot.wrist.setPosition(taskParams.wristPos, 0.0);
-                    robot.extenderArm.setPosition(taskParams.elbowAngle, taskParams.extenderPos, event);
+                    robot.extenderArm.setPosition(owner, taskParams.elbowAngle, taskParams.extenderPos, event);
                 }
                 sm.waitForSingleEvent(event, State.SET_EXTENDER);
                 break;
 
             case SET_EXTENDER:
                 // Set the extender to the correct length.
-                robot.extenderArm.setPosition(null, taskParams.extenderPos, event);
+                robot.extenderArm.setPosition(owner, null, taskParams.extenderPos, event);
                 sm.waitForSingleEvent(event, State.LOWER_ELBOW);
                 break;
 
@@ -271,7 +255,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 //                        event, 0.0, robot.robotDrive.driveBase.getFieldPosition(), true,
 //                        robot.robotInfo.profiledMaxVelocity, robot.robotInfo.profiledMaxAcceleration,
 //                        new TrcPose2D(0, -2, 0.0));
-                robot.extenderArm.setPosition(taskParams.elbowAngle, taskParams.extenderPos + 2.0, event);
+                robot.extenderArm.setPosition(owner, taskParams.elbowAngle, taskParams.extenderPos + 2.0, event);
                 robot.wrist.setPosition(0.75, 0.0, null, 0.0);
                 sm.waitForSingleEvent(event, State.SCORE_CHAMBER, 0.15);
                 break;
@@ -303,7 +287,7 @@ public class TaskAutoScoreChamber extends TrcAutoTask<TaskAutoScoreChamber.State
 //                sm.addEvent(event);
 //                sm.addEvent(event2);
 //                sm.waitForEvents(State.DONE);
-                robot.extenderArm.setPosition(Elbow.Params.MIN_POS,Extender.Params.MIN_POS, event);
+                robot.extenderArm.setPosition(owner, Elbow.Params.MIN_POS,Extender.Params.MIN_POS, event);
                 sm.setState(State.DONE);
                 break;
 

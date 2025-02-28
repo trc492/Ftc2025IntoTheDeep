@@ -53,22 +53,17 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
         DONE
     }   //enum State
 
-    private final String ownerName;
     private final Robot robot;
     private final TrcEvent event;
-
-    private String currOwner = null;
 
     /**
      * Constructor: Create an instance of the object.
      *
-     * @param ownerName specifies the owner name to take subsystem ownership, can be null if no ownership required.
      * @param robot specifies the robot object that contains all the necessary subsystems.
      */
-    public TaskAutoClimb(String ownerName, Robot robot)
+    public TaskAutoClimb(Robot robot)
     {
-        super(moduleName, ownerName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
-        this.ownerName = ownerName;
+        super(moduleName, TrcTaskMgr.TaskType.POST_PERIODIC_TASK);
         this.robot = robot;
         event = new TrcEvent(moduleName);
     }   //TaskAutoClimb
@@ -76,34 +71,37 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
     /**
      * This method starts the auto-assist operation.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoClimbLevel1(TrcEvent completionEvent)
+    public void autoClimbLevel1(String owner, TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "event=" + completionEvent);
-        startAutoTask(State.LEVEL1_START, null, completionEvent);
+        startAutoTask(owner, State.LEVEL1_START, null, completionEvent);
     }   //autoClimbLevel1
 
     /**
      * This method starts the auto-assist operation.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoClimbLevel2(TrcEvent completionEvent)
+    public void autoClimbLevel2(String owner, TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "event=" + completionEvent);
-        startAutoTask(State.LEVEL2_START, null, completionEvent);
+        startAutoTask(owner, State.LEVEL2_START, null, completionEvent);
     }   //autoClimbLevel2
 
     /**
      * This method starts the auto-assist operation.
      *
+     * @param owner specifies the owner to acquire subsystem ownerships, can be null if not requiring ownership.
      * @param completionEvent specifies the event to signal when done, can be null if none provided.
      */
-    public void autoClimbLevel3(TrcEvent completionEvent)
+    public void autoClimbLevel3(String owner, TrcEvent completionEvent)
     {
         tracer.traceInfo(moduleName, "event=" + completionEvent);
-        startAutoTask(State.LEVEL3_START, null, completionEvent);
+        startAutoTask(owner, State.LEVEL3_START, null, completionEvent);
     }   //autoClimbLevel3
 
     //
@@ -114,40 +112,35 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
      * This method is called by the super class to acquire ownership of all subsystems involved in the auto-assist
      * operation. This is typically done before starting an auto-assist operation.
      *
+     * @param owner specifies the owner to acquire the subsystem ownerships.
      * @return true if acquired all subsystems ownership, false otherwise. It releases all ownership if any acquire
      *         failed.
      */
     @Override
-    protected boolean acquireSubsystemsOwnership()
+    protected boolean acquireSubsystemsOwnership(String owner)
     {
         // ExtenderArm is an AutoTask and is not an ExclusiveSubsystem so we don't need to acquire its ownership.
-        currOwner = ownerName;
-        tracer.traceInfo(moduleName, "Successfully acquired subsystem ownerships.");
         return true;
     }   //acquireSubsystemsOwnership
 
     /**
      * This method is called by the super class to release ownership of all subsystems involved in the auto-assist
      * operation. This is typically done if the auto-assist operation is completed or canceled.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void releaseSubsystemsOwnership()
+    protected void releaseSubsystemsOwnership(String owner)
     {
-        if (ownerName != null)
-        {
-            TrcOwnershipMgr ownershipMgr = TrcOwnershipMgr.getInstance();
-            tracer.traceInfo(
-                moduleName,
-                "Releasing subsystem ownership (currOwner=" + currOwner + ").");
-            currOwner = null;
-        }
     }   //releaseSubsystemsOwnership
 
     /**
      * This method is called by the super class to stop all the subsystems.
+     *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      */
     @Override
-    protected void stopSubsystems()
+    protected void stopSubsystems(String owner)
     {
         tracer.traceInfo(moduleName, "Stopping subsystems.");
         // Restore PID and stall protection back to default.
@@ -162,6 +155,7 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
     /**
      * This methods is called periodically to run the auto-assist task.
      *
+     * @param owner specifies the owner that acquired the subsystem ownerships.
      * @param params specifies the task parameters (not used).
      * @param state specifies the current state of the task.
      * @param taskType specifies the type of task being run.
@@ -171,19 +165,20 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
      */
     @Override
     protected void runTaskState(
-        Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode, boolean slowPeriodicLoop)
+        String owner, Object params, State state, TrcTaskMgr.TaskType taskType, TrcRobot.RunMode runMode,
+        boolean slowPeriodicLoop)
     {
         switch (state)
         {
             case LEVEL1_START:
                 robot.extenderArm.setPosition(
-                    Elbow.Params.PRE_CLIMB_POS, Extender.Params.ASCENT_LEVEL1_POS, event);
+                    owner, Elbow.Params.PRE_CLIMB_POS, Extender.Params.ASCENT_LEVEL1_POS, event);
                 sm.waitForSingleEvent(event, State.LEVEL1_ASCENT);
                 break;
 
             case LEVEL1_ASCENT:
                 robot.wrist.setPosition(Wrist.Params.ASCENT_LEVEL1_POS, 0.0);
-                robot.extenderArm.setPosition(Elbow.Params.ASCENT_LEVEL1_POS, null, event);
+                robot.extenderArm.setPosition(owner, Elbow.Params.ASCENT_LEVEL1_POS, null, event);
                 sm.waitForSingleEvent(event, State.DONE);
                 break;
 
@@ -193,24 +188,24 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
                 robot.elbow.setPositionPidParameters(2.5, 1.0, 0.01, 0.0, Elbow.Params.POS_PID_TOLERANCE, true);
                 robot.extender.setPositionPidParameters(3.0, 0.0, 0.01, 0.0, Extender.Params.POS_PID_TOLERANCE, true);
 
-                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_RETRACT_POS, null, event);
+                robot.extenderArm.setPosition(owner, Elbow.Params.LEVEL2_RETRACT_POS, null, event);
                 sm.waitForSingleEvent(event, State.FOLD_ROBOT);
                 break;
 
             case FOLD_ROBOT:
-                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS + 2.0, event);
+                robot.extenderArm.setPosition(owner, null, Extender.Params.MIN_POS + 2.0, event);
                 sm.waitForSingleEvent(event, State.ELBOW_TORQUE);
                 break;
 
             case ELBOW_TORQUE:
                 // Code Review: why set extender position separately and not using extenderArm? This will not work.
-                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_TORQUE_POS, null, event);
+                robot.extenderArm.setPosition(owner, Elbow.Params.LEVEL2_TORQUE_POS, null, event);
                 robot.extender.setPosition(Extender.Params.MIN_POS, true);
                 sm.waitForSingleEvent(event, State.ARM_RETRACT);
                 break;
 
             case ARM_RETRACT:
-                robot.extenderArm.setPosition(null, Extender.Params.MIN_POS, event);
+                robot.extenderArm.setPosition(owner, null, Extender.Params.MIN_POS, event);
                 sm.waitForSingleEvent(event, State.ELBOW_RETRACT);
                 break;
 
@@ -221,12 +216,12 @@ public class TaskAutoClimb extends TrcAutoTask<TaskAutoClimb.State>
 //                {
 //                    sm.setState(State.LEVEL2_ASCENT);
 //                }
-                robot.extenderArm.setPosition(Elbow.Params.LEVEL2_FINAL_POS, null, event);
+                robot.extenderArm.setPosition(owner, Elbow.Params.LEVEL2_FINAL_POS, null, event);
                 sm.waitForSingleEvent(event, State.LEVEL2_ASCENT);
                 break;
 
             case LEVEL2_ASCENT:
-                robot.extenderArm.setPosition(null, Extender.Params.ASCENT_LEVEL2_POS, event);
+                robot.extenderArm.setPosition(owner, null, Extender.Params.ASCENT_LEVEL2_POS, event);
                 sm.waitForSingleEvent(event, State.DONE);
                 break;
 

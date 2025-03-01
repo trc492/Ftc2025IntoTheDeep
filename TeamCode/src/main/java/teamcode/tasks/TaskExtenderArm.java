@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package teamcode.autotasks;
+package teamcode.tasks;
 
 import androidx.annotation.NonNull;
 

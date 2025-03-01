@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package teamcode.autotasks;
+package teamcode.tasks;
 
 import teamcode.Robot;
 import teamcode.subsystems.Elbow;
@@ -28,7 +28,6 @@ import teamcode.subsystems.Extender;
 import teamcode.subsystems.Wrist;
 import trclib.robotcore.TrcAutoTask;
 import trclib.robotcore.TrcEvent;
-import trclib.robotcore.TrcOwnershipMgr;
 import trclib.robotcore.TrcRobot;
 import trclib.robotcore.TrcTaskMgr;
 

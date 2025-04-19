@@ -139,10 +139,10 @@ public class RobotBase
             pidStallDetectionEnabled = true;
             // PidDrive Parameters
             usePidDrive = true;
-            enablePidDriveSquareRootPid = true;
+            enablePidDriveSquid = true;
             // PurePursuit Parameters.
             usePurePursuitDrive = true;
-            enablePurePursuitDriveSquareRootPid = true;
+            enablePurePursuitDriveSquid = true;
             ppdFollowingDistance = 6.0;
             velPidCoeffs = new TrcPidController.PidCoefficients(0.0, 0.0, 0.0, 1.0/profiledMaxVelocity, 0.0);
             fastModeEnabled = true;
